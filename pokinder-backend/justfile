@@ -1,0 +1,32 @@
+init:
+	poetry config virtualenvs.in-project true
+	poetry install
+
+local:
+	cd src; litestar run --debug
+
+format:
+	@poetry run black alembic src tests
+	@poetry run isort alembic src tests
+
+check:
+	@poetry run black alembic src tests --check
+	@poetry run isort alembic src tests --check
+	@poetry run ruff check src tests
+
+db-generate COMMENT:
+	alembic revision --autogenerate -m "{{COMMENT}}" 
+
+db-downgrade:
+	alembic downgrade -1
+
+db-upgrade:
+	alembic upgrade +1
+
+db-upgrade-all:
+	alembic upgrade head
+
+db-fill:
+	@poetry run src/script/populate_database.py
+
+db-reset: db-downgrade db-upgrade db-fill

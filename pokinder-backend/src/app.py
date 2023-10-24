@@ -1,0 +1,33 @@
+from litestar import Litestar
+from litestar.config.cors import CORSConfig
+from litestar.contrib.repository.exceptions import (
+    RepositoryError as RepositoryException,
+)
+from litestar.contrib.sqlalchemy.plugins import (
+    SQLAlchemyAsyncConfig,
+    SQLAlchemyInitPlugin,
+)
+from litestar.di import Provide
+from litestar.openapi import OpenAPIConfig
+
+from src.component.fusion import FusionController, use_postgres_fusion_dependency
+from src.component.vote import VoteController, use_postgres_vote_dependency
+from src.utils.env import retrieve_postgres_connection_string
+from src.utils.exceptions import repository_exception_to_http_response
+
+sqlalchemy_config = SQLAlchemyAsyncConfig(connection_string=retrieve_postgres_connection_string())
+sqlalchemy_plugin = SQLAlchemyInitPlugin(config=sqlalchemy_config)
+
+app = Litestar(
+    route_handlers=[VoteController, FusionController],
+    dependencies={
+        "vote_dependency": Provide(use_postgres_vote_dependency, sync_to_thread=False),
+        "fusion_dependency": Provide(use_postgres_fusion_dependency, sync_to_thread=False),
+    },
+    exception_handlers={
+        RepositoryException: repository_exception_to_http_response,  # type: ignore[dict-item]
+    },
+    openapi_config=OpenAPIConfig(title="Pokinder", version="1.0.0"),
+    cors_config=CORSConfig(allow_origins=["*"]),
+    plugins=[SQLAlchemyInitPlugin(config=sqlalchemy_config)],
+)

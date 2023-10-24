@@ -1,0 +1,11 @@
+.container {
+  font-size: 16px;
+  text-decoration: none;
+  line-height: 0;
+  color: var(--darker-background-color);
+  cursor: pointer;
+}
+
+.container:hover {
+  color: var(--font-color);
+}
