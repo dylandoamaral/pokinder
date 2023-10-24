@@ -1,0 +1,9 @@
+.container {
+  font-size: 14px;
+  padding: 5px 10px;
+  background-color: cadetblue;
+  color: white;
+  border-radius: 3px;
+  -webkit-text-stroke: 0.1px #777848;
+  text-transform: uppercase;
+}

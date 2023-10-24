@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.link {
+  text-decoration: none;
+}
+
+.sprite {
+  cursor: pointer;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.buttonDisable {
+  color: rgb(164, 162, 162) !important;
+  cursor: pointer;
+}
+
+.buttonLike {
+  color: #6cc0e5;
+  cursor: pointer;
+}
+
+.buttonDislike {
+  color: #fb4f4f;
+  cursor: pointer;
+}
+
+.buttonFavorite {
+  color: #fbc93d;
+  cursor: pointer;
+}

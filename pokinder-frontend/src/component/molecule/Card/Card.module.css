@@ -1,0 +1,84 @@
+.container {
+  position: absolute;
+  background-color: var(--background-color);
+  cursor: pointer;
+
+  will-change: transform;
+  width: 400px;
+  height: 615px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: white;
+  width: 80%;
+  height: 70%;
+  border-radius: 10px;
+  z-index: -1;
+}
+
+.sprite {
+  margin: 20px 0;
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+}
+
+.header {
+  font-size: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-bottom: 5px;
+}
+
+.path {
+  color: #686868;
+}
+
+.types {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-bottom: 25px;
+}
+
+.body {
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 5px;
+}
+
+.parent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.parentName {
+  text-decoration: underline;
+  padding-bottom: 10px;
+  font-size: 14px;
+}
+
+.parentSprite {
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+}
+
+.credit {
+  text-align: center;
+  opacity: 0.6;
+  font-size: 14px;
+}

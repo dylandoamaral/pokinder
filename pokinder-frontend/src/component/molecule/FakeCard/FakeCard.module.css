@@ -1,0 +1,110 @@
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.container {
+  position: absolute;
+  background-color: var(--background-color);
+
+  will-change: transform;
+  width: 400px;
+  height: 615px;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+.container::before {
+  content: "";
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  background-color: white;
+  width: 80%;
+  height: 70%;
+  border-radius: 10px;
+  z-index: -1;
+}
+
+.sprite {
+  margin: 30px 0;
+  width: 240px;
+  height: 240px;
+  background-color: var(--grey);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-bottom: 5px;
+}
+
+.name {
+  height: 25px;
+  width: 120px;
+  background-color: var(--grey);
+}
+
+.path {
+  height: 25px;
+  width: 70px;
+  background-color: var(--grey);
+}
+
+.types {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding-bottom: 20px;
+}
+
+.type {
+  height: 25px;
+  width: 70px;
+  background-color: var(--grey);
+}
+
+.body {
+  display: flex;
+  justify-content: space-around;
+  padding-bottom: 5px;
+}
+
+.parent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.parentName {
+  padding-bottom: 10px;
+  height: 14px;
+  width: 40px;
+  background-color: var(--grey);
+}
+
+.parentSprite {
+  margin: 10px 0;
+  width: 90px;
+  height: 90px;
+  background-color: var(--grey);
+}
+
+.credit {
+  height: 14px;
+  width: 200px;
+  background-color: var(--grey);
+}
