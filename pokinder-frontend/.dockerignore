@@ -1,0 +1,6 @@
+*
+!nginx
+!src
+!public
+!package.json
+!yarn.lock

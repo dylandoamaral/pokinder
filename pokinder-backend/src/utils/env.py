@@ -11,5 +11,7 @@ def load_pokinder_dotenv():
 
 def retrieve_postgres_connection_string() -> str:
     load_pokinder_dotenv()
+    postgres_host = os.getenv("POSTGRES_HOST")
     postgres_password = os.getenv("POSTGRES_PASSWORD")
-    return f"postgresql+asyncpg://postgres:{postgres_password}@localhost:5432/pokinder"
+    postgres_db = os.getenv("POSTGRES_DB")
+    return f"postgresql+asyncpg://postgres:{postgres_password}@{postgres_host}:5432/{postgres_db}"

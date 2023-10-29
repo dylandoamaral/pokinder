@@ -1,3 +1,4 @@
+import uvicorn
 from litestar import Litestar
 from litestar.config.cors import CORSConfig
 from litestar.contrib.repository.exceptions import (
