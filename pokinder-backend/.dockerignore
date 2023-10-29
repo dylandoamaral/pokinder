@@ -1,0 +1,8 @@
+*
+!alembic
+!src
+!script
+!pyproject.toml
+!poetry.lock
+!alembic.ini
+!README.md

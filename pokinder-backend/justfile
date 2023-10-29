@@ -27,6 +27,6 @@ db-upgrade-all:
 	alembic upgrade head
 
 db-fill:
-	@poetry run src/script/populate_database.py
+	@poetry run script/populate_database.py
 
 db-reset: db-downgrade db-upgrade db-fill

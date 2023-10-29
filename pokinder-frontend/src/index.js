@@ -17,6 +17,8 @@ const router = createBrowserRouter([
   { path: "*", element: <NotFound /> },
 ]);
 
+console.log(`http://${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`)
+
 root.render(
   <QueryClientProvider client={queryClient}>
     <RouterProvider router={router}></RouterProvider>

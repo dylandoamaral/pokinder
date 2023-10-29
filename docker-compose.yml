@@ -3,12 +3,60 @@ version: "3.1"
 services:
   db:
     container_name: pokinder-postgres
-    image: postgres:9.6
+    image: postgres:16.0
     restart: always
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: pokinder
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
     volumes:
-      - ./database/data:/var/lib/postgresql/data
+      - pokinder-postgres:/var/lib/postgresql/data
+    networks:
+      - pokinder-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 3s
+
+  backend:
+    container_name: pokinder-backend
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_HOST: ${POSTGRES_HOST}
+    build:
+      context: ./pokinder-backend
+      args:
+        INSTALL_DEPENDENCIES: ${ENVIRONMENT}
+    image: pokinder-backend:latest
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    networks:
+      - pokinder-network
+
+  frontend:
+    container_name: pokinder-frontend
+    build:
+      context: ./pokinder-frontend
+      args:
+        REACT_APP_BACKEND_PORT: ${BACKEND_PORT}
+        REACT_APP_BACKEND_HOST: ${BACKEND_HOST}
+    image: pokinder-frontend:latest
+    ports:
+      - "3001:80"
+    networks:
+      - pokinder-network
+
+volumes:
+  pokinder-postgres:
+    name: pokinder-postgres
+
+networks:
+  pokinder-network:
+    name: pokinder-network
