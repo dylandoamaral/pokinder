@@ -1,6 +1,4 @@
 # specific
-resources/packs/*
-!resources/packs/.keep
 database
 
 # dependencies
