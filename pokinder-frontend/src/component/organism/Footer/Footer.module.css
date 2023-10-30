@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 50px 0;
+}
+
+.github {
+  color: inherit;
+}
+
+.credit {
+  text-align: center;
+}

@@ -1,0 +1,17 @@
+.container {
+  margin: 0 220px;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 1400px) {
+  .container {
+    margin: 0 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    margin: 0 20px;
+  }
+}
