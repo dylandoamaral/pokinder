@@ -37,3 +37,9 @@
 .button:hover {
   background-color: rgb(210, 22, 22);
 }
+
+@media (max-width: 480px) {
+  .buttons {
+    display: none;
+  }
+}
