@@ -4,8 +4,6 @@
   justify-items: center;
   grid-template-rows: auto 1fr auto;
   grid-auto-flow: row;
-
-  padding: 32px;
 }
 
 .content {
@@ -13,10 +11,12 @@
   grid-template-rows: auto 1fr auto;
   grid-auto-flow: row;
 
-  gap: 32px;
-  width: calc(100% - 64px);
   max-width: 1250px;
+
+  gap: 32px;
+  margin: 32px;
   min-height: calc(100vh - 64px);
+  width: calc(100vw - 64px);
 }
 
 .main {
@@ -25,13 +25,10 @@
 }
 
 @media (max-width: 560px) {
-  .container {
-    padding: 16px;
-  }
-
   .content {
-    width: calc(100% - 32px);
-    min-height: calc(100vh - 32px);
     gap: 16px;
+    margin: 16px;
+    min-height: calc(100vh - 32px);
+    width: calc(100vw - 32px);
   }
 }
