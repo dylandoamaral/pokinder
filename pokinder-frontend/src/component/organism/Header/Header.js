@@ -11,7 +11,10 @@ function Header() {
   return (
     <header className={styles.container}>
       <div className={styles.left}>
-        <Logo />
+        <div className={styles.logo}>
+          <Logo />
+          <h1 className={styles.title}>Pokinder</h1>
+        </div>
         <nav className={styles.nav}>
           <HeaderLink link="/">
             <IconSwipe />

@@ -1,9 +1,13 @@
+.wrapper {
+  display: grid;
+  gap: 32px;
+}
+
 .container {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  margin: 40px 100px;
+  justify-content: space-between;
   gap: 60px;
 }
 
@@ -13,10 +17,4 @@
   align-items: center;
   justify-content: center;
   margin: 30px;
-}
-
-@media (max-width: 7480px) {
-  .container {
-    margin: 40px 20px;
-  }
 }

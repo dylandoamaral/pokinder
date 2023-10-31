@@ -25,7 +25,7 @@ function Type({ type }) {
   return (
     <div
       className={styles.container}
-      style={{ "background-color": colours[type.toLowerCase()] }}
+      style={{ backgroundColor: colours[type.toLowerCase()] }}
     >
       {type}
     </div>
