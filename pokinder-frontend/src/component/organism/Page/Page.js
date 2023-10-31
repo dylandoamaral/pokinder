@@ -5,9 +5,11 @@ import styles from "./Page.module.css";
 function Page({ children }) {
   return (
     <div className={styles.container}>
-      <Header />
-      {children}
-      <Footer />
+      <div className={styles.content}>
+        <Header />
+        <main className={styles.main}>{children}</main>
+        <Footer />
+      </div>
     </div>
   );
 }

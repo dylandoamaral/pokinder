@@ -178,8 +178,8 @@ const Card = forwardRef(function Card(
             fusion.head.type_2,
             fusion.body.type_1,
             fusion.body.type_2
-          ).map((type) => (
-            <Type type={type} />
+          ).map((type, index) => (
+            <Type type={type} key={index} />
           ))}
         </div>
         <div className={styles.body}>

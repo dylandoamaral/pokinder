@@ -81,24 +81,26 @@ function Pokedex() {
 
   return (
     <Page>
-      <PokedexFilter
-        pokemonOptions={groupedOptions}
-        filters={filters}
-        onChange={setFilters}
-      />
-      <div className={styles.container}>{drawVotes()}</div>
-      <div className={styles.button}>
-        <Button
-          onClick={() => fetchNextPage()}
-          disabled={!hasNextPage || isFetchingNextPage}
-          title={
-            isFetchingNextPage
-              ? "Loading more..."
-              : hasNextPage
-              ? "Load More"
-              : "Nothing more to load"
-          }
+      <div className={styles.wrapper}>
+        <PokedexFilter
+          pokemonOptions={groupedOptions}
+          filters={filters}
+          onChange={setFilters}
         />
+        <div className={styles.container}>{drawVotes()}</div>
+        <div className={styles.button}>
+          <Button
+            onClick={() => fetchNextPage()}
+            disabled={!hasNextPage || isFetchingNextPage}
+            title={
+              isFetchingNextPage
+                ? "Loading more..."
+                : hasNextPage
+                ? "Load More"
+                : "Nothing more to load"
+            }
+          />
+        </div>
       </div>
     </Page>
   );

@@ -26,7 +26,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "source ../.env && REACT_APP_BACKEND_PORT=$BACKEND_PORT REACT_APP_BACKEND_HOST=$BACKEND_HOST react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject"
