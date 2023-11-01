@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Build new images for pokinder applications
-sudo docker compose --env-file configuration/.env build
+# build new images for pokinder applications
+sudo docker compose --env-file configuration/.env --env-file configuration/.env.shared build
 
-# Deploy the different pokinder services
-sudo docker compose --env-file configuration/.env up -d
+# deploy the different pokinder services
+sudo docker compose --env-file configuration/.env --env-file configuration/.env.shared up -d

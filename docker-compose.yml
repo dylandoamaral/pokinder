@@ -31,7 +31,7 @@ services:
       context: ./pokinder-backend
       args:
         INSTALL_DEPENDENCIES: ${ENVIRONMENT}
-    image: pokinder-backend:latest
+    image: pokinder-backend:${VERSION}
     depends_on:
       db:
         condition: service_healthy
@@ -47,7 +47,7 @@ services:
       args:
         REACT_APP_BACKEND_PORT: ${BACKEND_PORT}
         REACT_APP_BACKEND_HOST: ${BACKEND_HOST}
-    image: pokinder-frontend:latest
+    image: pokinder-frontend:${VERSION}
     ports:
       - "3001:80"
     networks:
