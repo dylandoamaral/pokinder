@@ -31,7 +31,7 @@ def extract_pokemon_pokedex_ids(fusion_id):
 
 async def main():
     pack_name = "2023-07.csv"
-    credits_path = f"./credits/{pack_name}"
+    credits_path = f"./credit/{pack_name}"
 
     fusion_mapping = dict()
     creator_names = set()
