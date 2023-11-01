@@ -1,6 +1,11 @@
 import Sprite from "../../atom/Sprite/Sprite";
 
-import React, { useRef, forwardRef, useImperativeHandle } from "react";
+import React, {
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { useMutation } from "react-query";
 import { addVote } from "../../../api/pokinder";
 import { useDrag } from "@use-gesture/react";
@@ -16,20 +21,26 @@ const Card = forwardRef(function Card(
 ) {
   const isGone = useRef(false);
   const swipeDirection = useRef(undefined);
+  const [isHidden, setIsHidden] = useState(false);
 
   const getSwipeDirection = (direction) => {
+    console.log(direction);
     if (direction[1] < -0.5) return "up";
-    else if (direction[0] > 0.5) return "right";
-    else if (direction[0] < -0.5) return "left";
+    else if (direction[0] > 0.5 && direction[1] < 0.2) return "right";
+    else if (direction[0] < -0.5 && direction[1] < 0.2) return "left";
     else return undefined;
   };
 
   const onRest = () => {
     if (!isGone.current) return;
     onCardLeftScreen();
+    setIsHidden(true);
   };
 
   const validateSwipe = (direction) => {
+    if (direction == null) return;
+    console.log(direction);
+
     isGone.current = true;
     swipeDirection.current = direction;
     vote();
@@ -70,8 +81,10 @@ const Card = forwardRef(function Card(
 
       api.start(() => {
         const direction = normalize(movement);
-        const xOffScreen = (270 + window.innerWidth) * direction[0];
-        const yOffScreen = (270 + window.innerHeight) * direction[1];
+        const screenDiameter = window.innerHeight + window.innerWidth;
+        const offset = screenDiameter < 2500 ? 450 : 300;
+        const xOffScreen = (offset + window.innerWidth) * direction[0];
+        const yOffScreen = (offset + window.innerHeight) * direction[1];
         const x = isGone.current ? xOffScreen : down ? movement[0] : 0;
         const y = isGone.current ? yOffScreen : down ? movement[1] : 0;
         const rotation = down ? movement[0] * 0.05 : 0;
@@ -84,7 +97,7 @@ const Card = forwardRef(function Card(
           rotation,
           delay: undefined,
           config: {
-            friction: 50,
+            friction: 70,
             tension: down ? 800 : isGone.current ? 200 : 500,
           },
         };
@@ -141,7 +154,7 @@ const Card = forwardRef(function Card(
     };
   });
 
-  return (
+  return isHidden ? null : (
     <animated.div
       {...bind()}
       style={{
