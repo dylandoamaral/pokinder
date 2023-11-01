@@ -19,7 +19,7 @@ function Footer() {
           </a>
         </div>
         <div className={styles.right}>
-          <span>Version 0.1.0</span>
+          <span>Version {process.env.REACT_APP_VERSION}</span>
         </div>
       </div>
       <div className={styles.credit}>
