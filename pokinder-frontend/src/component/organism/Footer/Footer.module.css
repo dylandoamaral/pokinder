@@ -1,13 +1,37 @@
 .container {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
+  gap: 20px;
 }
 
-.github {
+.left {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.link {
   color: inherit;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--darker-background-color);
+  cursor: pointer;
 }
 
-.credit {
-  text-align: center;
+.link:hover {
+  color: var(--primary-color);
+}
+
+.link_name {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@media (max-width: 560px) {
+  .link_hidden {
+    display: none;
+  }
 }

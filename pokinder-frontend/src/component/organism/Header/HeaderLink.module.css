@@ -7,5 +7,5 @@
 }
 
 .container:hover {
-  color: var(--font-color);
+  color: var(--primary-color);
 }

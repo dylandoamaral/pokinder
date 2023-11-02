@@ -10,7 +10,7 @@
 
   will-change: transform;
   width: 400px;
-  height: 615px;
+  height: 540px;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
@@ -26,18 +26,18 @@
 .container::before {
   content: "";
   position: absolute;
-  bottom: 40px;
+  bottom: 0px;
   left: 50%;
   transform: translate(-50%, 0);
   background-color: white;
-  width: 80%;
-  height: 70%;
+  width: 90%;
+  height: 80%;
   border-radius: 10px;
   z-index: -1;
 }
 
 .sprite {
-  margin: 30px 0;
+  margin-bottom: 30px;
   width: 240px;
   height: 240px;
   background-color: var(--grey);

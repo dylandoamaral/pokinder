@@ -1,14 +1,14 @@
 .wrapper {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 32px;
 }
 
 .container {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 150px);
+  grid-gap: 60px;
   justify-content: space-between;
-  gap: 60px;
 }
 
 .button {
@@ -17,4 +17,11 @@
   align-items: center;
   justify-content: center;
   margin: 30px;
+}
+
+@media (max-width: 400px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
 }
