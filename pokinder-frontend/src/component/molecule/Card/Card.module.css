@@ -5,7 +5,7 @@
 
   will-change: transform;
   width: 360px;
-  height: 575px;
+  height: 540px;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -19,18 +19,18 @@
 .container::before {
   content: "";
   position: absolute;
-  bottom: 20px;
+  bottom: 0px;
   left: 50%;
   transform: translate(-50%, 0);
   background-color: white;
   width: 90%;
-  height: 70%;
+  height: 80%;
   border-radius: 10px;
   z-index: -1;
 }
 
 .sprite {
-  margin: 20px 0;
+  margin-bottom: 20px;
   filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
 }
 
