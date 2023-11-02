@@ -47,6 +47,7 @@ services:
       args:
         REACT_APP_BACKEND_PORT: ${BACKEND_PORT}
         REACT_APP_BACKEND_HOST: ${BACKEND_HOST}
+        REACT_APP_VERSION: ${VERSION}
     image: pokinder-frontend:${VERSION}
     ports:
       - "3001:80"
