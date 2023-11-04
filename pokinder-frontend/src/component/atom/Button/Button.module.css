@@ -5,8 +5,8 @@
   font-weight: bold;
   text-align: center;
   text-decoration: none;
-  border: 2px solid black;
   border-radius: 10px;
+  border: none;
   color: #fff;
   background-color: var(--primary-color);
 }

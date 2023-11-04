@@ -11,7 +11,9 @@
   gap: 20px;
 }
 
-.link {
+.button {
+  border: none;
+  background: 0 0;
   color: inherit;
   text-decoration: none;
   display: flex;
@@ -21,17 +23,11 @@
   cursor: pointer;
 }
 
-.link:hover {
+.button:hover {
   color: var(--primary-color);
 }
 
-.link_name {
+.buttonText {
   font-size: 14px;
   font-weight: 500;
-}
-
-@media (max-width: 560px) {
-  .link_hidden {
-    display: none;
-  }
 }

@@ -6,11 +6,13 @@ export default function useAccountId() {
 
   const [cookies, setCookie] = useCookies([accountIdName]);
 
+  const setAccountId = (newAccountId) => setCookie(accountIdName, newAccountId);
+
   if (typeof cookies[accountIdName] !== "undefined") {
-    return cookies[accountIdName];
+    return [cookies[accountIdName], setAccountId];
   } else {
     const accountId = uuidv4();
-    setCookie(accountIdName, accountId);
-    return accountId;
+    setAccountId(accountId);
+    return [accountId, setAccountId];
   }
 }
