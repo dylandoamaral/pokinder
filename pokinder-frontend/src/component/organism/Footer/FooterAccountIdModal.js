@@ -20,6 +20,7 @@ function FooterAccountIdModal({ isVisible, onClose }) {
   const onSave = () => {
     setAccountId(inputValue);
     onClose();
+    window.location.reload(true);
   };
 
   const onGenerateMessage =
@@ -81,7 +82,6 @@ function FooterAccountIdModal({ isVisible, onClose }) {
         </button>
       </div>
       <Button
-        className={styles.saveButton}
         onClick={onSave}
         disabled={!isUUIDv4}
         title="Save the new account id"

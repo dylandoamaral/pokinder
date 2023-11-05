@@ -1,5 +1,5 @@
 .container {
-  background-color: white;
+  background-color: var(--lighter-background-color);
   padding: 20px;
 
   display: flex;

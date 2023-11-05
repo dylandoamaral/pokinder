@@ -21,21 +21,21 @@
 }
 
 .buttonDisable {
-  color: rgb(164, 162, 162) !important;
+  color: var(--disable-color) !important;
   cursor: pointer;
 }
 
 .buttonLike {
-  color: #6cc0e5;
-  cursor: pointer;
-}
-
-.buttonDislike {
-  color: #fb4f4f;
+  color: var(--like-color);
   cursor: pointer;
 }
 
 .buttonFavorite {
-  color: #fbc93d;
+  color: var(--favorite-color);
+  cursor: pointer;
+}
+
+.buttonDislike {
+  color: var(--dislike-color);
   cursor: pointer;
 }

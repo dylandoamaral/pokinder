@@ -7,16 +7,16 @@
   text-decoration: none;
   border-radius: 10px;
   border: none;
-  color: #fff;
+  color: var(--white);
   background-color: var(--primary-color);
 }
 
 .container:hover {
-  background-color: rgb(210, 22, 22);
+  background-color: var(--darker-primary-color);
   cursor: pointer;
 }
 
 .container:disabled {
-  background-color: rgb(193, 193, 193);
+  background-color: var(--disable-color);
   cursor: not-allowed;
 }

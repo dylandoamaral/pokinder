@@ -16,5 +16,5 @@
 .modal {
   cursor: default;
   padding: 16px;
-  background-color: white;
+  background-color: var(--lighter-background-color);
 }

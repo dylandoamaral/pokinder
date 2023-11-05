@@ -47,7 +47,7 @@ function Pokedex() {
 
   const [filters, setFilters] = useState(initFilters);
 
-  const accountId = useAccountId();
+  const [accountId] = useAccountId();
 
   const { data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
