@@ -22,7 +22,7 @@
   bottom: 0px;
   left: 50%;
   transform: translate(-50%, 0);
-  background-color: white;
+  background-color: var(--lighter-background-color);
   width: 90%;
   height: 80%;
   border-radius: 10px;
@@ -44,7 +44,7 @@
 }
 
 .path {
-  color: #686868;
+  color: var(--secondary-font-color);
 }
 
 .types {
@@ -79,6 +79,6 @@
 
 .credit {
   text-align: center;
-  opacity: 0.6;
+  color: var(--secondary-font-color);
   font-size: 14px;
 }

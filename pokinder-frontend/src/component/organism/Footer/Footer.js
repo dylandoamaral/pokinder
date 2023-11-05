@@ -9,7 +9,7 @@ import useToggle from "../../../hook/useToggle";
 import FooterAccountIdModal from "./FooterAccountIdModal";
 
 function Footer() {
-  const accountId = useAccountId();
+  const [accountId] = useAccountId();
 
   const [showAccountIdModal, toggleAccountIdModal] = useToggle();
 

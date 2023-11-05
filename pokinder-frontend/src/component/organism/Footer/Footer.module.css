@@ -19,7 +19,7 @@
   display: flex;
   align-items: center;
   gap: 2px;
-  color: var(--darker-background-color);
+  color: var(--secondary-font-color);
   cursor: pointer;
 }
 

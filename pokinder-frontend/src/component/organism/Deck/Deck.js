@@ -23,7 +23,7 @@ function Deck() {
   const totalLeftScreen = useRef(0);
 
   const [fusions, setFusions] = useState([]);
-  const accountId = useAccountId();
+  const [accountId] = useAccountId();
 
   useEffect(() => {
     children.current = children.current.slice(0, fusions.length);

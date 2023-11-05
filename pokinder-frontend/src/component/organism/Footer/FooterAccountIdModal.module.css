@@ -18,7 +18,7 @@
 .inputContainer {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 5px;
   width: 100%;
   padding: 10px;
@@ -40,11 +40,11 @@
 }
 
 .inputValidatorOk {
-  color: #008000;
+  color: var(--ok-color);
 }
 
 .inputValidatorKo {
-  color: #ff5722;
+  color: var(--ko-color);
 }
 
 .generateButton {
@@ -55,37 +55,13 @@
   width: 44px;
 
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 5px;
-  background-color: #fff;
+  background-color: var(--white);
   cursor: pointer;
 }
 
 .generateButton:hover {
   background-color: var(--font-color);
-  color: #fff;
-}
-
-.saveButton {
-  cursor: pointer;
-  width: 100%;
-
-  padding: 10px;
-  font-size: 16px;
-  border: none;
-  border-radius: 5px;
-  background-color: var(--primary-color);
-  color: #fff;
-  cursor: pointer;
-}
-
-.saveButton:hover {
-  background-color: rgb(210, 22, 22);
-}
-
-.saveButton:disabled {
-  background-color: #ccc;
-  color: #666;
-  cursor: not-allowed;
-  border: none;
+  color: var(--white);
 }
