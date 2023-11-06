@@ -6,6 +6,7 @@ import styles from "./Deck.module.css";
 import FakeCard from "../../molecule/FakeCard/FakeCard";
 import useAccountId from "../../../hook/useAccountId";
 import Button from "../../atom/Button/Button";
+import useEventListener from "../../../hook/useEventListener";
 
 function Deck() {
   // Number of card in the deck before trigerring a new fetch.
@@ -86,6 +87,22 @@ function Deck() {
       children.current[currentChildrenIndex.current].like();
     }
   };
+
+  useEventListener("keydown", ({ key }) => {
+    switch (key) {
+      case "ArrowLeft":
+        dislike();
+        break;
+      case "ArrowRight":
+        like();
+        break;
+      case "ArrowUp":
+        favorite();
+        break;
+      default:
+        return;
+    }
+  });
 
   const drawCards = () => {
     return (
