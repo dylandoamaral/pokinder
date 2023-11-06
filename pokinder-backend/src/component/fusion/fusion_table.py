@@ -21,10 +21,10 @@ class Fusion(BaseTable, UUIDPrimaryKey):
     body_id: Mapped[UUID] = mapped_column(ForeignKey("pokemon.id"))
     created_at: Mapped[datetime] = build_created_at_column()
 
-    pack = relationship("Pack", lazy="joined")
-    creator = relationship("Creator", lazy="joined")
-    head = relationship("Pokemon", foreign_keys=[head_id], lazy="joined")
-    body = relationship("Pokemon", foreign_keys=[body_id], lazy="joined")
+    pack = relationship("Pack")
+    creator = relationship("Creator")
+    head = relationship("Pokemon", foreign_keys=[head_id])
+    body = relationship("Pokemon", foreign_keys=[body_id])
 
 
 class FusionRepository(SQLAlchemyAsyncRepository[Fusion]):
