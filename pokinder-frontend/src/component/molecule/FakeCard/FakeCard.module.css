@@ -10,7 +10,7 @@
 
   will-change: transform;
   width: 400px;
-  height: 540px;
+  height: 530px;
   border-radius: 15px;
   display: flex;
   flex-direction: column;
@@ -90,7 +90,6 @@
 }
 
 .parentName {
-  padding-bottom: 10px;
   height: 14px;
   width: 40px;
   background-color: var(--placeholder-color);
