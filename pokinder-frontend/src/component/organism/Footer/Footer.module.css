@@ -1,14 +1,17 @@
 .container {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .left {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+}
+
+.right {
+  justify-self: right;
+  text-align: right;
 }
 
 .button {

@@ -5,7 +5,7 @@
 
   will-change: transform;
   width: 360px;
-  height: 540px;
+  height: 530px;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -69,7 +69,6 @@
 
 .parentName {
   text-decoration: underline;
-  padding-bottom: 10px;
   font-size: 14px;
 }
 

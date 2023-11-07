@@ -30,12 +30,17 @@ function Footer() {
   }
 
   function FooterButton({ children, name, onClick }) {
+    const finalName =
+      window.innerWidth < 560 && name.length > 8
+        ? name.substring(0, 8) + "..."
+        : name;
+
     return (
       <button className={styles.button} onClick={onClick}>
         <IconContext.Provider value={{ size: 16 }}>
           {children}
         </IconContext.Provider>
-        <span className={styles.buttonText}>{name}</span>
+        <span className={styles.buttonText}>{finalName}</span>
       </button>
     );
   }
