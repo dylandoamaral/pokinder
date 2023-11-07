@@ -11,6 +11,8 @@
 }
 
 .logo {
+  text-decoration: none;
+  color: var(--font-color);
   display: flex;
   gap: 8px;
   align-items: center;
