@@ -8,10 +8,10 @@ function Header() {
   return (
     <header className={styles.container}>
       <div className={styles.left}>
-        <div className={styles.logo}>
+        <a href="/" className={styles.logo}>
           <Logo />
           <h1 className={styles.title}>Pokinder</h1>
-        </div>
+        </a>
       </div>
       <div className={styles.right}>
         <nav className={styles.nav}>
