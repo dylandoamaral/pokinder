@@ -27,18 +27,26 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: ${POSTGRES_HOST}
+      FRONTEND_HOST: ${FRONTEND_HOST}
+      VERSION: ${VERSION}
     build:
       context: ./pokinder-backend
       args:
         INSTALL_DEPENDENCIES: ${ENVIRONMENT}
     image: pokinder-backend:${VERSION}
+    networks:
+      - default
+      - pokinder-network
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "8000:8000"
-    networks:
-      - pokinder-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=heart"
+      - "traefik.http.routers.pokinder-backend.rule=Host(`api.pokinder.com`)"
+      - "traefik.http.routers.pokinder-backend.entrypoints=websecure"
+      - "traefik.http.routers.pokinder-backend.tls.certresolver=myresolver"
+      - "traefik.http.services.pokinder-backend.loadbalancer.server.port=8000"
 
   frontend:
     container_name: pokinder-frontend
@@ -49,10 +57,16 @@ services:
         REACT_APP_BACKEND_HOST: ${BACKEND_HOST}
         REACT_APP_VERSION: ${VERSION}
     image: pokinder-frontend:${VERSION}
-    ports:
-      - "3001:80"
     networks:
+      - default
       - pokinder-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=heart"
+      - "traefik.http.routers.pokinder-frontend.rule=Host(`pokinder.com`)"
+      - "traefik.http.routers.pokinder-frontend.entrypoints=websecure"
+      - "traefik.http.routers.pokinder-frontend.tls.certresolver=myresolver"
+      - "traefik.http.services.pokinder-frontend.loadbalancer.server.port=3000"
 
 volumes:
   pokinder-postgres:
@@ -61,3 +75,6 @@ volumes:
 networks:
   pokinder-network:
     name: pokinder-network
+  default:
+    name: heart
+    external: true
