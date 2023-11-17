@@ -17,3 +17,12 @@ def retrieve_postgres_connection_string() -> str:
     postgres_password = os.getenv("POSTGRES_PASSWORD")
     postgres_db = os.getenv("POSTGRES_DB")
     return f"postgresql+asyncpg://postgres:{postgres_password}@{postgres_host}:5432/{postgres_db}"
+
+def retrieve_frontend_endpoint() -> str:
+    load_pokinder_dotenv()
+    frontend_host = os.getenv("FRONTEND_HOST")
+    return f"https://{frontend_host}"
+
+def retrieve_version() -> str:
+    load_pokinder_dotenv()
+    return os.getenv("VERSION")

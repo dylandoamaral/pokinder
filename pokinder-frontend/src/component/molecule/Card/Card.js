@@ -24,7 +24,6 @@ const Card = forwardRef(function Card(
   const [isHidden, setIsHidden] = useState(false);
 
   const getSwipeDirection = (direction) => {
-    console.log(direction);
     if (direction[1] < -0.5) return "up";
     else if (direction[0] > 0.5 && direction[1] < 0.2) return "right";
     else if (direction[0] < -0.5 && direction[1] < 0.2) return "left";
