@@ -7,4 +7,4 @@ from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey
 class Family(BaseTable, UUIDPrimaryKey):
     __tablename__ = "family"  #  type: ignore[assignment]
 
-    name: Mapped[str] = mapped_column(String(50))
+    name: Mapped[str] = mapped_column(String(50), nullable=False)

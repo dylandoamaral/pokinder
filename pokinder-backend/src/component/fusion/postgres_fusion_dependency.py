@@ -6,7 +6,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.component.vote import Vote
 from src.component.pokemon import Pokemon
-from src.component.pack import Pack
 from src.component.creator import Creator
 
 from .fusion_dependency import FusionDependency
@@ -23,6 +22,7 @@ class PostgresFusionDependency(FusionDependency):
 
         subquery = (
             select(Fusion)
+            .filter(Fusion.is_removed == False)
             .join(Vote, and_(Fusion.id == Vote.fusion_id, Vote.account_id == account_id), isouter=True)
             .filter(Vote.account_id.is_(None))
             .order_by(func.random())
@@ -36,12 +36,10 @@ class PostgresFusionDependency(FusionDependency):
             select(subquery_fusion)
             .join(head, head.id == subquery_fusion.head_id)
             .join(body, body.id == subquery_fusion.body_id)
-            .join(Pack, Pack.id == subquery_fusion.pack_id)
             .join(Creator, Creator.id == subquery_fusion.creator_id)
             .options(
                 joinedload(subquery_fusion.head),
                 joinedload(subquery_fusion.body),
-                joinedload(subquery_fusion.pack),
                 joinedload(subquery_fusion.creator),
             )
         )
