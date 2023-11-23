@@ -12,8 +12,6 @@ services:
       - "5432:5432"
     volumes:
       - pokinder-postgres:/var/lib/postgresql/data
-    networks:
-      - pokinder-network
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U postgres"]
       interval: 10s
@@ -21,60 +19,6 @@ services:
       retries: 10
       start_period: 3s
 
-  backend:
-    container_name: pokinder-backend
-    environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_HOST: ${POSTGRES_HOST}
-      FRONTEND_HOST: ${FRONTEND_HOST}
-      VERSION: ${VERSION}
-    build:
-      context: ./pokinder-backend
-      args:
-        INSTALL_DEPENDENCIES: ${ENVIRONMENT}
-    image: pokinder-backend:${VERSION}
-    networks:
-      - default
-      - pokinder-network
-    depends_on:
-      db:
-        condition: service_healthy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=heart"
-      - "traefik.http.routers.pokinder-backend.rule=Host(`api.pokinder.com`)"
-      - "traefik.http.routers.pokinder-backend.entrypoints=websecure"
-      - "traefik.http.routers.pokinder-backend.tls.certresolver=myresolver"
-      - "traefik.http.services.pokinder-backend.loadbalancer.server.port=8000"
-
-  frontend:
-    container_name: pokinder-frontend
-    build:
-      context: ./pokinder-frontend
-      args:
-        REACT_APP_BACKEND_PORT: ${BACKEND_PORT}
-        REACT_APP_BACKEND_HOST: ${BACKEND_HOST}
-        REACT_APP_VERSION: ${VERSION}
-    image: pokinder-frontend:${VERSION}
-    networks:
-      - default
-      - pokinder-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=heart"
-      - "traefik.http.routers.pokinder-frontend.rule=Host(`pokinder.com`)"
-      - "traefik.http.routers.pokinder-frontend.entrypoints=websecure"
-      - "traefik.http.routers.pokinder-frontend.tls.certresolver=myresolver"
-      - "traefik.http.services.pokinder-frontend.loadbalancer.server.port=3000"
-
 volumes:
   pokinder-postgres:
     name: pokinder-postgres
-
-networks:
-  pokinder-network:
-    name: pokinder-network
-  default:
-    name: heart
-    external: true
