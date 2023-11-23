@@ -1,3 +1,3 @@
 #!/bin/bash
 
-sudo docker compose --env-file configuration/.env --env-file configuration/.env.shared logs --tail 50
+sudo docker compose -f docker-compose.live.yml --env-file configuration/.env.shared --env-file configuration/.env logs --tail 50
