@@ -1,8 +1,8 @@
 """Add base tables
 
-Revision ID: 987cc4c2e1ca
+Revision ID: 181f5be08068
 Revises: 
-Create Date: 2023-10-23 21:45:33.987966
+Create Date: 2023-11-23 19:42:39.716559
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import litestar
 
 
 # revision identifiers, used by Alembic.
-revision: str = "987cc4c2e1ca"
+revision: str = "181f5be08068"
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -34,13 +34,6 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id", name=op.f("pk_family")),
     )
     op.create_table(
-        "pack",
-        sa.Column("name", sa.String(length=50), nullable=False),
-        sa.Column("created_at", litestar.contrib.sqlalchemy.types.DateTimeUTC(timezone=True), nullable=False),
-        sa.Column("id", litestar.contrib.sqlalchemy.types.GUID(length=16), nullable=False),
-        sa.PrimaryKeyConstraint("id", name=op.f("pk_pack")),
-    )
-    op.create_table(
         "pokemon",
         sa.Column("name", sa.String(length=50), nullable=False),
         sa.Column("type_1", sa.String(length=20), nullable=False),
@@ -54,7 +47,7 @@ def upgrade() -> None:
     op.create_table(
         "fusion",
         sa.Column("path", sa.String(), nullable=False),
-        sa.Column("pack_id", litestar.contrib.sqlalchemy.types.GUID(length=16), nullable=False),
+        sa.Column("is_removed", sa.Boolean(), nullable=False),
         sa.Column("creator_id", litestar.contrib.sqlalchemy.types.GUID(length=16), nullable=False),
         sa.Column("head_id", litestar.contrib.sqlalchemy.types.GUID(length=16), nullable=False),
         sa.Column("body_id", litestar.contrib.sqlalchemy.types.GUID(length=16), nullable=False),
@@ -63,7 +56,6 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["body_id"], ["pokemon.id"], name=op.f("fk_fusion_body_id_pokemon")),
         sa.ForeignKeyConstraint(["creator_id"], ["creator.id"], name=op.f("fk_fusion_creator_id_creator")),
         sa.ForeignKeyConstraint(["head_id"], ["pokemon.id"], name=op.f("fk_fusion_head_id_pokemon")),
-        sa.ForeignKeyConstraint(["pack_id"], ["pack.id"], name=op.f("fk_fusion_pack_id_pack")),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_fusion")),
     )
     op.create_table(
@@ -89,7 +81,6 @@ def downgrade() -> None:
     op.drop_table("pokemon_family")
     op.drop_table("fusion")
     op.drop_table("pokemon")
-    op.drop_table("pack")
     op.drop_table("family")
     op.drop_table("creator")
     op.execute("DROP TYPE votetype;")

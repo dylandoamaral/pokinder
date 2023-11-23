@@ -14,7 +14,7 @@ from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_col
 class Creator(BaseTable, UUIDPrimaryKey):
     __tablename__ = "creator"  #  type: ignore[assignment]
 
-    name: Mapped[str] = mapped_column(String(50))
+    name: Mapped[str] = mapped_column(String(50), nullable=False)
     created_at: Mapped[datetime] = build_created_at_column()
 
 

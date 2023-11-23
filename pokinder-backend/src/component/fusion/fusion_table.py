@@ -14,14 +14,13 @@ from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_col
 class Fusion(BaseTable, UUIDPrimaryKey):
     __tablename__ = "fusion"  #  type: ignore[assignment]
 
-    path: Mapped[str]
-    pack_id: Mapped[UUID] = mapped_column(ForeignKey("pack.id"))
+    path: Mapped[str] = mapped_column(nullable=False)
+    is_removed: Mapped[bool] = mapped_column(nullable=False)
     creator_id: Mapped[UUID] = mapped_column(ForeignKey("creator.id"))
     head_id: Mapped[UUID] = mapped_column(ForeignKey("pokemon.id"))
     body_id: Mapped[UUID] = mapped_column(ForeignKey("pokemon.id"))
     created_at: Mapped[datetime] = build_created_at_column()
 
-    pack = relationship("Pack")
     creator = relationship("Creator")
     head = relationship("Pokemon", foreign_keys=[head_id])
     body = relationship("Pokemon", foreign_keys=[body_id])
