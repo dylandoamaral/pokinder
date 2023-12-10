@@ -3,8 +3,8 @@ from uuid import UUID
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased
-from src.component.family.family_table import Family
 
+from src.component.family.family_table import Family
 from src.component.fusion.fusion_table import Fusion
 from src.component.pokemon.pokemon_table import Pokemon
 from src.data.pokemon_families import pokemon_families

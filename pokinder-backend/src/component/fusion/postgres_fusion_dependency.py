@@ -1,12 +1,12 @@
 from uuid import UUID
 
-from sqlalchemy import and_, select, func
-from sqlalchemy.orm import aliased, joinedload
+from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import aliased, joinedload
 
-from src.component.vote import Vote
-from src.component.pokemon import Pokemon
 from src.component.creator import Creator
+from src.component.pokemon import Pokemon
+from src.component.vote import Vote
 
 from .fusion_dependency import FusionDependency
 from .fusion_table import Fusion, FusionRepository

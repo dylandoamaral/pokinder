@@ -1,11 +1,9 @@
 from uuid import UUID
 
-from sqlalchemy import ForeignKey
+from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey
-from sqlalchemy import Column, Table
-
 
 PokemonFamily = Table(
     "pokemon_family",

@@ -104,6 +104,36 @@ docs = ["Sphinx (>=5.3.0,<5.4.0)", "sphinx-rtd-theme (>=1.2.2)", "sphinxcontrib-
 test = ["flake8 (>=5.0,<6.0)", "uvloop (>=0.15.3)"]
 
 [[package]]
+name = "bcrypt"
+version = "4.1.1"
+description = "Modern password hashing for your software and your servers"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "bcrypt-4.1.1-cp37-abi3-macosx_10_12_universal2.whl", hash = "sha256:196008d91201bbb1aa4e666fee5e610face25d532e433a560cabb33bfdff958b"},
+    {file = "bcrypt-4.1.1-cp37-abi3-macosx_13_0_universal2.whl", hash = "sha256:2e197534c884336f9020c1f3a8efbaab0aa96fc798068cb2da9c671818b7fbb0"},
+    {file = "bcrypt-4.1.1-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d573885b637815a7f3a3cd5f87724d7d0822da64b0ab0aa7f7c78bae534e86dc"},
+    {file = "bcrypt-4.1.1-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:bab33473f973e8058d1b2df8d6e095d237c49fbf7a02b527541a86a5d1dc4444"},
+    {file = "bcrypt-4.1.1-cp37-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:fb931cd004a7ad36a89789caf18a54c20287ec1cd62161265344b9c4554fdb2e"},
+    {file = "bcrypt-4.1.1-cp37-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:12f40f78dcba4aa7d1354d35acf45fae9488862a4fb695c7eeda5ace6aae273f"},
+    {file = "bcrypt-4.1.1-cp37-abi3-musllinux_1_1_aarch64.whl", hash = "sha256:2ade10e8613a3b8446214846d3ddbd56cfe9205a7d64742f0b75458c868f7492"},
+    {file = "bcrypt-4.1.1-cp37-abi3-musllinux_1_1_x86_64.whl", hash = "sha256:f33b385c3e80b5a26b3a5e148e6165f873c1c202423570fdf45fe34e00e5f3e5"},
+    {file = "bcrypt-4.1.1-cp37-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:755b9d27abcab678e0b8fb4d0abdebeea1f68dd1183b3f518bad8d31fa77d8be"},
+    {file = "bcrypt-4.1.1-cp37-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:a7a7b8a87e51e5e8ca85b9fdaf3a5dc7aaf123365a09be7a27883d54b9a0c403"},
+    {file = "bcrypt-4.1.1-cp37-abi3-win32.whl", hash = "sha256:3d6c4e0d6963c52f8142cdea428e875042e7ce8c84812d8e5507bd1e42534e07"},
+    {file = "bcrypt-4.1.1-cp37-abi3-win_amd64.whl", hash = "sha256:14d41933510717f98aac63378b7956bbe548986e435df173c841d7f2bd0b2de7"},
+    {file = "bcrypt-4.1.1-pp310-pypy310_pp73-manylinux_2_28_aarch64.whl", hash = "sha256:24c2ebd287b5b11016f31d506ca1052d068c3f9dc817160628504690376ff050"},
+    {file = "bcrypt-4.1.1-pp310-pypy310_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:476aa8e8aca554260159d4c7a97d6be529c8e177dbc1d443cb6b471e24e82c74"},
+    {file = "bcrypt-4.1.1-pp39-pypy39_pp73-manylinux_2_28_aarch64.whl", hash = "sha256:12611c4b0a8b1c461646228344784a1089bc0c49975680a2f54f516e71e9b79e"},
+    {file = "bcrypt-4.1.1-pp39-pypy39_pp73-manylinux_2_28_x86_64.whl", hash = "sha256:c6450538a0fc32fb7ce4c6d511448c54c4ff7640b2ed81badf9898dcb9e5b737"},
+    {file = "bcrypt-4.1.1.tar.gz", hash = "sha256:df37f5418d4f1cdcff845f60e747a015389fa4e63703c918330865e06ad80007"},
+]
+
+[package.extras]
+tests = ["pytest (>=3.2.1,!=3.3.0)"]
+typecheck = ["mypy"]
+
+[[package]]
 name = "beautifulsoup4"
 version = "4.12.2"
 description = "Screen-scraping library"
@@ -284,6 +314,24 @@ files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
+
+[[package]]
+name = "ecdsa"
+version = "0.18.0"
+description = "ECDSA cryptographic signature library (pure python)"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+files = [
+    {file = "ecdsa-0.18.0-py2.py3-none-any.whl", hash = "sha256:80600258e7ed2f16b9aa1d7c295bd70194109ad5a30fdee0eaeefef1d4c559dd"},
+    {file = "ecdsa-0.18.0.tar.gz", hash = "sha256:190348041559e21b22a1d65cee485282ca11a6f81d503fddb84d5017e9ed1e49"},
+]
+
+[package.dependencies]
+six = ">=1.9.0"
+
+[package.extras]
+gmpy = ["gmpy"]
+gmpy2 = ["gmpy2"]
 
 [[package]]
 name = "editorconfig"
@@ -969,6 +1017,17 @@ odmantic = ["odmantic", "pydantic[email]"]
 pydantic = ["pydantic[email]"]
 
 [[package]]
+name = "pyasn1"
+version = "0.5.1"
+description = "Pure-Python implementation of ASN.1 types and DER/BER/CER codecs (X.208)"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
+files = [
+    {file = "pyasn1-0.5.1-py2.py3-none-any.whl", hash = "sha256:4439847c58d40b1d0a573d07e3856e95333f1976294494c325775aeca506eb58"},
+    {file = "pyasn1-0.5.1.tar.gz", hash = "sha256:6d391a96e59b23130a5cfa74d6fd7f388dbbe26cc8f1edf39fdddf08d9d6676c"},
+]
+
+[[package]]
 name = "pydantic"
 version = "2.3.0"
 description = "Data validation using Python type hints"
@@ -1168,6 +1227,27 @@ files = [
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "python-jose"
+version = "3.3.0"
+description = "JOSE implementation in Python"
+optional = false
+python-versions = "*"
+files = [
+    {file = "python-jose-3.3.0.tar.gz", hash = "sha256:55779b5e6ad599c6336191246e95eb2293a9ddebd555f796a65f838f07e5d78a"},
+    {file = "python_jose-3.3.0-py2.py3-none-any.whl", hash = "sha256:9b1376b023f8b298536eedd47ae1089bcdb848f1535ab30555cd92002d78923a"},
+]
+
+[package.dependencies]
+ecdsa = "!=0.15"
+pyasn1 = "*"
+rsa = "*"
+
+[package.extras]
+cryptography = ["cryptography (>=3.4.0)"]
+pycrypto = ["pyasn1", "pycrypto (>=2.6.0,<2.7.0)"]
+pycryptodome = ["pyasn1", "pycryptodome (>=3.3.1,<4.0.0)"]
+
+[[package]]
 name = "pyyaml"
 version = "6.0.1"
 description = "YAML parser and emitter for Python"
@@ -1282,6 +1362,20 @@ rich = ">=10.7.0"
 
 [package.extras]
 dev = ["pre-commit"]
+
+[[package]]
+name = "rsa"
+version = "4.9"
+description = "Pure-Python RSA implementation"
+optional = false
+python-versions = ">=3.6,<4"
+files = [
+    {file = "rsa-4.9-py3-none-any.whl", hash = "sha256:90260d9058e514786967344d0ef75fa8727eed8a7d2e43ce9f4bcf1b536174f7"},
+    {file = "rsa-4.9.tar.gz", hash = "sha256:e38464a49c6c85d7f1351b0126661487a7e0a14a50f1675ec50eb34d4f20ef21"},
+]
+
+[package.dependencies]
+pyasn1 = ">=0.1.3"
 
 [[package]]
 name = "ruff"
@@ -1633,4 +1727,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "88f04bb13d434765518d18fd614fb8d07ab1713c5e84d2324fb7fad4ae486488"
+content-hash = "2fff443146dfdf78a0d553e1566caa40dd1449cf546364cf0e9cbec921f26346"
