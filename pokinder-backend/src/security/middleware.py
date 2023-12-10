@@ -27,10 +27,8 @@ class JWTAuthenticationMiddleware(AbstractAuthenticationMiddleware):
             raise NotAuthorizedException()
 
         if is_uuid(token):
-            print("Identified as guest.")
             return await self.authenticate_as_guest(connection, UUID(token))
         else:
-            print("Identified as user.")
             return await self.authenticate_as_user(connection, token)
 
     # Handle authentication for user logged.
