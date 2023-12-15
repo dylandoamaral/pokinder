@@ -1,0 +1,64 @@
+.container {
+  background-color: white;
+  width: 200px;
+  height: calc(100vh - 28px);
+  position: fixed;
+  top: 0;
+  right: -100%;
+  transition: 850ms;
+  z-index: 500;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 14px 16px;
+}
+
+.container.active {
+  right: 0;
+  transition: 350ms;
+}
+
+.close {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.nav {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
+.navlinks {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.navlink {
+  color: var(--font-color);
+  font-weight: 500;
+  display: block;
+  text-decoration: none;
+  cursor: pointer;
+  text-align: right;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.navlink_active {
+  background-color: var(--background-color) !important;
+}
+
+.profile {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}

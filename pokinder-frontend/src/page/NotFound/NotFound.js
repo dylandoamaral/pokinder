@@ -9,7 +9,7 @@ function NotFound() {
         <h1>Oops! You seem to be lost.</h1>
         <p>Here are some helpful links:</p>
         <Link to="/">Vote</Link>
-        <Link to="/pokedex">Pokedex</Link>
+        <Link to="/history">History</Link>
       </div>
     </Page>
   );

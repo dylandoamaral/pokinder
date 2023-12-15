@@ -1,0 +1,20 @@
+.container {
+  font-size: 18px;
+  text-decoration: none;
+  font-weight: 500;
+  color: var(--font-color);
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.container:hover {
+  color: var(--primary-color);
+}
+
+.inactive {
+  opacity: 0.4;
+}
+
+.inactive:hover {
+  opacity: 1;
+}

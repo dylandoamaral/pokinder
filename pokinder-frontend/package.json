@@ -10,6 +10,7 @@
     "@testing-library/user-event": "^13.2.1",
     "@use-gesture/react": "^10.3.0",
     "axios": "^1.5.1",
+    "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-cookie": "^6.1.1",
     "react-dom": "^18.2.0",

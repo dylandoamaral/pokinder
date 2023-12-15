@@ -17,8 +17,7 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-# add your model's MetaData object here
-# for 'autogenerate' support
+from src.component.account import Account  # noqa
 from src.component.creator import Creator  # noqa
 from src.component.family import Family  # noqa
 from src.component.fusion import Fusion  # noqa

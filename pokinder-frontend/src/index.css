@@ -39,3 +39,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+@media (max-width: 560px) {
+  .pc_only {
+    display: none !important;
+  }
+}
+
+@media (min-width: 560px) {
+  .phone_only {
+    display: none !important;
+  }
+}
