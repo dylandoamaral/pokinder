@@ -16,7 +16,7 @@ import Type from "../../atom/Type/Type";
 import { getTypes, getName } from "../../../utils/pokemon";
 
 const Card = forwardRef(function Card(
-  { fusion, index, accountId, onCardIsGone, onCardLeftScreen },
+  { fusion, index, onCardIsGone, onCardLeftScreen },
   ref
 ) {
   const isGone = useRef(false);
@@ -48,11 +48,11 @@ const Card = forwardRef(function Card(
 
   const { mutate: vote } = useMutation(async () => {
     if (swipeDirection.current === "right") {
-      addVote(accountId, fusion.id, 0);
+      addVote(fusion.id, 0);
     } else if (swipeDirection.current === "left") {
-      addVote(accountId, fusion.id, 1);
+      addVote(fusion.id, 1);
     } else if (swipeDirection.current === "up") {
-      addVote(accountId, fusion.id, 2);
+      addVote(fusion.id, 2);
     } else return;
   });
 

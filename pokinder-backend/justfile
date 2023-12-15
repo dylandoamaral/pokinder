@@ -6,13 +6,13 @@ local:
 	cd src; litestar run --debug
 
 format:
-	@poetry run black alembic src tests
-	@poetry run isort alembic src tests
+	@poetry run black alembic src test
+	@poetry run isort alembic src test
 
 check:
-	@poetry run black alembic src tests --check
-	@poetry run isort alembic src tests --check
-	@poetry run ruff check src tests
+	@poetry run black alembic src test --check
+	@poetry run isort alembic src test --check
+	@poetry run ruff check src test
 
 db-generate COMMENT:
 	alembic revision --autogenerate -m "{{COMMENT}}" 
