@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
 from uuid import UUID
 
-from jose import JWTError, jwt
+from joserfc import jwt
+from joserfc.errors import InvalidPayloadError
 from litestar.exceptions import NotAuthorizedException
-from pydantic import UUID4, BaseModel
+from pydantic import BaseModel, validator
 
 from src.utils.env import retrieve_jwt_secret
 
@@ -12,10 +13,15 @@ ALGORITHM = "HS256"
 JWT_SECRET = retrieve_jwt_secret()
 
 
+class Subject(BaseModel):
+    account_id: UUID
+    username: str
+
+
 class Token(BaseModel):
     exp: datetime
     iat: datetime
-    sub: str
+    sub: Subject
 
 
 def decode_jwt_token(encoded_token: str) -> Token:
@@ -25,17 +31,19 @@ def decode_jwt_token(encoded_token: str) -> Token:
     If the token is invalid or expired (i.e. the value stored under the exp key is in the past) an exception is raised
     """
     try:
-        payload = jwt.decode(token=encoded_token, key=JWT_SECRET, algorithms=[ALGORITHM])
+        payload = jwt.decode(encoded_token, JWT_SECRET).claims
         return Token(**payload)
-    except JWTError as e:
+    except InvalidPayloadError as e:
         raise NotAuthorizedException("Invalid token") from e
 
 
-def encode_jwt_token(user_id: UUID, expiration: timedelta = DEFAULT_TIME_DELTA) -> str:
+def encode_jwt_token(subject: Subject, expiration: timedelta = DEFAULT_TIME_DELTA) -> str:
     """Helper function that encodes a JWT token with expiration and a given user_id"""
+    header = {"alg": ALGORITHM}
     token = Token(
         exp=datetime.now() + expiration,
         iat=datetime.now(),
-        sub=str(user_id),
+        sub=subject,
     )
-    return jwt.encode(token.model_dump(), JWT_SECRET, algorithm=ALGORITHM)
+    payload = token.model_dump(mode="json")
+    return jwt.encode(header, payload, JWT_SECRET)

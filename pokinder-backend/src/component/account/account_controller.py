@@ -5,7 +5,7 @@ from litestar import Controller, post
 from litestar.exceptions import NotAuthorizedException, NotFoundException
 
 from src.component.account.account_dependency import AccountDependency
-from src.security.jwt import encode_jwt_token
+from src.security.jwt import encode_jwt_token, Subject
 from src.utils.exceptions import ConflictException
 
 from .account_model import AccountLogin, AccountSignup
@@ -32,7 +32,7 @@ class AccountController(Controller):
         hashed_password = hashpw(data.password.encode("utf-8"), gensalt())
         await account_dependency.signup(data, hashed_password)
 
-        return encode_jwt_token(data.account_id)
+        return encode_jwt_token(Subject(account_id=data.account_id, username=data.username))
 
     @post(path="/login", dto=None)
     async def login(self, account_dependency: AccountDependency, data: AccountLogin) -> UUID:
@@ -45,4 +45,4 @@ class AccountController(Controller):
             # We don't want the "hacker" to know if the name exists or not.
             raise NotFoundException()
 
-        return encode_jwt_token(account.id)
+        return encode_jwt_token(Subject(account_id=account.id, username=account.username))

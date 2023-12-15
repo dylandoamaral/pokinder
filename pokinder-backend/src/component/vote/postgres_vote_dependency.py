@@ -7,6 +7,7 @@ from sqlalchemy.orm import aliased
 from src.component.family.family_table import Family
 from src.component.fusion.fusion_table import Fusion
 from src.component.pokemon.pokemon_table import Pokemon
+from src.component.vote.vote_model import VoteAdd
 from src.data.pokemon_families import pokemon_families
 
 from .vote_dependency import VoteDependency
@@ -20,9 +21,9 @@ class PostgresVoteDependency(VoteDependency):
 
     async def list(
         self,
+        account_id: UUID,
         limit: int,
         offset: int = 0,
-        account_ids: list[UUID] | None = None,
         fusion_ids: list[int] | None = None,
         vote_types: list[VoteType] | None = None,
         head_name_or_category: str | None = None,
@@ -47,8 +48,8 @@ class PostgresVoteDependency(VoteDependency):
         else:
             return []
 
-        if account_ids is not None:
-            query = query.filter(Vote.account_id.in_(account_ids))
+        query = query.filter(Vote.account_id == account_id)
+
         if fusion_ids is not None:
             query = query.filter(Vote.fusion_id.in_(fusion_ids))
 
@@ -70,7 +71,8 @@ class PostgresVoteDependency(VoteDependency):
 
         return instances
 
-    async def upsert(self, vote: Vote) -> Vote:
+    async def upsert(self, account_id: UUID, vote_add: VoteAdd) -> Vote:
+        vote = Vote(account_id=account_id, fusion_id=vote_add.fusion_id, vote_type=vote_add.vote_type)
         return await self.repository.upsert(vote, auto_commit=True)
 
 

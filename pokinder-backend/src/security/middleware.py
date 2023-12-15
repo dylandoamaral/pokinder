@@ -8,7 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.component.account import Account
-from src.security.jwt import decode_jwt_token
+from src.security.jwt import decode_jwt_token, Subject
 from src.utils.uuid import is_uuid
 
 API_KEY_HEADER = "X-API-KEY"
@@ -20,8 +20,12 @@ class JWTAuthenticationMiddleware(AbstractAuthenticationMiddleware):
         Given a request, parse the request api key stored in the header and retrieve the user correlating to the token from the DB
         """
 
+        if connection.scope.get("method") == "OPTIONS":
+            return AuthenticationResult(None, None)
+
         # retrieve the auth header
-        token = connection.headers.get(API_KEY_HEADER)
+        headers = {key.upper(): value for key, value in connection.headers.items()}
+        token = headers.get(API_KEY_HEADER)
 
         if not token:
             raise NotAuthorizedException()
@@ -39,13 +43,15 @@ class JWTAuthenticationMiddleware(AbstractAuthenticationMiddleware):
 
         async with AsyncSession(engine) as async_session:
             async with async_session.begin():
-                result = await async_session.execute(select(Account).where(Account.id == token.sub))
-                user = result.scalar_one_or_none()
+                result = await async_session.execute(select(Account).where(Account.id == token.sub.account_id))
+                account = result.scalar_one_or_none()
 
-        if not user:
-            raise NotAuthorizedException()
+                async_session.expunge(account)
 
-        return AuthenticationResult(user=user, auth=token)
+            if not account:
+                raise NotAuthorizedException()
+
+            return AuthenticationResult(user=account, auth=token)
 
     # Handle authentication for guest having a random account_id but not logged.
     async def authenticate_as_guest(self, connection: ASGIConnection, account_id: UUID) -> AuthenticationResult:
@@ -54,9 +60,11 @@ class JWTAuthenticationMiddleware(AbstractAuthenticationMiddleware):
         async with AsyncSession(engine) as async_session:
             async with async_session.begin():
                 result = await async_session.execute(select(Account).where(Account.id == account_id))
-                user = result.scalar_one_or_none()
+                account = result.scalar_one_or_none()
 
-        if user is not None:
-            raise NotAuthorizedException()
+            if account is not None:
+                raise NotAuthorizedException()
 
-        return AuthenticationResult(user=account_id, auth=account_id)
+            account = Account(id=account_id, username="Guest", email="", password=b"")
+
+            return AuthenticationResult(user=account, auth=account_id)

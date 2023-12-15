@@ -1,13 +1,21 @@
 .container {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr 1fr 1fr;
   align-items: center;
-  justify-content: space-between;
 }
 
-.left {
+.center {
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
   align-items: center;
   gap: 30px;
+}
+
+.right {
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .logo {
@@ -22,10 +30,41 @@
   line-height: 0;
 }
 
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.username {
+  font-size: 18px;
+}
+
+.quit:hover {
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
 .nav {
   display: flex;
   align-items: flex-end;
   gap: 30px;
+}
+
+.hamburger {
+  width: 24px;
+  height: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.ham {
+  background-color: var(--font-color);
+  height: 4px;
+  width: 100%;
+  border-radius: 2px;
 }
 
 @media (max-width: 992px) {

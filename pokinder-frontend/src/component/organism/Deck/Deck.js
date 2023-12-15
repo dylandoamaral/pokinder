@@ -4,7 +4,6 @@ import { drawFusions } from "../../../api/pokinder";
 import Card from "../../molecule/Card/Card";
 import styles from "./Deck.module.css";
 import FakeCard from "../../molecule/FakeCard/FakeCard";
-import useAccountId from "../../../hook/useAccountId";
 import Button from "../../atom/Button/Button";
 import useEventListener from "../../../hook/useEventListener";
 
@@ -24,7 +23,6 @@ function Deck() {
   const totalLeftScreen = useRef(0);
 
   const [fusions, setFusions] = useState([]);
-  const [accountId] = useAccountId();
 
   useEffect(() => {
     children.current = children.current.slice(0, fusions.length);
@@ -41,7 +39,7 @@ function Deck() {
   };
 
   const drawNewFusions = async () => {
-    const newFusions = await drawFusions(accountId, AMOUNT_FETCH_NEW_FUSIONS);
+    const newFusions = await drawFusions(AMOUNT_FETCH_NEW_FUSIONS);
     refreshFusions(newFusions);
   };
 
@@ -116,7 +114,6 @@ function Deck() {
               fusion={fusion}
               index={index}
               key={key}
-              accountId={accountId}
               onCardIsGone={onCardIsGone}
               onCardLeftScreen={onCardLeftScreen}
             />

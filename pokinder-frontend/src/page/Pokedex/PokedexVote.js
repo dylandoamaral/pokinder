@@ -14,7 +14,7 @@ function PokedexVote({ vote }) {
   const [currentVoteType, setCurrentVoteType] = useState(vote.vote_type);
 
   const { mutate } = useMutation(async () => {
-    addVote(vote.account_id, vote.fusion.id, currentVoteType);
+    addVote(vote.fusion.id, currentVoteType);
   });
 
   useAfterEffect(() => {

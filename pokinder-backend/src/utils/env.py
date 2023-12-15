@@ -36,7 +36,11 @@ def retrieve_postgres_connection_string() -> str:
 def retrieve_frontend_endpoint() -> str:
     load_pokinder_dotenv()
     frontend_host = get_env_named_("FRONTEND_HOST")
-    return f"https://{frontend_host}"
+
+    if frontend_host == "localhost":
+        return "http://localhost:3000"
+    else:
+        return f"https://{frontend_host}"
 
 
 def retrieve_version() -> str:

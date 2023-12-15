@@ -16,8 +16,8 @@ asyncpg = "^0.28.0"
 greenlet = "^2.0.2"
 requests = "^2.31.0"
 beautifulsoup4 = "^4.12.2"
-python-jose = "^3.3.0"
 bcrypt = "^4.1.1"
+joserfc = "^0.9.0"
 
 
 [tool.poetry.group.dev.dependencies]

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { getHistory } from "../../api/pokinder";
 import { useInfiniteQuery } from "react-query";
-import useAccountId from "../../hook/useAccountId";
 import { useAfterEffect } from "../../hook/useAfterEffect";
 
 import Page from "../../component/organism/Page/Page";
@@ -47,14 +46,12 @@ function Pokedex() {
 
   const [filters, setFilters] = useState(initFilters);
 
-  const [accountId] = useAccountId();
-
   const { data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ["history"],
       queryFn: ({ pageParam }) => {
         const offset = pageParam || 0;
-        return getHistory(accountId, filters, POKEMON_PER_PAGES, offset);
+        return getHistory(filters, POKEMON_PER_PAGES, offset);
       },
       getNextPageParam: (lastPage) => {
         if (lastPage.records.length < POKEMON_PER_PAGES) return false;
