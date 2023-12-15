@@ -9,7 +9,7 @@
   background-color: var(--background-color);
 
   will-change: transform;
-  width: 400px;
+  width: 360px;
   height: 530px;
   border-radius: 15px;
   display: flex;
@@ -31,7 +31,7 @@
   transform: translate(-50%, 0);
   background-color: var(--lighter-background-color);
   width: 90%;
-  height: 80%;
+  height: 390px;
   border-radius: 10px;
   z-index: -1;
 }
@@ -68,12 +68,13 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding-bottom: 20px;
+  padding-bottom: 26px;
 }
 
 .type {
-  height: 25px;
+  height: 28px;
   width: 70px;
+  border-radius: 3px;
   background-color: var(--placeholder-color);
 }
 
@@ -96,9 +97,10 @@
 }
 
 .parentSprite {
-  margin: 10px 0;
-  width: 90px;
-  height: 90px;
+  margin-top: 10px;
+  margin-bottom: 4px;
+  width: 85px;
+  height: 85px;
   background-color: var(--placeholder-color);
 }
 
