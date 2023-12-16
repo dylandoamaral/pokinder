@@ -1,17 +1,4 @@
-import axios from "axios";
-
-const api = () => {
-  const is_localhost = process.env.REACT_APP_BACKEND_HOST === "localhost";
-  const http = is_localhost ? "http" : "https";
-
-  return axios.create({
-    baseURL: `${http}://${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`,
-    timeout: 50000,
-    headers: {
-      "Content-type": "application/json",
-    },
-  });
-};
+import http from "./http";
 
 export async function signup(accountId, username, email, password) {
   const body = {
@@ -21,7 +8,7 @@ export async function signup(accountId, username, email, password) {
     password: password,
   };
 
-  const response = await api().post("/account/signup/", body);
+  const response = await http().post("/account/signup/", body);
 
   return response.data;
 }
@@ -32,7 +19,7 @@ export async function login(username_or_email, password) {
     password: password,
   };
 
-  const response = await api().post("/account/login/", body);
+  const response = await http().post("/account/login/", body);
 
   return response.data;
 }
@@ -42,7 +29,7 @@ export async function drawFusions(limit) {
 
   params.set("limit", limit);
 
-  const response = await api().get("/fusion/draw?" + params.toString());
+  const response = await http().get("/fusion/draw?" + params.toString());
 
   return response.data;
 }
@@ -59,7 +46,7 @@ export async function getHistory(filters, limit, offset) {
   params.set("limit", limit);
   params.set("offset", offset);
 
-  const response = await api().get("/vote?" + params.toString());
+  const response = await http().get("/vote?" + params.toString());
 
   return { records: response.data, previousOffset: offset };
 }
@@ -70,7 +57,7 @@ export async function addVote(fusionId, voteType) {
     vote_type: voteType,
   };
 
-  const response = await api().post("/vote/", body);
+  const response = await http().post("/vote/", body);
 
   return response.data;
 }

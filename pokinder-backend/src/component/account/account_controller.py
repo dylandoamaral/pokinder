@@ -5,7 +5,7 @@ from litestar import Controller, post
 from litestar.exceptions import NotAuthorizedException, NotFoundException
 
 from src.component.account.account_dependency import AccountDependency
-from src.security.jwt import encode_jwt_token, Subject
+from src.security.jwt import Subject, encode_jwt_token
 from src.utils.exceptions import ConflictException
 
 from .account_model import AccountLogin, AccountSignup
@@ -23,6 +23,11 @@ class AccountController(Controller):
 
         if is_username_exists:
             raise ConflictException(detail="USERNAME_EXISTS")
+
+        is_email_exists = await account_dependency.check_email_exists(data.email)
+
+        if is_email_exists:
+            raise ConflictException(detail="EMAIL_EXISTS")
 
         is_account_id_exists = await account_dependency.check_account_id_exists(data.account_id)
 

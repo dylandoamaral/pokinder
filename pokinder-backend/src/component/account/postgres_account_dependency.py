@@ -42,6 +42,10 @@ class PostgresAccountDependency(AccountDependency):
         query = select(exists().where(Account.username == username))
         return await self.session.scalar(query)
 
+    async def check_email_exists(self, email: str) -> bool:
+        query = select(exists().where(Account.email == email))
+        return await self.session.scalar(query)
+
     async def check_account_id_exists(self, account_id: UUID) -> bool:
         query = select(exists().where(Account.id == account_id))
         return await self.session.scalar(query)
