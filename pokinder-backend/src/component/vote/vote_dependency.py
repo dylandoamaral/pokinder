@@ -4,7 +4,6 @@ from uuid import UUID
 from litestar.contrib.repository import FilterTypes
 
 from src.component.vote.vote_model import VoteAdd
-
 from src.component.vote.vote_table import Vote, VoteType
 
 

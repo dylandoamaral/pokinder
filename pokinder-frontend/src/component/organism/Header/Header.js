@@ -42,8 +42,8 @@ function Header() {
         </div>
         <div className={`${styles.center} pc_only`}>
           <nav className={styles.nav}>
-            {navlinks.map((link) => (
-              <NavLink link={link} />
+            {navlinks.map((link, index) => (
+              <NavLink link={link} key={index} />
             ))}
           </nav>
         </div>

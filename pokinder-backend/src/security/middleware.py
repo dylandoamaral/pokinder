@@ -8,7 +8,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.component.account import Account
-from src.security.jwt import decode_jwt_token, Subject
+from src.security.jwt import Subject, decode_jwt_token
 from src.utils.uuid import is_uuid
 
 API_KEY_HEADER = "X-API-KEY"
