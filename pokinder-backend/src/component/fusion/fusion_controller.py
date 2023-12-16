@@ -1,6 +1,6 @@
 from litestar import Controller, get
-from src.security import Request
 
+from src.security import Request
 from src.utils.collection import arreyfy
 
 from .fusion_dependency import FusionDependency

@@ -17,5 +17,8 @@ class AccountDependency(Protocol):
     async def check_username_exists(self, username: str) -> bool:
         pass
 
+    async def check_email_exists(self, email: str) -> bool:
+        pass
+
     async def check_account_id_exists(self, account_id: UUID) -> bool:
         pass

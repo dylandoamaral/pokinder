@@ -18,7 +18,7 @@ function Sidebar({ isVisible, onClose, toggleLoginModal }) {
     toggleLoginModal();
   }
 
-  function renderNavLink(link) {
+  function renderNavLink(link, index) {
     return (
       <NavLink
         to={link.path}
@@ -27,6 +27,7 @@ function Sidebar({ isVisible, onClose, toggleLoginModal }) {
             ? `${styles.navlink} ${styles.navlink_active}`
             : `${styles.navlink}`
         }
+        key={index}
       >
         {link.title}
       </NavLink>
@@ -55,7 +56,7 @@ function Sidebar({ isVisible, onClose, toggleLoginModal }) {
       <FaTimes className={styles.close} onClick={onClose} />
       <nav className={styles.nav}>
         <div className={styles.navlinks}>
-          {navlinks.map((link) => renderNavLink(link))}
+          {navlinks.map((link, index) => renderNavLink(link, index))}
         </div>
         {renderAccount()}
       </nav>

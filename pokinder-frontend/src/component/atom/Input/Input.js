@@ -26,6 +26,8 @@ function Input({
   const inputType = type === InputType.Text ? "text" : "password";
 
   function retrieveUnresolvedValidator(input) {
+    if (input === undefined) return undefined;
+
     for (const validator of validators) {
       if (!validator.isValid(input)) {
         return validator;

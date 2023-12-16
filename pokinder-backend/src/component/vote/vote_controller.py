@@ -1,8 +1,8 @@
 from uuid import UUID
 
 from litestar import Controller, get, post, put
-from src.component.vote.vote_model import VoteAdd
 
+from src.component.vote.vote_model import VoteAdd
 from src.security import Request
 
 from .vote_dependency import VoteDependency
