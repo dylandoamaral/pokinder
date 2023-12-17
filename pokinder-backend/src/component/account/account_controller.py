@@ -5,7 +5,14 @@ from litestar import Controller, post
 from litestar.exceptions import NotAuthorizedException, NotFoundException
 
 from src.component.account.account_dependency import AccountDependency
-from src.security.jwt import Subject, encode_jwt_token
+from src.security.jwt import (
+    DEFAULT_REFRESH_TIME_DELTA,
+    Subject,
+    EncodedTokens,
+    TokenType,
+    decode_jwt_token,
+    encode_jwt_token,
+)
 from src.utils.exceptions import ConflictException
 
 from .account_model import AccountLogin, AccountSignup
@@ -37,7 +44,7 @@ class AccountController(Controller):
         hashed_password = hashpw(data.password.encode("utf-8"), gensalt())
         await account_dependency.signup(data, hashed_password)
 
-        return encode_jwt_token(Subject(account_id=data.account_id, username=data.username))
+        return self.generateTokens(Subject(account_id=data.account_id, username=data.username))
 
     @post(path="/login", dto=None)
     async def login(self, account_dependency: AccountDependency, data: AccountLogin) -> UUID:
@@ -50,4 +57,19 @@ class AccountController(Controller):
             # We don't want the "hacker" to know if the name exists or not.
             raise NotFoundException()
 
-        return encode_jwt_token(Subject(account_id=account.id, username=account.username))
+        return self.generateTokens(Subject(account_id=account.id, username=account.username))
+
+    @post(path="/refresh", dto=None)
+    async def refresh(self, refresh_token: str) -> UUID:
+        token = decode_jwt_token(refresh_token)
+
+        if token.typ is not TokenType.REFRESH:
+            raise ConflictException(detail="WRONG_TOKEN_TYPE")
+
+        return self.generateTokens(token.sub)
+
+    def generateTokens(self, subject: Subject) -> EncodedTokens:
+        return EncodedTokens(
+            token=encode_jwt_token(subject, TokenType.ACCESS),
+            refresh=encode_jwt_token(subject, TokenType.REFRESH, expiration=DEFAULT_REFRESH_TIME_DELTA),
+        )

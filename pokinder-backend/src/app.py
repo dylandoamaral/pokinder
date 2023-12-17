@@ -39,5 +39,9 @@ app = Litestar(
     openapi_config=OpenAPIConfig(title="Pokinder", version=retrieve_version()),
     cors_config=CORSConfig(allow_origins=[retrieve_frontend_endpoint()]),
     plugins=[SQLAlchemyInitPlugin(config=sqlalchemy_config)],
-    middleware=[DefineMiddleware(JWTAuthenticationMiddleware, exclude=["schema", "account/login", "account/signup"])],
+    middleware=[
+        DefineMiddleware(
+            JWTAuthenticationMiddleware, exclude=["schema", "account/login", "account/signup", "account/refresh"]
+        )
+    ],
 )
