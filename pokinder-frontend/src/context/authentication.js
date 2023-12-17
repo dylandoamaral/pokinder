@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useMemo } from "react";
-import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { jwtDecode } from "jwt-decode";
+import http from "../api/http";
 
 export const AuthenticationContext = createContext();
 
@@ -35,17 +35,32 @@ export const AuthenticationProvider = ({ children }) => {
     }
   }
 
+  function retrieveRefreshToken() {
+    const token = localStorage.getItem(refreshTokenKey);
+
+    if (token === null || token === "none") {
+      return "none";
+    } else {
+      return token;
+    }
+  }
+
   const tokenKey = "pokinderToken";
+  const refreshTokenKey = "pokinderRefreshToken";
 
   // State to hold the authentication token
   const [token, storeToken] = useState(retrieveToken());
-  axios.defaults.headers.common["X-API-KEY"] = token;
+  const [refreshToken, storeRefreshToken] = useState(retrieveRefreshToken());
+
+  http.instance.defaults.headers.common["X-API-KEY"] = token;
   localStorage.setItem(tokenKey, token);
+  localStorage.setItem(refreshTokenKey, refreshToken);
 
   useEffect(() => {
-    axios.defaults.headers.common["X-API-KEY"] = token;
+    http.instance.defaults.headers.common["X-API-KEY"] = token;
     localStorage.setItem(tokenKey, token);
-  }, [token]);
+    localStorage.setItem(refreshTokenKey, refreshToken);
+  }, [token, refreshToken]);
 
   // Memoized value of the authentication context
   const contextValue = useMemo(() => {
@@ -61,25 +76,29 @@ export const AuthenticationProvider = ({ children }) => {
     }
 
     function disconnect() {
-      setToken(uuidv4());
+      if (!isUUIDv4(token)) {
+        setToken(uuidv4());
+        storeRefreshToken("none");
+      }
     }
 
     function setToken(token) {
       storeToken(token);
-      window.location.reload();
     }
 
     const subject = retrieveSubject(token);
 
     return {
       token: token,
+      refreshToken: refreshToken,
       accountId: subject.account_id,
       username: subject.username,
       isUser: subject.username !== undefined,
       setToken: setToken,
+      setRefreshToken: storeRefreshToken,
       disconnect: disconnect,
     };
-  }, [token]);
+  }, [token, refreshToken]);
 
   // Provide the authentication context to the children components
   return (

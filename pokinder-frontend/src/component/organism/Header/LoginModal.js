@@ -9,7 +9,7 @@ import { useMutation } from "react-query";
 import { useAuthentication } from "../../../hook/useAuthentication";
 
 function LoginModal({ isVisible, onClose, openSignup }) {
-  const { setToken } = useAuthentication();
+  const { setToken, setRefreshToken } = useAuthentication();
 
   const [usernameOrEmail, setUsernameOrEmail] = useState(undefined);
   const [password, setPassword] = useState(undefined);
@@ -17,8 +17,9 @@ function LoginModal({ isVisible, onClose, openSignup }) {
   const isFormValid = usernameOrEmail !== undefined && password !== undefined;
 
   const { mutate: submit } = useMutation(async () => {
-    const token = await login(usernameOrEmail, password);
-    setToken(token);
+    const tokens = await login(usernameOrEmail, password);
+    setToken(tokens.token);
+    setRefreshToken(tokens.refresh);
     onClose();
   });
 

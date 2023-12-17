@@ -10,8 +10,11 @@ import PokedexVote from "./PokedexVote";
 import { allPokemonNames } from "../../utils/pokemon";
 import Button from "../../component/atom/Button/Button";
 import { queryClient } from "../..";
+import { useAuthentication } from "../../hook/useAuthentication";
 
 function Pokedex() {
+  const { token } = useAuthentication();
+
   const POKEMON_PER_PAGES = 50;
 
   const specialOptions = [
@@ -65,7 +68,7 @@ function Pokedex() {
       pageParams: data.pageParams.slice(0, 1),
     }));
     refetch();
-  }, [filters, refetch]);
+  }, [token, filters, refetch]);
 
   const drawVotes = () => {
     const pages = data?.pages.map((page) => page.records) || [];

@@ -9,7 +9,7 @@ import { signup } from "../../../api/pokinder";
 import { useMutation } from "react-query";
 
 function SignupModal({ isVisible, onClose, openLogin }) {
-  const { accountId, setToken } = useAuthentication();
+  const { accountId, setToken, setRefreshToken } = useAuthentication();
 
   const [isUsernameValid, setIsUsernameValid] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
@@ -27,8 +27,9 @@ function SignupModal({ isVisible, onClose, openLogin }) {
     isConfirmPasswordValid;
 
   const { mutate: submit } = useMutation(async () => {
-    const token = await signup(accountId, username, email, password);
-    setToken(token);
+    const tokens = await signup(accountId, username, email, password);
+    setToken(tokens.token);
+    setRefreshToken(tokens.refresh);
     onClose();
   });
 

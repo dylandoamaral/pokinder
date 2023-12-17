@@ -8,7 +8,7 @@ export async function signup(accountId, username, email, password) {
     password: password,
   };
 
-  const response = await http().post("/account/signup/", body);
+  const response = await http.post("/account/signup/", body);
 
   return response.data;
 }
@@ -19,7 +19,17 @@ export async function login(username_or_email, password) {
     password: password,
   };
 
-  const response = await http().post("/account/login/", body);
+  const response = await http.post("/account/login/", body);
+
+  return response.data;
+}
+
+export async function refresh(refreshToken) {
+  const params = new URLSearchParams();
+
+  params.set("refresh_token", refreshToken);
+
+  const response = await http.post("/account/refresh?" + params.toString());
 
   return response.data;
 }
@@ -29,7 +39,7 @@ export async function drawFusions(limit) {
 
   params.set("limit", limit);
 
-  const response = await http().get("/fusion/draw?" + params.toString());
+  const response = await http.get("/fusion/draw?" + params.toString());
 
   return response.data;
 }
@@ -46,7 +56,7 @@ export async function getHistory(filters, limit, offset) {
   params.set("limit", limit);
   params.set("offset", offset);
 
-  const response = await http().get("/vote?" + params.toString());
+  const response = await http.get("/vote?" + params.toString());
 
   return { records: response.data, previousOffset: offset };
 }
@@ -57,7 +67,7 @@ export async function addVote(fusionId, voteType) {
     vote_type: voteType,
   };
 
-  const response = await http().post("/vote/", body);
+  const response = await http.post("/vote/", body);
 
   return response.data;
 }
