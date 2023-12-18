@@ -1,7 +1,7 @@
 .container {
   background-color: white;
   width: 200px;
-  height: calc(100% - 28px);
+  height: calc(100svh - 28px);
   position: fixed;
   top: 0;
   right: -100%;
