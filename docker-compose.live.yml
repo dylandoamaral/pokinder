@@ -29,6 +29,7 @@ services:
       POSTGRES_HOST: ${POSTGRES_HOST}
       FRONTEND_HOST: ${FRONTEND_HOST}
       VERSION: ${VERSION}
+      JWT_SECRET: ${JWT_SECRET}
     build:
       context: ./pokinder-backend
       args:
