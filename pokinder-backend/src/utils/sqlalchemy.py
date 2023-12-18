@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any, ClassVar
 from uuid import UUID, uuid4
 
 from litestar.contrib.sqlalchemy.types import GUID, DateTimeUTC, JsonB
-from pydantic import AnyHttpUrl, AnyUrl, BaseModel, EmailStr
+from pydantic import AnyHttpUrl, AnyUrl, EmailStr
 from sqlalchemy import Date, MetaData, String
 from sqlalchemy.orm import (
     DeclarativeBase,
@@ -72,6 +72,15 @@ def create_registry() -> registry:
             date: Date,
         },
     )
+
+
+def model_to_dict(model: BaseTable) -> dict:
+    dictionnary = model.__dict__
+    dictionnary.pop("_sa_instance_state", None)
+    for key, value in dictionnary.items():
+        if isinstance(value, BaseTable):
+            dictionnary[key] = model_to_dict(value)
+    return dictionnary
 
 
 orm_registry = create_registry()
