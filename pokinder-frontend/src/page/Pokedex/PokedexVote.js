@@ -3,6 +3,7 @@ import IconDislike from "../../component/atom/icon/IconDislike";
 import IconStar from "../../component/atom/icon/IconStar";
 import Sprite from "../../component/atom/Sprite/Sprite";
 import { addVote } from "../../api/pokinder";
+import moment from "moment";
 
 import styles from "./PokedexVote.module.css";
 import { useState } from "react";
@@ -25,11 +26,11 @@ function PokedexVote({ vote }) {
     if (voteType === 0)
       return (
         <div className={styles.buttonContainer}>
-          <IconDislike
+          <div
             className={styles.buttonDisable}
             onClick={() => setCurrentVoteType(1)}
           />
-          <IconStar
+          <div
             className={styles.buttonDisable}
             onClick={() => setCurrentVoteType(2)}
           />
@@ -40,11 +41,11 @@ function PokedexVote({ vote }) {
       return (
         <div className={styles.buttonContainer}>
           <IconDislike className={styles.buttonDislike} />
-          <IconStar
+          <div
             className={styles.buttonDisable}
             onClick={() => setCurrentVoteType(2)}
           />
-          <IconLike
+          <div
             className={styles.buttonDisable}
             onClick={() => setCurrentVoteType(0)}
           />
@@ -53,12 +54,12 @@ function PokedexVote({ vote }) {
     else
       return (
         <div className={styles.buttonContainer}>
-          <IconDislike
+          <div
             className={styles.buttonDisable}
             onClick={() => setCurrentVoteType(1)}
           />
           <IconStar className={styles.buttonFavorite} />
-          <IconLike
+          <div
             className={styles.buttonDisable}
             onClick={() => setCurrentVoteType(0)}
           />
@@ -81,7 +82,12 @@ function PokedexVote({ vote }) {
           type="fusion"
         />
       </a>
-      {drawVoteType(currentVoteType)}
+      <div className={styles.panel}>
+        {drawVoteType(currentVoteType)}
+        <span className={styles.moment}>
+          Vote {moment(vote.created_at).fromNow()}
+        </span>
+      </div>
     </div>
   );
 }
