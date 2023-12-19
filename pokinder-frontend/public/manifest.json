@@ -16,5 +16,6 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "description": "A website to rank pokemon fusion sprite based on users based on pokemon infinite fusion game."
 }
