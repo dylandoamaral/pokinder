@@ -4,6 +4,7 @@ import IconStar from "../../component/atom/icon/IconStar";
 import Sprite from "../../component/atom/Sprite/Sprite";
 import { addVote } from "../../api/pokinder";
 import moment from "moment";
+import { getDaenaLink } from "../../utils/website";
 
 import styles from "./PokedexVote.module.css";
 import { useState } from "react";
@@ -71,7 +72,7 @@ function PokedexVote({ vote }) {
     <div className={styles.container} key={vote.fusion.path}>
       <a
         className={styles.link}
-        href={`https://if.daena.me/${vote.fusion.path}/`}
+        href={getDaenaLink(vote.fusion.path)}
         target="_blank"
         rel="noopener noreferrer"
       >
