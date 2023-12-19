@@ -6,8 +6,8 @@
 
 .container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 150px);
-  grid-gap: 60px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, max-content));
+  grid-gap: 20px;
   justify-content: space-between;
 }
 
@@ -19,9 +19,10 @@
   margin: 30px;
 }
 
-@media (max-width: 400px) {
+@media (max-width: 500px) {
   .container {
     display: flex;
     flex-direction: column;
+    gap: 30px;
   }
 }
