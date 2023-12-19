@@ -1,6 +1,7 @@
 import styles from "./RankingCard.module.css";
 import Sprite from "../../component/atom/Sprite/Sprite";
 import { getName } from "../../utils/pokemon";
+import { getDaenaLink } from "../../utils/website";
 
 function RankingCard({ ranking }) {
   function getIndicator(rank) {
@@ -46,7 +47,7 @@ function RankingCard({ ranking }) {
 
   return (
     <a
-      href={`https://if.daena.me/${ranking.fusion.path}/`}
+      href={getDaenaLink(ranking.fusion.path)}
       target="_blank"
       rel="noopener noreferrer"
     >
