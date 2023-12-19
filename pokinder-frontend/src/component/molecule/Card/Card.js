@@ -38,7 +38,6 @@ const Card = forwardRef(function Card(
 
   const validateSwipe = (direction) => {
     if (direction == null) return;
-    console.log(direction);
 
     isGone.current = true;
     swipeDirection.current = direction;

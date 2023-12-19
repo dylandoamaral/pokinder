@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import Vote from "./page/Vote/Vote";
 import Pokedex from "./page/Pokedex/Pokedex";
+import Ranking from "./page/Ranking/Ranking";
 import NotFound from "./page/NotFound/NotFound";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -21,6 +22,7 @@ export const TestContext = createContext("test");
 const router = createBrowserRouter([
   { path: "/", element: <Vote /> },
   { path: "/history", element: <Pokedex /> },
+  { path: "/ranking", element: <Ranking /> },
   { path: "*", element: <NotFound /> },
 ]);
 

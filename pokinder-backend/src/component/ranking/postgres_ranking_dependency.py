@@ -72,6 +72,8 @@ class PostgresRankingDependency(RankingDependency):
                 joinedload(Fusion.head),
                 joinedload(Fusion.body),
             )
+            .join(Head, Fusion.head_id == Head.id)
+            .join(Body, Fusion.body_id == Body.id)
             .order_by(rankings.c.rank)
         )
 

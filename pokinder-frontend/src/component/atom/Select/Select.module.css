@@ -1,3 +1,7 @@
 .container {
   width: 250px;
 }
+
+.container:hover {
+  cursor: pointer;
+}
