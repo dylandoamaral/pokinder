@@ -4,8 +4,6 @@ from uuid import UUID
 from sqlalchemy import exists, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.security.jwt import encode_jwt_token
-
 from .account_dependency import AccountDependency
 from .account_model import AccountLogin, AccountSignup
 from .account_table import Account

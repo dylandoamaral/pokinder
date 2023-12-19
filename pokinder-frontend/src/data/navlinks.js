@@ -7,4 +7,8 @@ export const navlinks = [
     title: "History",
     path: "/history",
   },
+  {
+    title: "Ranking",
+    path: "/ranking",
+  },
 ];

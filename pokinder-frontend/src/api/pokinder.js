@@ -61,6 +61,19 @@ export async function getHistory(filters, limit, offset) {
   return { records: response.data, previousOffset: offset };
 }
 
+export async function getRanking(filters, limit, offset) {
+  const params = new URLSearchParams();
+
+  params.set("head_name_or_category", filters.headNameOrCategory);
+  params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("limit", limit);
+  params.set("offset", offset);
+
+  const response = await http.get("/ranking?" + params.toString());
+
+  return { records: response.data, previousOffset: offset };
+}
+
 export async function addVote(fusionId, voteType) {
   const body = {
     fusion_id: fusionId,
