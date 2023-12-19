@@ -10,7 +10,6 @@ function AxiosErrorHandler({ children }) {
     useAuthentication();
 
   useEffect(() => {
-    console.log(refreshToken);
     const interceptor = http.instance.interceptors.response.use(
       null,
       async (error) => {

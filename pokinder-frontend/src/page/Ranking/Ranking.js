@@ -1,38 +1,31 @@
+import styles from "./Ranking.module.css";
 import { useState } from "react";
-import { getHistory } from "../../api/pokinder";
-import { useInfiniteQuery } from "react-query";
-import { useAfterEffect } from "../../hook/useAfterEffect";
-
+import { getRanking } from "../../api/pokinder";
 import Page from "../../component/organism/Page/Page";
-import styles from "./Pokedex.module.css";
-import PokedexFilter from "./PokedexFilter";
-import PokedexVote from "./PokedexVote";
+import { useInfiniteQuery } from "react-query";
 import Button from "../../component/atom/Button/Button";
+import RankingCard from "./RankingCard";
+import { useAfterEffect } from "../../hook/useAfterEffect";
 import { queryClient } from "../..";
-import { useAuthentication } from "../../hook/useAuthentication";
+import RankingFilter from "./RankingFilter";
 import { groupeOptions } from "../../data/options";
 
-function Pokedex() {
-  const { token } = useAuthentication();
-
-  const POKEMON_PER_PAGES = 50;
+function Ranking() {
+  const POKEMON_PER_PAGES = 20;
 
   const initFilters = {
     headNameOrCategory: "All",
     bodyNameOrCategory: "All",
-    downvoteEnabled: true,
-    favoriteEnabled: true,
-    upvoteEnabled: true,
   };
 
   const [filters, setFilters] = useState(initFilters);
 
   const { data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteQuery({
-      queryKey: ["history"],
+      queryKey: ["ranking"],
       queryFn: ({ pageParam }) => {
         const offset = pageParam || 0;
-        return getHistory(filters, POKEMON_PER_PAGES, offset);
+        return getRanking(filters, POKEMON_PER_PAGES, offset);
       },
       getNextPageParam: (lastPage) => {
         if (lastPage.records.length < POKEMON_PER_PAGES) return false;
@@ -41,31 +34,31 @@ function Pokedex() {
     });
 
   useAfterEffect(() => {
-    queryClient.setQueryData(["history"], (data) => ({
+    queryClient.setQueryData(["ranking"], (data) => ({
       pages: data.pages.slice(0, 1),
       pageParams: data.pageParams.slice(0, 1),
     }));
     refetch();
-  }, [token, filters, refetch]);
+  }, [filters, refetch]);
 
-  const drawVotes = () => {
+  const drawRankings = () => {
     const pages = data?.pages.map((page) => page.records) || [];
-    const votes = pages.flat();
+    const rankings = pages.flat();
 
-    return votes.map((vote) => (
-      <PokedexVote vote={vote} key={vote.fusion.id} />
+    return rankings.map((ranking) => (
+      <RankingCard ranking={ranking} key={ranking.fusion.id} />
     ));
   };
 
   return (
     <Page>
       <div className={styles.wrapper}>
-        <PokedexFilter
+        <RankingFilter
           pokemonOptions={groupeOptions}
           filters={filters}
           onChange={setFilters}
         />
-        <div className={styles.container}>{drawVotes()}</div>
+        <div className={styles.container}>{drawRankings()}</div>
         <div className={styles.button}>
           <Button
             onClick={() => fetchNextPage()}
@@ -84,4 +77,4 @@ function Pokedex() {
   );
 }
 
-export default Pokedex;
+export default Ranking;
