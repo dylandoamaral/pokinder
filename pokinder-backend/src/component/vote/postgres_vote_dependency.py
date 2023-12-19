@@ -2,7 +2,7 @@ from uuid import UUID
 
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import aliased
+from sqlalchemy.orm import aliased, joinedload
 
 from src.component.family.family_table import Family
 from src.component.fusion.fusion_table import Fusion
