@@ -1,8 +1,6 @@
 from typing import Protocol, runtime_checkable
 from uuid import UUID
 
-from litestar.contrib.repository import FilterTypes
-
 from src.component.vote.vote_model import VoteAdd
 from src.component.vote.vote_table import Vote, VoteType
 
