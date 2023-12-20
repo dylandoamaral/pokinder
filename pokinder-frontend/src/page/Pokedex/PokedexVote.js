@@ -7,12 +7,12 @@ import moment from "moment";
 import { getDaenaLink } from "../../utils/website";
 
 import styles from "./PokedexVote.module.css";
-import { useState } from "react";
+import { useState, memo } from "react";
 import { useMutation } from "react-query";
 
 import { useAfterEffect } from "../../hook/useAfterEffect";
 
-function PokedexVote({ vote }) {
+const PokedexVote = memo(function PokedexVote({ vote }) {
   const [currentVoteType, setCurrentVoteType] = useState(vote.vote_type);
 
   const { mutate } = useMutation(async () => {
@@ -91,6 +91,6 @@ function PokedexVote({ vote }) {
       </div>
     </div>
   );
-}
+});
 
 export default PokedexVote;
