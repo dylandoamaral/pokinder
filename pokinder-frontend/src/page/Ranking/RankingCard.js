@@ -82,6 +82,7 @@ function RankingCard({ ranking }) {
           path={ranking.fusion.path}
           size={144}
           type="fusion"
+          alt={`Fusion sprite from ${ranking.fusion.body.name} and ${ranking.fusion.head.name}`}
         />
       </div>
     </a>

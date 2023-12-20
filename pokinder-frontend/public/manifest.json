@@ -1,6 +1,6 @@
 {
   "short_name": "Pokinder",
-  "name": "Pokinder",
+  "name": "Pokinder - Pokemon Infinite Fusion sprite ranking system",
   "icons": [
     {
       "src": "favicon.ico",
@@ -14,8 +14,8 @@
     }
   ],
   "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff",
-  "description": "A website to rank pokemon fusion sprite based on users based on pokemon infinite fusion game."
+  "display": "fullscreen",
+  "theme_color": "#171717",
+  "background_color": "#e8eaec",
+  "description": "Rank Pokémon Infinite Fusion sprites based on your preferences and explore the community's favorite sprites."
 }
