@@ -2,8 +2,9 @@ import styles from "./RankingCard.module.css";
 import Sprite from "../../component/atom/Sprite/Sprite";
 import { getName } from "../../utils/pokemon";
 import { getDaenaLink } from "../../utils/website";
+import { memo } from "react";
 
-function RankingCard({ ranking }) {
+const RankingCard = memo(function RankingCard({ ranking }) {
   function getIndicator(rank) {
     switch (rank) {
       case 1:
@@ -87,6 +88,6 @@ function RankingCard({ ranking }) {
       </div>
     </a>
   );
-}
+});
 
 export default RankingCard;
