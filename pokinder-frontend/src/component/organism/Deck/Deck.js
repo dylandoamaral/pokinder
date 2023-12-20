@@ -9,9 +9,9 @@ import useEventListener from "../../../hook/useEventListener";
 
 function Deck() {
   // Number of card in the deck before trigerring a new fetch.
-  const THRESHOLD_FETCH_NEW_FUSIONS = 40;
+  const THRESHOLD_FETCH_NEW_FUSIONS = 10;
   // Number of card fetch per refresh.
-  const AMOUNT_FETCH_NEW_FUSIONS = 50;
+  const AMOUNT_FETCH_NEW_FUSIONS = 30;
 
   const children = useRef([]);
 
