@@ -1,6 +1,6 @@
 import Picture from "../Picture/Picture";
 
-function Sprite({ className, path, type, size }) {
+function Sprite({ className, path, type, size, alt }) {
   const src =
     type === "fusion"
       ? "./packs/2023-07/fusions/" + path + ".png"
@@ -12,7 +12,7 @@ function Sprite({ className, path, type, size }) {
       src={src}
       width={size}
       height={size}
-      alt="sprite"
+      alt={alt || "Fusion sprite"}
     />
   );
 }

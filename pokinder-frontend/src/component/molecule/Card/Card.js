@@ -170,6 +170,7 @@ const Card = forwardRef(function Card(
         path={fusion.path}
         size={260}
         key={index}
+        alt={`Fusion sprite from ${fusion.body.name} and ${fusion.head.name}`}
       />
       <div>
         <div className={styles.header}>
@@ -202,6 +203,7 @@ const Card = forwardRef(function Card(
               path={fusion.body.pokedex_id}
               size={100}
               key={index}
+              alt={`Pokemon sprite of ${fusion.body.name}`}
             />
           </div>
           <div className={styles.parent}>
@@ -212,6 +214,7 @@ const Card = forwardRef(function Card(
               path={fusion.head.pokedex_id}
               size={100}
               key={index}
+              alt={`Pokemon sprite of ${fusion.head.name}`}
             />
           </div>
         </div>
