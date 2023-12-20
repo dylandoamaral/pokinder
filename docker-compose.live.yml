@@ -21,6 +21,35 @@ services:
       retries: 10
       start_period: 3s
 
+  minio:
+    container_name: pokinder-minio
+    image: "minio/minio:latest"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
+    volumes:
+      - "pokinder-minio:/data/minio"
+    command: 'minio server /data/minio --console-address ":8900"'
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - "-f"
+        - "${MINIO_HOST}:9000/minio/health/live"
+      retries: 3
+      timeout: 5s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=heart"
+      - "traefik.http.routers.pokinder-minio-api.rule=Host(`api.minio.pokinder.com`)"
+      - "traefik.http.routers.pokinder-minio-api.entrypoints=websecure"
+      - "traefik.http.routers.pokinder-minio-api.tls.certresolver=myresolver"
+      - "traefik.http.services.pokinder-minio-api.loadbalancer.server.port=9000"
+      - "traefik.http.routers.pokinder-minio.rule=Host(`minio.pokinder.com`)"
+      - "traefik.http.routers.pokinder-minio.entrypoints=websecure"
+      - "traefik.http.routers.pokinder-minio.tls.certresolver=myresolver"
+      - "traefik.http.services.pokinder-minio.loadbalancer.server.port=8900"
+
   backend:
     container_name: pokinder-backend
     environment:
@@ -57,6 +86,7 @@ services:
         REACT_APP_BACKEND_PORT: ${BACKEND_PORT}
         REACT_APP_BACKEND_HOST: ${BACKEND_HOST}
         REACT_APP_VERSION: ${VERSION}
+        REACT_APP_MINIO_HOST: ${MINIO_HOST}
     image: pokinder-frontend:${VERSION}
     networks:
       - default
@@ -72,6 +102,8 @@ services:
 volumes:
   pokinder-postgres:
     name: pokinder-postgres
+  pokinder-minio:
+    name: pokinder-minio
 
 networks:
   pokinder-network:

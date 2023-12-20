@@ -19,6 +19,29 @@ services:
       retries: 10
       start_period: 3s
 
+  minio:
+    container_name: pokinder-minio
+    image: "minio/minio:latest"
+    ports:
+      - "9000:9000"
+      - "8900:8900"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
+    volumes:
+      - "pokinder-minio:/data/minio"
+    command: 'minio server /data/minio --console-address ":8900"'
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - "-f"
+        - "http://${MINIO_HOST}:9000/minio/health/live"
+      retries: 3
+      timeout: 5s
+
 volumes:
   pokinder-postgres:
     name: pokinder-postgres
+  pokinder-minio:
+    name: pokinder-minio

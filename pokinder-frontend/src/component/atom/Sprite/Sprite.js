@@ -1,10 +1,14 @@
 import Picture from "../Picture/Picture";
 
 function Sprite({ className, path, type, size, alt }) {
-  const src =
-    type === "fusion"
-      ? "./packs/2023-07/fusions/" + path + ".png"
-      : "./packs/2023-07/pokemons/" + path + ".png";
+  function getSrc() {
+    const category = type === "fusion" ? "fusions" : "pokemons";
+    const quality = size <= 144 ? "-144px" : "";
+
+    return `${process.env.REACT_APP_MINIO_HOST}:9000/${category}/${path}${quality}.webp`;
+  }
+
+  const src = getSrc();
 
   return (
     <Picture
