@@ -58,7 +58,7 @@ function Pokedex() {
   };
 
   return (
-    <Page>
+    <Page name="Vote history">
       <div className={styles.wrapper}>
         <PokedexFilter
           pokemonOptions={groupeOptions}

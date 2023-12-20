@@ -51,7 +51,10 @@ function Ranking() {
   };
 
   return (
-    <Page>
+    <Page
+      name="Community ranking"
+      description="Discover the Most Beloved Pokémon Infinite Fusion Sprites Voted by the Community."
+    >
       <div className={styles.wrapper}>
         <RankingFilter
           pokemonOptions={groupeOptions}
