@@ -1,10 +1,15 @@
 import Picture from "../Picture/Picture";
 
 function Sprite({ className, path, type, size, alt }) {
-  const src =
-    type === "fusion"
-      ? "./packs/2023-07/fusions/" + path + ".png"
-      : "./packs/2023-07/pokemons/" + path + ".png";
+  function getSrc() {
+    const http =
+      parseInt(process.env.REACT_APP_MINIO_PORT) === 443 ? "https" : "http";
+    const category = type === "fusion" ? "fusions" : "pokemons";
+
+    return `${http}://${process.env.REACT_APP_MINIO_HOST}:${process.env.REACT_APP_MINIO_PORT}/${category}/${path}.webp`;
+  }
+
+  const src = getSrc();
 
   return (
     <Picture
