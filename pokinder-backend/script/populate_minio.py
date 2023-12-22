@@ -18,8 +18,9 @@ writer_secret_key = get_env_named_("MINIO_WRITER_SECRET_KEY")
 host = get_env_named_("MINIO_HOST")
 port = get_env_named_("MINIO_PORT")
 
-secure = True if int(port) == 443 else False 
+secure = True if int(port) == 443 else False
 client = Minio(f"{host}:{port}", access_key=writer_access_key, secret_key=writer_secret_key, secure=secure)
+
 
 def is_object_exists(bucket_name, object_name):
     try:
@@ -27,6 +28,7 @@ def is_object_exists(bucket_name, object_name):
         return stat is not None
     except Exception as e:
         return False
+
 
 def import_sprites(bucket_name, source_path, condition):
     start_time = time.time()
