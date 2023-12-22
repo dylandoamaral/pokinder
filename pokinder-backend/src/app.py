@@ -11,6 +11,7 @@ from litestar.contrib.sqlalchemy.plugins import (
 )
 from litestar.di import Provide
 from litestar.middleware.base import DefineMiddleware
+from litestar.config.compression import CompressionConfig
 from litestar.openapi import OpenAPIConfig
 
 from src.component.account import AccountController, use_postgres_account_dependency
@@ -42,6 +43,7 @@ app = Litestar(
     openapi_config=OpenAPIConfig(title="Pokinder", version=retrieve_version()),
     cors_config=CORSConfig(allow_origins=[retrieve_frontend_endpoint()]),
     plugins=[SQLAlchemyInitPlugin(config=sqlalchemy_config)],
+    compression_config=CompressionConfig(backend="gzip", gzip_compress_level=9),
     middleware=[
         DefineMiddleware(
             JWTAuthenticationMiddleware, exclude=["schema", "account/login", "account/signup", "account/refresh"]
