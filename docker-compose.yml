@@ -36,7 +36,7 @@ services:
         - CMD
         - curl
         - "-f"
-        - "http://${MINIO_HOST}:9000/minio/health/live"
+        - "http://${MINIO_HOST}:${MINIO_PORT}/minio/health/live"
       retries: 3
       timeout: 5s
 

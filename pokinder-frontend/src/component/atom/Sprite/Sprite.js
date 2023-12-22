@@ -5,7 +5,7 @@ function Sprite({ className, path, type, size, alt }) {
     const category = type === "fusion" ? "fusions" : "pokemons";
     const quality = size <= 144 ? "-144px" : "";
 
-    return `${process.env.REACT_APP_MINIO_HOST}:9000/${category}/${path}${quality}.webp`;
+    return `${process.env.REACT_APP_MINIO_HOST}:${process.env.REACT_APP_MINIO_PORT}/${category}/${path}${quality}.webp`;
   }
 
   const src = getSrc();
