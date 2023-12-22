@@ -42,7 +42,7 @@ function Pokedex() {
 
   useAfterEffect(() => {
     queryClient.setQueryData(["history"], (data) => ({
-      pages: data.pages.slice(0, 1),
+      pages: data?.pages.slice(0, 1) || [],
       pageParams: data.pageParams.slice(0, 1),
     }));
     refetch();

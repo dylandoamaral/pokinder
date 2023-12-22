@@ -30,17 +30,17 @@ const RankingCard = memo(function RankingCard({ ranking }) {
 
     switch (length) {
       case 1:
-        return { "font-size": "20px" };
+        return { fontSize: "20px" };
       case 2:
-        return { "font-size": "18px" };
+        return { fontSize: "18px" };
       case 3:
-        return { "font-size": "14px" };
+        return { fontSize: "14px" };
       default:
         let fontSize = 14 - (length - 3) * 2;
         if (fontSize < 7) {
           fontSize = 7;
         }
-        return { "font-size": `${fontSize}px` };
+        return { fontSize: `${fontSize}px` };
     }
   }
 
