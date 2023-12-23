@@ -1,5 +1,6 @@
 .container {
   width: 250px;
+  height: 38px;
 }
 
 .container:hover {
