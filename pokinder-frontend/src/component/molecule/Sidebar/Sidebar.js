@@ -4,8 +4,10 @@ import { navlinks } from "../../../data/navlinks";
 import { NavLink } from "react-router-dom";
 import Button from "../../atom/Button/Button";
 import { useAuthentication } from "../../../hook/useAuthentication";
+import { useTranslation } from "react-i18next";
 
 function Sidebar({ isVisible, onClose, toggleLoginModal }) {
+  const { t } = useTranslation();
   const { isUser, username, disconnect } = useAuthentication();
 
   function disconnectAndClose() {
@@ -38,12 +40,12 @@ function Sidebar({ isVisible, onClose, toggleLoginModal }) {
     if (isUser) {
       return (
         <div className={styles.profile}>
-          <span>Connected as {username}</span>
-          <Button title="Sign out" onClick={disconnectAndClose} />
+          <span>{t("Connected as", { username: username })}</span>
+          <Button title={t("Sign Out")} onClick={disconnectAndClose} />
         </div>
       );
     } else {
-      return <Button title="Log In" onClick={loginAndClose} />;
+      return <Button title={t("Log In")} onClick={loginAndClose} />;
     }
   }
 
@@ -56,7 +58,7 @@ function Sidebar({ isVisible, onClose, toggleLoginModal }) {
       <FaTimes className={styles.close} onClick={onClose} />
       <nav className={styles.nav}>
         <div className={styles.navlinks}>
-          {navlinks.map((link, index) => renderNavLink(link, index))}
+          {navlinks(t).map((link, index) => renderNavLink(link, index))}
         </div>
         {renderAccount()}
       </nav>

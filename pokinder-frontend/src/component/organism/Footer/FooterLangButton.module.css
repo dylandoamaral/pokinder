@@ -1,0 +1,28 @@
+.menu {
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  background: #ffffff;
+  padding: 10px;
+}
+
+.item {
+  cursor: pointer;
+  padding: 5px;
+  background-color: var(--lighter-background-color);
+  border-radius: 4px;
+}
+
+.item:hover {
+  background-color: var(--background-color);
+}
+
+.selected {
+  background-color: var(--primary-color);
+  color: var(--lighter-background-color);
+}
+
+.selected:hover {
+  background-color: var(--primary-color);
+  color: var(--lighter-background-color);
+}

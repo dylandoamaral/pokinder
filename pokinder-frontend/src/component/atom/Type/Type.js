@@ -1,4 +1,5 @@
 import styles from "./Type.module.css";
+import { useTranslation } from "react-i18next";
 
 function Type({ type }) {
   const colours = {
@@ -22,12 +23,14 @@ function Type({ type }) {
     fairy: "#D685AD",
   };
 
+  const { t } = useTranslation();
+
   return (
     <div
       className={styles.container}
       style={{ backgroundColor: colours[type.toLowerCase()] }}
     >
-      {type}
+      {t(type)}
     </div>
   );
 }

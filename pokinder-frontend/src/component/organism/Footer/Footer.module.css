@@ -7,30 +7,16 @@
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  align-items: flex-start;
+  justify-content: left;
+  text-align: left;
 }
 
 .right {
-  justify-self: right;
-  text-align: right;
-}
-
-.button {
-  border: none;
-  background: 0 0;
-  color: inherit;
-  text-decoration: none;
   display: flex;
-  align-items: center;
-  gap: 2px;
-  color: var(--secondary-font-color);
-  cursor: pointer;
-}
-
-.button:hover {
-  color: var(--primary-color);
-}
-
-.buttonText {
-  font-size: 14px;
-  font-weight: 500;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: flex-start;
+  justify-content: right;
+  text-align: right;
 }

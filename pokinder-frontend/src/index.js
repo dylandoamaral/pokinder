@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import Vote from "./page/Vote/Vote";
@@ -12,12 +12,13 @@ import { AuthenticationProvider } from "./context/authentication";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AxiosErrorHandler from "./context/axios";
+import { initInternationalization } from "./context/internationalization";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-export const queryClient = new QueryClient();
+initInternationalization();
 
-export const TestContext = createContext("test");
+export const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   { path: "/", element: <Vote /> },

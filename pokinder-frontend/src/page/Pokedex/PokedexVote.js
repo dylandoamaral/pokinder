@@ -11,8 +11,13 @@ import { useState, memo } from "react";
 import { useMutation } from "react-query";
 
 import { useAfterEffect } from "../../hook/useAfterEffect";
+import { useTranslation } from "react-i18next";
+
+import "moment/locale/fr";
 
 const PokedexVote = memo(function PokedexVote({ vote }) {
+  const { t, i18n } = useTranslation();
+
   const [currentVoteType, setCurrentVoteType] = useState(vote.vote_type);
 
   const { mutate } = useMutation(async () => {
@@ -86,7 +91,7 @@ const PokedexVote = memo(function PokedexVote({ vote }) {
       <div className={styles.panel}>
         {drawVoteType(currentVoteType)}
         <span className={styles.moment}>
-          Vote {moment(vote.created_at).fromNow()}
+          {t("Voted")} {moment(vote.created_at).locale(i18n.language).fromNow()}
         </span>
       </div>
     </div>
