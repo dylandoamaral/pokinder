@@ -15,12 +15,15 @@ import { pythagoras, normalize } from "../../../utils/math";
 import styles from "./Card.module.css";
 import Type from "../../atom/Type/Type";
 import { getTypes, getName } from "../../../utils/pokemon";
+import { useTranslation } from "react-i18next";
 
 const Card = memo(
   forwardRef(function Card(
     { fusion, index, onCardIsGone, onCardLeftScreen },
     ref
   ) {
+    const { t } = useTranslation();
+
     const isGone = useRef(false);
     const swipeDirection = useRef(undefined);
     const [isHidden, setIsHidden] = useState(false);
@@ -198,7 +201,7 @@ const Card = memo(
           </div>
           <div className={styles.body}>
             <div className={styles.parent}>
-              <span className={styles.parentName}>body</span>
+              <span className={styles.parentName}>{t("Body")}</span>
               <Sprite
                 className={styles.parentSprite}
                 type="pokemon"
@@ -209,7 +212,7 @@ const Card = memo(
               />
             </div>
             <div className={styles.parent}>
-              <span className={styles.parentName}>head</span>
+              <span className={styles.parentName}>{t("Head")}</span>
               <Sprite
                 className={styles.parentSprite}
                 type="pokemon"
@@ -220,7 +223,9 @@ const Card = memo(
               />
             </div>
           </div>
-          <p className={styles.credit}>Art by {fusion.creator.name}</p>
+          <p className={styles.credit}>
+            {t("Art by", { artist: fusion.creator.name })}
+          </p>
         </div>
       </animated.div>
     );

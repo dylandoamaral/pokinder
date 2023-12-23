@@ -1,8 +1,11 @@
 import styles from "./RankingFilter.module.css";
 import Filter from "../../component/atom/Filter/Filter";
 import Select from "../../component/atom/Select/Select";
+import { useTranslation } from "react-i18next";
 
 function PokedexFilter({ pokemonOptions, filters, onChange }) {
+  const { t } = useTranslation();
+
   const updateFilters = (newFilters) => {
     onChange(newFilters);
   };
@@ -14,14 +17,14 @@ function PokedexFilter({ pokemonOptions, filters, onChange }) {
 
   return (
     <div className={styles.container}>
-      <Filter title="Pokemon head">
+      <Filter title={t("Pokemon head")}>
         <Select
           options={pokemonOptions}
           value={pokemonOptions[0].options[0]}
           onChange={setPokemonHeads}
         />
       </Filter>
-      <Filter title="Pokemon body">
+      <Filter title={t("Pokemon body")}>
         <Select
           options={pokemonOptions}
           value={pokemonOptions[0].options[0]}

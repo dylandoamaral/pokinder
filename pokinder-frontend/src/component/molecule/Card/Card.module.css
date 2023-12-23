@@ -69,6 +69,7 @@
 
 .parentName {
   text-decoration: underline;
+  text-transform: lowercase;
   font-size: 14px;
 }
 

@@ -7,8 +7,10 @@ import { useState } from "react";
 import { login } from "../../../api/pokinder";
 import { useMutation } from "react-query";
 import { useAuthentication } from "../../../hook/useAuthentication";
+import { useTranslation } from "react-i18next";
 
 function LoginModal({ isVisible, onClose, openSignup }) {
+  const { t } = useTranslation();
   const { setToken, setRefreshToken } = useAuthentication();
 
   const [usernameOrEmail, setUsernameOrEmail] = useState(undefined);
@@ -31,25 +33,25 @@ function LoginModal({ isVisible, onClose, openSignup }) {
   return (
     <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
       <div className={styles.form}>
-        <Title title="Log In" />
+        <Title title={t("Log In")} />
         <div className={styles.inputs}>
           <Input
-            title="Username / Email"
+            title={t("Username") + " / " + t("Email")}
             onChange={setUsernameOrEmail}
             forceSpacer
           />
           <Input
-            title="Password"
+            title={t("Password")}
             type={InputType.Password}
             onChange={setPassword}
             forceSpacer
           />
         </div>
-        <Button title="Log In" disabled={!isFormValid} onClick={submit} />
+        <Button title={t("Log In")} disabled={!isFormValid} onClick={submit} />
         <span>
-          New here ?{" "}
+          {t("New here ?")}{" "}
           <span className={styles.action} onClick={toggleSignup}>
-            Register
+            {t("Sign Up")}
           </span>
         </span>
       </div>

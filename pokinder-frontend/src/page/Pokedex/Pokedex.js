@@ -11,8 +11,11 @@ import Button from "../../component/atom/Button/Button";
 import { queryClient } from "../..";
 import { useAuthentication } from "../../hook/useAuthentication";
 import { groupeOptions } from "../../data/options";
+import { useTranslation } from "react-i18next";
 
 function Pokedex() {
+  const { t } = useTranslation();
+
   const { token } = useAuthentication();
 
   const POKEMON_PER_PAGES = 50;
@@ -72,10 +75,10 @@ function Pokedex() {
             disabled={!hasNextPage || isFetchingNextPage}
             title={
               isFetchingNextPage
-                ? "Loading more..."
+                ? t("Loading more...")
                 : hasNextPage
-                ? "Load More"
-                : "Nothing more to load"
+                ? t("Load more fusions")
+                : t("Nothing more to load")
             }
           />
         </div>
