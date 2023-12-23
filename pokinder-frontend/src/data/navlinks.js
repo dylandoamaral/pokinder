@@ -1,14 +1,14 @@
-export const navlinks = [
+export const navlinks = (t) => [
   {
-    title: "Vote",
+    title: t("Vote"),
     path: "/",
   },
   {
-    title: "History",
+    title: t("History"),
     path: "/history",
   },
   {
-    title: "Ranking",
+    title: t("Ranking"),
     path: "/ranking",
   },
 ];

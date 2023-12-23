@@ -6,8 +6,11 @@ import styles from "./Deck.module.css";
 import FakeCard from "../../molecule/FakeCard/FakeCard";
 import Button from "../../atom/Button/Button";
 import useEventListener from "../../../hook/useEventListener";
+import { useTranslation } from "react-i18next";
 
 function Deck() {
+  const { t } = useTranslation();
+
   // Number of card in the deck before trigerring a new fetch.
   const THRESHOLD_FETCH_NEW_FUSIONS = 10;
   // Number of card fetch per refresh.
@@ -142,9 +145,9 @@ function Deck() {
     <div className={styles.container}>
       {drawAnyCards()}
       <div className={styles.buttons}>
-        <Button onClick={dislike} title="Downvote" />
-        <Button onClick={favorite} title="Favorite" />
-        <Button onClick={like} title="Like" />
+        <Button onClick={dislike} title={t("Downvote")} />
+        <Button onClick={favorite} title={t("Favorite")} />
+        <Button onClick={like} title={t("Upvote")} />
       </div>
     </div>
   );

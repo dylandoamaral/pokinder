@@ -3,8 +3,11 @@ import Sprite from "../../component/atom/Sprite/Sprite";
 import { getName } from "../../utils/pokemon";
 import { getDaenaLink } from "../../utils/website";
 import { memo } from "react";
+import { useTranslation } from "react-i18next";
 
 const RankingCard = memo(function RankingCard({ ranking }) {
+  const { t } = useTranslation();
+
   function getIndicator(rank) {
     switch (rank) {
       case 1:
@@ -75,7 +78,7 @@ const RankingCard = memo(function RankingCard({ ranking }) {
         <div className={styles.data}>
           <h2 className={styles.score}>{ranking.score}%</h2>
           <span className={styles.count}>
-            {ranking.count} vote{ranking.count > 1 ? "s" : ""}
+            {t("N Vote", { count: ranking.count })}
           </span>
         </div>
         <Sprite

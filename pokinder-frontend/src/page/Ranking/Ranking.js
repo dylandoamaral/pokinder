@@ -9,8 +9,11 @@ import { useAfterEffect } from "../../hook/useAfterEffect";
 import { queryClient } from "../..";
 import RankingFilter from "./RankingFilter";
 import { groupeOptions } from "../../data/options";
+import { useTranslation } from "react-i18next";
 
 function Ranking() {
+  const { t } = useTranslation();
+
   const POKEMON_PER_PAGES = 20;
 
   const initFilters = {
@@ -68,10 +71,10 @@ function Ranking() {
             disabled={!hasNextPage || isFetchingNextPage}
             title={
               isFetchingNextPage
-                ? "Loading more..."
+                ? t("Loading more...")
                 : hasNextPage
-                ? "Load More"
-                : "Nothing more to load"
+                ? t("Load more fusions")
+                : t("Nothing more to load")
             }
           />
         </div>

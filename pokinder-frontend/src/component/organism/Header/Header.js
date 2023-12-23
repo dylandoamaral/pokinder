@@ -9,8 +9,10 @@ import LoginModal from "./LoginModal";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 import Sidebar from "../../molecule/Sidebar/Sidebar";
 import { navlinks } from "../../../data/navlinks";
+import { useTranslation } from "react-i18next";
 
 function Header() {
+  const { t } = useTranslation();
   const { isUser, username, disconnect } = useAuthentication();
 
   const [showSignupModal, toggleSignupModal] = useToggle();
@@ -28,7 +30,7 @@ function Header() {
           />
         </div>
       );
-    else return <Button title="Log In" onClick={toggleLoginModal} />;
+    else return <Button title={t("Log In")} onClick={toggleLoginModal} />;
   }
 
   return (
@@ -42,7 +44,7 @@ function Header() {
         </div>
         <div className={`${styles.center} pc_only`}>
           <nav className={styles.nav}>
-            {navlinks.map((link, index) => (
+            {navlinks(t).map((link, index) => (
               <NavLink link={link} key={index} />
             ))}
           </nav>

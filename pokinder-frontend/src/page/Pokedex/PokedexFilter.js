@@ -2,8 +2,11 @@ import styles from "./PokedexFilter.module.css";
 import Filter from "../../component/atom/Filter/Filter";
 import Select from "../../component/atom/Select/Select";
 import CheckField from "../../component/atom/CheckField/CheckField";
+import { useTranslation } from "react-i18next";
 
 function PokedexFilter({ pokemonOptions, filters, onChange }) {
+  const { t } = useTranslation();
+
   const updateFilters = (newFilters) => {
     onChange(newFilters);
   };
@@ -21,34 +24,26 @@ function PokedexFilter({ pokemonOptions, filters, onChange }) {
 
   return (
     <div className={styles.container}>
-      <Filter title="Pokemon head">
-        <Select
-          options={pokemonOptions}
-          value={pokemonOptions[0].options[0]}
-          onChange={setPokemonHeads}
-        />
+      <Filter title={t("Pokemon head")}>
+        <Select options={pokemonOptions} onChange={setPokemonHeads} />
       </Filter>
-      <Filter title="Pokemon body">
-        <Select
-          options={pokemonOptions}
-          value={pokemonOptions[0].options[0]}
-          onChange={setPokemonBodies}
-        />
+      <Filter title={t("Pokemon body")}>
+        <Select options={pokemonOptions} onChange={setPokemonBodies} />
       </Filter>
-      <Filter title="Vote types">
+      <Filter title={t("Vote types")}>
         <div className={styles.voteTypesContainer}>
           <CheckField
-            title="Downvote"
+            title={t("Downvote")}
             onChange={toggleDownvoteEnabled}
             isChecked={filters.downvoteEnabled}
           />
           <CheckField
-            title="Favorite"
+            title={t("Favorite")}
             onChange={toggleFavoriteEnabled}
             isChecked={filters.favoriteEnabled}
           />
           <CheckField
-            title="Upvote"
+            title={t("Upvote")}
             onChange={toggleUpvoteEnabled}
             isChecked={filters.upvoteEnabled}
           />

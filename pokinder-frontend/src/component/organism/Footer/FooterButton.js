@@ -1,0 +1,38 @@
+import React from "react";
+import styles from "./FooterButton.module.css";
+import { IconContext } from "react-icons";
+
+const FooterButton = React.forwardRef(function FooterButton(
+  { children, name, link, ...props },
+  ref
+) {
+  const content = (
+    <>
+      <IconContext.Provider value={{ size: 16 }}>
+        {children}
+      </IconContext.Provider>
+      <span className={styles.label}>{name}</span>
+    </>
+  );
+
+  if (link !== undefined) {
+    return (
+      <a
+        className={styles.button}
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {content}
+      </a>
+    );
+  } else {
+    return (
+      <button className={styles.button} ref={ref} {...props}>
+        {content}
+      </button>
+    );
+  }
+});
+
+export default FooterButton;
