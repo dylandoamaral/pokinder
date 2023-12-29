@@ -1,13 +1,16 @@
-import styles from "./HeaderModal.module.css";
-import Modal from "../../atom/Modal/Modal";
-import Button from "../../atom/Button/Button";
-import Title from "../../atom/Title/Title";
-import Input, { InputType } from "../../atom/Input/Input";
 import { useState } from "react";
-import { login } from "../../../api/pokinder";
-import { useMutation } from "react-query";
-import { useAuthentication } from "../../../hook/useAuthentication";
 import { useTranslation } from "react-i18next";
+import { useMutation } from "react-query";
+
+import { useAuthentication } from "../../../hook/useAuthentication";
+
+import { login } from "../../../api/pokinder";
+
+import Button from "../../atom/Button/Button";
+import Input, { InputType } from "../../atom/Input/Input";
+import Modal from "../../atom/Modal/Modal";
+import Title from "../../atom/Title/Title";
+import styles from "./HeaderModal.module.css";
 
 function LoginModal({ isVisible, onClose, openSignup }) {
   const { t } = useTranslation();

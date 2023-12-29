@@ -5,10 +5,7 @@ function Modal({ children, isVisible, onClose, className }) {
 
   return (
     <div className={styles.container} onClick={onClose}>
-      <div
-        className={`${styles.modal} ${className}`}
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className={`${styles.modal} ${className}`} onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
     </div>

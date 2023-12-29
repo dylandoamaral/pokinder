@@ -1,18 +1,14 @@
-import styles from "./FilterChoices.module.css";
+import { AnimatePresence } from "framer-motion";
 
 import FilterChoice from "../../atom/FilterChoice/FilterChoice";
-
-import { AnimatePresence } from "framer-motion";
+import styles from "./FilterChoices.module.css";
 
 function FilterChoices({ initFilters, currentFilters, setFilters }) {
   function generateFilterChoiceData() {
     const filterChoiceData = {};
 
     for (const key in currentFilters) {
-      if (
-        initFilters.hasOwnProperty(key) &&
-        initFilters[key] !== currentFilters[key]
-      ) {
+      if (initFilters.hasOwnProperty(key) && initFilters[key] !== currentFilters[key]) {
         filterChoiceData[key] = currentFilters[key];
       }
     }

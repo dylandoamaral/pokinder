@@ -1,15 +1,18 @@
-import styles from "./Header.module.css";
+import { useTranslation } from "react-i18next";
+import { FaArrowRightFromBracket } from "react-icons/fa6";
+
+import { useAuthentication } from "../../../hook/useAuthentication";
+import useToggle from "../../../hook/useToggle";
+
+import { navlinks } from "../../../data/navlinks";
+
+import Button from "../../atom/Button/Button";
 import Logo from "../../atom/Logo/Logo";
 import NavLink from "../../atom/Navlink/NavLink";
-import Button from "../../atom/Button/Button";
-import useToggle from "../../../hook/useToggle";
-import SignupModal from "./SignupModal";
-import { useAuthentication } from "../../../hook/useAuthentication";
-import LoginModal from "./LoginModal";
-import { FaArrowRightFromBracket } from "react-icons/fa6";
 import Sidebar from "../../molecule/Sidebar/Sidebar";
-import { navlinks } from "../../../data/navlinks";
-import { useTranslation } from "react-i18next";
+import styles from "./Header.module.css";
+import LoginModal from "./LoginModal";
+import SignupModal from "./SignupModal";
 
 function Header() {
   const { t } = useTranslation();
@@ -24,10 +27,7 @@ function Header() {
       return (
         <div className={styles.user}>
           <span className={styles.username}>{username}</span>
-          <FaArrowRightFromBracket
-            className={styles.quit}
-            onClick={disconnect}
-          />
+          <FaArrowRightFromBracket className={styles.quit} onClick={disconnect} />
         </div>
       );
     else return <Button title={t("Log In")} onClick={toggleLoginModal} />;

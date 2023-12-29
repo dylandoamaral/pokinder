@@ -1,0 +1,17 @@
+{
+  "printWidth": 100,
+  "trailingComma": "all",
+  "semi": true,
+  "importOrder": [
+    "^(.*)/hook/(.*)$",
+    "^(.*)/api/(.*)$",
+    "^(.*)/data/(.*)$",
+    "^(.*)/utils/(.*)$",
+    "^(.*)/page/(.*)$",
+    "^(.*)/component/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "plugins": ["@trivago/prettier-plugin-sort-imports"]
+}

@@ -1,18 +1,20 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import Vote from "./page/Vote/Vote";
-import Pokedex from "./page/Pokedex/Pokedex";
-import Ranking from "./page/Ranking/Ranking";
-import NotFound from "./page/NotFound/NotFound";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import { AuthenticationProvider } from "./context/authentication";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+import NotFound from "./page/NotFound/NotFound";
+import Pokedex from "./page/Pokedex/Pokedex";
+import Ranking from "./page/Ranking/Ranking";
+import Vote from "./page/Vote/Vote";
+
+import { AuthenticationProvider } from "./context/authentication";
 import AxiosErrorHandler from "./context/axios";
 import { initInternationalization } from "./context/internationalization";
+import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -47,5 +49,5 @@ root.render(
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </AxiosErrorHandler>
-  </AuthenticationProvider>
+  </AuthenticationProvider>,
 );

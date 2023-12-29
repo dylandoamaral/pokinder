@@ -1,5 +1,6 @@
-import styles from "./Type.module.css";
 import { useTranslation } from "react-i18next";
+
+import styles from "./Type.module.css";
 
 function Type({ type }) {
   const colours = {
@@ -26,10 +27,7 @@ function Type({ type }) {
   const { t } = useTranslation();
 
   return (
-    <div
-      className={styles.container}
-      style={{ backgroundColor: colours[type.toLowerCase()] }}
-    >
+    <div className={styles.container} style={{ backgroundColor: colours[type.toLowerCase()] }}>
       {t(type)}
     </div>
   );

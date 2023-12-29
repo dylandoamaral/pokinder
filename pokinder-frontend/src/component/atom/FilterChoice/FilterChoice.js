@@ -1,6 +1,6 @@
-import styles from "./FilterChoice.module.css";
-
 import { motion } from "framer-motion";
+
+import styles from "./FilterChoice.module.css";
 
 function FilterChoice({ category, operator, value, onClick }) {
   return (

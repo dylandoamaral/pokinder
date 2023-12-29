@@ -1,18 +1,16 @@
-import styles from "./VoteButton.module.css";
-
 import { motion, useAnimate } from "framer-motion";
-
+import { useTranslation } from "react-i18next";
+import { FaCheck, FaTimes } from "react-icons/fa";
 import {
   FaRegSquareCaretLeft,
-  FaRegSquareCaretUp,
   FaRegSquareCaretRight,
+  FaRegSquareCaretUp,
   FaStar,
 } from "react-icons/fa6";
 
-import { FaCheck, FaTimes } from "react-icons/fa";
-
-import { useTranslation } from "react-i18next";
 import useEventListener from "../../../hook/useEventListener";
+
+import styles from "./VoteButton.module.css";
 
 function VoteButton({ variant, onClick }) {
   const { t } = useTranslation();

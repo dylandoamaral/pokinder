@@ -1,9 +1,12 @@
-import styles from "./RankingCard.module.css";
-import Sprite from "../../component/atom/Sprite/Sprite";
-import { getName } from "../../utils/pokemon";
-import { getDaenaLink } from "../../utils/website";
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
+
+import { getName } from "../../utils/pokemon";
+import { getDaenaLink } from "../../utils/website";
+
+import Sprite from "../../component/atom/Sprite/Sprite";
+
+import styles from "./RankingCard.module.css";
 
 const RankingCard = memo(function RankingCard({ ranking }) {
   const { t } = useTranslation();
@@ -50,11 +53,7 @@ const RankingCard = memo(function RankingCard({ ranking }) {
   const rankStyle = rankNumberAdditionalStyle(rank);
 
   return (
-    <a
-      href={getDaenaLink(ranking.fusion.path)}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <a href={getDaenaLink(ranking.fusion.path)} target="_blank" rel="noopener noreferrer">
       <div className={styles.container}>
         <div className={styles.rank}>
           <div className={styles.rank_title}>
@@ -70,16 +69,14 @@ const RankingCard = memo(function RankingCard({ ranking }) {
               ranking.fusion.head.name,
               ranking.fusion.head.name_separator_index,
               ranking.fusion.body.name,
-              ranking.fusion.body.name_separator_index
+              ranking.fusion.body.name_separator_index,
             )}
           </h2>
           <span className={styles.path}>#{ranking.fusion.path}</span>
         </div>
         <div className={styles.data}>
           <h2 className={styles.score}>{ranking.score}%</h2>
-          <span className={styles.count}>
-            {t("N Vote", { count: ranking.count })}
-          </span>
+          <span className={styles.count}>{t("N Vote", { count: ranking.count })}</span>
         </div>
         <Sprite
           className={styles.sprite}
