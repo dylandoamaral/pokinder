@@ -18,7 +18,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
     window.innerWidth < 400 || window.innerHeight < 850
   );
 
-  const defaultOpacity = hasFocus ? 1 : 0.3;
+  const defaultOpacity = hasFocus ? 1 : 0.1;
   // The mobile moving part is images taking 432px.
   const defaultHeight = isMobile ? 617 - 432 + 432 * MOBILE_RATIO : 617;
 
