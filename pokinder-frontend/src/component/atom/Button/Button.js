@@ -9,15 +9,9 @@ function Button({
   foreground = false,
 }) {
   const variantClassName =
-    variant === "filled"
-      ? styles.filled
-      : variant === "outlined"
-      ? styles.outlined
-      : styles.text;
+    variant === "filled" ? styles.filled : variant === "outlined" ? styles.outlined : styles.text;
 
-  const foregroundClassName = foreground
-    ? styles.foreground
-    : styles.background;
+  const foregroundClassName = foreground ? styles.foreground : styles.background;
 
   const nopaddingClassName = nopadding ? styles.nopadding : styles.padding;
 

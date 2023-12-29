@@ -1,14 +1,14 @@
-import { createContext, useState, useEffect, useMemo } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { jwtDecode } from "jwt-decode";
+import { createContext, useEffect, useMemo, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
+
 import http from "../api/http";
 
 export const AuthenticationContext = createContext();
 
 export const AuthenticationProvider = ({ children }) => {
   function isUUIDv4(str) {
-    const uuidPattern =
-      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+    const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
     return uuidPattern.test(str);
   }
 
@@ -102,8 +102,6 @@ export const AuthenticationProvider = ({ children }) => {
 
   // Provide the authentication context to the children components
   return (
-    <AuthenticationContext.Provider value={contextValue}>
-      {children}
-    </AuthenticationContext.Provider>
+    <AuthenticationContext.Provider value={contextValue}>{children}</AuthenticationContext.Provider>
   );
 };

@@ -33,23 +33,12 @@ describe("Test cases for getName function", () => {
   ];
 
   cases.forEach(
-    ({
-      headName,
-      headNameIndexSeparator,
-      bodyName,
-      bodyNameIndexSeparator,
-      expected,
-    }) => {
+    ({ headName, headNameIndexSeparator, bodyName, bodyNameIndexSeparator, expected }) => {
       test(`Name should work properly for ${headName} + ${bodyName} = ${expected}`, () => {
-        expect(
-          getName(
-            headName,
-            headNameIndexSeparator,
-            bodyName,
-            bodyNameIndexSeparator
-          )
-        ).toBe(expected);
+        expect(getName(headName, headNameIndexSeparator, bodyName, bodyNameIndexSeparator)).toBe(
+          expected,
+        );
       });
-    }
+    },
   );
 });

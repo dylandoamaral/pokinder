@@ -1,6 +1,7 @@
-import styles from "./Select.module.css";
-import BaseSelect from "react-select";
 import { useTranslation } from "react-i18next";
+import BaseSelect from "react-select";
+
+import styles from "./Select.module.css";
 
 function Select({ options, onChange, defaultValue }) {
   const { t } = useTranslation();

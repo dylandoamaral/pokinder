@@ -1,7 +1,8 @@
-import styles from "./Input.module.css";
-import { FaTimes, FaCheck } from "react-icons/fa";
-import { IconContext } from "react-icons";
 import { useState } from "react";
+import { IconContext } from "react-icons";
+import { FaCheck, FaTimes } from "react-icons/fa";
+
+import styles from "./Input.module.css";
 
 function Input({
   title = undefined,

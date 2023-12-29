@@ -1,11 +1,11 @@
-import styles from "./FilterPanel.module.css";
+import { useTranslation } from "react-i18next";
+import { FaFilter } from "react-icons/fa6";
+
+import useToggle from "../../../hook/useToggle";
 
 import FilterChoices from "../../molecule/FilterChoices/FilterChoices";
-
-import { FaFilter } from "react-icons/fa6";
-import useToggle from "../../../hook/useToggle";
 import FilterModal from "./FilterModal";
-import { useTranslation } from "react-i18next";
+import styles from "./FilterPanel.module.css";
 
 function FilterPanel({ initFilters, currentFilters, setFilters }) {
   const { t } = useTranslation();

@@ -1,14 +1,14 @@
-import styles from "./Vote.module.css";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { useMutation, useQuery } from "react-query";
 
+import { addVote, drawFusions } from "../../api/pokinder";
+
+import VoteButton from "../../component/atom/VoteButton/VoteButton";
 import Page from "../../component/organism/Page/Page";
 
+import styles from "./Vote.module.css";
 import VoteCard from "./VoteCard";
-
-import { motion } from "framer-motion";
-import { drawFusions, addVote } from "../../api/pokinder";
-import { useQuery, useMutation } from "react-query";
-import { useState } from "react";
-import VoteButton from "../../component/atom/VoteButton/VoteButton";
 
 function Vote() {
   // The number of fusions fetched from the API.
@@ -136,10 +136,7 @@ function Vote() {
                 key={fusion.path || key}
                 fusion={fusion}
                 transition={transition}
-                hasFocus={
-                  fusion.path ===
-                  carouselFusions[absoluteIndex - relativeIndex]?.path
-                }
+                hasFocus={fusion.path === carouselFusions[absoluteIndex - relativeIndex]?.path}
               />
             ))}
           </motion.div>

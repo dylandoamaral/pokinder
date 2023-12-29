@@ -1,5 +1,7 @@
-import Page from "../../component/organism/Page/Page";
 import { Link } from "react-router-dom";
+
+import Page from "../../component/organism/Page/Page";
+
 import styles from "./NotFound.module.css";
 
 function NotFound() {

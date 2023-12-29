@@ -1,16 +1,18 @@
-import Sprite from "../../component/atom/Sprite/Sprite";
-import { addVote } from "../../api/pokinder";
 import moment from "moment";
-import { getDaenaLink } from "../../utils/website";
-
-import styles from "./PokedexCard.module.css";
-import { useState, memo } from "react";
+import "moment/locale/fr";
+import { memo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useMutation } from "react-query";
 
 import { useAfterEffect } from "../../hook/useAfterEffect";
-import { useTranslation } from "react-i18next";
 
-import "moment/locale/fr";
+import { addVote } from "../../api/pokinder";
+
+import { getDaenaLink } from "../../utils/website";
+
+import Sprite from "../../component/atom/Sprite/Sprite";
+
+import styles from "./PokedexCard.module.css";
 import PokedexCardButton from "./PokedexCardButton";
 
 const PokedexVote = memo(function PokedexVote({ vote }) {
@@ -63,18 +65,12 @@ const PokedexVote = memo(function PokedexVote({ vote }) {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Sprite
-            className={styles.sprite}
-            path={vote.fusion.path}
-            size={144}
-            type="fusion"
-          />
+          <Sprite className={styles.sprite} path={vote.fusion.path} size={144} type="fusion" />
         </a>
         <div className={styles.panel}>
           {drawPokedexCardButtons()}
           <span className={styles.moment}>
-            {t("Voted")}{" "}
-            {moment(vote.created_at).locale(i18n.language).fromNow()}
+            {t("Voted")} {moment(vote.created_at).locale(i18n.language).fromNow()}
           </span>
         </div>
         <div className={styles.background}></div>

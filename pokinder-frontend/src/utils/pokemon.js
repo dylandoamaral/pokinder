@@ -480,12 +480,7 @@ export function getTypes(headType1, headType2, bodyType1, bodyType2) {
   }
 }
 
-export function getName(
-  headName,
-  headNameSeparatorIndex,
-  bodyName,
-  bodyNameSeparatorIndex
-) {
+export function getName(headName, headNameSeparatorIndex, bodyName, bodyNameSeparatorIndex) {
   const headIndex = parseInt(headNameSeparatorIndex.split(".")[0]);
   const headPart = headName.slice(0, headIndex);
 
@@ -493,7 +488,7 @@ export function getName(
   const bodyIndex = parseInt(
     bodyNameSeparatorIndexParts.length > 1
       ? bodyNameSeparatorIndex.split(".")[1]
-      : bodyNameSeparatorIndex.split(".")[0]
+      : bodyNameSeparatorIndex.split(".")[0],
   );
   const bodyPart = bodyName.slice(bodyIndex);
 
