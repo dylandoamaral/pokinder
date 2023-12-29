@@ -1,8 +1,7 @@
-import styles from "./PokedexCardButton.module.css";
-
+import { FaCheck, FaTimes } from "react-icons/fa";
 import { FaStar } from "react-icons/fa6";
 
-import { FaCheck, FaTimes } from "react-icons/fa";
+import styles from "./PokedexCardButton.module.css";
 
 function PokedexCardButton({ variant, onClick, filled = false }) {
   const variants = {

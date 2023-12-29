@@ -1,22 +1,20 @@
-import styles from "./VoteCard.module.css";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import { getName, getTypes } from "../../utils/pokemon";
 
 import Sprite from "../../component/atom/Sprite/Sprite";
 import Type from "../../component/atom/Type/Type";
 
-import { getName, getTypes } from "../../utils/pokemon";
-
-import { motion } from "framer-motion";
-import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import styles from "./VoteCard.module.css";
 
 function VoteCard({ fusion, transition, hasFocus = false }) {
   const { t } = useTranslation();
 
   const MOBILE_RATIO = 0.75;
 
-  const [isMobile, setIsMobile] = useState(
-    window.innerWidth < 400 || window.innerHeight < 850
-  );
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 400 || window.innerHeight < 850);
 
   const defaultOpacity = hasFocus ? 1 : 0.1;
   // The mobile moving part is images taking 432px.
@@ -29,32 +27,23 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
     : defaultBackgroundWidthDesktop;
 
   const defaultBackroundHeightDesktop = hasFocus ? 490 : 370;
-  const defaultBackroundHeightMobile =
-    defaultBackroundHeightDesktop * MOBILE_RATIO;
+  const defaultBackroundHeightMobile = defaultBackroundHeightDesktop * MOBILE_RATIO;
   const defaultBackroundHeight = isMobile
     ? defaultBackroundHeightMobile
     : defaultBackroundHeightDesktop;
 
   const defaultFusionSizeDesktop = hasFocus ? 288 : 216;
   const defaultFusionSizeMobile = defaultFusionSizeDesktop * MOBILE_RATIO;
-  const defaultFusionSize = isMobile
-    ? defaultFusionSizeMobile
-    : defaultFusionSizeDesktop;
+  const defaultFusionSize = isMobile ? defaultFusionSizeMobile : defaultFusionSizeDesktop;
 
   const defaultPokemonSizeDesktop = hasFocus ? 144 : 72;
   const defaultPokemonSizeMobile = defaultPokemonSizeDesktop * MOBILE_RATIO;
-  const defaultPokemonSize = isMobile
-    ? defaultPokemonSizeMobile
-    : defaultPokemonSizeDesktop;
+  const defaultPokemonSize = isMobile ? defaultPokemonSizeMobile : defaultPokemonSizeDesktop;
 
   const [opacity, setOpacity] = useState(defaultOpacity);
-  const [backgroundWidth, setBackgroundWidth] = useState(
-    defaultBackgroundWidth
-  );
+  const [backgroundWidth, setBackgroundWidth] = useState(defaultBackgroundWidth);
   const [width, setWidth] = useState(defaultBackgroundWidthDesktop);
-  const [backgroundHeight, setBackgroundHeight] = useState(
-    defaultBackroundHeight
-  );
+  const [backgroundHeight, setBackgroundHeight] = useState(defaultBackroundHeight);
   const [height, setHeight] = useState(defaultHeight);
   const [fusionSize, setFusionSize] = useState(defaultFusionSize);
   const [pokemonSize, setPokemonSize] = useState(defaultPokemonSize);
@@ -119,7 +108,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
                 fusion.head.name,
                 fusion.head.name_separator_index,
                 fusion.body.name,
-                fusion.body.name_separator_index
+                fusion.body.name_separator_index,
               )}
             </span>
             <span className={styles.path}>#{fusion.path}</span>
@@ -129,7 +118,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
               fusion.head.type_1,
               fusion.head.type_2,
               fusion.body.type_1,
-              fusion.body.type_2
+              fusion.body.type_2,
             ).map((type, index) => (
               <Type type={type} key={index} />
             ))}
@@ -140,7 +129,10 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
             <span className={styles.parentName}>{t("Head")}</span>
             <motion.div
               style={{ width: pokemonSize, height: pokemonSize }}
-              animate={{ width: pokemonSize, height: pokemonSize }}
+              animate={{
+                width: pokemonSize,
+                height: pokemonSize,
+              }}
               transition={transition}
             >
               <Sprite
@@ -154,7 +146,10 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
             <span className={styles.parentName}>{t("Body")}</span>
             <motion.div
               style={{ width: pokemonSize, height: pokemonSize }}
-              animate={{ width: pokemonSize, height: pokemonSize }}
+              animate={{
+                width: pokemonSize,
+                height: pokemonSize,
+              }}
               transition={transition}
             >
               <Sprite
@@ -165,9 +160,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
             </motion.div>
           </div>
         </div>
-        <p className={styles.credit}>
-          {t("Art by", { artist: fusion.creator.name })}
-        </p>
+        <p className={styles.credit}>{t("Art by", { artist: fusion.creator.name })}</p>
       </div>
       <motion.div
         style={{ width: backgroundWidth, height: backgroundHeight }}

@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export default function useEventListener(eventName, handler, element = window) {
   // Create a ref that stores handler
@@ -30,6 +30,6 @@ export default function useEventListener(eventName, handler, element = window) {
         element.removeEventListener(eventName, eventListener);
       };
     },
-    [eventName, element] // Re-run if eventName or element changes
+    [eventName, element], // Re-run if eventName or element changes
   );
 }

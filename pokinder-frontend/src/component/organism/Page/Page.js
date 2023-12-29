@@ -1,18 +1,12 @@
+import { Helmet } from "react-helmet";
+
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import styles from "./Page.module.css";
-import { Helmet } from "react-helmet";
 
-function Page({
-  name,
-  description,
-  children,
-  overflow = "none",
-  onScrollFinish = () => {},
-}) {
+function Page({ name, description, children, overflow = "none", onScrollFinish = () => {} }) {
   function onScroll(e) {
-    const bottom =
-      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
 
     if (bottom) {
       onScrollFinish();
@@ -23,9 +17,7 @@ function Page({
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>
-          Pokinder - {name || "Pokemon Infinite Fusion sprite ranking system"}
-        </title>
+        <title>Pokinder - {name || "Pokemon Infinite Fusion sprite ranking system"}</title>
         <meta
           name="description"
           content={
@@ -37,11 +29,7 @@ function Page({
       <div className={styles.container}>
         <div className={styles.content}>
           <Header />
-          <main
-            style={{ overflow: overflow }}
-            className={styles.main}
-            onScroll={onScroll}
-          >
+          <main style={{ overflow: overflow }} className={styles.main} onScroll={onScroll}>
             {children}
           </main>
           <Footer />

@@ -1,14 +1,10 @@
-import styles from "./FooterLangButton.module.css";
-
-import Popup from "reactjs-popup";
-import FooterButton from "./FooterButton";
-import { IoLanguageOutline } from "react-icons/io5";
-
 import { useTranslation } from "react-i18next";
-import {
-  findLanguageName,
-  languages,
-} from "../../../context/internationalization";
+import { IoLanguageOutline } from "react-icons/io5";
+import Popup from "reactjs-popup";
+
+import { findLanguageName, languages } from "../../../context/internationalization";
+import FooterButton from "./FooterButton";
+import styles from "./FooterLangButton.module.css";
 
 function FooterLangButton() {
   const { i18n } = useTranslation();
@@ -32,9 +28,7 @@ function FooterLangButton() {
         {languages.map((language, index) => (
           <div
             key={index}
-            className={`${styles.item} ${
-              i18n.language === language.iso ? styles.selected : ""
-            }`}
+            className={`${styles.item} ${i18n.language === language.iso ? styles.selected : ""}`}
             onClick={() => changeLanguage(language.iso)}
           >
             {language.lang}

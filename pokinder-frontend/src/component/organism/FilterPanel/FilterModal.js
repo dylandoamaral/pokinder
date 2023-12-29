@@ -1,22 +1,16 @@
-import styles from "./FilterModal.module.css";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+
+import { findOptionByValue, groupeOptions } from "../../../data/options";
 
 import Button from "../../atom/Button/Button";
+import CheckField from "../../atom/CheckField/CheckField";
 import Filter from "../../atom/Filter/Filter";
 import Modal from "../../atom/Modal/Modal";
-import CheckField from "../../atom/CheckField/CheckField";
-import { useTranslation } from "react-i18next";
-import { groupeOptions, findOptionByValue } from "../../../data/options";
 import Select from "../../atom/Select/Select";
+import styles from "./FilterModal.module.css";
 
-import { useState, useEffect } from "react";
-
-function FilterModal({
-  initFilters,
-  currentFilters,
-  setFilters,
-  isVisible,
-  onClose,
-}) {
+function FilterModal({ initFilters, currentFilters, setFilters, isVisible, onClose }) {
   const { t } = useTranslation();
   const [updatedFilters, setUpdatedFilters] = useState(currentFilters);
 
@@ -35,8 +29,7 @@ function FilterModal({
   };
   const toggleFavoriteEnabled = () =>
     updateFilters({ favoriteEnabled: !updatedFilters.favoriteEnabled });
-  const toggleUpvoteEnabled = () =>
-    updateFilters({ upvoteEnabled: !updatedFilters.upvoteEnabled });
+  const toggleUpvoteEnabled = () => updateFilters({ upvoteEnabled: !updatedFilters.upvoteEnabled });
 
   function renderPokemonParts() {
     if (!updatedFilters.hasOwnProperty("headNameOrCategory")) {
@@ -107,12 +100,7 @@ function FilterModal({
           }}
         />
         <div className={styles.right}>
-          <Button
-            title={t("Cancel")}
-            variant="text"
-            foreground
-            onClick={onClose}
-          />
+          <Button title={t("Cancel")} variant="text" foreground onClick={onClose} />
           <Button
             title={t("Apply filters")}
             foreground
