@@ -3,7 +3,22 @@ import Header from "../Header/Header";
 import styles from "./Page.module.css";
 import { Helmet } from "react-helmet";
 
-function Page({ name, description, children }) {
+function Page({
+  name,
+  description,
+  children,
+  overflow = "none",
+  onScrollFinish = () => {},
+}) {
+  function onScroll(e) {
+    const bottom =
+      e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+
+    if (bottom) {
+      onScrollFinish();
+    }
+  }
+
   return (
     <>
       <Helmet>
@@ -22,7 +37,13 @@ function Page({ name, description, children }) {
       <div className={styles.container}>
         <div className={styles.content}>
           <Header />
-          <main className={styles.main}>{children}</main>
+          <main
+            style={{ overflow: overflow }}
+            className={styles.main}
+            onScroll={onScroll}
+          >
+            {children}
+          </main>
           <Footer />
         </div>
       </div>

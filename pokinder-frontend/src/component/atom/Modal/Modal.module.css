@@ -1,5 +1,5 @@
 .container {
-  position: absolute;
+  position: fixed;
   cursor: pointer;
   top: 0;
   left: 0;
@@ -15,8 +15,8 @@
 
 .modal {
   cursor: default;
-  padding: 32px;
-  background-color: var(--lighter-background-color);
+  padding: var(--spacing-2XL);
+  background-color: var(--foreground-color);
 
-  border-radius: 18px;
+  border-radius: var(--border-radius-L);
 }

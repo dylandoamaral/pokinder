@@ -1,0 +1,39 @@
+.container {
+  overflow: hidden;
+
+  display: flex;
+  gap: var(--spacing-L);
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.votes {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: flex-end;
+  gap: var(--spacing-L);
+}
+
+.buttons {
+  display: flex;
+  gap: var(--spacing-L);
+}
+
+@media (min-width: 1250px) {
+  .container {
+    margin: 0 -400px;
+  }
+}
+
+@media (min-width: 560px) and (max-width: 1250px) {
+  .container {
+    margin: 0 -64px;
+  }
+}
+
+@media (max-width: 560px) {
+  .container {
+    margin: 0 -16px;
+  }
+}

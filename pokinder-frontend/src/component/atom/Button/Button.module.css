@@ -1,22 +1,92 @@
 .container {
   display: inline-block;
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: var(--font-size-M);
+  line-height: var(--line-height-M);
   text-align: center;
   text-decoration: none;
-  border-radius: 10px;
   border: none;
-  color: var(--white);
-  background-color: var(--primary-color);
 }
 
 .container:hover {
-  background-color: var(--darker-primary-color);
   cursor: pointer;
 }
 
-.container:disabled {
-  background-color: var(--disable-color);
+.nopadding {
+  padding: var(--spacing-M) 0;
+}
+
+.padding {
+  padding: var(--spacing-M) var(--spacing-L);
+}
+
+.filled {
+  border-radius: var(--border-radius-M);
+}
+
+.filled.background {
+  background-color: var(--neutral-lower);
+  color: var(--neutral-higher);
+}
+
+.filled.background:hover {
+  -webkit-box-shadow: inset 0px 0px 0px 1px var(--neutral-lower);
+  -moz-box-shadow: inset 0px 0px 0px 1px var(--neutral-lower);
+  box-shadow: inset 0px 0px 0px 1px var(--neutral-lower);
+  background: none;
+  color: var(--neutral-lower);
+}
+
+.filled.background:disabled {
+  background-color: var(--neutral-low);
+  color: var(--neutral-lower);
   cursor: not-allowed;
+}
+
+.outlined.background {
+  border: 1px solid var(--primary-high);
+  background-color: none;
+  color: var(--primary-high);
+}
+
+.outlined.background:hover {
+  background-color: var(--primary-lowest);
+}
+
+.text.background {
+  background: none;
+  color: var(--neutral-higher);
+}
+
+.filled.foreground {
+  background-color: var(--primary-medium);
+  color: var(--neutral-lower);
+}
+
+.filled.foreground:hover {
+  background-color: var(--primary-high);
+}
+
+.filled.foreground:disabled {
+  background-color: var(--neutral-low);
+  color: var(--neutral-lower);
+  cursor: not-allowed;
+}
+
+.outlined.foreground {
+  border: 1px solid var(--primary-high);
+  background-color: none;
+  color: var(--primary-high);
+}
+
+.outlined.foreground:hover {
+  background-color: var(--primary-lowest);
+}
+
+.text.foreground {
+  background: none;
+  color: var(--neutral-higher);
+}
+
+.text.foreground:hover {
+  color: var(--primary-medium);
 }

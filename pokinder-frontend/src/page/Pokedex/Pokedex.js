@@ -5,20 +5,15 @@ import { useAfterEffect } from "../../hook/useAfterEffect";
 
 import Page from "../../component/organism/Page/Page";
 import styles from "./Pokedex.module.css";
-import PokedexFilter from "./PokedexFilter";
-import PokedexVote from "./PokedexVote";
-import Button from "../../component/atom/Button/Button";
+import PokedexCard from "./PokedexCard";
 import { queryClient } from "../..";
 import { useAuthentication } from "../../hook/useAuthentication";
-import { groupeOptions } from "../../data/options";
-import { useTranslation } from "react-i18next";
+import FilterPanel from "../../component/organism/FilterPanel/FilterPanel";
 
 function Pokedex() {
-  const { t } = useTranslation();
-
   const { token } = useAuthentication();
 
-  const POKEMON_PER_PAGES = 50;
+  const POKEMON_PER_PAGES = 30;
 
   const initFilters = {
     headNameOrCategory: "All",
@@ -30,18 +25,24 @@ function Pokedex() {
 
   const [filters, setFilters] = useState(initFilters);
 
-  const { data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["history"],
-      queryFn: ({ pageParam }) => {
-        const offset = pageParam || 0;
-        return getHistory(filters, POKEMON_PER_PAGES, offset);
-      },
-      getNextPageParam: (lastPage) => {
-        if (lastPage.records.length < POKEMON_PER_PAGES) return false;
-        return lastPage.previousOffset + POKEMON_PER_PAGES;
-      },
-    });
+  const {
+    data,
+    refetch,
+    hasNextPage,
+    fetchNextPage,
+    isLoading,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["history"],
+    queryFn: ({ pageParam }) => {
+      const offset = pageParam || 0;
+      return getHistory(filters, POKEMON_PER_PAGES, offset);
+    },
+    getNextPageParam: (lastPage) => {
+      if (lastPage.records.length < POKEMON_PER_PAGES) return false;
+      return lastPage.previousOffset + POKEMON_PER_PAGES;
+    },
+  });
 
   useAfterEffect(() => {
     queryClient.setQueryData(["history"], (data) => ({
@@ -51,37 +52,32 @@ function Pokedex() {
     refetch();
   }, [token, filters, refetch]);
 
-  const drawVotes = () => {
+  const drawCards = () => {
     const pages = data?.pages.map((page) => page.records) || [];
     const votes = pages.flat();
 
     return votes.map((vote) => (
-      <PokedexVote vote={vote} key={vote.fusion.id} />
+      <PokedexCard vote={vote} key={vote.fusion.id} />
     ));
   };
 
+  function onScrollFinish() {
+    if (isFetchingNextPage || isLoading || !hasNextPage) {
+      return;
+    }
+
+    fetchNextPage();
+  }
+
   return (
-    <Page name="Vote history">
+    <Page name="Vote history" overflow="scroll" onScrollFinish={onScrollFinish}>
       <div className={styles.wrapper}>
-        <PokedexFilter
-          pokemonOptions={groupeOptions}
-          filters={filters}
-          onChange={setFilters}
+        <FilterPanel
+          initFilters={initFilters}
+          currentFilters={filters}
+          setFilters={setFilters}
         />
-        <div className={styles.container}>{drawVotes()}</div>
-        <div className={styles.button}>
-          <Button
-            onClick={() => fetchNextPage()}
-            disabled={!hasNextPage || isFetchingNextPage}
-            title={
-              isFetchingNextPage
-                ? t("Loading more...")
-                : hasNextPage
-                ? t("Load more fusions")
-                : t("Nothing more to load")
-            }
-          />
-        </div>
+        <div className={styles.container}>{drawCards()}</div>
       </div>
     </Page>
   );

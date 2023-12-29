@@ -1,22 +1,26 @@
 .container {
   position: relative;
-  background-color: var(--lighter-background-color);
   height: 104px;
-  border-radius: 16px;
-  margin: 20px;
+  margin: var(--spacing-L);
+
+  background-color: var(--foreground-color);
+  border-radius: var(--border-radius-L);
+  color: var(--neutral-higher);
+
   z-index: 0;
-  color: var(--font-color);
   text-decoration: none;
 }
 
 .rank {
   position: absolute;
-  background-color: var(--font-color);
   top: -10px;
   left: -10px;
   height: 54px;
   width: 54px;
-  border-radius: 5px;
+
+  background-color: var(--neutral-higher);
+  border-radius: var(--border-radius-M);
+
   z-index: -1;
 }
 
@@ -24,7 +28,7 @@
   content: "";
   position: absolute;
   transform: rotate(45deg);
-  background-color: var(--lighter-background-color);
+  background-color: var(--foreground-color);
   top: 27px;
   left: 27px;
   height: 58px;
@@ -32,6 +36,8 @@
 }
 
 .rank_title {
+  color: var(--neutral-lower);
+
   position: absolute;
   width: 54px;
   text-align: center;
@@ -40,13 +46,11 @@
 }
 
 .rank_number {
-  color: var(--lighter-background-color);
   font-weight: bold;
 }
 
 .rank_indicator {
-  color: var(--lighter-background-color);
-  font-size: 10px;
+  font-size: var(--font-size-XS);
   font-weight: bold;
 }
 
@@ -58,13 +62,13 @@
 }
 
 .name {
-  font-size: 18px;
+  font-size: var(--font-size-L);
   font-weight: 500;
 }
 
 .path {
-  font-size: 12px;
-  color: var(--secondary-font-color);
+  font-size: var(--font-size-XS);
+  color: var(--neutral-medium);
 }
 
 .data {
@@ -78,13 +82,13 @@
 }
 
 .score {
-  font-size: 22px;
+  font-size: var(--font-size-XL);
   font-weight: bold;
   font-style: italic;
 }
 
 .count {
-  font-size: 12px;
+  font-size: var(--font-size-S);
 }
 
 .sprite {
@@ -109,19 +113,17 @@
 
   .rank {
     position: absolute;
-    background-color: var(--font-color);
     top: -10px;
     left: -10px;
     height: 44px;
     width: 44px;
-    border-radius: 5px;
+    border-radius: var(--border-radius-S);
   }
 
   .rank::after {
     content: "";
     position: absolute;
     transform: rotate(45deg);
-    background-color: var(--lighter-background-color);
     top: 24px;
     left: 24px;
     height: 48px;
@@ -144,32 +146,12 @@
     top: 5px;
   }
 
-  .rank_indicator {
-    font-size: 8px;
-  }
-
   .title {
     top: 15px;
-    left: 30px;
-  }
-
-  .name {
-    font-size: 16px;
-  }
-
-  .path {
-    font-size: 10px;
+    left: 40px;
   }
 
   .data {
-    bottom: 10px;
-  }
-
-  .score {
-    font-size: 18px;
-  }
-
-  .count {
-    font-size: 10px;
+    bottom: 15px;
   }
 }

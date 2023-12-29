@@ -3,17 +3,12 @@ import { useState } from "react";
 import { getRanking } from "../../api/pokinder";
 import Page from "../../component/organism/Page/Page";
 import { useInfiniteQuery } from "react-query";
-import Button from "../../component/atom/Button/Button";
 import RankingCard from "./RankingCard";
 import { useAfterEffect } from "../../hook/useAfterEffect";
 import { queryClient } from "../..";
-import RankingFilter from "./RankingFilter";
-import { groupeOptions } from "../../data/options";
-import { useTranslation } from "react-i18next";
+import FilterPanel from "../../component/organism/FilterPanel/FilterPanel";
 
 function Ranking() {
-  const { t } = useTranslation();
-
   const POKEMON_PER_PAGES = 20;
 
   const initFilters = {
@@ -23,18 +18,24 @@ function Ranking() {
 
   const [filters, setFilters] = useState(initFilters);
 
-  const { data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["ranking"],
-      queryFn: ({ pageParam }) => {
-        const offset = pageParam || 0;
-        return getRanking(filters, POKEMON_PER_PAGES, offset);
-      },
-      getNextPageParam: (lastPage) => {
-        if (lastPage.records.length < POKEMON_PER_PAGES) return false;
-        return lastPage.previousOffset + POKEMON_PER_PAGES;
-      },
-    });
+  const {
+    data,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteQuery({
+    queryKey: ["ranking"],
+    queryFn: ({ pageParam }) => {
+      const offset = pageParam || 0;
+      return getRanking(filters, POKEMON_PER_PAGES, offset);
+    },
+    getNextPageParam: (lastPage) => {
+      if (lastPage.records.length < POKEMON_PER_PAGES) return false;
+      return lastPage.previousOffset + POKEMON_PER_PAGES;
+    },
+  });
 
   useAfterEffect(() => {
     queryClient.setQueryData(["ranking"], (data) => ({
@@ -53,31 +54,28 @@ function Ranking() {
     ));
   };
 
+  function onScrollFinish() {
+    if (isFetchingNextPage || isLoading || !hasNextPage) {
+      return;
+    }
+
+    fetchNextPage();
+  }
+
   return (
     <Page
       name="Community ranking"
       description="Discover the Most Beloved Pokémon Infinite Fusion Sprites Voted by the Community."
+      overflow="scroll"
+      onScrollFinish={onScrollFinish}
     >
       <div className={styles.wrapper}>
-        <RankingFilter
-          pokemonOptions={groupeOptions}
-          filters={filters}
-          onChange={setFilters}
+        <FilterPanel
+          initFilters={initFilters}
+          currentFilters={filters}
+          setFilters={setFilters}
         />
         <div className={styles.container}>{drawRankings()}</div>
-        <div className={styles.button}>
-          <Button
-            onClick={() => fetchNextPage()}
-            disabled={!hasNextPage || isFetchingNextPage}
-            title={
-              isFetchingNextPage
-                ? t("Loading more...")
-                : hasNextPage
-                ? t("Load more fusions")
-                : t("Nothing more to load")
-            }
-          />
-        </div>
       </div>
     </Page>
   );

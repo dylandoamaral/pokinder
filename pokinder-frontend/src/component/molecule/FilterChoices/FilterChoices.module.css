@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  gap: var(--spacing-M);
+  padding-bottom: var(--spacing-S);
+  width: 100%;
+  height: 24px;
+
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}

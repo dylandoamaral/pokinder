@@ -1,0 +1,20 @@
+.container {
+  text-align: center;
+  text-decoration: none;
+  border: none;
+
+  border-radius: var(--border-radius-round);
+  background-color: var(--foreground-color);
+  color: var(--font-foreground-color);
+
+  font-size: var(--font-size-XS);
+  line-height: var(--line-height-XS);
+
+  padding: var(--spacing-S) var(--spacing-M);
+
+  flex-shrink: 0;
+}
+
+.container:hover {
+  cursor: pointer;
+}

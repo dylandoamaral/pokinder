@@ -1,0 +1,36 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--background-color);
+  padding-bottom: var(--spacing-L);
+}
+
+.button {
+  text-decoration: none;
+  border: none;
+  background: none;
+
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-S);
+  margin-left: var(--spacing-M);
+  border-radius: var(--border-radius-S);
+
+  font-size: var(--font-size-M);
+  line-height: var(--line-height-M);
+  color: var(--background-font-color);
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+  width: 13px;
+  height: 13px;
+}

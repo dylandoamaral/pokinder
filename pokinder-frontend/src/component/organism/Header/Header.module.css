@@ -10,7 +10,7 @@
   margin-right: auto;
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: var(--spacing-M);
 }
 
 .right {
@@ -20,13 +20,14 @@
 
 .logo {
   text-decoration: none;
-  color: var(--font-color);
+  color: var(--font-background-color);
   display: flex;
-  gap: 8px;
   align-items: center;
+  gap: var(--spacing-M);
 }
 
 .title {
+  font-size: var(--font-size-3XL);
   line-height: 0;
 }
 
@@ -37,11 +38,12 @@
 }
 
 .username {
-  font-size: 18px;
+  font-size: var(--font-size-M);
+  line-height: var(--line-height-M);
 }
 
 .quit:hover {
-  color: var(--primary-color);
+  color: var(--primary-medium);
   cursor: pointer;
 }
 
@@ -61,7 +63,7 @@
 }
 
 .ham {
-  background-color: var(--font-color);
+  background-color: var(--font-background-color);
   height: 4px;
   width: 100%;
   border-radius: 2px;
