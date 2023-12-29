@@ -1,5 +1,7 @@
 .container {
-  background-color: white;
+  background-color: var(--foreground-color);
+  color: var(--font-foreground-color);
+
   width: 200px;
   height: calc(100svh - 28px);
   position: fixed;
@@ -49,11 +51,11 @@
   cursor: pointer;
   text-align: right;
   padding: 16px;
-  border-radius: 8px;
+  border-radius: var(--border-radius-M);
 }
 
 .navlink_active {
-  background-color: var(--background-color) !important;
+  background-color: var(--neutral-low) !important;
 }
 
 .profile {

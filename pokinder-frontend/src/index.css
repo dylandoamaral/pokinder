@@ -1,31 +1,60 @@
 :root {
-  --background-color: #e8eaec;
-  --lighter-background-color: #fff;
-  --darker-background-color: #67737e;
-
-  --primary-color: #ff1c1cff;
-  --darker-primary-color: #d21616;
-
-  --secondary-font-color: #686868;
-  --font-color: #171717;
-
-  --border-color: #ccc;
-  --disable-color: #a4a2a2;
-  --placeholder-color: #e1e1e1;
-
   --ok-color: #008000;
-  --ko-color: #ff5722;
+  --ko-color: #c42833;
 
-  --like-color: #6cc0e5;
-  --favorite-color: #fbc93d;
-  --dislike-color: #fb4f4f;
+  --downvote-color: #c42833;
+  --favorite-color: #eda756;
+  --upvote-color: #5285ea;
 
-  --white: #fff;
+  --primary-medium: #e13d48;
+  --primary-high: #c42833;
+
+  --neutral-lower: #ffffff;
+  --neutral-low: #cbd5e1;
+  --neutral-medium: #94a3b8;
+  --neutral-high: #475569;
+  --neutral-higher: #09090b;
+
+  --spacing-S: 4px;
+  --spacing-M: 8px;
+  --spacing-L: 16px;
+  --spacing-XL: 24px;
+  --spacing-2XL: 32px;
+
+  --spacing-page-desktop: 128px;
+
+  --border-radius-XS: 2px;
+  --border-radius-S: 4px;
+  --border-radius-M: 8px;
+  --border-radius-L: 16px;
+  --border-radius-XL: 24px;
+  --border-radius-round: 9999px;
+
+  --font-size-XS: 0.75rem;
+  --line-height-XS: 1rem;
+  --font-size-S: 0.875rem;
+  --line-height-S: 1.25rem;
+  --font-size-M: 1rem;
+  --line-height-M: 1.5rem;
+  --font-size-L: 1.125rem;
+  --line-height-L: 1.75rem;
+  --font-size-XL: 1.25rem;
+  --line-height-XL: 1.75rem;
+  --font-size-2XL: 1.5rem;
+  --line-height-2XL: 2rem;
+  --font-size-3XL: 1.875rem;
+  --flineont-height-3XL: 2.25rem;
+
+  --background-color: var(--primary-medium);
+  --foreground-color: var(--neutral-lower);
+  --font-background-color: var(--neutral-lower);
+  --font-foreground-color: var(--neutral-higher);
+  --border-color: var(--neutral-medium);
 }
 
 body {
   background-color: var(--background-color);
-  color: var(--font-color);
+  color: var(--font-background-color);
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -40,13 +69,13 @@ code {
     monospace;
 }
 
-@media (max-width: 560px) {
+@media (max-width: 800px) {
   .pc_only {
     display: none !important;
   }
 }
 
-@media (min-width: 560px) {
+@media (min-width: 800px) {
   .phone_only {
     display: none !important;
   }

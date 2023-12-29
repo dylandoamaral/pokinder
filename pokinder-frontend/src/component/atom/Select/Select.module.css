@@ -1,8 +1,14 @@
 .container {
-  width: 250px;
-  height: 38px;
+  width: 300px;
+  color: var(--font-foreground-color);
 }
 
 .container:hover {
   cursor: pointer;
+}
+
+@media (max-width: 740px) {
+  .container {
+    width: 100%;
+  }
 }

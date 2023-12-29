@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-S);
+}
+
+.button {
+  -webkit-user-select: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(30px + var(--spacing-L) * 2);
+  height: calc(30px + var(--spacing-L) * 2);
+  background-color: var(--foreground-color);
+  text-decoration: none;
+  border: none;
+  border-radius: var(--border-radius-L);
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.button > svg {
+  width: 30px;
+  height: 30px;
+}
+
+.downvote {
+  color: var(--downvote-color);
+}
+
+.favorite {
+  color: var(--favorite-color);
+}
+
+.upvote {
+  color: var(--upvote-color);
+}
+
+.information {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-S);
+}
+
+.or {
+  font-size: var(--font-size-XS);
+}

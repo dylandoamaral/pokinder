@@ -6,7 +6,7 @@
 .left {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: var(--spacing-M);
   align-items: flex-start;
   justify-content: left;
   text-align: left;
@@ -15,7 +15,7 @@
 .right {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: var(--spacing-M);
   align-items: flex-start;
   justify-content: right;
   text-align: right;

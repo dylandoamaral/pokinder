@@ -1,28 +1,19 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 32px;
 }
 
 .container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, max-content));
-  grid-gap: 20px;
+  grid-gap: var(--spacing-L);
   justify-content: space-between;
-}
-
-.button {
-  width: calc(100% - 60px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 30px;
 }
 
 @media (max-width: 500px) {
   .container {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: var(--spacing-S);
   }
 }

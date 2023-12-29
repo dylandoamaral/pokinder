@@ -3,6 +3,11 @@
   "History": "Historique",
   "Ranking": "Classement",
 
+  "Filter": "Filtre",
+  "Reset all filters": "Reinitialiser les filtres",
+  "Cancel": "Annuler",
+  "Apply filters": "Appliquer les filtres",
+
   "Log In": "Se connecter",
   "Sign Up": "S'inscrire",
   "Sign Out": "Se deconnecter",

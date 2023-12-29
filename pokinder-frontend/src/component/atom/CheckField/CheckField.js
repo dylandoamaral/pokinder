@@ -1,24 +1,19 @@
-import { useState } from "react";
 import styles from "./CheckField.module.css";
 
 function CheckField({ title, onChange, isChecked = false }) {
-  const [checked, setChecked] = useState(isChecked);
-
-  const toggleChecked = () => {
-    setChecked(!checked);
-    onChange();
-  };
-
   return (
-    <div className={styles.container} onClick={toggleChecked}>
+    <label className={styles.container}>
       <input
         className={styles.checkbox}
         type="checkbox"
-        checked={checked}
-        onChange={toggleChecked}
+        onChange={onChange}
+        checked={isChecked}
       />
-      <span className={styles.label}>{title}</span>
-    </div>
+      <div className={styles.checkmark}>
+        <div className={styles.checked} />
+      </div>
+      {title}
+    </label>
   );
 }
 

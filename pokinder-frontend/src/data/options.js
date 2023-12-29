@@ -22,3 +22,13 @@ export const groupeOptions = [
     options: pokemonOptions,
   },
 ];
+
+export const findOptionByValue = (value) => {
+  for (const group of groupeOptions) {
+    const foundOption = group.options.find((option) => option.value === value);
+    if (foundOption) {
+      return foundOption;
+    }
+  }
+  return null;
+};

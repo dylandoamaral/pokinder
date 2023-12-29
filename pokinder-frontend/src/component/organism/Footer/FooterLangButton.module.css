@@ -1,28 +1,32 @@
 .menu {
   display: flex;
-  gap: 8px;
+  gap: var(--spacing-M);
   flex-direction: column;
-  background: #ffffff;
-  padding: 10px;
+  background-color: var(--foreground-color);
+  border-radius: var(--border-radius-S);
+  padding: var(--spacing-M);
 }
 
 .item {
   cursor: pointer;
   padding: 5px;
-  background-color: var(--lighter-background-color);
-  border-radius: 4px;
+  color: var(--font-foreground-color);
+  border-radius: var(--border-radius-S);
+  font-size: var(--font-size-S);
+  line-height: var(--line-height-S);
 }
 
 .item:hover {
-  background-color: var(--background-color);
+  background-color: var(--primary-high);
+  color: var(--neutral-lowest);
 }
 
 .selected {
-  background-color: var(--primary-color);
-  color: var(--lighter-background-color);
+  background-color: var(--primary-medium);
+  color: var(--neutral-lowest);
 }
 
 .selected:hover {
-  background-color: var(--primary-color);
-  color: var(--lighter-background-color);
+  background-color: var(--primary-high);
+  color: var(--neutral-lowest);
 }
