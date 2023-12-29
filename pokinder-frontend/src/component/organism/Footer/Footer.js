@@ -5,7 +5,11 @@ import { DiGitBranch } from "react-icons/di";
 import FooterButton from "./FooterButton";
 import FooterLangButton from "./FooterLangButton";
 
+import { useTranslation } from "react-i18next";
+
 function Footer() {
+  const { t } = useTranslation();
+
   return (
     <footer>
       <div className={styles.container}>
@@ -17,7 +21,7 @@ function Footer() {
             <LiaGithub />
           </FooterButton>
           <FooterButton
-            name="Pokemon Infinite Fusion"
+            name={t("Game")}
             link="https://infinitefusion.fandom.com/wiki/Pok%C3%A9mon_Infinite_Fusion_Wiki"
           >
             <CgPokemon />

@@ -1,18 +1,17 @@
 .container {
-  font-size: 18px;
+  font-size: var(--font-size-M);
+  line-height: var(--line-height-M);
   text-decoration: none;
-  font-weight: 500;
   color: var(--font-color);
   cursor: pointer;
-  text-transform: uppercase;
 }
 
 .container:hover {
-  color: var(--primary-color);
+  opacity: 1;
 }
 
 .inactive {
-  opacity: 0.4;
+  opacity: 0.5;
 }
 
 .inactive:hover {

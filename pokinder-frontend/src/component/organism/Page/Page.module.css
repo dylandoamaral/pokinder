@@ -3,25 +3,29 @@
   align-items: center;
   justify-items: center;
   grid-template-rows: auto 1fr auto;
-  grid-auto-flow: row;
 }
 
 .content {
   display: grid;
   grid-template-rows: auto 1fr auto;
-  grid-auto-flow: row;
 
   max-width: 1250px;
 
-  gap: 32px;
   margin: 32px;
-  min-height: calc(100svh - 64px);
+  gap: 32px;
+
+  height: calc(100svh - 64px);
   width: calc(100vw - 64px);
 }
 
 .main {
-  height: 100%;
   display: grid;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.main::-webkit-scrollbar {
+  display: none;
 }
 
 @media (max-width: 560px) {

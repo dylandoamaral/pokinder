@@ -47,7 +47,13 @@ function LoginModal({ isVisible, onClose, openSignup }) {
             forceSpacer
           />
         </div>
-        <Button title={t("Log In")} disabled={!isFormValid} onClick={submit} />
+        <Button
+          title={t("Log In")}
+          disabled={!isFormValid}
+          onClick={submit}
+          foreground
+          variant="filled"
+        />
         <span>
           {t("New here ?")}{" "}
           <span className={styles.action} onClick={toggleSignup}>

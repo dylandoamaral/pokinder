@@ -45,7 +45,7 @@ function Sidebar({ isVisible, onClose, toggleLoginModal }) {
         </div>
       );
     } else {
-      return <Button title={t("Log In")} onClick={loginAndClose} />;
+      return <Button title={t("Log In")} onClick={loginAndClose} foreground />;
     }
   }
 

@@ -6,15 +6,16 @@
   display: flex;
   align-items: center;
   gap: 2px;
-  color: var(--secondary-font-color);
+  color: var(--font-background-color);
+  opacity: 0.5;
   cursor: pointer;
 }
 
 .button:hover {
-  color: var(--primary-color);
+  opacity: 1;
 }
 
 .label {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--font-size-S);
+  line-height: var(--line-height-S);
 }

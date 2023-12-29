@@ -3,7 +3,9 @@
   flex-direction: column;
   gap: 8px;
   max-width: 600px;
-  margin: 40px;
+  margin: var(--spacing-XL);
+
+  color: var(--font-foreground-color);
 }
 
 .form {
@@ -20,7 +22,7 @@
 }
 
 .action {
-  color: var(--primary-color);
+  color: var(--primary-medium);
 }
 
 .action:hover {

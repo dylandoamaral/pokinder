@@ -3,6 +3,11 @@
   "History": "History",
   "Ranking": "Ranking",
 
+  "Filter": "Filter",
+  "Reset all filters": "Reset all filters",
+  "Cancel": "Cancel",
+  "Apply filters": "Apply filters",
+
   "Log In": "Log In",
   "Sign Up": "Sign Up",
   "Sign Out": "Sign Out",

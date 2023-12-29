@@ -124,6 +124,8 @@ function SignupModal({ isVisible, onClose, openLogin }) {
           title={t("Become a trainer !")}
           disabled={!isFormValid}
           onClick={submit}
+          foreground
+          variant="filled"
         />
         <span>
           {t("Already trainer ?")}{" "}

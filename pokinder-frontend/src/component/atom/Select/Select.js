@@ -2,7 +2,7 @@ import styles from "./Select.module.css";
 import BaseSelect from "react-select";
 import { useTranslation } from "react-i18next";
 
-function Select({ options, onChange }) {
+function Select({ options, onChange, defaultValue }) {
   const { t } = useTranslation();
 
   function getTranslatedOptions() {
@@ -22,7 +22,7 @@ function Select({ options, onChange }) {
       className={styles.container}
       options={translatedOptions}
       onChange={onChange}
-      defaultValue={translatedOptions[0].options[0]}
+      defaultValue={defaultValue || translatedOptions[0].options[0]}
     />
   );
 }
