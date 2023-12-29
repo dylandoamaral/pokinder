@@ -41,7 +41,11 @@ function Sidebar({ isVisible, onClose, toggleLoginModal }) {
       return (
         <div className={styles.profile}>
           <span>{t("Connected as", { username: username })}</span>
-          <Button title={t("Sign Out")} onClick={disconnectAndClose} />
+          <Button
+            title={t("Sign Out")}
+            onClick={disconnectAndClose}
+            foreground
+          />
         </div>
       );
     } else {
