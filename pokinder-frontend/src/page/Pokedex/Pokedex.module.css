@@ -10,6 +10,17 @@
   justify-content: space-between;
 }
 
+.link {
+  font-weight: bold;
+  font-style: italic;
+  color: var(--font-background-color);
+}
+
+.link:hover {
+  background-color: var(--foreground-color);
+  color: var(--primary-medium);
+}
+
 @media (max-width: 500px) {
   .container {
     display: flex;
