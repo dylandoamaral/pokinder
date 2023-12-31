@@ -58,8 +58,8 @@
     height: auto;
     width: auto;
     left: 0;
-    top: var(--spacing-L);
-    bottom: var(--spacing-L);
+    top: var(--spacing-M);
+    bottom: var(--spacing-M);
     right: var(--spacing-L);
   }
 
@@ -68,6 +68,7 @@
     justify-content: space-between;
     flex-direction: row-reverse;
     align-items: center;
+    padding: 0;
     padding-left: var(--spacing-L);
   }
 
