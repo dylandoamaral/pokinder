@@ -21,16 +21,19 @@ function VoteButton({ variant, onClick }) {
       buttonIcon: <FaTimes className={styles.downvote} />,
       keyboardIcon: <FaRegSquareCaretLeft />,
       keyboardKey: "ArrowLeft",
+      label: "Downvote button"
     },
     favorite: {
       buttonIcon: <FaStar className={styles.favorite} />,
       keyboardIcon: <FaRegSquareCaretUp />,
       keyboardKey: "ArrowUp",
+      label: "Favorite button"
     },
     upvote: {
       buttonIcon: <FaCheck className={styles.upvote} />,
       keyboardIcon: <FaRegSquareCaretRight />,
       keyboardKey: "ArrowRight",
+      label: "Upvote button"
     },
   };
 
@@ -66,6 +69,7 @@ function VoteButton({ variant, onClick }) {
         transition={transition}
         className={styles.button}
         onClick={onClick}
+        aria-label={variant.label}
       >
         {configuration.buttonIcon}
       </motion.button>
