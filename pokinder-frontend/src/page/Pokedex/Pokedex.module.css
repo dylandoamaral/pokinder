@@ -25,6 +25,6 @@
   .container {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-S);
+    gap: 0;
   }
 }
