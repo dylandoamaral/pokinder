@@ -8,11 +8,13 @@ import { useAuthentication } from "../../hook/useAuthentication";
 
 import { getHistory } from "../../api/pokinder";
 
+import Loader from "../../component/atom/Loader/Loader";
 import Oak from "../../component/atom/Oak/Oak";
 import FilterPanel from "../../component/organism/FilterPanel/FilterPanel";
 import Page from "../../component/organism/Page/Page";
 
 import { queryClient } from "../..";
+import LoadingPokedexCard from "./LoadingPokedexCard";
 import styles from "./Pokedex.module.css";
 import PokedexCard from "./PokedexCard";
 
@@ -32,7 +34,7 @@ function Pokedex() {
 
   const [filters, setFilters] = useState(initFilters);
 
-  const { data, refetch, hasNextPage, fetchNextPage, isLoading, isFetchingNextPage } =
+  const { data, refetch, hasNextPage, fetchNextPage, isError, isLoading, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ["history"],
       queryFn: ({ pageParam }) => {
@@ -66,6 +68,23 @@ function Pokedex() {
   }
 
   function renderContent() {
+    if (isError) {
+      return <p>The API is down for the moment, sorry for the inconvenience.</p>;
+    }
+
+    if (isLoading) {
+      return (
+        <div className={`${styles.wrapper} ${styles.loading}`}>
+          <FilterPanel initFilters={initFilters} currentFilters={filters} setFilters={setFilters} />
+          <div className={styles.container}>
+            {Array.from({ length: 30 }, (_, index) => (
+              <LoadingPokedexCard key={index} />
+            ))}
+          </div>
+        </div>
+      );
+    }
+
     const pages = data?.pages.map((page) => page.records) || [];
     const votes = pages.flat();
 
@@ -96,12 +115,17 @@ function Pokedex() {
       <div className={styles.wrapper}>
         <FilterPanel initFilters={initFilters} currentFilters={filters} setFilters={setFilters} />
         <div className={styles.container}>{drawCards(votes)}</div>
+        <Loader loading={isFetchingNextPage} />
       </div>
     );
   }
 
   return (
-    <Page name="Vote history" overflow="scroll" onScrollFinish={onScrollFinish}>
+    <Page
+      name="Vote history"
+      overflow={isLoading ? "hidden" : "scroll"}
+      onScrollFinish={onScrollFinish}
+    >
       {renderContent()}
     </Page>
   );
