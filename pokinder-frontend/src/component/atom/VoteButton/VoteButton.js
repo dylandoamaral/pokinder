@@ -12,7 +12,7 @@ import useEventListener from "../../../hook/useEventListener";
 
 import styles from "./VoteButton.module.css";
 
-function VoteButton({ variant, onClick }) {
+function VoteButton({ variant, onClick, disabled = false }) {
   const { t } = useTranslation();
   const [scope, animate] = useAnimate();
 
@@ -21,41 +21,44 @@ function VoteButton({ variant, onClick }) {
       buttonIcon: <FaTimes className={styles.downvote} />,
       keyboardIcon: <FaRegSquareCaretLeft />,
       keyboardKey: "ArrowLeft",
-      label: "Downvote button"
+      label: "Downvote button",
     },
     favorite: {
       buttonIcon: <FaStar className={styles.favorite} />,
       keyboardIcon: <FaRegSquareCaretUp />,
       keyboardKey: "ArrowUp",
-      label: "Favorite button"
+      label: "Favorite button",
     },
     upvote: {
       buttonIcon: <FaCheck className={styles.upvote} />,
       keyboardIcon: <FaRegSquareCaretRight />,
       keyboardKey: "ArrowRight",
-      label: "Upvote button"
+      label: "Upvote button",
     },
   };
 
-  const animations = {
-    rest: { scale: 1, y: 0 },
-    hover: { scale: 1.1, y: -4 },
-    tap: { scale: 0.9, y: 4 },
-  };
+  const animations = disabled
+    ? {}
+    : {
+        rest: { scale: 1, y: 0 },
+        hover: { scale: 1.1, y: -4 },
+        tap: { scale: 0.9, y: 4 },
+      };
 
   const transition = { duration: 0.15 };
 
   const configuration = variants[variant];
 
   useEventListener("keydown", async ({ key }) => {
-    if (key === configuration.keyboardKey) {
-      const voted = onClick();
+    if (disabled) return;
+    if (key !== configuration.keyboardKey) return;
 
-      if (voted) {
-        await animate(scope.current, animations.tap, transition);
-        await animate(scope.current, animations.rest, transition);
-      }
-    }
+    const voted = onClick();
+
+    if (!voted) return;
+
+    await animate(scope.current, animations.tap, transition);
+    await animate(scope.current, animations.rest, transition);
   });
 
   return (
@@ -71,7 +74,7 @@ function VoteButton({ variant, onClick }) {
         onClick={onClick}
         aria-label={variant.label}
       >
-        {configuration.buttonIcon}
+        {disabled ? null : configuration.buttonIcon}
       </motion.button>
       <div className={styles.information}>
         <span className={styles.or}>{t("Or")} </span>

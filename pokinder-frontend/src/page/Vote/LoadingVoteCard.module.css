@@ -1,0 +1,98 @@
+.container {
+  position: relative;
+  height: max-content;
+}
+
+.background {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  background-color: var(--foreground-color);
+  border-radius: var(--border-radius-XL);
+  z-index: -1;
+}
+
+.image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image > div {
+  width: 80%;
+  height: 80%;
+  background-color: var(--neutral-low);
+}
+
+.content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-L);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-M);
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-S);
+}
+
+.name {
+  width: 100px;
+  height: 32px;
+  background-color: var(--neutral-low);
+}
+
+.path {
+  width: 70px;
+  height: 32px;
+  background-color: var(--neutral-low);
+}
+
+.types {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-M);
+}
+
+.type {
+  width: 100px;
+  height: 29px;
+  background-color: var(--neutral-low);
+}
+
+.parents {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-M);
+}
+
+.parent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-M);
+}
+
+.parentName {
+  width: 40px;
+  height: 24px;
+  background-color: var(--neutral-low);
+}
+
+.credit {
+  width: 70px;
+  height: 16px;
+  background-color: var(--neutral-low);
+  margin-bottom: 8px;
+}

@@ -7,6 +7,7 @@ import { addVote, drawFusions } from "../../api/pokinder";
 import VoteButton from "../../component/atom/VoteButton/VoteButton";
 import Page from "../../component/organism/Page/Page";
 
+import LoadingVoteCard from "./LoadingVoteCard";
 import styles from "./Vote.module.css";
 import VoteCard from "./VoteCard";
 
@@ -64,11 +65,6 @@ function Vote() {
 
   // Apply vote when animation is complete.
   async function onVote() {
-    if (fusions.length === 0) {
-      // The onVote is called before fetch the first time.
-      return;
-    }
-
     const previousFusion = carouselFusions[absoluteIndex - 1 - relativeIndex];
 
     setCarouselFusions([...carouselFusions.slice(1), fusions[0]]);
@@ -99,7 +95,7 @@ function Vote() {
   const {
     refetch: refetchFusions,
     isFetching,
-    //isLoading,
+    isLoading,
     isError,
   } = useQuery(["fusions"], drawNewFusions, { refetchOnWindowFocus: false });
 
@@ -117,15 +113,37 @@ function Vote() {
   // Non animated offest to move cards back during unstacking.
   const relativeOffset = -1 * relativeIndex * CARD_SPACE;
 
-  if (isError) {
-    return <p>The API is down for the moment, sorry for the inconvenience.</p>;
-  }
+  function renderContent() {
+    if (isError) {
+      return <p>The API is down for the moment, sorry for the inconvenience.</p>;
+    }
 
-  return (
-    <Page>
+    if (isLoading) {
+      return (
+        <div className={`${styles.container} ${styles.loading}`}>
+          <div className={styles.votes}>
+            <LoadingVoteCard hidden />
+            <LoadingVoteCard hidden />
+            <LoadingVoteCard hidden />
+            <LoadingVoteCard hasFocus />
+            <LoadingVoteCard />
+            <LoadingVoteCard />
+            <LoadingVoteCard />
+          </div>
+          <div className={styles.buttons}>
+            <VoteButton variant="downvote" disabled />
+            <VoteButton variant="favorite" disabled />
+            <VoteButton variant="upvote" disabled />
+          </div>
+        </div>
+      );
+    }
+
+    return (
       <div className={styles.container}>
         <div style={{ transform: `translateX(${relativeOffset}px)` }}>
           <motion.div
+            initial={false}
             animate={{ x: absoluteOffset }}
             transition={transition}
             className={styles.votes}
@@ -147,8 +165,10 @@ function Vote() {
           <VoteButton variant="upvote" onClick={() => vote(0)} />
         </div>
       </div>
-    </Page>
-  );
+    );
+  }
+
+  return <Page>{renderContent()}</Page>;
 }
 
 export default Vote;

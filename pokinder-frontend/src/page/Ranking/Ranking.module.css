@@ -1,3 +1,14 @@
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.loading {
+  opacity: 0.5;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;

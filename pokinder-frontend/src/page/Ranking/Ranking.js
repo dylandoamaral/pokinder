@@ -5,10 +5,12 @@ import { useAfterEffect } from "../../hook/useAfterEffect";
 
 import { getRanking } from "../../api/pokinder";
 
+import Loader from "../../component/atom/Loader/Loader";
 import FilterPanel from "../../component/organism/FilterPanel/FilterPanel";
 import Page from "../../component/organism/Page/Page";
 
 import { queryClient } from "../..";
+import LoadingRankingCard from "./LoadingRankingCard";
 import styles from "./Ranking.module.css";
 import RankingCard from "./RankingCard";
 
@@ -22,7 +24,7 @@ function Ranking() {
 
   const [filters, setFilters] = useState(initFilters);
 
-  const { data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+  const { data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
     useInfiniteQuery({
       queryKey: ["ranking"],
       queryFn: ({ pageParam }) => {
@@ -58,17 +60,41 @@ function Ranking() {
     fetchNextPage();
   }
 
+  function renderContent() {
+    if (isError) {
+      return <p>The API is down for the moment, sorry for the inconvenience.</p>;
+    }
+
+    if (isLoading) {
+      return (
+        <div className={`${styles.wrapper} ${styles.loading}`}>
+          <FilterPanel initFilters={initFilters} currentFilters={filters} setFilters={setFilters} />
+          <div className={styles.container}>
+            {Array.from({ length: 20 }, (_, index) => (
+              <LoadingRankingCard key={index} />
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className={styles.wrapper}>
+        <FilterPanel initFilters={initFilters} currentFilters={filters} setFilters={setFilters} />
+        <div className={styles.container}>{drawRankings()}</div>
+        <Loader loading={isFetchingNextPage} />
+      </div>
+    );
+  }
+
   return (
     <Page
       name="Community ranking"
       description="Discover the Most Beloved Pokémon Infinite Fusion Sprites Voted by the Community."
-      overflow="scroll"
+      overflow={isLoading ? "hidden" : "scroll"}
       onScrollFinish={onScrollFinish}
     >
-      <div className={styles.wrapper}>
-        <FilterPanel initFilters={initFilters} currentFilters={filters} setFilters={setFilters} />
-        <div className={styles.container}>{drawRankings()}</div>
-      </div>
+      {renderContent()}
     </Page>
   );
 }
