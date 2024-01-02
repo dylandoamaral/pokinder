@@ -8,6 +8,11 @@
   "Cancel": "Annuler",
   "Apply filters": "Appliquer les filtres",
 
+  "Page not found": "Page introuvable",
+  "Vote history": "Historique des votes",
+  "Community ranking": "Classement de la communauté",
+  "The API is down for the moment, sorry for the inconvenience.": "Le serveur ne répond pas pour le moment, escusez nous pour la gène occasionnée.",
+
   "Not found message one": "Ah, mon cher jeune Dresseur, il semble que tu t'es égaré de ton chemin prévu dans ce vaste monde des Pokémon ! Mais ne crains rien, car de tels moments conduisent souvent à des découvertes inattendues.",
   "Not found message two": "Pourquoi ne pas envisager d'<1>explorer la page des Votes</1> ? Là-bas, tu peux contribuer à compléter ton Pokédex en votant pour et en apprenant sur différentes espèces de Pokémon. De plus, tu peux <3>consulter ton historique du Pokédex</3>, et voir tes rencontres passées, t'aidant dans ta quête continue pour devenir un Maître Pokémon.",
   "Not found message three": "Accueille ces détours, car ils enrichissent souvent ton voyage et te rapprochent de l'accomplissement de ton objectif. Continue d'explorer, continue d'apprendre, et ton aventure s'épanouira !",
@@ -38,6 +43,15 @@
   "Ash": "Sacha",
   "ash@pokemon.com": "sacha@pokemon.com",
 
+  "The session is invalid, reconnect": "La session est invalide, veuillez vous reconnecter",
+  "The session is expired, reconnect": "La session a expiré, veuillez vous reconnecter",
+  "An unexpected error happened": "Une erreur innattendue est arrivé",
+  "The resource is not found": "La ressource n'est pas trouvable",
+  "The username already exists": "Le nom d'utilisateur existe déjà",
+  "The email already exists": "L'adresse mail existe déjà",
+  "The account ID already exists": "L'identifiant de compte existe déjà",
+  "Can't communicate with the server": "Le serveur est injoignable",
+
   "Downvote": "Downvote",
   "Favorite": "Favoris",
   "Upvote": "Upvote",
@@ -49,6 +63,7 @@
 
   "Pokemon head": "Tête du Pokémon",
   "Pokemon body": "Corp du Pokémon",
+  "Vote type": "Type de vote",
   "Vote types": "Types de vote",
   "Voted": "Voté",
   "N Vote_one": "{{count}} vote",
@@ -79,9 +94,9 @@
 
   "Specials": "Speciales",
   "All": "Tous",
-  "Legendaries": "Légendaires",
-  "Mythicals": "Fabuleux",
-  "Starters": "Starters",
+  "Legendary": "Légendaire",
+  "Mythical": "Fabuleux",
+  "Starter": "Starter",
   "Pokemons": "Pokémons",
 
   "Bulbasaur": "Bulbizarre",

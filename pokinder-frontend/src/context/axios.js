@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 
 import { useAuthentication } from "../hook/useAuthentication";
@@ -9,6 +10,7 @@ import { refresh } from "../api/pokinder";
 import { convertResponseToMessage } from "../data/errors";
 
 function AxiosErrorHandler({ children }) {
+  const { t } = useTranslation();
   const { refreshToken, setToken, setRefreshToken, disconnect } = useAuthentication();
 
   useEffect(() => {
@@ -26,7 +28,6 @@ function AxiosErrorHandler({ children }) {
             return http.instance(error.response.config);
           })
           .catch((error2) => {
-            console.log(error2);
             disconnect();
             return Promise.reject(error2);
           });
@@ -40,12 +41,12 @@ function AxiosErrorHandler({ children }) {
       // Handle toast
       if (isUserError) {
         const message = convertResponseToMessage(error.response);
-        toast.warning(message, { toastId: message });
+        toast.warning(t(message), { toastId: message });
       } else if (isServerError) {
         const message = convertResponseToMessage(error.response);
-        toast.error(message, { toastId: message });
+        toast.error(t(message), { toastId: message });
       } else if (error.code === "ERR_NETWORK") {
-        toast.error("Can't communicate with the server", {
+        toast.error(t("Can't communicate with the server"), {
           toastId: 1,
         });
       }
@@ -56,7 +57,7 @@ function AxiosErrorHandler({ children }) {
     return () => {
       http.instance.interceptors.response.eject(interceptor);
     };
-  }, [refreshToken, setToken, setRefreshToken, disconnect]);
+  }, [refreshToken, setToken, setRefreshToken, disconnect, t]);
 
   return children;
 }

@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useMutation, useQuery } from "react-query";
 
 import { addVote, drawFusions } from "../../api/pokinder";
@@ -24,6 +25,8 @@ function Vote() {
   const CARD_SPACE = 290 + 16;
   // The space between two wards.
   const MILLISECONDS_BETWEEN_VOTES = 250;
+
+  const { t } = useTranslation();
 
   const [lastVoteTime, setLastVoteTime] = useState(new Date().getTime());
   const [voteType, setVoteType] = useState(0);
@@ -115,7 +118,7 @@ function Vote() {
 
   function renderContent() {
     if (isError) {
-      return <p>The API is down for the moment, sorry for the inconvenience.</p>;
+      return <p>{t("The API is down for the moment, sorry for the inconvenience.")}</p>;
     }
 
     if (isLoading) {

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useInfiniteQuery } from "react-query";
 
 import { useAfterEffect } from "../../hook/useAfterEffect";
@@ -15,6 +16,8 @@ import styles from "./Ranking.module.css";
 import RankingCard from "./RankingCard";
 
 function Ranking() {
+  const { t } = useTranslation();
+
   const POKEMON_PER_PAGES = 20;
 
   const initFilters = {
@@ -62,7 +65,7 @@ function Ranking() {
 
   function renderContent() {
     if (isError) {
-      return <p>The API is down for the moment, sorry for the inconvenience.</p>;
+      return <p>{t("The API is down for the moment, sorry for the inconvenience.")}</p>;
     }
 
     if (isLoading) {
@@ -89,7 +92,7 @@ function Ranking() {
 
   return (
     <Page
-      name="Community ranking"
+      name={t("Community ranking")}
       description="Discover the Most Beloved Pokémon Infinite Fusion Sprites Voted by the Community."
       overflow={isLoading ? "hidden" : "scroll"}
       onScrollFinish={onScrollFinish}
