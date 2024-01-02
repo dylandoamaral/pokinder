@@ -88,7 +88,12 @@ function Pokedex() {
     const pages = data?.pages.map((page) => page.records) || [];
     const votes = pages.flat();
 
-    if (votes.length === 0) {
+    // Usefull when user filter everything to avoid showing Oak.
+    if (votes.length > 0) {
+      localStorage.setItem("pokinderHasVoted", "yes");
+    }
+
+    if (votes.length === 0 && localStorage.getItem("pokinderHasVoted") === null) {
       return (
         <Oak>
           <p>
