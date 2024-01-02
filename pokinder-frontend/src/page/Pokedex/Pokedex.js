@@ -69,7 +69,7 @@ function Pokedex() {
 
   function renderContent() {
     if (isError) {
-      return <p>The API is down for the moment, sorry for the inconvenience.</p>;
+      return <p>{t("The API is down for the moment, sorry for the inconvenience.")}</p>;
     }
 
     if (isLoading) {
@@ -122,7 +122,7 @@ function Pokedex() {
 
   return (
     <Page
-      name="Vote history"
+      name={t("Vote history")}
       overflow={isLoading ? "hidden" : "scroll"}
       onScrollFinish={onScrollFinish}
     >

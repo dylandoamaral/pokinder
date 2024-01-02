@@ -10,7 +10,7 @@ function NotFound() {
   const { t } = useTranslation();
 
   return (
-    <Page name="Page not found">
+    <Page name={t("Page not found")}>
       <Oak>
         <p>
           <Trans t={t} i18nKey="Not found message one">

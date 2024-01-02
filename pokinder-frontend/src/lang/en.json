@@ -8,6 +8,11 @@
   "Cancel": "Cancel",
   "Apply filters": "Apply filters",
 
+  "Page not found": "Page not found",
+  "Vote history": "Vote history",
+  "Community ranking": "Community ranking",
+  "The API is down for the moment, sorry for the inconvenience.": "The API is down for the moment, sorry for the inconvenience.",
+
   "Not found message one": "Ah, my dear young Trainer, it appears you've diverged from your intended path in this expansive world of Pokémon! But fear not, for such moments often lead to unexpected discoveries.",
   "Not found message two": "Why not consider <1>exploring the Vote Page</1>? There, you can contribute to completing your Pokédex by voting for and learning about various Pokémon species. Additionally, <3>reviewing your Pokédex history</3> might unveil past encounters and discoveries, aiding you on your ongoing quest to become a Pokémon Master.",
   "Not found message three": "Embrace these detours, for they often enrich your journey and bring you closer to achieving your goal. Keep exploring, keep learning, and your adventure shall flourish!",
@@ -38,6 +43,15 @@
   "Ash": "Ash",
   "ash@pokemon.com": "ash@pokemon.com",
 
+  "The session is invalid, reconnect": "The session is invalid, reconnect",
+  "The session is expired, reconnect": "The session is expired, reconnect",
+  "An unexpected error happened": "An unexpected error happened",
+  "The resource is not found": "The resource is not found",
+  "The username already exists": "The username already exists",
+  "The email already exists": "The email already exists",
+  "The account ID already exists": "The account ID already exists",
+  "Can't communicate with the server": "Can't communicate with the server",
+
   "Downvote": "Downvote",
   "Favorite": "Favorite",
   "Upvote": "Upvote",
@@ -49,6 +63,7 @@
 
   "Pokemon head": "Pokemon head",
   "Pokemon body": "Pokemon body",
+  "Vote type": "Vote type",
   "Vote types": "Vote types",
   "Voted": "Voted",
   "N Vote_one": "{{count}} vote",
@@ -79,8 +94,8 @@
 
   "Specials": "Specials",
   "All": "All",
-  "Legendaries": "Legendaries",
-  "Mythicals": "Mythicals",
-  "Starters": "Starters",
+  "Legendary": "Legendary",
+  "Mythical": "Mythical",
+  "Starter": "Starter",
   "Pokemons": "Pokemons"
 }

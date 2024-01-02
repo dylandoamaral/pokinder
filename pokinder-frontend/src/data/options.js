@@ -2,9 +2,9 @@ import { allPokemonNames } from "../utils/pokemon";
 
 const specialOptions = [
   { value: "All", label: "All" },
-  { value: "Legendary", label: "Legendaries" },
-  { value: "Mythical", label: "Mythicals" },
-  { value: "Starter", label: "Starters" },
+  { value: "Legendary", label: "Legendary" },
+  { value: "Mythical", label: "Mythical" },
+  { value: "Starter", label: "Starter" },
 ];
 
 const pokemonOptions = allPokemonNames().map((name) => ({

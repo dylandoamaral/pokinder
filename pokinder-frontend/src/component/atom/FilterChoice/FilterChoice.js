@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 import styles from "./FilterChoice.module.css";
 
 function FilterChoice({ category, operator, value, onClick }) {
+  const { t } = useTranslation();
+
   return (
     <motion.button
       animate={{ opacity: 1 }}
@@ -11,7 +14,7 @@ function FilterChoice({ category, operator, value, onClick }) {
       className={styles.container}
       onClick={onClick}
     >
-      {category} {operator} {value} X
+      {t(category)} {operator} {t(value)} X
     </motion.button>
   );
 }
