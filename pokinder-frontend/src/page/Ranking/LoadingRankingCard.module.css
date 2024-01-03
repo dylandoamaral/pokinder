@@ -18,7 +18,7 @@
   height: 54px;
   width: 54px;
 
-  background-color: var(--neutral-medium);
+  background-color: var(--neutral-high);
   border-radius: var(--border-radius-M);
 
   z-index: -1;
@@ -49,13 +49,13 @@
 .name {
   width: 70px;
   height: 18px;
-  background-color: var(--neutral-low);
+  background-color: var(--neutral-medium);
 }
 
 .path {
   width: 55px;
   height: 14px;
-  background-color: var(--neutral-low);
+  background-color: var(--neutral-medium);
 }
 
 .data {
@@ -76,13 +76,13 @@
 .score {
   width: 70px;
   height: 26px;
-  background-color: var(--neutral-low);
+  background-color: var(--neutral-medium);
 }
 
 .count {
   width: 60px;
   height: 16px;
-  background-color: var(--neutral-low);
+  background-color: var(--neutral-medium);
 }
 
 .sprite {
@@ -100,7 +100,7 @@
 .sprite > div {
   width: 60%;
   height: 60%;
-  background-color: var(--neutral-low);
+  background-color: var(--neutral-medium);
 }
 
 @media (max-width: 860px) {
