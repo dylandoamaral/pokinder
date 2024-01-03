@@ -29,6 +29,15 @@ export const findLanguageName = (iso) => {
   return "English";
 };
 
+export const findLanguageIso = (lang) => {
+  for (const language of languages) {
+    if (language.lang === lang) return language.iso;
+  }
+
+  return "en";
+};
+
+
 export const initInternationalization = () => {
   const resources = loadResources();
 

@@ -33,6 +33,8 @@
   left: 27px;
   height: 58px;
   width: 58px;
+
+  transition: background-color 0.2s;
 }
 
 .rank_title {
@@ -68,7 +70,7 @@
 
 .path {
   font-size: var(--font-size-XS);
-  color: var(--neutral-medium);
+  color: var(--neutral-high);
 }
 
 .data {

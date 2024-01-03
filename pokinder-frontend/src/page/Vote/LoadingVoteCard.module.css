@@ -22,7 +22,7 @@
 .image > div {
   width: 80%;
   height: 80%;
-  background-color: var(--neutral-low);
+  background-color: var(--neutral-medium);
 }
 
 .content {
@@ -50,13 +50,13 @@
 .name {
   width: 100px;
   height: 32px;
-  background-color: var(--neutral-low);
+  background-color: var(--neutral-medium);
 }
 
 .path {
   width: 70px;
   height: 32px;
-  background-color: var(--neutral-low);
+  background-color: var(--neutral-medium);
 }
 
 .types {
@@ -68,7 +68,7 @@
 .type {
   width: 100px;
   height: 29px;
-  background-color: var(--neutral-low);
+  background-color: var(--neutral-medium);
 }
 
 .parents {
@@ -87,12 +87,12 @@
 .parentName {
   width: 40px;
   height: 24px;
-  background-color: var(--neutral-low);
+  background-color: var(--neutral-medium);
 }
 
 .credit {
   width: 70px;
   height: 16px;
-  background-color: var(--neutral-low);
+  background-color: var(--neutral-medium);
   margin-bottom: 8px;
 }

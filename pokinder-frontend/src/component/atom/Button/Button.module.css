@@ -67,7 +67,7 @@
 }
 
 .filled.foreground:disabled {
-  background-color: var(--neutral-low);
+  background-color: var(--neutral-medium);
   color: var(--neutral-lower);
   cursor: not-allowed;
 }
@@ -84,7 +84,7 @@
 
 .text.foreground {
   background: none;
-  color: var(--neutral-higher);
+  color: var(--font-foreground-color);
 }
 
 .text.foreground:hover {
