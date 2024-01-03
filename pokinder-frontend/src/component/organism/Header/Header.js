@@ -14,7 +14,10 @@ import styles from "./Header.module.css";
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
 
+import { useTheme } from "../../../hook/useTheme";
+
 function Header() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const { isUser, username, disconnect } = useAuthentication();
 
@@ -30,7 +33,7 @@ function Header() {
           <FaArrowRightFromBracket className={styles.quit} onClick={disconnect} />
         </div>
       );
-    else return <Button title={t("Log In")} onClick={toggleLoginModal} />;
+    else return <Button foreground={theme !== "pokeball"} title={t("Log In")} onClick={toggleLoginModal} />;
   }
 
   return (

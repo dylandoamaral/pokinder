@@ -5,7 +5,7 @@
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
   color: var(--font-background-color);
   opacity: 0.7;
   cursor: pointer;

@@ -18,15 +18,15 @@
 
 .item:hover {
   background-color: var(--primary-high);
-  color: var(--neutral-lowest);
+  color: var(--neutral-lower);
 }
 
 .selected {
   background-color: var(--primary-medium);
-  color: var(--neutral-lowest);
+  color: var(--neutral-lower);
 }
 
 .selected:hover {
   background-color: var(--primary-high);
-  color: var(--neutral-lowest);
+  color: var(--neutral-lower);
 }

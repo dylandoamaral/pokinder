@@ -24,6 +24,7 @@ function Select({ options, onChange, defaultValue }) {
       options={translatedOptions}
       onChange={onChange}
       defaultValue={defaultValue || translatedOptions[0].options[0]}
+      classNamePrefix="select"
     />
   );
 }

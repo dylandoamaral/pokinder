@@ -1,7 +1,13 @@
 import Picture from "../Picture/Picture";
 
+import { useTheme } from "../../../hook/useTheme";
+
 function Logo({ className }) {
-  return <Picture className={className} src="./icon.png" height={24} width={24} alt="logo" />;
+  const { theme } = useTheme();
+
+  return (
+    <Picture className={className} src={`./ball/${theme}.svg`} height={24} width={24} alt="logo" />
+  );
 }
 
 export default Logo;

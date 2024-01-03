@@ -1,20 +1,4 @@
 :root {
-  --ok-color: #008000;
-  --ko-color: #c42833;
-
-  --downvote-color: #c42833;
-  --favorite-color: #eda756;
-  --upvote-color: #5285ea;
-
-  --primary-medium: #e13d48;
-  --primary-high: #c42833;
-
-  --neutral-lower: #ffffff;
-  --neutral-low: #cbd5e1;
-  --neutral-medium: #94a3b8;
-  --neutral-high: #475569;
-  --neutral-higher: #09090b;
-
   --spacing-S: 4px;
   --spacing-M: 8px;
   --spacing-L: 16px;
@@ -44,12 +28,85 @@
   --line-height-2XL: 2rem;
   --font-size-3XL: 1.875rem;
   --flineont-height-3XL: 2.25rem;
+}
+
+:root[theme="pokeball"] {
+  --ok-color: #008000;
+  --ko-color: #c42833;
+
+  --downvote-color: #c42833;
+  --favorite-color: #eda756;
+  --upvote-color: #5285ea;
+
+  --primary-medium: #e13d48;
+  --primary-high: #c42833;
+
+  --neutral-lower: #ffffff;
+  --neutral-low: #cbd5e1;
+  --neutral-medium: #94a3b8;
+  --neutral-high: #475569;
+  --neutral-higher: #09090b;
 
   --background-color: var(--primary-medium);
   --foreground-color: var(--neutral-lower);
   --font-background-color: var(--neutral-lower);
   --font-foreground-color: var(--neutral-higher);
+  --input-background-color: var(--neutral-lower);
   --border-color: var(--neutral-medium);
+}
+
+:root[theme="superball"] {
+  --ok-color: #008000;
+  --ko-color: #c42833;
+
+  --downvote-color: #c42833;
+  --favorite-color: #eda756;
+  --upvote-color: #5285ea;
+
+  --primary-medium: #0178c8;
+  --primary-high: #0262a6;
+
+  --neutral-lower: #ffffff;
+  --neutral-low: #e5e9ee;
+  --neutral-medium: #94a3b8;
+  --neutral-high: #475569;
+  --neutral-higher: #09090b;
+
+  --background-color: var(--neutral-low);
+  --foreground-color: var(--neutral-lower);
+  --font-background-color: var(--neutral-higher);
+  --font-foreground-color: var(--neutral-higher);
+  --input-background-color: var(--neutral-lower);
+  --border-color: var(--neutral-medium);
+}
+
+:root[theme="hyperball"] {
+  --ok-color: #008000;
+  --ko-color: #c42833;
+
+  --downvote-color: #c42833;
+  --favorite-color: #eda756;
+  --upvote-color: #5285ea;
+
+  --primary-medium: #e7b90b;
+  --primary-high: #c79007;
+
+  --neutral-lower: #2c2c45;
+  --neutral-low: #383754;
+  --neutral-medium: #64647e;
+  --neutral-high: #94a3b8;
+  --neutral-higher: #ffffff;
+
+  --background-color: var(--neutral-low);
+  --foreground-color: var(--neutral-lower);
+  --font-background-color: var(--neutral-higher);
+  --font-foreground-color: var(--neutral-higher);
+  --input-background-color: var(--neutral-low);
+  --border-color: var(--neutral-medium);
+}
+
+* {
+  transition: background-color 0.2s;
 }
 
 body {
@@ -65,6 +122,48 @@ body {
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+.popup-arrow {
+  color: var(--foreground-color);
+}
+
+.select__control {
+  cursor: pointer !important;
+  background-color: var(--input-background-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+.select__control--is-focused {
+  border-color: var(--font-foreground-color) !important;
+  box-shadow: 0 0 0 1px var(--font-foreground-color) !important;
+}
+
+.select__input {
+  color: var(--font-foreground-color) !important;
+}
+
+.select__single-value {
+  color: var(--font-foreground-color) !important;
+}
+
+.select__menu {
+  background-color: var(--input-background-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+.select__option {
+  cursor: pointer !important;
+}
+
+.select__option--is-selected {
+  background-color: var(--primary-high) !important;
+  color: #FFF !important;
+}
+
+.select__option--is-focused {
+  background-color: var(--primary-medium) !important;
+  color: #FFF !important;
 }
 
 @media (max-width: 800px) {
