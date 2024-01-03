@@ -1,3 +1,10 @@
-const themes = ["pokeball", "superball", "hyperball"];
+export function isThemeLight(theme) {
+  switch (theme) {
+    case "hyperball":
+      return false;
+    default:
+      return true;
+  }
+}
 
-export default themes;
+export const themes = ["pokeball", "superball", "hyperball"];
