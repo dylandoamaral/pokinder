@@ -158,12 +158,12 @@ code {
 
 .select__option--is-selected {
   background-color: var(--primary-high) !important;
-  color: #FFF !important;
+  color: #fff !important;
 }
 
 .select__option--is-focused {
   background-color: var(--primary-medium) !important;
-  color: #FFF !important;
+  color: #fff !important;
 }
 
 @media (max-width: 800px) {
