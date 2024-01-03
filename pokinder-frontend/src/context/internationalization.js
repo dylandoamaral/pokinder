@@ -37,7 +37,6 @@ export const findLanguageIso = (lang) => {
   return "en";
 };
 
-
 export const initInternationalization = () => {
   const resources = loadResources();
 

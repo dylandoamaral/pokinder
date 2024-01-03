@@ -1,30 +1,36 @@
 import { useTranslation } from "react-i18next";
 import { CgPokemon } from "react-icons/cg";
 import { DiGitBranch } from "react-icons/di";
+import { FaPalette } from "react-icons/fa";
 import { IoLanguageOutline } from "react-icons/io5";
 import { LiaGithub } from "react-icons/lia";
-import { FaPalette } from "react-icons/fa";
 
-import { findLanguageName, languages, findLanguageIso } from "../../../context/internationalization";
+import { useTheme } from "../../../hook/useTheme";
+
+import themes from "../../../data/themes";
+
+import {
+  findLanguageIso,
+  findLanguageName,
+  languages,
+} from "../../../context/internationalization";
 import styles from "./Footer.module.css";
 import FooterButton from "./FooterButton";
 import FooterChoiceButton from "./FooterChoiceButton";
-import { useTheme } from "../../../hook/useTheme";
-import themes from "../../../data/themes";
 
 function Footer() {
   const { t, i18n } = useTranslation();
   const { theme, setTheme } = useTheme();
 
   function changeLanguage(lang) {
-    const iso = findLanguageIso(lang)
+    const iso = findLanguageIso(lang);
     localStorage.setItem("pokinderLang", iso);
     i18n.changeLanguage(iso);
   }
 
   function changeTheme(theme) {
     localStorage.setItem("pokinderTheme", theme);
-    setTheme(theme)
+    setTheme(theme);
   }
 
   return (
@@ -42,12 +48,7 @@ function Footer() {
           </FooterButton>
         </div>
         <div className={styles.right}>
-          <FooterChoiceButton
-            name={theme}
-            choices={themes}
-            current={theme}
-            onClick={changeTheme}
-          >
+          <FooterChoiceButton name={theme} choices={themes} current={theme} onClick={changeTheme}>
             <FaPalette />
           </FooterChoiceButton>
           <FooterChoiceButton

@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
 
 import { useAuthentication } from "../../../hook/useAuthentication";
+import { useTheme } from "../../../hook/useTheme";
 import useToggle from "../../../hook/useToggle";
 
 import { navlinks } from "../../../data/navlinks";
@@ -13,8 +14,6 @@ import Sidebar from "../../molecule/Sidebar/Sidebar";
 import styles from "./Header.module.css";
 import LoginModal from "./LoginModal";
 import SignupModal from "./SignupModal";
-
-import { useTheme } from "../../../hook/useTheme";
 
 function Header() {
   const { theme } = useTheme();
@@ -33,7 +32,10 @@ function Header() {
           <FaArrowRightFromBracket className={styles.quit} onClick={disconnect} />
         </div>
       );
-    else return <Button foreground={theme !== "pokeball"} title={t("Log In")} onClick={toggleLoginModal} />;
+    else
+      return (
+        <Button foreground={theme !== "pokeball"} title={t("Log In")} onClick={toggleLoginModal} />
+      );
   }
 
   return (

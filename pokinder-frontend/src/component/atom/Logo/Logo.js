@@ -1,6 +1,6 @@
-import Picture from "../Picture/Picture";
-
 import { useTheme } from "../../../hook/useTheme";
+
+import Picture from "../Picture/Picture";
 
 function Logo({ className }) {
   const { theme } = useTheme();
