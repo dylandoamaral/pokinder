@@ -7,7 +7,7 @@ import { LiaGithub } from "react-icons/lia";
 
 import { useTheme } from "../../../hook/useTheme";
 
-import themes from "../../../data/themes";
+import { themes } from "../../../data/themes";
 
 import {
   findLanguageIso,
