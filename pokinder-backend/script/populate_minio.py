@@ -35,19 +35,21 @@ def import_sprites(bucket_name, source_path, condition):
 
     fusion_path = source_path
     for filename in os.listdir(fusion_path):
-        if is_object_exists(bucket_name, filename):
-            print(f"Ignore {filename}.")
-            continue
         if condition(filename):
             try:
-                webp_filename = convert_extendion_to_webp(filename)
+                webp_filename = convert_extension_to_webp(filename)
                 file_path = os.path.join(fusion_path, filename)
                 webp_path = convert_png_to_webp(file_path, webp_filename)
-                client.fput_object(bucket_name, webp_filename, webp_path)
+
+                if is_object_exists(bucket_name, webp_filename):
+                    client.remove_object(bucket_name, webp_filename)
+
                 client.fput_object(
                     bucket_name,
-                    convert_extendion_to_webp(webp_filename, "-144px"),
-                    convert_extendion_to_webp(webp_path, "-144px"),
+                    webp_filename,
+                    webp_path,
+                    content_type="image/webp",
+                    metadata={"Cache-Control": "max-age=2592000"},  # One month
                 )
             except Exception:
                 print(f"Failed to export {filename}.")
@@ -62,13 +64,11 @@ def convert_png_to_webp(path, webp_filename):
     with Image.open(path) as png_image:
         webp_image = png_image.convert("RGBA")
         webp_path = os.path.join(temp_webp_dir, webp_filename)
-        webp_path_144 = convert_extendion_to_webp(webp_path, "-144px")
         webp_image.save(webp_path, format="WEBP")
-        webp_image.resize((144, 144)).save(webp_path_144, format="WEBP")
         return webp_path
 
 
-def convert_extendion_to_webp(name, append=""):
+def convert_extension_to_webp(name, append=""):
     return os.path.splitext(name)[0] + append + ".webp"
 
 
