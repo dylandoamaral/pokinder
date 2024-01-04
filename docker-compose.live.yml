@@ -70,6 +70,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=heart"
+      - "traefik.http.middlewares.pokinder-frontend.compress=true"
+      - "traefik.http.routers.pokinder-frontend.middlewares=pokinder-frontend"
       - "traefik.http.routers.pokinder-backend.rule=Host(`api.pokinder.com`)"
       - "traefik.http.routers.pokinder-backend.entrypoints=websecure"
       - "traefik.http.routers.pokinder-backend.tls.certresolver=myresolver"
