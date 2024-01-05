@@ -6,13 +6,11 @@ export const ThemeProvider = ({ children }) => {
   const tokenKey = "pokinderTheme";
 
   function retrieveTheme() {
+    const prefereDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    const defaultTheme = prefereDark ? "hyperball" : "pokeball"
     const token = localStorage.getItem(tokenKey);
 
-    if (token === null || token === "pokeball") {
-      return "pokeball";
-    } else {
-      return token;
-    }
+    return token || defaultTheme
   }
 
   const [theme, setTheme] = useState(retrieveTheme());
