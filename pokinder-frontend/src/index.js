@@ -15,7 +15,6 @@ import { AuthenticationProvider } from "./context/authentication";
 import AxiosErrorHandler from "./context/axios";
 import { initInternationalization } from "./context/internationalization";
 import { ThemeProvider } from "./context/theme";
-import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
