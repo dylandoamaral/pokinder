@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createRef } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useInfiniteQuery } from "react-query";
 import { Link } from "react-router-dom";
@@ -21,6 +22,8 @@ import PokedexCard from "./PokedexCard";
 function Pokedex() {
   const { t } = useTranslation();
   const { token } = useAuthentication();
+
+  const scrollRef = createRef();
 
   const POKEMON_PER_PAGES = 30;
 
@@ -45,14 +48,17 @@ function Pokedex() {
         if (lastPage.records.length < POKEMON_PER_PAGES) return false;
         return lastPage.previousOffset + POKEMON_PER_PAGES;
       },
+      staleTime: 10 * 60 * 1000,
+      cacheTime: 0,
     });
 
   useAfterEffect(() => {
+    scrollRef.current.scrollTop = 0;
     queryClient.setQueryData(["history"], (data) => ({
-      pages: data?.pages.slice(0, 1) || [],
+      pages: data.pages.slice(0, 1),
       pageParams: data.pageParams.slice(0, 1),
     }));
-    refetch();
+    refetch({ pageParam: 0 });
   }, [token, filters, refetch]);
 
   const drawCards = (votes) => {
@@ -128,8 +134,9 @@ function Pokedex() {
   return (
     <Page
       name={t("Vote history")}
-      overflow={isLoading ? "hidden" : "scroll"}
+      overflow={"scroll"}
       onScrollFinish={onScrollFinish}
+      scrollRef={scrollRef}
     >
       {renderContent()}
     </Page>
