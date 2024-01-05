@@ -17,13 +17,14 @@ function Select({ options, onChange, defaultValue }) {
   }
 
   const translatedOptions = getTranslatedOptions();
+  const translatedDefaultValue = { label: t(defaultValue.label), value: defaultValue.value }
 
   return (
     <BaseSelect
       className={styles.container}
       options={translatedOptions}
       onChange={onChange}
-      defaultValue={defaultValue || translatedOptions[0].options[0]}
+      defaultValue={translatedDefaultValue || translatedOptions[0].options[0]}
       classNamePrefix="select"
     />
   );
