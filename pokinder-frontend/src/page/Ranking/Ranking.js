@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useInfiniteQuery } from "react-query";
 
@@ -17,6 +18,8 @@ import RankingCard from "./RankingCard";
 
 function Ranking() {
   const { t } = useTranslation();
+
+  const scrollRef = createRef();
 
   const POKEMON_PER_PAGES = 20;
 
@@ -41,11 +44,12 @@ function Ranking() {
     });
 
   useAfterEffect(() => {
+    scrollRef.current.scrollTop = 0;
     queryClient.setQueryData(["ranking"], (data) => ({
       pages: data.pages.slice(0, 1),
       pageParams: data.pageParams.slice(0, 1),
     }));
-    refetch();
+    refetch({ pageParam: 0 });
   }, [filters, refetch]);
 
   const drawRankings = () => {
@@ -94,8 +98,9 @@ function Ranking() {
     <Page
       name={t("Community ranking")}
       description="Discover the Most Beloved Pokémon Infinite Fusion Sprites Voted by the Community."
-      overflow={isLoading ? "hidden" : "scroll"}
+      overflow={"scroll"}
       onScrollFinish={onScrollFinish}
+      scrollRef={scrollRef}
     >
       {renderContent()}
     </Page>

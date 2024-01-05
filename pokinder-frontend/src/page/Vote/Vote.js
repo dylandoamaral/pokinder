@@ -100,7 +100,10 @@ function Vote() {
     isFetching,
     isLoading,
     isError,
-  } = useQuery(["fusions"], drawNewFusions, { refetchOnWindowFocus: false });
+  } = useQuery(["fusions"], drawNewFusions, {
+    staleTime: 60 * 60 * 1000,
+    cacheTime: 0,
+  });
 
   const { mutate: storeVote } = useMutation(async ({ fusionId, voteType }) => {
     addVote(fusionId, voteType);
