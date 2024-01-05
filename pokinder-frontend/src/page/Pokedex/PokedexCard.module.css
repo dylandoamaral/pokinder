@@ -58,9 +58,9 @@
     height: auto;
     width: auto;
     left: 0;
+    right: 0;
     top: var(--spacing-M);
     bottom: var(--spacing-M);
-    right: var(--spacing-L);
   }
 
   .content {
@@ -81,6 +81,7 @@
   }
 
   .link {
+    margin-left: var(--spacing-L);
     width: 104px !important;
     height: 104px !important;
   }
