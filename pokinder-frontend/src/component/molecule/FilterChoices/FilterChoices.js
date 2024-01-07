@@ -1,7 +1,5 @@
 import { AnimatePresence } from "framer-motion";
 
-import { deleteQueryParameter } from "../../../utils/url";
-
 import FilterChoice from "../../atom/FilterChoice/FilterChoice";
 import styles from "./FilterChoices.module.css";
 
@@ -44,15 +42,6 @@ function FilterChoices({ defaultFilters, currentFilters, setFilters }) {
     },
   };
 
-  function removeFilterChoice(key) {
-    if (window.history.pushState) {
-      const currentUrl = window.location.href;
-      const newUrl = deleteQueryParameter(currentUrl, key);
-      window.history.pushState({ path: newUrl }, "", newUrl);
-    }
-    setFilters({ ...currentFilters, [key]: defaultFilters[key] });
-  }
-
   function renderFilterChoice(key) {
     const category = translator[key].key || key;
     const value = translator[key].value || filterChoiceData[key];
@@ -63,7 +52,9 @@ function FilterChoices({ defaultFilters, currentFilters, setFilters }) {
         category={category}
         operator={translator[key].operator || "="}
         value={value}
-        onClick={() => removeFilterChoice(key)}
+        onClick={() => {
+          setFilters({ ...currentFilters, [key]: defaultFilters[key] });
+        }}
       />
     );
   }
