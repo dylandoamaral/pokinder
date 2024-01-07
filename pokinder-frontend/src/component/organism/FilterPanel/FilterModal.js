@@ -10,7 +10,7 @@ import Modal from "../../atom/Modal/Modal";
 import Select from "../../atom/Select/Select";
 import styles from "./FilterModal.module.css";
 
-function FilterModal({ initFilters, currentFilters, setFilters, isVisible, onClose }) {
+function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, onClose }) {
   const { t } = useTranslation();
   const [updatedFilters, setUpdatedFilters] = useState(currentFilters);
 
@@ -95,7 +95,7 @@ function FilterModal({ initFilters, currentFilters, setFilters, isVisible, onClo
           foreground
           nopadding
           onClick={() => {
-            setFilters(initFilters);
+            setFilters(defaultFilters);
             onClose();
           }}
         />

@@ -3,12 +3,12 @@ import { AnimatePresence } from "framer-motion";
 import FilterChoice from "../../atom/FilterChoice/FilterChoice";
 import styles from "./FilterChoices.module.css";
 
-function FilterChoices({ initFilters, currentFilters, setFilters }) {
+function FilterChoices({ defaultFilters, currentFilters, setFilters }) {
   function generateFilterChoiceData() {
     const filterChoiceData = {};
 
     for (const key in currentFilters) {
-      if (initFilters.hasOwnProperty(key) && initFilters[key] !== currentFilters[key]) {
+      if (defaultFilters.hasOwnProperty(key) && defaultFilters[key] !== currentFilters[key]) {
         filterChoiceData[key] = currentFilters[key];
       }
     }
@@ -53,7 +53,7 @@ function FilterChoices({ initFilters, currentFilters, setFilters }) {
         operator={translator[key].operator || "="}
         value={value}
         onClick={() => {
-          setFilters({ ...currentFilters, [key]: initFilters[key] });
+          setFilters({ ...currentFilters, [key]: defaultFilters[key] });
         }}
       />
     );
