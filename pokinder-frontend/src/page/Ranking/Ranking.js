@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { createRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useInfiniteQuery } from "react-query";
 
 import { useAfterEffect } from "../../hook/useAfterEffect";
+import useSearchParams from "../../hook/useSearchParams";
 
 import { getRanking } from "../../api/pokinder";
 
@@ -23,12 +23,13 @@ function Ranking() {
 
   const POKEMON_PER_PAGES = 20;
 
-  const initFilters = {
+  const defaultFilters = {
     headNameOrCategory: "All",
     bodyNameOrCategory: "All",
   };
 
-  const [filters, setFilters] = useState(initFilters);
+  const [paramsNotifier, newFilters, setFilters] = useSearchParams(defaultFilters);
+  const filters = { ...defaultFilters, ...newFilters };
 
   const { data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
     useInfiniteQuery({
@@ -50,7 +51,7 @@ function Ranking() {
       pageParams: data.pageParams.slice(0, 1),
     }));
     refetch({ pageParam: 0 });
-  }, [filters, refetch]);
+  }, [paramsNotifier, refetch]);
 
   const drawRankings = () => {
     const pages = data?.pages.map((page) => page.records) || [];
@@ -75,7 +76,11 @@ function Ranking() {
     if (isLoading) {
       return (
         <div className={`${styles.wrapper} ${styles.loading}`}>
-          <FilterPanel initFilters={initFilters} currentFilters={filters} setFilters={setFilters} />
+          <FilterPanel
+            defaultFilters={defaultFilters}
+            currentFilters={filters}
+            setFilters={setFilters}
+          />
           <div className={styles.container}>
             {Array.from({ length: 20 }, (_, index) => (
               <LoadingRankingCard key={index} />
@@ -87,7 +92,11 @@ function Ranking() {
 
     return (
       <div className={styles.wrapper}>
-        <FilterPanel initFilters={initFilters} currentFilters={filters} setFilters={setFilters} />
+        <FilterPanel
+          defaultFilters={defaultFilters}
+          currentFilters={filters}
+          setFilters={setFilters}
+        />
         <div className={styles.container}>{drawRankings()}</div>
         <Loader loading={isFetchingNextPage} />
       </div>

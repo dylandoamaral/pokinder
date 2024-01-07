@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { createRef } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useInfiniteQuery } from "react-query";
@@ -6,6 +5,7 @@ import { Link } from "react-router-dom";
 
 import { useAfterEffect } from "../../hook/useAfterEffect";
 import { useAuthentication } from "../../hook/useAuthentication";
+import useSearchParams from "../../hook/useSearchParams";
 
 import { getHistory } from "../../api/pokinder";
 
@@ -27,7 +27,7 @@ function Pokedex() {
 
   const POKEMON_PER_PAGES = 30;
 
-  const initFilters = {
+  const defaultFilters = {
     headNameOrCategory: "All",
     bodyNameOrCategory: "All",
     downvoteEnabled: true,
@@ -35,7 +35,8 @@ function Pokedex() {
     upvoteEnabled: true,
   };
 
-  const [filters, setFilters] = useState(initFilters);
+  const [paramsNotifier, newFilters, setFilters] = useSearchParams(defaultFilters);
+  const filters = { ...defaultFilters, ...newFilters };
 
   const { data, refetch, hasNextPage, fetchNextPage, isError, isLoading, isFetchingNextPage } =
     useInfiniteQuery({
@@ -59,7 +60,7 @@ function Pokedex() {
       pageParams: data.pageParams.slice(0, 1),
     }));
     refetch({ pageParam: 0 });
-  }, [token, filters, refetch]);
+  }, [token, paramsNotifier, refetch]);
 
   const drawCards = (votes) => {
     return votes.map((vote) => <PokedexCard vote={vote} key={vote.fusion.id} />);
@@ -81,7 +82,11 @@ function Pokedex() {
     if (isLoading) {
       return (
         <div className={`${styles.wrapper} ${styles.loading}`}>
-          <FilterPanel initFilters={initFilters} currentFilters={filters} setFilters={setFilters} />
+          <FilterPanel
+            defaultFilters={defaultFilters}
+            currentFilters={filters}
+            setFilters={setFilters}
+          />
           <div className={styles.container}>
             {Array.from({ length: 30 }, (_, index) => (
               <LoadingPokedexCard key={index} />
@@ -124,7 +129,11 @@ function Pokedex() {
 
     return (
       <div className={styles.wrapper}>
-        <FilterPanel initFilters={initFilters} currentFilters={filters} setFilters={setFilters} />
+        <FilterPanel
+          defaultFilters={defaultFilters}
+          currentFilters={filters}
+          setFilters={setFilters}
+        />
         <div className={styles.container}>{drawCards(votes)}</div>
         <Loader loading={isFetchingNextPage} />
       </div>

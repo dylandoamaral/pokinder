@@ -4,16 +4,17 @@
     <meta charset="utf-8" />
 
     <script>
-      const prefereDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-      const defaultTheme = prefereDark ? "hyperball" : "pokeball"
-      const theme = localStorage.getItem("pokinderTheme") || defaultTheme
+      const prefereDark =
+        window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const defaultTheme = prefereDark ? "hyperball" : "pokeball";
+      const theme = localStorage.getItem("pokinderTheme") || defaultTheme;
       document.documentElement.setAttribute("theme", theme);
     </script>
 
     <link rel="icon" href="%PUBLIC_URL%/icon/pokeball.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/ball/pokeball.svg" />
-    <link rel="stylesheet" href="%PUBLIC_URL%/index.css">
+    <link rel="stylesheet" href="%PUBLIC_URL%/index.css" />
 
     <!--
       manifest.json provides metadata used when your web app is installed on a

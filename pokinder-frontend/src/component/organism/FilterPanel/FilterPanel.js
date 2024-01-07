@@ -7,7 +7,7 @@ import FilterChoices from "../../molecule/FilterChoices/FilterChoices";
 import FilterModal from "./FilterModal";
 import styles from "./FilterPanel.module.css";
 
-function FilterPanel({ initFilters, currentFilters, setFilters }) {
+function FilterPanel({ defaultFilters, currentFilters, setFilters }) {
   const { t } = useTranslation();
   const [showModal, toggleModal] = useToggle();
 
@@ -15,7 +15,7 @@ function FilterPanel({ initFilters, currentFilters, setFilters }) {
     <>
       <div className={styles.container}>
         <FilterChoices
-          initFilters={initFilters}
+          defaultFilters={defaultFilters}
           currentFilters={currentFilters}
           setFilters={setFilters}
         />
@@ -25,7 +25,7 @@ function FilterPanel({ initFilters, currentFilters, setFilters }) {
         </button>
       </div>
       <FilterModal
-        initFilters={initFilters}
+        defaultFilters={defaultFilters}
         currentFilters={currentFilters}
         setFilters={setFilters}
         isVisible={showModal}
