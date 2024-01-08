@@ -31,7 +31,7 @@ services:
       MINIO_ROOT_USER: ${MINIO_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
     volumes:
-      - "pokinder-minio:/data/minio"
+      - "/mnt/minio:/data/minio"
     command: 'minio server /data/minio --console-address ":8900"'
     labels:
       - "traefik.enable=true"
@@ -92,18 +92,22 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=heart"
-      - "traefik.http.middlewares.pokinder-frontend.compress=true"
-      - "traefik.http.routers.pokinder-frontend.middlewares=pokinder-frontend"
-      - "traefik.http.routers.pokinder-frontend.rule=Host(`pokinder.com`)"
+      - "traefik.http.routers.pokinder-frontend.rule=Host(`pokinder.com`) || Host(`www.pokinder.com`)"
       - "traefik.http.routers.pokinder-frontend.entrypoints=websecure"
       - "traefik.http.routers.pokinder-frontend.tls.certresolver=myresolver"
       - "traefik.http.services.pokinder-frontend.loadbalancer.server.port=3000"
+      # Middleware to compress server files
+      - "traefik.http.middlewares.pokinder-frontend-compression.compress=true"
+      # Middleware to redirect www.pokinder.com to pokinder.com
+      - "traefik.http.middlewares.pokinder-frontend-redirection.redirectregex.regex=^https?://www.pokinder.com/?(.*)"
+      - "traefik.http.middlewares.pokinder-frontend-redirection.redirectregex.replacement=https://pokinder.com/$${1}"
+      - "traefik.http.middlewares.pokinder-frontend-redirection.redirectregex.permanent=true"
+      # Register middleware
+      - "traefik.http.routers.pokinder-frontend.middlewares=pokinder-frontend-redirection,pokinder-frontend-compression"
 
 volumes:
   pokinder-postgres:
     name: pokinder-postgres
-  pokinder-minio:
-    name: pokinder-minio
 
 networks:
   pokinder-network:
