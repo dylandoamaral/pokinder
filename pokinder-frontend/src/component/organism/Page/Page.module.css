@@ -11,11 +11,11 @@
 
   max-width: 1250px;
 
-  margin: 32px;
-  gap: 32px;
+  margin: var(--spacing-L);
+  gap: var(--spacing-L);
 
-  height: calc(100svh - 64px);
-  width: calc(100vw - 64px);
+  height: calc(100svh - var(--spacing-L) * 2);
+  width: calc(100vw - var(--spacing-L) * 2);
 }
 
 .main {
@@ -30,9 +30,9 @@
 
 @media (max-width: 560px) {
   .content {
-    gap: 16px;
-    margin: 16px;
-    min-height: calc(100svh - 32px);
-    width: calc(100vw - 32px);
+    gap: var(--spacing-M);
+    margin: var(--spacing-M);
+    min-height: calc(100svh - var(--spacing-M) * 2);
+    width: calc(100vw - var(--spacing-M) * 2);
   }
 }
