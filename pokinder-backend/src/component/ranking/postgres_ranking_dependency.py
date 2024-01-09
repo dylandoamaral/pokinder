@@ -37,7 +37,6 @@ class PostgresRankingDependency(RankingDependency):
                     func.sum(
                         case(
                             (Vote.vote_type == "LIKED", 1),
-                            (Vote.vote_type == "DISLIKED", -1),
                             (Vote.vote_type == "FAVORITE", 2),
                             else_=0,
                         )
