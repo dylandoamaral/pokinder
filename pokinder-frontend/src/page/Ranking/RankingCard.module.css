@@ -96,7 +96,7 @@
 .sprite {
   position: absolute;
   top: calc(-1 * (144px - 104px) / 2);
-  right: -20px;
+  right: -10px;
   width: 144px;
   height: 144px;
 }
