@@ -8,8 +8,6 @@ import { useAfterEffect } from "../../hook/useAfterEffect";
 
 import { addVote } from "../../api/pokinder";
 
-import { getDaenaLink } from "../../utils/website";
-
 import Sprite from "../../component/atom/Sprite/Sprite";
 
 import styles from "./PokedexCard.module.css";
@@ -59,14 +57,7 @@ const PokedexVote = memo(function PokedexVote({ vote }) {
   return (
     <div className={styles.container} key={vote.fusion.path}>
       <div className={styles.content}>
-        <a
-          className={styles.link}
-          href={getDaenaLink(vote.fusion.path)}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Sprite className={styles.sprite} path={vote.fusion.path} size={144} type="fusion" />
-        </a>
+        <Sprite className={styles.sprite} path={vote.fusion.path} size={144} type="fusion" />
         <div className={styles.panel}>
           {drawPokedexCardButtons()}
           <span className={styles.moment}>

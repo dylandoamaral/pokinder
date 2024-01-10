@@ -1,5 +1,7 @@
 import Picture from "../Picture/Picture";
 
+import { getDaenaLink } from "../../../utils/website";
+
 function Sprite({ className, path, type, size, alt }) {
   function getSrc() {
     const http = parseInt(process.env.REACT_APP_MINIO_PORT) === 443 ? "https" : "http";
@@ -11,13 +13,15 @@ function Sprite({ className, path, type, size, alt }) {
   const src = getSrc();
 
   return (
-    <Picture
-      className={className}
-      src={src}
-      width={size}
-      height={size}
-      alt={alt || "Fusion sprite"}
-    />
+    <a style={{ textDecoration: "none" }} href={getDaenaLink(path)} target="_blank" rel="noopener noreferrer">
+      <Picture
+        className={className}
+        src={src}
+        width={size}
+        height={size}
+        alt={alt || "Fusion sprite"}
+      />
+    </a>
   );
 }
 

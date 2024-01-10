@@ -2,7 +2,6 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { getName } from "../../utils/pokemon";
-import { getDaenaLink } from "../../utils/website";
 
 import Sprite from "../../component/atom/Sprite/Sprite";
 
@@ -53,40 +52,38 @@ const RankingCard = memo(function RankingCard({ ranking }) {
   const rankStyle = rankNumberAdditionalStyle(rank);
 
   return (
-    <a href={getDaenaLink(ranking.fusion.path)} target="_blank" rel="noopener noreferrer">
-      <div className={styles.container}>
-        <div className={styles.rank}>
-          <div className={styles.rank_title}>
-            <span style={rankStyle} className={styles.rank_number}>
-              {rank}
-            </span>
-            <span className={styles.rank_indicator}>{indicator}</span>
-          </div>
+    <div className={styles.container}>
+      <div className={styles.rank}>
+        <div className={styles.rank_title}>
+          <span style={rankStyle} className={styles.rank_number}>
+            {rank}
+          </span>
+          <span className={styles.rank_indicator}>{indicator}</span>
         </div>
-        <div className={styles.title}>
-          <h2 className={styles.name}>
-            {getName(
-              ranking.fusion.head.name,
-              ranking.fusion.head.name_separator_index,
-              ranking.fusion.body.name,
-              ranking.fusion.body.name_separator_index,
-            )}
-          </h2>
-          <span className={styles.path}>#{ranking.fusion.path}</span>
-        </div>
-        <div className={styles.data}>
-          <h2 className={styles.score}>{ranking.score}%</h2>
-          <span className={styles.count}>{t("N Vote", { count: ranking.count })}</span>
-        </div>
-        <Sprite
-          className={styles.sprite}
-          path={ranking.fusion.path}
-          size={144}
-          type="fusion"
-          alt={`Fusion sprite from ${ranking.fusion.body.name} and ${ranking.fusion.head.name}`}
-        />
       </div>
-    </a>
+      <div className={styles.title}>
+        <h2 className={styles.name}>
+          {getName(
+            ranking.fusion.head.name,
+            ranking.fusion.head.name_separator_index,
+            ranking.fusion.body.name,
+            ranking.fusion.body.name_separator_index,
+          )}
+        </h2>
+        <span className={styles.path}>#{ranking.fusion.path}</span>
+      </div>
+      <div className={styles.data}>
+        <h2 className={styles.score}>{ranking.score}%</h2>
+        <span className={styles.count}>{t("N Vote", { count: ranking.count })}</span>
+      </div>
+      <Sprite
+        className={styles.sprite}
+        path={ranking.fusion.path}
+        size={144}
+        type="fusion"
+        alt={`Fusion sprite from ${ranking.fusion.body.name} and ${ranking.fusion.head.name}`}
+      />
+    </div>
   );
 });
 
