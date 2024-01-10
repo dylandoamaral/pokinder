@@ -48,7 +48,7 @@ function Footer() {
           </FooterButton>
         </div>
         <div className={styles.right}>
-          <FooterChoiceButton name={theme} choices={themes} current={theme} onClick={changeTheme}>
+          <FooterChoiceButton name={t("theme")} choices={themes} current={theme} onClick={changeTheme}>
             <FaPalette />
           </FooterChoiceButton>
           <FooterChoiceButton
