@@ -21,10 +21,6 @@
   padding: var(--spacing-M);
 }
 
-.link {
-  text-decoration: none;
-}
-
 .sprite {
   cursor: pointer;
 }
@@ -80,13 +76,8 @@
     padding-left: var(--spacing-S);
   }
 
-  .link {
-    margin-left: var(--spacing-L);
-    width: 104px !important;
-    height: 104px !important;
-  }
-
   .sprite {
+    margin-left: var(--spacing-L);
     width: 104px !important;
     height: 104px !important;
   }
