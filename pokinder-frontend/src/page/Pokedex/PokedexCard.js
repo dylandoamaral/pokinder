@@ -57,7 +57,7 @@ const PokedexVote = memo(function PokedexVote({ vote }) {
   return (
     <div className={styles.container} key={vote.fusion.path}>
       <div className={styles.content}>
-        <Sprite className={styles.sprite} path={vote.fusion.path} size={144} type="fusion" />
+        <Sprite className={styles.sprite} filename={vote.fusion.id} path={vote.fusion.path} size={144} type="fusion" />
         <div className={styles.panel}>
           {drawPokedexCardButtons()}
           <span className={styles.moment}>

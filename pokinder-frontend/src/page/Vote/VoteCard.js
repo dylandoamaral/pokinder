@@ -97,6 +97,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
         >
           <Sprite
             type="fusion"
+            filename={fusion.id}
             path={fusion.path}
             alt={`Fusion sprite from ${fusion.body.name} and ${fusion.head.name}`}
           />
@@ -137,6 +138,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
             >
               <Sprite
                 type="pokemon"
+                filename={fusion.head.pokedex_id}
                 path={fusion.head.pokedex_id}
                 alt={`Pokemon sprite of ${fusion.head.name}`}
               />
@@ -154,6 +156,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
             >
               <Sprite
                 type="pokemon"
+                filename={fusion.body.pokedex_id}
                 path={fusion.body.pokedex_id}
                 alt={`Pokemon sprite of ${fusion.body.name}`}
               />

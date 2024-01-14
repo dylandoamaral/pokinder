@@ -5,7 +5,7 @@ from uuid import UUID
 from litestar.contrib.sqlalchemy.dto import SQLAlchemyDTO
 from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
 from litestar.dto import DTOConfig
-from sqlalchemy import ForeignKey
+from sqlalchemy import CheckConstraint, ForeignKey, Index, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
@@ -20,6 +20,7 @@ class Fusion(BaseTable, UUIDPrimaryKey):
     head_id: Mapped[UUID] = mapped_column(ForeignKey("pokemon.id"))
     body_id: Mapped[UUID] = mapped_column(ForeignKey("pokemon.id"))
     created_at: Mapped[datetime] = build_created_at_column()
+    commit_id: Mapped[str] = mapped_column(nullable=False, server_default="7f63a8312d59302d8c7e765526d7c18b4857c426")
 
     creator = relationship("Creator")
     head = relationship("Pokemon", foreign_keys=[head_id])
