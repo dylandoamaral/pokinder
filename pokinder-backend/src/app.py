@@ -1,5 +1,6 @@
 import uvicorn
 from litestar import Litestar
+from litestar.config.compression import CompressionConfig
 from litestar.config.cors import CORSConfig
 from litestar.contrib.repository.exceptions import (
     RepositoryError as RepositoryException,
@@ -11,13 +12,12 @@ from litestar.contrib.sqlalchemy.plugins import (
 )
 from litestar.di import Provide
 from litestar.middleware.base import DefineMiddleware
-from litestar.config.compression import CompressionConfig
 from litestar.openapi import OpenAPIConfig
 
 from src.component.account import AccountController, use_postgres_account_dependency
 from src.component.fusion import FusionController, use_postgres_fusion_dependency
-from src.component.vote import VoteController, use_postgres_vote_dependency
 from src.component.ranking import RankingController, use_postgres_ranking_dependency
+from src.component.vote import VoteController, use_postgres_vote_dependency
 from src.security.middleware import JWTAuthenticationMiddleware
 from src.utils.env import (
     retrieve_frontend_endpoint,
