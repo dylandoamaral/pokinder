@@ -1,6 +1,6 @@
-import Picture from "../Picture/Picture";
-
 import { getDaenaLink } from "../../../utils/website";
+
+import Picture from "../Picture/Picture";
 
 function Sprite({ className, path, filename, type, size, alt }) {
   function getSrc() {
@@ -13,7 +13,12 @@ function Sprite({ className, path, filename, type, size, alt }) {
   const src = getSrc();
 
   return (
-    <a style={{ textDecoration: "none" }} href={getDaenaLink(path)} target="_blank" rel="noopener noreferrer">
+    <a
+      style={{ textDecoration: "none" }}
+      href={getDaenaLink(path)}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <Picture
         className={className}
         src={src}

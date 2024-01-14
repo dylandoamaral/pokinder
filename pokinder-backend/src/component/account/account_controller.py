@@ -7,8 +7,8 @@ from litestar.exceptions import NotAuthorizedException, NotFoundException
 from src.component.account.account_dependency import AccountDependency
 from src.security.jwt import (
     DEFAULT_REFRESH_TIME_DELTA,
-    Subject,
     EncodedTokens,
+    Subject,
     TokenType,
     decode_jwt_token,
     encode_jwt_token,

@@ -1,17 +1,16 @@
 from uuid import UUID
 
-from sqlalchemy import func, select, case
+from sqlalchemy import case, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased, joinedload
 
 from src.component.family.family_table import Family
 from src.component.fusion.fusion_table import Fusion
 from src.component.pokemon.pokemon_table import Pokemon
+from src.component.ranking.ranking_dependency import RankingDependency
+from src.component.ranking.ranking_model import Ranking
 from src.component.vote import Vote
 from src.data.pokemon_families import pokemon_families
-
-from src.component.ranking.ranking_model import Ranking
-from src.component.ranking.ranking_dependency import RankingDependency
 from src.utils.sqlalchemy import model_to_dict
 
 
