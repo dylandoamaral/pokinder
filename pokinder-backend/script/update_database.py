@@ -6,6 +6,8 @@ import re
 import os
 from uuid import uuid4
 
+import requests
+from bs4 import BeautifulSoup
 from minio import Minio
 from PIL import Image
 import tempfile
@@ -15,9 +17,11 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import exc
 
 from src.component.creator.creator_table import Creator
+from src.component.family.family_table import Family
 from src.component.fusion.fusion_table import Fusion
 from src.component.pokemon.pokemon_table import Pokemon
 from src.utils.env import retrieve_postgres_connection_string
+from src.data.pokemon_name_separator_indexes import pokemon_name_separator_indexes
 
 from src.utils.env import load_pokinder_dotenv, get_env_named_
 
@@ -44,14 +48,16 @@ def is_object_exists(bucket_name, object_name):
         return False
 
 
-def import_sprite(fusion_path, fusion_id):
-    bucket_name = "fusions"
-    filename = fusion_path + ".png"
+def import_sprite(path, id, bucket_name, source):
+    filename = f"{path}.png"
     try:
         webp_filename = convert_extension_to_webp(filename)
-        file_path = os.path.join(f"{custom_sprites_path}/CustomBattlers", filename)
+        file_path = os.path.join(f"{custom_sprites_path}/{source}", filename)
         webp_path = convert_png_to_webp(file_path, webp_filename)
-        output_filename = f"{fusion_id}.webp"
+        output_filename = f"{id}.webp"
+
+        if is_object_exists(bucket_name, output_filename):
+            client.remove_object(bucket_name, output_filename)
 
         client.fput_object(
             bucket_name,
@@ -95,6 +101,14 @@ async def get_creator_id(creator_name, session):
     return maybe_creator[0].id
 
 
+async def get_pokemon_id(pokedex_id, session):
+    result = await session.execute(select(Pokemon).filter_by(pokedex_id=pokedex_id))
+    maybe_pokemon = result.first()
+    if not maybe_pokemon:
+        return None
+    return maybe_pokemon[0].id
+
+
 async def get_fusion_id(fusion_path, session):
     result = await session.execute(select(Fusion).filter_by(path=fusion_path))
     maybe_fusion = result.first()
@@ -113,6 +127,27 @@ async def main():
     fusion_mapping = dict()
     creator_names = set()
 
+    pokemon_types = [
+        "Normal",
+        "Fire",
+        "Water",
+        "Electric",
+        "Grass",
+        "Ice",
+        "Fighting",
+        "Poison",
+        "Ground",
+        "Flying",
+        "Psychic",
+        "Bug",
+        "Rock",
+        "Ghost",
+        "Dragon",
+        "Dark",
+        "Steel",
+        "Fairy",
+    ]
+
     with open(credits_path) as credit_file:
         credit_content = credit_file.read()
         for fusion_record in credit_content.split("\n"):
@@ -127,29 +162,57 @@ async def main():
     engine = create_async_engine(retrieve_postgres_connection_string())
 
     async with AsyncSession(engine) as session:
-        logging.info("Loading pokemons...")
-        pokemons = await session.execute(select(Pokemon))
-        pokemons = pokemons.fetchall()
-        pokemons = {pokemon[0].pokedex_id: pokemon[0].id for pokemon in pokemons}
+        logging.info("Inserting not inserted pokemons...")
+        pokemons = dict()
+        pokemons_to_add = dict()
+        html = requests.get("https://infinitefusion.fandom.com/wiki/Pok%C3%A9dex")
+        soup = BeautifulSoup(html.content, "html.parser")
 
-        logging.info("Loading creators...")
-        creators = await session.execute(select(Creator))
-        creators = creators.fetchall()
-        creators = {creator[0].name: creator[0].id for creator in creators}
+        for pokemon_row in soup.select(".IFTable.PokedexTable tbody tr"):
+            columns = pokemon_row.find_all("td")
+            if len(columns) > 4:
+                pokemon_pokedex_id = int(columns[0].text.strip().split(" ")[0])
+                maybe_pokemon_id = await get_pokemon_id(pokemon_pokedex_id, session)
 
-        # logging.info("Inserting not inserted creators...")
-        # creators = dict()
-        # creators_to_add = dict()
-        # for creator_name in creator_names:
-        #     maybe_creator_id = await get_creator_id(creator_name, session)
-        #     if maybe_creator_id:
-        #         creators[creator_name] = maybe_creator_id
-        #     else:
-        #         creator_id = uuid4()
-        #         print(f"Importing new creator {creator_name} with id {creator_id}.")
-        #         creators[creator_name] = creator_id
-        #         creators_to_add[creator_name] = Creator(id=creator_id, name=creator_name)
-        # session.add_all(creators_to_add.values())
+                if maybe_pokemon_id is not None:
+                    pokemons[pokemon_pokedex_id] = maybe_pokemon_id
+                    import_sprite(pokemon_pokedex_id, pokemon_pokedex_id, "pokemons", "Other/BaseSprites")
+                else:
+                    pokemon_name = columns[2].text.strip()
+                    pokemon_type_1 = columns[3].text.strip()
+                    maybe_pokemon_type_2 = columns[4].text.strip()
+                    pokemon_type_2 = None if maybe_pokemon_type_2 not in pokemon_types else maybe_pokemon_type_2
+                    pokemon_id = uuid4()
+                    print(f"Importing new pokemon {pokemon_name} with id {pokemon_id}.")
+                    pokemon_name_separator_index = pokemon_name_separator_indexes.get(pokemon_name, "-1")
+                    pokemon = Pokemon(
+                        id=pokemon_id,
+                        pokedex_id=pokemon_pokedex_id,
+                        name=pokemon_name,
+                        type_1=pokemon_type_1,
+                        type_2=pokemon_type_2,
+                        name_separator_index=pokemon_name_separator_index,
+                    )
+                    pokemons[pokemon_pokedex_id] = pokemon_id
+                    pokemons_to_add[pokemon_pokedex_id] = pokemon
+                    import_sprite(pokemon_pokedex_id, pokemon_pokedex_id, "pokemons", "Other/BaseSprites")
+        session.add_all(pokemons_to_add.values())
+
+        await session.commit()
+
+        logging.info("Inserting not inserted creators...")
+        creators = dict()
+        creators_to_add = dict()
+        for creator_name in creator_names:
+            maybe_creator_id = await get_creator_id(creator_name, session)
+            if maybe_creator_id:
+                creators[creator_name] = maybe_creator_id
+            else:
+                creator_id = uuid4()
+                print(f"Importing new creator {creator_name} with id {creator_id}.")
+                creators[creator_name] = creator_id
+                creators_to_add[creator_name] = Creator(id=creator_id, name=creator_name)
+        session.add_all(creators_to_add.values())
 
         await session.commit()
 
@@ -161,7 +224,7 @@ async def main():
             maybe_fusion_id = await get_fusion_id(fusion_path, session)
             if maybe_fusion_id is not None:
                 print(f"Importing old fusion for path {fusion_path} with id {maybe_fusion_id}.")
-                import_sprite(fusion_path, maybe_fusion_id)
+                import_sprite(fusion_path, maybe_fusion_id, "fusions", "CustomBattlers")
             else:
                 maybe_pokemon_ids = extract_pokemon_pokedex_ids(fusion_path)
                 if maybe_pokemon_ids:
@@ -181,7 +244,7 @@ async def main():
                         continue
                     try:
                         print(f"Importing new fusion for path {fusion_path} with id {fusion_id}.")
-                        is_sprite_imported = import_sprite(fusion_path, fusion_id)
+                        is_sprite_imported = import_sprite(fusion_path, fusion_id, "fusions", "CustomBattlers")
                         if is_sprite_imported:
                             session.add(fusion)
                             await session.commit()
