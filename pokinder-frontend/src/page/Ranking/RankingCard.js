@@ -78,6 +78,7 @@ const RankingCard = memo(function RankingCard({ ranking }) {
       </div>
       <Sprite
         className={styles.sprite}
+        filename={ranking.fusion.id}
         path={ranking.fusion.path}
         size={144}
         type="fusion"

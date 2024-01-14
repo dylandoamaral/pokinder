@@ -1,4 +1,5 @@
 from litestar import Controller, get
+
 from src.component.ranking.ranking_dependency import RankingDependency
 from src.component.ranking.ranking_model import Ranking
 

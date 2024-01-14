@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-from uuid import UUID
 from enum import Enum
+from uuid import UUID
 
 from joserfc import jwt
 from joserfc.errors import InvalidPayloadError
