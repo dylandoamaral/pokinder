@@ -82,6 +82,30 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
     return <div style={{ width: cardWidth }} />;
   }
 
+  function renderTitle(fusion) {
+    const LITTLE_LENGTH = 17;
+    const MEDIUM_LENGTH = 10;
+
+    const name = getName(
+      fusion.head.name,
+      fusion.head.name_separator_index,
+      fusion.body.name,
+      fusion.body.name_separator_index,
+    )
+
+    return <div className={styles.title}>
+      <span className={name.length > LITTLE_LENGTH ? styles.littlename : name.length > MEDIUM_LENGTH ? styles.mediumname : styles.name}>
+        {name}
+      </span>
+      <span className={name.length > LITTLE_LENGTH ? styles.littlepath : name.length > MEDIUM_LENGTH ? styles.mediumpath : styles.path}>
+        #{fusion.path}
+      </span>
+    </div>
+
+
+
+  }
+
   return (
     <motion.div
       style={{ width: width, height: height, opacity: opacity }}
@@ -103,17 +127,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
           />
         </motion.div>
         <div className={styles.header}>
-          <div className={styles.title}>
-            <span className={styles.name}>
-              {getName(
-                fusion.head.name,
-                fusion.head.name_separator_index,
-                fusion.body.name,
-                fusion.body.name_separator_index,
-              )}
-            </span>
-            <span className={styles.path}>#{fusion.path}</span>
-          </div>
+          {renderTitle(fusion)}
           <div className={styles.types}>
             {getTypes(
               fusion.head.type_1,
