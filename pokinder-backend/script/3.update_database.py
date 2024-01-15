@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# This script was used to update both the database and minio with new sprites from https://gitlab.com/pokemoninfinitefusion/customsprites.
+# For technical reason, sprites are now stored using their identifier and not their path.
+
 import asyncio
 import logging
 import re
@@ -37,7 +40,7 @@ port = get_env_named_("MINIO_PORT")
 secure = True if int(port) == 443 else False
 client = Minio(f"{host}:{port}", access_key=writer_access_key, secret_key=writer_secret_key, secure=secure)
 
-custom_sprites_path = "/Users/dylandoamaral/Projects/customsprites"
+custom_sprites_path = get_env_named_("CUSTOM_SPRITE_PATH")
 
 
 def is_object_exists(bucket_name, object_name):
@@ -159,7 +162,7 @@ async def main():
             fusion_mapping[fusion_path] = creator_name
             creator_names.add(creator_name)
 
-    engine = create_async_engine(retrieve_postgres_connection_string())
+    engine = create_async_engine(retrieve_postgres_connection_string(local=True))
 
     async with AsyncSession(engine) as session:
         logging.info("Inserting not inserted pokemons...")

@@ -25,9 +25,9 @@ def get_env_named_(name):
     return value
 
 
-def retrieve_postgres_connection_string() -> str:
+def retrieve_postgres_connection_string(local=False) -> str:
     load_pokinder_dotenv()
-    postgres_host = get_env_named_("POSTGRES_HOST")
+    postgres_host = get_env_named_("POSTGRES_HOST") if not local else "localhost"
     postgres_password = get_env_named_("POSTGRES_PASSWORD")
     postgres_db = get_env_named_("POSTGRES_DB")
     return f"postgresql+asyncpg://postgres:{postgres_password}@{postgres_host}:5432/{postgres_db}"
