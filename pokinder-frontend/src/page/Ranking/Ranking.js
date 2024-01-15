@@ -21,7 +21,7 @@ function Ranking() {
 
   const scrollRef = createRef();
 
-  const POKEMON_PER_PAGES = 20;
+  const POKEMON_PER_PAGES = 24;
 
   const defaultFilters = {
     headNameOrCategory: "All",

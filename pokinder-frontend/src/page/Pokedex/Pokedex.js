@@ -25,7 +25,7 @@ function Pokedex() {
 
   const scrollRef = createRef();
 
-  const POKEMON_PER_PAGES = 30;
+  const POKEMON_PER_PAGES = 24;
 
   const defaultFilters = {
     headNameOrCategory: "All",
