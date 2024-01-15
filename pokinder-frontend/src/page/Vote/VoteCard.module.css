@@ -42,9 +42,32 @@
   color: var(--font-foreground-color);
 }
 
+.mediumname {
+  font-size: var(--font-size-XL);
+  line-height: 0;
+  font-weight: bold;
+  color: var(--font-foreground-color);
+}
+
+.littlename {
+  font-size: var(--font-size-M);
+  line-height: 0;
+  font-weight: bold;
+  color: var(--font-foreground-color);
+}
+
 .path {
   font-size: var(--font-size-2XL);
-  line-height: var(--line-height-2XL);
+  color: var(--neutral-high);
+}
+
+.mediumpath {
+  font-size: var(--font-size-XL);
+  color: var(--neutral-high);
+}
+
+.littlepath {
+  font-size: var(--font-size-M);
   color: var(--neutral-high);
 }
 
