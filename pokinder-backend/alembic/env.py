@@ -33,7 +33,7 @@ target_metadata = [BaseTable.metadata]
 # can be acquired:
 config.set_main_option(
     "sqlalchemy.url",
-    retrieve_postgres_connection_string(local=True),
+    retrieve_postgres_connection_string(local=False),
 )
 
 
