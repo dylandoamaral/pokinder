@@ -8,7 +8,6 @@ from litestar.contrib.repository.exceptions import (
 from litestar.contrib.sqlalchemy.plugins import (
     SQLAlchemyAsyncConfig,
     SQLAlchemyInitPlugin,
-    SQLAlchemySerializationPlugin,
 )
 from litestar.di import Provide
 from litestar.middleware.base import DefineMiddleware
