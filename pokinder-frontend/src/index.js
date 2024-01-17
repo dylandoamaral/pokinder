@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import Analytics from "./page/Analytics/Analytics";
 import NotFound from "./page/NotFound/NotFound";
 import Pokedex from "./page/Pokedex/Pokedex";
 import Ranking from "./page/Ranking/Ranking";
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
   { path: "/", element: <Vote /> },
   { path: "/history", element: <Pokedex /> },
   { path: "/ranking", element: <Ranking /> },
+  { path: "/analytics", element: <Analytics /> },
   { path: "*", element: <NotFound /> },
 ]);
 

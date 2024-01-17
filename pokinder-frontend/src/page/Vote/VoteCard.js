@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { getName, getTypes } from "../../utils/pokemon";
+import { getDaenaLink } from "../../utils/website";
 
 import Sprite from "../../component/atom/Sprite/Sprite";
 import Type from "../../component/atom/Type/Type";
@@ -91,19 +92,34 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
       fusion.head.name_separator_index,
       fusion.body.name,
       fusion.body.name_separator_index,
-    )
+    );
 
-    return <div className={styles.title}>
-      <span className={name.length > LITTLE_LENGTH ? styles.littlename : name.length > MEDIUM_LENGTH ? styles.mediumname : styles.name}>
-        {name}
-      </span>
-      <span className={name.length > LITTLE_LENGTH ? styles.littlepath : name.length > MEDIUM_LENGTH ? styles.mediumpath : styles.path}>
-        #{fusion.path}
-      </span>
-    </div>
-
-
-
+    return (
+      <div className={styles.title}>
+        <span
+          className={
+            name.length > LITTLE_LENGTH
+              ? styles.littlename
+              : name.length > MEDIUM_LENGTH
+                ? styles.mediumname
+                : styles.name
+          }
+        >
+          {name}
+        </span>
+        <span
+          className={
+            name.length > LITTLE_LENGTH
+              ? styles.littlepath
+              : name.length > MEDIUM_LENGTH
+                ? styles.mediumpath
+                : styles.path
+          }
+        >
+          #{fusion.path}
+        </span>
+      </div>
+    );
   }
 
   return (
@@ -122,7 +138,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
           <Sprite
             type="fusion"
             filename={fusion.id}
-            path={fusion.path}
+            href={getDaenaLink(fusion.path)}
             alt={`Fusion sprite from ${fusion.body.name} and ${fusion.head.name}`}
           />
         </motion.div>
@@ -153,7 +169,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
               <Sprite
                 type="pokemon"
                 filename={fusion.head.pokedex_id}
-                path={fusion.head.pokedex_id}
+                href={getDaenaLink(fusion.head.pokedex_id)}
                 alt={`Pokemon sprite of ${fusion.head.name}`}
               />
             </motion.div>
@@ -171,7 +187,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
               <Sprite
                 type="pokemon"
                 filename={fusion.body.pokedex_id}
-                path={fusion.body.pokedex_id}
+                href={getDaenaLink(fusion.body.pokedex_id)}
                 alt={`Pokemon sprite of ${fusion.body.name}`}
               />
             </motion.div>

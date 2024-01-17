@@ -1,0 +1,32 @@
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.container {
+  background-color: var(--foreground-color);
+  border-radius: var(--border-radius-XL);
+  padding: var(--spacing-L);
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: var(--font-size-M);
+  line-height: var(--line-height-M);
+  color: var(--font-foreground-color);
+}
+
+.value {
+  font-size: 32px;
+  line-height: var(--line-height-2XL);
+  font-weight: bold;
+  color: var(--font-foreground-color);
+}
+
+.loadingValue {
+  height: 32px;
+  width: 100px;
+  background-color: var(--neutral-medium);
+}

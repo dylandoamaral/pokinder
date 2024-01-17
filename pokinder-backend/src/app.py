@@ -15,6 +15,10 @@ from litestar.middleware.base import DefineMiddleware
 from litestar.openapi import OpenAPIConfig
 
 from src.component.account import AccountController, use_postgres_account_dependency
+from src.component.analytics import (
+    AnalyticsController,
+    use_postgres_analytics_dependency,
+)
 from src.component.fusion import FusionController, use_postgres_fusion_dependency
 from src.component.ranking import RankingController, use_postgres_ranking_dependency
 from src.component.vote import VoteController, use_postgres_vote_dependency
@@ -30,12 +34,19 @@ sqlalchemy_config = SQLAlchemyAsyncConfig(connection_string=retrieve_postgres_co
 sqlalchemy_plugin = SQLAlchemyInitPlugin(config=sqlalchemy_config)
 
 app = Litestar(
-    route_handlers=[VoteController, FusionController, AccountController, RankingController],
+    route_handlers=[
+        VoteController,
+        FusionController,
+        AccountController,
+        RankingController,
+        AnalyticsController,
+    ],
     dependencies={
         "vote_dependency": Provide(use_postgres_vote_dependency, sync_to_thread=False),
         "fusion_dependency": Provide(use_postgres_fusion_dependency, sync_to_thread=False),
         "account_dependency": Provide(use_postgres_account_dependency, sync_to_thread=False),
         "ranking_dependency": Provide(use_postgres_ranking_dependency, sync_to_thread=False),
+        "analytics_dependency": Provide(use_postgres_analytics_dependency, sync_to_thread=False),
     },
     exception_handlers={
         RepositoryException: repository_exception_to_http_response,  # type: ignore[dict-item]

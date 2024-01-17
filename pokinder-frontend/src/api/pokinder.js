@@ -74,6 +74,12 @@ export async function getRanking(filters, limit, offset) {
   return { records: response.data, previousOffset: offset };
 }
 
+export async function getAnalytics() {
+  const response = await http.get("/analytics");
+
+  return response.data;
+}
+
 export async function addVote(fusionId, voteType) {
   const body = {
     fusion_id: fusionId,
