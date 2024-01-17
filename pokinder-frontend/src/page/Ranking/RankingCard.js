@@ -2,6 +2,7 @@ import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { getName } from "../../utils/pokemon";
+import { getDaenaLink } from "../../utils/website";
 
 import Sprite from "../../component/atom/Sprite/Sprite";
 
@@ -79,7 +80,7 @@ const RankingCard = memo(function RankingCard({ ranking }) {
       <Sprite
         className={styles.sprite}
         filename={ranking.fusion.id}
-        path={ranking.fusion.path}
+        href={getDaenaLink(ranking.fusion.path)}
         size={144}
         type="fusion"
         alt={`Fusion sprite from ${ranking.fusion.body.name} and ${ranking.fusion.head.name}`}

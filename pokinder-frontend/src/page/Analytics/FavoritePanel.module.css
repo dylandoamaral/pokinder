@@ -1,0 +1,56 @@
+.container {
+  background-color: var(--foreground-color);
+  border-radius: var(--border-radius-XL);
+  padding: var(--spacing-L);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  min-height: 144px;
+}
+
+.information {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: var(--font-size-M);
+  line-height: var(--line-height-M);
+  color: var(--font-foreground-color);
+}
+
+.name {
+  font-size: 32px;
+  line-height: var(--line-height-2XL);
+  font-weight: bold;
+  color: var(--font-foreground-color);
+}
+
+.score {
+  font-size: var(--font-size-M);
+  line-height: var(--line-height-M);
+  color: var(--font-foreground-color);
+}
+
+.loadingName {
+  height: 32px;
+  width: 100px;
+  background-color: var(--neutral-medium);
+}
+
+.loadingScore {
+  height: 24px;
+  width: 120px;
+  background-color: var(--neutral-medium);
+}
+
+.loadingSprite {
+  height: 144px;
+  width: 144px;
+  background-color: var(--neutral-medium);
+}
