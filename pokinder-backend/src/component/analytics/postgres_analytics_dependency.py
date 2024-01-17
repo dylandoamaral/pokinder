@@ -10,7 +10,7 @@ from src.component.account.account_table import Account
 from src.component.creator.creator_table import Creator
 from src.component.fusion.fusion_table import Fusion
 from src.component.pokemon.pokemon_table import Pokemon
-from src.component.ranking.ranking_dependency import RankingDependency
+from src.component.analytics.analytics_dependency import AnalyticsDependency
 from src.component.vote import Vote
 from src.component.vote.vote_model import VoteType
 
@@ -83,7 +83,7 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
         return PokemonAnalytics(
             name=information[0],
             filename=information[1],
-            average_score=information[2],
+            average_score=int(information[2]),
         )
 
     async def __favorite_creator(self, maybe_account_id=None) -> Optional[CreatorAnalytics]:
@@ -133,7 +133,7 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
         return CreatorAnalytics(
             name=name,
             filename=fusion_id,
-            average_score=average_score,
+            average_score=int(average_score),
         )
 
     async def __created_at(self, account_id) -> Optional[datetime]:
@@ -214,5 +214,5 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
         )
 
 
-def use_postgres_analytics_dependency(db_session: AsyncSession) -> RankingDependency:
+def use_postgres_analytics_dependency(db_session: AsyncSession) -> AnalyticsDependency:
     return PostgresAnalyticsDependency(db_session)
