@@ -4,3 +4,7 @@ export function getDaenaLink(path) {
   }
   return `https://if.daena.me/${path}/`;
 }
+
+export function getDaenaLinkArtists(name) {
+  return `https://if.daena.me/artists/${name}/`;
+}

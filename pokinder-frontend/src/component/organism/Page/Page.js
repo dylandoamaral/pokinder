@@ -37,7 +37,7 @@ function Page({
         <div className={styles.content}>
           <Header />
           <main
-            style={{ overflow: overflow }}
+            style={{ overflow: overflow, display: overflow === "none" ? "grid" : "block" }}
             className={styles.main}
             onScroll={onScroll}
             ref={scrollRef}
