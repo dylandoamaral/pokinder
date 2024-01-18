@@ -138,7 +138,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
           <Sprite
             type="fusion"
             filename={fusion.id}
-            href={getDaenaLink(fusion.path)}
+            href={hasFocus ? getDaenaLink(fusion.path) : null}
             alt={`Fusion sprite from ${fusion.body.name} and ${fusion.head.name}`}
           />
         </motion.div>
@@ -169,7 +169,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
               <Sprite
                 type="pokemon"
                 filename={fusion.head.pokedex_id}
-                href={getDaenaLink(fusion.head.pokedex_id)}
+                href={hasFocus ? getDaenaLink(fusion.head.pokedex_id) : null}
                 alt={`Pokemon sprite of ${fusion.head.name}`}
               />
             </motion.div>
@@ -187,7 +187,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
               <Sprite
                 type="pokemon"
                 filename={fusion.body.pokedex_id}
-                href={getDaenaLink(fusion.body.pokedex_id)}
+                href={hasFocus ? getDaenaLink(fusion.body.pokedex_id) : null}
                 alt={`Pokemon sprite of ${fusion.body.name}`}
               />
             </motion.div>

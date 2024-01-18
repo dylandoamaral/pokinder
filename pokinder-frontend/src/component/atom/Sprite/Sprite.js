@@ -11,9 +11,17 @@ function Sprite({ className, href, filename, type, size, alt }) {
   const defaultAlt = type === "fusion" ? "Fusion sprite" : "Pokemon sprite";
   const src = getSrc();
 
+  function renderPicture() {
+    return <Picture className={className} src={src} width={size} height={size} alt={alt || defaultAlt} />
+  }
+
+  if (href === null) {
+    return renderPicture()
+  }
+
   return (
     <a style={{ textDecoration: "none" }} href={href} target="_blank" rel="noopener noreferrer">
-      <Picture className={className} src={src} width={size} height={size} alt={alt || defaultAlt} />
+      {renderPicture()}
     </a>
   );
 }
