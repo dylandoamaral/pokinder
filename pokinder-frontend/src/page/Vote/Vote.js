@@ -18,7 +18,7 @@ function Vote() {
   // The number of fusions left before trigerring the API.
   const TRIGGER_FETCH_NEW_FUSIONS = 20;
   // The number of fusions rendered.
-  const CACHED_FUSIONS = 5;
+  const CACHED_FUSIONS = 6;
   // The duration of the swipe animation.
   const SWIPE_DURATION = 0.2;
   // The space between two wards.
