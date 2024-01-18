@@ -12,11 +12,13 @@ function Sprite({ className, href, filename, type, size, alt }) {
   const src = getSrc();
 
   function renderPicture() {
-    return <Picture className={className} src={src} width={size} height={size} alt={alt || defaultAlt} />
+    return (
+      <Picture className={className} src={src} width={size} height={size} alt={alt || defaultAlt} />
+    );
   }
 
   if (href === null) {
-    return renderPicture()
+    return renderPicture();
   }
 
   return (
