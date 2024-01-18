@@ -31,13 +31,25 @@
   gap: var(--spacing-L);
 }
 
-@media (min-width: 1250px) {
+@media (min-width: 2800px) {
+  .container {
+    margin: 0 -1200px;
+  }
+}
+
+@media (max-width: 2800px) {
+  .container {
+    margin: 0 -800px;
+  }
+}
+
+@media (max-width: 2000px)  {
   .container {
     margin: 0 -400px;
   }
 }
 
-@media (min-width: 560px) and (max-width: 1250px) {
+@media (max-width: 1250px) {
   .container {
     margin: 0 -64px;
   }
