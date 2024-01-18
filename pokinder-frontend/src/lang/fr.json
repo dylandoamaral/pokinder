@@ -18,10 +18,10 @@
   "The API is down for the moment, sorry for the inconvenience.": "Le serveur ne répond pas pour le moment, escusez nous pour la gène occasionnée.",
 
   "Not found message one": "Ah, mon cher jeune Dresseur, il semble que tu t'es égaré de ton chemin prévu dans ce vaste monde des Pokémon ! Mais ne crains rien, car de tels moments conduisent souvent à des découvertes inattendues.",
-  "Not found message two": "Pourquoi ne pas envisager d'<1>explorer la page des Votes</1> ? Là-bas, tu peux contribuer à compléter ton Pokédex en votant pour et en apprenant sur différentes espèces de Pokémon. De plus, tu peux <3>consulter ton historique du Pokédex</3>, et voir tes rencontres passées, t'aidant dans ta quête continue pour devenir un Maître Pokémon.",
+  "Not found message two": "Pourquoi ne pas envisager d'<2>explorer la page des Votes</2> ? Là-bas, tu peux contribuer à compléter ton Pokédex en votant pour et en apprenant sur différentes espèces de Pokémon. De plus, tu peux <5>consulter ton historique du Pokédex</5>, et voir tes rencontres passées, t'aidant dans ta quête continue pour devenir un Maître Pokémon.",
   "Not found message three": "Accueille ces détours, car ils enrichissent souvent ton voyage et te rapprochent de l'accomplissement de ton objectif. Continue d'explorer, continue d'apprendre, et ton aventure s'épanouira !",
   "History empty one": "Ah, mon cher jeune Dresseur, il semble que tu te sois plongé dans la page d'historique du Pokédex sans encore avoir voté.",
-  "History empty two": "Pourrais-je te convaincre de m'aider dans mes recherches en allant <1>voter pour tes sprites préférés</1>? Tu contribueras activement à compléter ton Pokédex. Tes contributions seraient d'une valeur inestimable pour notre connaissance collective !",
+  "History empty two": "Pourrais-je te convaincre de m'aider dans mes recherches en allant <2>voter pour tes sprites préférés</2>? Tu contribueras activement à compléter ton Pokédex. Tes contributions seraient d'une valeur inestimable pour notre connaissance collective !",
 
   "Log In": "Se connecter",
   "Sign Up": "S'inscrire",
