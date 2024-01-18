@@ -16,6 +16,22 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
     else return `/${page}?bodyNameOrCategory=${data.name}`;
   }
 
+  function getFontSizeAndLineHeight(name) {
+    if (name.length < 12) {
+      return {
+        fontSize: '32px',
+        lineHeight: '1.5',
+      };
+    } else {
+      const fontSize = `${26 - (name.length - 12)}px`;
+      const lineHeight = `${1.4 + (name.length - 12) * 0.1}`;
+      return {
+        fontSize,
+        lineHeight,
+      };
+    }
+  };
+
   if (isLoading)
     return (
       <div className={`${styles.container} loading`}>
@@ -36,7 +52,7 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
         <div className={styles.information}>
           <div className={styles.head}>
             <span className={styles.title}>{t(title)}</span>
-            <span className={styles.name}>{t("Not enough data")}</span>
+            <span className={styles.name} style={getFontSizeAndLineHeight("")}>{t("Not enough data")}</span>
           </div>
           <span className={styles.score}>{t("Average score")} : ???%</span>
         </div>
@@ -48,7 +64,7 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
       <div className={styles.information}>
         <div className={styles.head}>
           <span className={styles.title}>{t(title)}</span>
-          <span className={styles.name}>{t(data.name)}</span>
+          <span className={styles.name} style={getFontSizeAndLineHeight(data.name)}>{t(data.name)}</span>
         </div>
         <span className={styles.score}>
           {t("Average score")} : {data.average_score}%
