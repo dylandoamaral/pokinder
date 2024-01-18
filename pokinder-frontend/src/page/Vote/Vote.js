@@ -128,13 +128,13 @@ function Vote() {
       return (
         <div className={`${styles.container} ${styles.loading}`}>
           <div className={styles.votes}>
-            <LoadingVoteCard hidden />
-            <LoadingVoteCard hidden />
-            <LoadingVoteCard hidden />
+            {Array.from({ length: CACHED_FUSIONS - 1 }, (_) => (
+              <LoadingVoteCard hidden />
+            ))}
             <LoadingVoteCard hasFocus />
-            <LoadingVoteCard />
-            <LoadingVoteCard />
-            <LoadingVoteCard />
+            {Array.from({ length: CACHED_FUSIONS - 1 }, (_) => (
+              <LoadingVoteCard />
+            ))}
           </div>
           <div className={styles.buttons}>
             <VoteButton variant="downvote" disabled />
