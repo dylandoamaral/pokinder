@@ -4,6 +4,7 @@
   padding: var(--spacing-L);
   display: grid;
   grid-template-columns: 1fr auto;
+  gap: var(--spacing-S);
   min-height: 144px;
 }
 
