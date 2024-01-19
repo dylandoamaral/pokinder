@@ -10,7 +10,7 @@ function Page({
   children,
   overflow = "none",
   scrollRef = null,
-  onScrollFinish = () => {},
+  onScrollFinish = () => { },
 }) {
   function onScroll(e) {
     const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
@@ -29,7 +29,7 @@ function Page({
           name="description"
           content={
             description ||
-            "Rank Pokémon Infinite Fusion sprites based on your preferences and explore the community's favorite sprites."
+            "Vote for your favorite Pokémon Infinite Fusion sprites, explore your history and find the ranking of the whole community."
           }
         />
       </Helmet>
