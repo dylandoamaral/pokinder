@@ -109,7 +109,7 @@ function Analytics() {
             isLoading={isLoading}
           />
           <FavoritePanel
-            title="Favorite artist (>10 fusions)"
+            title="Favorite artist"
             data={data?.community?.favorite_creator}
             type="fusion"
             isUser={false}
@@ -175,7 +175,7 @@ function Analytics() {
             isLoading={isLoading}
           />
           <FavoritePanel
-            title="Favorite artist (>10 fusions)"
+            title="Favorite artist"
             data={data?.user?.favorite_creator}
             type="fusion"
             isUser={true}
