@@ -6,5 +6,6 @@ export function getDaenaLink(path) {
 }
 
 export function getDaenaLinkArtists(name) {
-  return `https://if.daena.me/artists/${name}/`;
+  var encodedName = encodeURIComponent(name);
+  return `https://if.daena.me/artists/${encodedName}/`;
 }
