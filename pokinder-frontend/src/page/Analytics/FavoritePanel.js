@@ -23,7 +23,7 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
         lineHeight: "1.5",
       };
     } else {
-      const fontSize = `${26 - (name.length - 12)}px`;
+      const fontSize = `${25 - (name.length - 12)}px`;
       const lineHeight = `${1.4 + (name.length - 12) * 0.1}`;
       return {
         fontSize,
