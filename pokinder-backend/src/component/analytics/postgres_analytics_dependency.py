@@ -7,10 +7,10 @@ from sqlalchemy import case, distinct, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.component.account.account_table import Account
+from src.component.analytics.analytics_dependency import AnalyticsDependency
 from src.component.creator.creator_table import Creator
 from src.component.fusion.fusion_table import Fusion
 from src.component.pokemon.pokemon_table import Pokemon
-from src.component.analytics.analytics_dependency import AnalyticsDependency
 from src.component.vote import Vote
 from src.component.vote.vote_model import VoteType
 

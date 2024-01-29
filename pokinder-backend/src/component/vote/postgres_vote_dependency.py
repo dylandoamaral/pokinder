@@ -4,6 +4,7 @@ from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased, joinedload
 
+from src.component.creator.creator_table import Creator
 from src.component.family.family_table import Family
 from src.component.fusion.fusion_table import Fusion
 from src.component.pokemon.pokemon_table import Pokemon
@@ -28,6 +29,7 @@ class PostgresVoteDependency(VoteDependency):
         vote_types: list[VoteType] | None = None,
         head_name_or_category: str | None = None,
         body_name_or_category: str | None = None,
+        creator_name: str | None = None,
     ) -> list[Vote]:
         Head = aliased(Pokemon)
         Body = aliased(Pokemon)
@@ -37,6 +39,7 @@ class PostgresVoteDependency(VoteDependency):
             .join(Fusion, Vote.fusion_id == Fusion.id)
             .join(Head, Fusion.head_id == Head.id)
             .join(Body, Fusion.body_id == Body.id)
+            .join(Creator, Fusion.creator_id == Creator.id)
         )
 
         if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
@@ -63,6 +66,9 @@ class PostgresVoteDependency(VoteDependency):
                 query = query.filter(Body.families.any(Family.id.in_([families[body_name_or_category]])))
             else:
                 query = query.filter(Body.name == body_name_or_category)
+
+        if creator_name is not None and creator_name != "All":
+            query = query.filter(Creator.name == creator_name)
 
         query = query.order_by(Vote.created_at.desc()).offset(offset).limit(limit)
 

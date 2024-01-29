@@ -26,6 +26,7 @@ function Ranking() {
   const defaultFilters = {
     headNameOrCategory: "All",
     bodyNameOrCategory: "All",
+    creatorName: "All",
   };
 
   const [paramsNotifier, newFilters, setFilters] = useSearchParams(defaultFilters);

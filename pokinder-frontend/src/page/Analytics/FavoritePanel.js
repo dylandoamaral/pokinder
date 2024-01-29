@@ -1,7 +1,5 @@
 import { useTranslation } from "react-i18next";
 
-import { getDaenaLinkArtists } from "../../utils/website";
-
 import Sprite from "../../component/atom/Sprite/Sprite";
 
 import styles from "./FavoritePanel.module.css";
@@ -11,7 +9,7 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
 
   function getSpriteHref() {
     const page = isUser ? "history" : "ranking";
-    if (type === "fusion") return getDaenaLinkArtists(data.name);
+    if (type === "fusion") return `/${page}?creatorName=${data.name}`;
     else if (isHead) return `/${page}?headNameOrCategory=${data.name}`;
     else return `/${page}?bodyNameOrCategory=${data.name}`;
   }

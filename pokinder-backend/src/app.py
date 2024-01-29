@@ -18,6 +18,7 @@ from src.component.analytics import (
     AnalyticsController,
     use_postgres_analytics_dependency,
 )
+from src.component.creator import CreatorController, use_postgres_creator_dependency
 from src.component.fusion import FusionController, use_postgres_fusion_dependency
 from src.component.ranking import RankingController, use_postgres_ranking_dependency
 from src.component.vote import VoteController, use_postgres_vote_dependency
@@ -39,6 +40,7 @@ app = Litestar(
         AccountController,
         RankingController,
         AnalyticsController,
+        CreatorController,
     ],
     dependencies={
         "vote_dependency": Provide(use_postgres_vote_dependency, sync_to_thread=False),
@@ -46,6 +48,7 @@ app = Litestar(
         "account_dependency": Provide(use_postgres_account_dependency, sync_to_thread=False),
         "ranking_dependency": Provide(use_postgres_ranking_dependency, sync_to_thread=False),
         "analytics_dependency": Provide(use_postgres_analytics_dependency, sync_to_thread=False),
+        "creator_dependency": Provide(use_postgres_creator_dependency, sync_to_thread=False),
     },
     exception_handlers={
         RepositoryException: repository_exception_to_http_response,  # type: ignore[dict-item]
@@ -56,7 +59,14 @@ app = Litestar(
     compression_config=CompressionConfig(backend="gzip", gzip_compress_level=9),
     middleware=[
         DefineMiddleware(
-            JWTAuthenticationMiddleware, exclude=["schema", "account/login", "account/signup", "account/refresh"]
+            JWTAuthenticationMiddleware,
+            exclude=[
+                "schema",
+                "account/login",
+                "account/signup",
+                "account/refresh",
+                "creator",
+            ],
         )
     ],
 )

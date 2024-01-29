@@ -25,6 +25,9 @@ function FilterChoices({ defaultFilters, currentFilters, setFilters }) {
     bodyNameOrCategory: {
       key: "Pokemon body",
     },
+    creatorName: {
+      key: "Creator",
+    },
     downvoteEnabled: {
       key: "Vote type",
       value: "Downvote",

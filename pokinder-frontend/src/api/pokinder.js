@@ -34,6 +34,12 @@ export async function refresh(refreshToken) {
   return response.data;
 }
 
+export async function listCreators() {
+  const response = await http.get("/creator");
+
+  return response.data;
+}
+
 export async function drawFusions(limit) {
   const params = new URLSearchParams();
 
@@ -53,6 +59,7 @@ export async function getHistory(filters, limit, offset) {
 
   params.set("head_name_or_category", filters.headNameOrCategory);
   params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("creator_name", filters.creatorName);
   params.set("limit", limit);
   params.set("offset", offset);
 
@@ -66,6 +73,7 @@ export async function getRanking(filters, limit, offset) {
 
   params.set("head_name_or_category", filters.headNameOrCategory);
   params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("creator_name", filters.creatorName);
   params.set("limit", limit);
   params.set("offset", offset);
 
