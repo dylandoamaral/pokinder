@@ -30,6 +30,7 @@ function Pokedex() {
   const defaultFilters = {
     headNameOrCategory: "All",
     bodyNameOrCategory: "All",
+    creatorName: "All",
     downvoteEnabled: true,
     favoriteEnabled: true,
     upvoteEnabled: true,

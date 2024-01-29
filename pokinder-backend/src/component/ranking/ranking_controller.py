@@ -15,10 +15,12 @@ class RankingController(Controller):
         offset: int = 0,
         head_name_or_category: str | None = None,
         body_name_or_category: str | None = None,
+        creator_name: str | None = None,
     ) -> list[Ranking]:
         return await ranking_dependency.list(
             limit,
             offset,
             head_name_or_category,
             body_name_or_category,
+            creator_name,
         )
