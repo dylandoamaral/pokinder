@@ -27,6 +27,11 @@
 }
 
 @media (max-width: 740px) {
+  .container {
+    width: 100%;
+    max-width: 360px;
+  }
+
   .pokemons {
     flex-direction: column;
     gap: var(--spacing-XL);
