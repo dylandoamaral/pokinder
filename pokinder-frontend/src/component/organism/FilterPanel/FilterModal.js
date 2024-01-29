@@ -69,6 +69,11 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
       return { value: value.name, label: value.name };
     }
 
+    const defaultValue = {
+      value: updatedFilters.creatorName,
+      label: updatedFilters.creatorName
+    }
+
     return (
       <div className={styles.pokemons}>
         <Filter title={t("Creator")}>
@@ -76,7 +81,7 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
             futureValues={listCreators}
             valueToOption={valueToOption}
             onChange={setCreator}
-            defaultValue={findOptionByValue(updatedFilters.creatorName)}
+            defaultValue={defaultValue}
           />
         </Filter>
       </div>
