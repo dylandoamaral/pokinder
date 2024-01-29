@@ -4,6 +4,7 @@ from sqlalchemy import case, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased, joinedload
 
+from src.component.creator.creator_table import Creator
 from src.component.family.family_table import Family
 from src.component.fusion.fusion_table import Fusion
 from src.component.pokemon.pokemon_table import Pokemon
@@ -24,6 +25,7 @@ class PostgresRankingDependency(RankingDependency):
         offset: int = 0,
         head_name_or_category: str | None = None,
         body_name_or_category: str | None = None,
+        creator_name: str | None = None,
     ) -> list[Ranking]:
         Head = aliased(Pokemon, name="head")
         Body = aliased(Pokemon, name="body")
@@ -66,12 +68,10 @@ class PostgresRankingDependency(RankingDependency):
         query = (
             select(Fusion, rankings.c.count, rankings.c.score, rankings.c.rank)
             .select_from(rankings.join(Fusion, rankings.c.fusion_id == Fusion.id))
-            .options(
-                joinedload(Fusion.head),
-                joinedload(Fusion.body),
-            )
+            .options(joinedload(Fusion.head), joinedload(Fusion.body), joinedload(Fusion.creator))
             .join(Head, Fusion.head_id == Head.id)
             .join(Body, Fusion.body_id == Body.id)
+            .join(Creator, Fusion.creator_id == Creator.id)
             .order_by(rankings.c.rank)
         )
 
@@ -89,6 +89,9 @@ class PostgresRankingDependency(RankingDependency):
                 query = query.filter(Body.families.any(Family.id.in_([families[body_name_or_category]])))
             else:
                 query = query.filter(Body.name == body_name_or_category)
+
+        if creator_name is not None and creator_name != "All":
+            query = query.filter(Creator.name == creator_name)
 
         query = query.offset(offset).limit(limit)
 

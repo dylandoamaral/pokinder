@@ -1,6 +1,5 @@
 from datetime import datetime
 from typing import Annotated
-from uuid import UUID
 
 from litestar.contrib.sqlalchemy.dto import SQLAlchemyDTO
 from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
@@ -26,4 +25,7 @@ class CreatorRepository(SQLAlchemyAsyncRepository[Creator]):
 
 write_config = DTOConfig()
 WriteDTO = SQLAlchemyDTO[Annotated[Creator, write_config]]
-ReadDTO = SQLAlchemyDTO[Creator]
+
+
+class ReadDTO(SQLAlchemyDTO[Creator]):
+    config = DTOConfig(exclude={"created_at"})

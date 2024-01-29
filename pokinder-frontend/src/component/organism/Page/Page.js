@@ -10,7 +10,7 @@ function Page({
   children,
   overflow = "none",
   scrollRef = null,
-  onScrollFinish = () => { },
+  onScrollFinish = () => {},
 }) {
   function onScroll(e) {
     const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
