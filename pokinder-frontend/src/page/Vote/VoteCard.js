@@ -193,7 +193,9 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
             </motion.div>
           </div>
         </div>
-        <p className={styles.credit}>{t("Art by", { artist: fusion.creator.name })}</p>
+        <p className={styles.credit}>
+          {t("Art by", { artist: fusion.creators.map((creator) => creator.name).join(" & ") })}
+        </p>
       </div>
       <motion.div
         style={{ width: backgroundWidth, height: backgroundHeight }}
