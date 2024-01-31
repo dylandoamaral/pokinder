@@ -194,7 +194,7 @@ function VoteCard({ fusion, transition, hasFocus = false }) {
           </div>
         </div>
         <p className={styles.credit}>
-          {t("Art by", { artist: fusion.creators.map((creator) => creator.name).join(" & ") })}
+          {t("Art by", { creator: fusion.creators.map((creator) => creator.name).join(" & ") })}
         </p>
       </div>
       <motion.div
