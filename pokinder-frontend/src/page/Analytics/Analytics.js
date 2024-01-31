@@ -71,7 +71,7 @@ function Analytics() {
             isLoading={isLoading}
           />
           <InformationPanel
-            title="Number of artists"
+            title="Number of creators"
             value={data?.community?.creator_count}
             isLoading={isLoading}
           />
@@ -109,7 +109,7 @@ function Analytics() {
             isLoading={isLoading}
           />
           <FavoritePanel
-            title="Favorite artist"
+            title="Favorite creator"
             data={data?.community?.favorite_creator}
             type="fusion"
             isUser={false}
@@ -175,7 +175,7 @@ function Analytics() {
             isLoading={isLoading}
           />
           <FavoritePanel
-            title="Favorite artist"
+            title="Favorite creator"
             data={data?.user?.favorite_creator}
             type="fusion"
             isUser={true}
