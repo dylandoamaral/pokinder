@@ -42,4 +42,4 @@ class WriteDTO(SQLAlchemyDTO[Annotated[Vote, write_config]]):
 
 
 class ReadDTO(SQLAlchemyDTO[Vote]):
-    config = DTOConfig(exclude={"fusion_id"})
+    config = DTOConfig(exclude={"fusion_id", "fusion.creators"})

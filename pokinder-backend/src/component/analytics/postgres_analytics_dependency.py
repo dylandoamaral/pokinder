@@ -107,7 +107,7 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
         scores = scores.subquery()
         query = (
             select(Creator.id, Creator.name, func.avg(scores.c.score))
-            .join(Fusion, Creator.id == Fusion.creator_id)
+            .join(Fusion.creators)
             .join(scores, Fusion.id == scores.c.fusion_id)
             .group_by(Creator.id, Creator.name)
             .having(func.count(Fusion.id) >= 10)
@@ -124,7 +124,7 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
         query = (
             select(Fusion.id)
             .join(scores, Fusion.id == scores.c.fusion_id)
-            .where(Fusion.creator_id == id)
+            .where(Fusion.creators.any(Creator.id == id))
             .order_by(scores.c.score.desc(), scores.c.count)
             .limit(1)
         )

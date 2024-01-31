@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated, List
+from typing import Annotated, List, TYPE_CHECKING
 from uuid import UUID
 
 from litestar.contrib.sqlalchemy.dto import SQLAlchemyDTO
@@ -8,7 +8,7 @@ from litestar.dto import DTOConfig
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.component.creator import Creator
+from src.component.creator.creator_table import Creator
 from src.component.fusion_creator import FusionCreator
 from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
 
@@ -18,7 +18,6 @@ class Fusion(BaseTable, UUIDPrimaryKey):
 
     path: Mapped[str] = mapped_column(nullable=False)
     is_removed: Mapped[bool] = mapped_column(nullable=False)
-    creator_id: Mapped[UUID] = mapped_column(ForeignKey("creator.id"))
     head_id: Mapped[UUID] = mapped_column(ForeignKey("pokemon.id"))
     body_id: Mapped[UUID] = mapped_column(ForeignKey("pokemon.id"))
     created_at: Mapped[datetime] = build_created_at_column()
@@ -26,7 +25,6 @@ class Fusion(BaseTable, UUIDPrimaryKey):
 
     creators: Mapped[List[Creator]] = relationship(secondary=FusionCreator)
 
-    creator = relationship("Creator")  # TODO: remove in a second time
     head = relationship("Pokemon", foreign_keys=[head_id])
     body = relationship("Pokemon", foreign_keys=[body_id])
 
@@ -37,7 +35,4 @@ class FusionRepository(SQLAlchemyAsyncRepository[Fusion]):
 
 write_config = DTOConfig()
 WriteDTO = SQLAlchemyDTO[Annotated[Fusion, write_config]]
-
-
-class ReadDTO(SQLAlchemyDTO[Fusion]):
-    config = DTOConfig(exclude=["creator", "creator_id"])
+ReadDTO = SQLAlchemyDTO[Fusion]
