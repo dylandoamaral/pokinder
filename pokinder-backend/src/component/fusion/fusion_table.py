@@ -1,13 +1,15 @@
 from datetime import datetime
-from typing import Annotated
+from typing import Annotated, List
 from uuid import UUID
 
 from litestar.contrib.sqlalchemy.dto import SQLAlchemyDTO
 from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
 from litestar.dto import DTOConfig
-from sqlalchemy import CheckConstraint, ForeignKey, Index, UniqueConstraint
+from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from src.component.creator import Creator
+from src.component.fusion_creator import FusionCreator
 from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
 
 
@@ -22,7 +24,9 @@ class Fusion(BaseTable, UUIDPrimaryKey):
     created_at: Mapped[datetime] = build_created_at_column()
     commit_id: Mapped[str] = mapped_column(nullable=False, server_default="7f63a8312d59302d8c7e765526d7c18b4857c426")
 
-    creator = relationship("Creator")
+    creators: Mapped[List[Creator]] = relationship(secondary=FusionCreator)
+
+    creator = relationship("Creator")  # TODO: remove in a second time
     head = relationship("Pokemon", foreign_keys=[head_id])
     body = relationship("Pokemon", foreign_keys=[body_id])
 
@@ -33,4 +37,7 @@ class FusionRepository(SQLAlchemyAsyncRepository[Fusion]):
 
 write_config = DTOConfig()
 WriteDTO = SQLAlchemyDTO[Annotated[Fusion, write_config]]
-ReadDTO = SQLAlchemyDTO[Fusion]
+
+
+class ReadDTO(SQLAlchemyDTO[Fusion]):
+    config = DTOConfig(exclude=["creator", "creator_id"])

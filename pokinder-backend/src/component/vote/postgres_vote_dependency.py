@@ -39,7 +39,7 @@ class PostgresVoteDependency(VoteDependency):
             .join(Fusion, Vote.fusion_id == Fusion.id)
             .join(Head, Fusion.head_id == Head.id)
             .join(Body, Fusion.body_id == Body.id)
-            .join(Creator, Fusion.creator_id == Creator.id)
+            .join(Fusion.creators)
         )
 
         if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
@@ -58,12 +58,12 @@ class PostgresVoteDependency(VoteDependency):
 
         if head_name_or_category is not None and head_name_or_category != "All":
             if head_name_or_category in pokemon_families.keys():
-                query = query.filter(Head.families.any(Family.id.in_([families[head_name_or_category]])))
+                query = query.filter(Head.families.any(Family.id == families[head_name_or_category]))
             else:
                 query = query.filter(Head.name == head_name_or_category)
         if body_name_or_category is not None and body_name_or_category != "All":
             if body_name_or_category in pokemon_families.keys():
-                query = query.filter(Body.families.any(Family.id.in_([families[body_name_or_category]])))
+                query = query.filter(Body.families.any(Family.id == families[body_name_or_category]))
             else:
                 query = query.filter(Body.name == body_name_or_category)
 

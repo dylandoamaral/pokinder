@@ -9,9 +9,9 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
 
   function getSpriteHref() {
     const page = isUser ? "history" : "ranking";
-    if (type === "fusion") return `/${page}?creatorName=${data.name}`;
-    else if (isHead) return `/${page}?headNameOrCategory=${data.name}`;
-    else return `/${page}?bodyNameOrCategory=${data.name}`;
+    if (type === "fusion") return `/${page}?creatorName=${encodeURIComponent(data.name)}`;
+    else if (isHead) return `/${page}?headNameOrCategory=${encodeURIComponent(data.name)}`;
+    else return `/${page}?bodyNameOrCategory=${encodeURIComponent(data.name)}`;
   }
 
   function getFontSizeAndLineHeight(name) {
