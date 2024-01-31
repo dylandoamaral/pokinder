@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased, joinedload
 
 from src.component.creator import Creator
+from src.component.fusion_creator import FusionCreator
 from src.component.pokemon import Pokemon
 from src.component.vote import Vote
 
@@ -17,9 +18,6 @@ class PostgresFusionDependency(FusionDependency):
         self.session = session
 
     async def draw(self, account_id: UUID, limit: int) -> list[Fusion]:
-        head = aliased(Pokemon, name="head")
-        body = aliased(Pokemon, name="body")
-
         subquery = (
             select(Fusion)
             .filter(Fusion.is_removed == False)
@@ -32,20 +30,14 @@ class PostgresFusionDependency(FusionDependency):
 
         subquery_fusion = aliased(Fusion, subquery)
 
-        query = (
-            select(subquery_fusion)
-            .join(head, head.id == subquery_fusion.head_id)
-            .join(body, body.id == subquery_fusion.body_id)
-            .join(Creator, Creator.id == subquery_fusion.creator_id)
-            .options(
-                joinedload(subquery_fusion.head),
-                joinedload(subquery_fusion.body),
-                joinedload(subquery_fusion.creator),
-            )
+        query = select(subquery_fusion).options(
+            joinedload(subquery_fusion.head, innerjoin=True),
+            joinedload(subquery_fusion.body, innerjoin=True),
+            joinedload(subquery_fusion.creators, innerjoin=True),
         )
 
         result = await self.session.scalars(query)
-        instances = result.all()
+        instances = result.unique().all()
 
         return instances
 

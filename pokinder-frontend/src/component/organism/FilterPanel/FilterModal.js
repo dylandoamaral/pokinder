@@ -71,8 +71,8 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
 
     const defaultValue = {
       value: updatedFilters.creatorName,
-      label: updatedFilters.creatorName
-    }
+      label: updatedFilters.creatorName,
+    };
 
     return (
       <div className={styles.pokemons}>

@@ -80,6 +80,14 @@ def model_to_dict(model: BaseTable) -> dict:
     for key, value in dictionnary.items():
         if isinstance(value, BaseTable):
             dictionnary[key] = model_to_dict(value)
+        if isinstance(value, list):
+            new_list = []
+            for element in value:
+                if isinstance(element, BaseTable):
+                    new_list.append(model_to_dict(element))
+                else:
+                    new_list.append(element)
+            dictionnary[key] = new_list
     return dictionnary
 
 
