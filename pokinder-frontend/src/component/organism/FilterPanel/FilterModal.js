@@ -71,7 +71,7 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
 
     const defaultValue = {
       value: updatedFilters.creatorName,
-      label: updatedFilters.creatorName,
+      label: updatedFilters.creatorName === "All" ? t(updatedFilters.creatorName) : updatedFilters.creatorName,
     };
 
     return (
