@@ -48,25 +48,26 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
         counts = {vote_type: count for vote_type, count in result}
         return counts
 
-    async def __favorite_pokemon(self, is_head, maybe_account_id=None) -> Optional[PokemonAnalytics]:
+    async def __favorite_account_pokemon(self, is_head, account_id=None) -> Optional[PokemonAnalytics]:
         fusion_attribute = "head_id" if is_head else "body_id"
-        scores = select(
-            Vote.fusion_id,
-            func.count().label("count"),
-            func.round(
-                func.sum(
-                    case(
-                        (Vote.vote_type == "LIKED", 1),
-                        (Vote.vote_type == "FAVORITE", 2),
-                        else_=0,
+        scores = (
+            select(
+                Vote.fusion_id,
+                func.count().label("count"),
+                func.round(
+                    func.sum(
+                        case(
+                            (Vote.vote_type == "LIKED", VoteType.LIKED.to_score()),
+                            (Vote.vote_type == "FAVORITE", VoteType.FAVORITE.to_score()),
+                            else_=VoteType.DISLIKED.to_score(),
+                        )
                     )
-                )
-                / func.count()
-                * 100
-            ).label("score"),
-        ).group_by(Vote.fusion_id)
-        if maybe_account_id:
-            scores = scores.filter(Vote.account_id == maybe_account_id)
+                    / func.count()
+                ).label("score"),
+            )
+            .filter(Vote.account_id == account_id)
+            .group_by(Vote.fusion_id)
+        )
         scores = scores.subquery()
         query = (
             select(Pokemon.name, Pokemon.pokedex_id, func.avg(scores.c.score))
@@ -86,24 +87,45 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
             average_score=int(information[2]),
         )
 
-    async def __favorite_creator(self, maybe_account_id=None) -> Optional[CreatorAnalytics]:
-        scores = select(
-            Vote.fusion_id,
-            func.count().label("count"),
-            func.round(
-                func.sum(
-                    case(
-                        (Vote.vote_type == "LIKED", 1),
-                        (Vote.vote_type == "FAVORITE", 2),
-                        else_=0,
+    async def __favorite_community_pokemon(self, is_head) -> Optional[PokemonAnalytics]:
+        fusion_attribute = "head_id" if is_head else "body_id"
+        query = (
+            select(Pokemon.name, Pokemon.pokedex_id, func.avg(Fusion.vote_score))
+            .join(Fusion, Pokemon.id == getattr(Fusion, fusion_attribute))
+            .group_by(Pokemon.name, Pokemon.pokedex_id)
+            .order_by(func.avg(Fusion.vote_score).desc(), func.sum(Fusion.vote_count).desc())
+            .filter(Fusion.vote_count > 0)
+            .limit(1)
+        )
+        result = await self.session.execute(query)
+        information = result.one_or_none()
+        if not information:
+            return None
+        return PokemonAnalytics(
+            name=information[0],
+            filename=information[1],
+            average_score=int(information[2]),
+        )
+
+    async def __favorite_account_creator(self, account_id) -> Optional[CreatorAnalytics]:
+        scores = (
+            select(
+                Vote.fusion_id,
+                func.count().label("count"),
+                func.round(
+                    func.sum(
+                        case(
+                            (Vote.vote_type == "LIKED", VoteType.LIKED.to_score()),
+                            (Vote.vote_type == "FAVORITE", VoteType.FAVORITE.to_score()),
+                            else_=VoteType.DISLIKED.to_score(),
+                        )
                     )
-                )
-                / func.count()
-                * 100
-            ).label("score"),
-        ).group_by(Vote.fusion_id)
-        if maybe_account_id:
-            scores = scores.filter(Vote.account_id == maybe_account_id)
+                    / func.count()
+                ).label("score"),
+            )
+            .filter(Vote.account_id == account_id)
+            .group_by(Vote.fusion_id)
+        )
         scores = scores.subquery()
         query = (
             select(Creator.id, Creator.name, func.avg(scores.c.score))
@@ -126,6 +148,36 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
             .join(scores, Fusion.id == scores.c.fusion_id)
             .where(Fusion.creators.any(Creator.id == id))
             .order_by(scores.c.score.desc(), scores.c.count)
+            .limit(1)
+        )
+        result = await self.session.execute(query)
+        fusion_id = result.scalar()
+        return CreatorAnalytics(
+            name=name,
+            filename=fusion_id,
+            average_score=int(average_score),
+        )
+
+    async def __favorite_community_creator(self) -> Optional[PokemonAnalytics]:
+        query = (
+            select(Creator.id, Creator.name, func.avg(Fusion.vote_score).label("scores"))
+            .join(Fusion.creators)
+            .group_by(Creator.id, Creator.name)
+            .order_by(func.avg(Fusion.vote_score).desc(), func.sum(Fusion.vote_count).desc())
+            .filter(Fusion.vote_count > 0)
+            .limit(1)
+        )
+        result = await self.session.execute(query)
+        information = result.one_or_none()
+        if not information:
+            return None
+        id = information[0]
+        name = information[1]
+        average_score = information[2]
+        query = (
+            select(Fusion.id)
+            .where(Fusion.creators.any(Creator.id == id))
+            .order_by(Fusion.vote_score.desc(), Fusion.vote_count.desc())
             .limit(1)
         )
         result = await self.session.execute(query)
@@ -166,15 +218,15 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
             self.__count(Fusion),
             self.__count(Creator),
             self.__vote_type_count(),
-            self.__favorite_pokemon(is_head=True),
-            self.__favorite_pokemon(is_head=False),
-            self.__favorite_creator(),
+            self.__favorite_community_pokemon(is_head=True),
+            self.__favorite_community_pokemon(is_head=False),
+            self.__favorite_community_creator(),
             self.__rank(account_id),
             self.__created_at(account_id),
             self.__vote_type_count(account_id),
-            self.__favorite_pokemon(is_head=True, maybe_account_id=account_id),
-            self.__favorite_pokemon(is_head=False, maybe_account_id=account_id),
-            self.__favorite_creator(maybe_account_id=account_id),
+            self.__favorite_account_pokemon(is_head=True, account_id=account_id),
+            self.__favorite_account_pokemon(is_head=False, account_id=account_id),
+            self.__favorite_account_creator(account_id=account_id),
         )
 
         dislike_count = results[3].get(VoteType.DISLIKED, 0)

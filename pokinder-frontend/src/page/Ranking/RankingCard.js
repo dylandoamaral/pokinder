@@ -74,8 +74,8 @@ const RankingCard = memo(function RankingCard({ ranking }) {
         <span className={styles.path}>#{ranking.fusion.path}</span>
       </div>
       <div className={styles.data}>
-        <h2 className={styles.score}>{ranking.score}%</h2>
-        <span className={styles.count}>{t("N Vote", { count: ranking.count })}</span>
+        <h2 className={styles.score}>{ranking.fusion.vote_score}%</h2>
+        <span className={styles.count}>{t("N Vote", { count: ranking.fusion.vote_count })}</span>
       </div>
       <Sprite
         className={styles.sprite}
