@@ -17,6 +17,16 @@ class VoteType(Enum):
     DISLIKED = 1
     FAVORITE = 2
 
+    def to_score(self):
+        if self == VoteType.LIKED:
+            return 100
+        elif self == VoteType.DISLIKED:
+            return 0
+        elif self == VoteType.FAVORITE:
+            return 200
+        else:
+            raise ValueError("Invalid vote type")
+
 
 class Vote(BaseTable):
     __tablename__ = "vote"  #  type: ignore[assignment]

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated, List, TYPE_CHECKING
+from typing import TYPE_CHECKING, Annotated, List
 
 from litestar.contrib.sqlalchemy.dto import SQLAlchemyDTO
 from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
@@ -7,8 +7,8 @@ from litestar.dto import DTOConfig
 from sqlalchemy import String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
 from src.component.fusion_creator import FusionCreator
+from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
 
 
 class Creator(BaseTable, UUIDPrimaryKey):
