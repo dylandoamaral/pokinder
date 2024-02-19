@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Annotated, List, TYPE_CHECKING
+from typing import TYPE_CHECKING, Annotated, List
 from uuid import UUID
 
 from litestar.contrib.sqlalchemy.dto import SQLAlchemyDTO
@@ -22,6 +22,8 @@ class Fusion(BaseTable, UUIDPrimaryKey):
     body_id: Mapped[UUID] = mapped_column(ForeignKey("pokemon.id"))
     created_at: Mapped[datetime] = build_created_at_column()
     commit_id: Mapped[str] = mapped_column(nullable=False, server_default="7f63a8312d59302d8c7e765526d7c18b4857c426")
+    vote_score: Mapped[int] = mapped_column(nullable=False, server_default="0")
+    vote_count: Mapped[int] = mapped_column(nullable=False, server_default="0")
 
     creators: Mapped[List[Creator]] = relationship(secondary=FusionCreator)
 

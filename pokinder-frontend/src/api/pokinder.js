@@ -77,7 +77,7 @@ export async function getRanking(filters, limit, offset) {
   params.set("limit", limit);
   params.set("offset", offset);
 
-  const response = await http.get("/ranking?" + params.toString());
+  const response = await http.get("/fusion/ranking?" + params.toString());
 
   return { records: response.data, previousOffset: offset };
 }

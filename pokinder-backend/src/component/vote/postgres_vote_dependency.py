@@ -9,6 +9,7 @@ from src.component.family.family_table import Family
 from src.component.fusion.fusion_table import Fusion
 from src.component.pokemon.pokemon_table import Pokemon
 from src.component.vote.vote_model import VoteAdd
+from src.component.vote.vote_table import VoteType
 from src.data.pokemon_families import pokemon_families
 
 from .vote_dependency import VoteDependency
@@ -78,8 +79,23 @@ class PostgresVoteDependency(VoteDependency):
         return instances
 
     async def upsert(self, account_id: UUID, vote_add: VoteAdd) -> Vote:
+        # Update the score of the fusion
+        vote_score = vote_add.vote_type.to_score()
+        await self.session.execute(
+            update(Fusion)
+            .where(Fusion.id == vote_add.fusion_id)
+            .values(
+                vote_count=Fusion.vote_count + 1,
+                vote_score=((Fusion.vote_score * Fusion.vote_count) + vote_score) / (Fusion.vote_count + 1),
+            )
+        )
+        await self.session.flush()
+        await self.session.commit()
+
         vote = Vote(account_id=account_id, fusion_id=vote_add.fusion_id, vote_type=vote_add.vote_type)
-        return await self.repository.upsert(vote, auto_commit=True)
+        vote = await self.repository.upsert(vote, auto_commit=True)
+
+        return vote
 
 
 def use_postgres_vote_dependency(db_session: AsyncSession) -> VoteDependency:

@@ -20,7 +20,6 @@ from src.component.analytics import (
 )
 from src.component.creator import CreatorController, use_postgres_creator_dependency
 from src.component.fusion import FusionController, use_postgres_fusion_dependency
-from src.component.ranking import RankingController, use_postgres_ranking_dependency
 from src.component.vote import VoteController, use_postgres_vote_dependency
 from src.security.middleware import JWTAuthenticationMiddleware
 from src.utils.env import (
@@ -38,7 +37,6 @@ app = Litestar(
         VoteController,
         FusionController,
         AccountController,
-        RankingController,
         AnalyticsController,
         CreatorController,
     ],
@@ -46,7 +44,6 @@ app = Litestar(
         "vote_dependency": Provide(use_postgres_vote_dependency, sync_to_thread=False),
         "fusion_dependency": Provide(use_postgres_fusion_dependency, sync_to_thread=False),
         "account_dependency": Provide(use_postgres_account_dependency, sync_to_thread=False),
-        "ranking_dependency": Provide(use_postgres_ranking_dependency, sync_to_thread=False),
         "analytics_dependency": Provide(use_postgres_analytics_dependency, sync_to_thread=False),
         "creator_dependency": Provide(use_postgres_creator_dependency, sync_to_thread=False),
     },
