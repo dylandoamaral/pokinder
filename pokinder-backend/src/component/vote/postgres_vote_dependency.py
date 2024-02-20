@@ -71,7 +71,9 @@ class PostgresVoteDependency(VoteDependency):
         if creator_name is not None and creator_name != "All":
             query = query.filter(Creator.name == creator_name)
 
-        query = query.order_by(Vote.created_at.desc()).offset(offset).limit(limit)
+        query = (
+            query.order_by(Vote.created_at.desc()).offset(offset).limit(limit).distinct(Vote.created_at, Vote.fusion_id)
+        )
 
         result = await self.session.scalars(query)
         instances = result.all()
