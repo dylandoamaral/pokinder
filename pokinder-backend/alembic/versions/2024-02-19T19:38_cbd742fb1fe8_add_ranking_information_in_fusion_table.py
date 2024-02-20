@@ -42,9 +42,9 @@ def upgrade() -> None:
                         COUNT(*) AS count,
                         ROUND(SUM(
                             CASE
-                                WHEN Vote.vote_type = 'LIKED' THEN 1
-                                WHEN Vote.vote_type = 'FAVORITE' THEN 2
-                                ELSE 0
+                                WHEN Vote.vote_type = 'LIKED' THEN 1.0
+                                WHEN Vote.vote_type = 'FAVORITE' THEN 2.0
+                                ELSE 0.0
                             END
                         ) / COUNT(*) * 100) AS score
                     FROM Vote
