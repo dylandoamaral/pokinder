@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
-from sqlalchemy import case, distinct, func, select
+from sqlalchemy import case, desc, distinct, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.component.account.account_table import Account
@@ -128,12 +128,16 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
         )
         scores = scores.subquery()
         query = (
-            select(Creator.id, Creator.name, func.avg(scores.c.score))
+            select(
+                Creator.id,
+                Creator.name,
+                (func.sum(scores.c.score) / func.sum(scores.c.count)).label("scores"),
+            )
             .join(Fusion.creators)
             .join(scores, Fusion.id == scores.c.fusion_id)
             .group_by(Creator.id, Creator.name)
-            .having(func.count(Fusion.id) >= 10)
-            .order_by(func.avg(scores.c.score).desc(), func.sum(scores.c.count).desc())
+            .having(func.sum(scores.c.count) >= 5)
+            .order_by(desc("scores"), func.sum(scores.c.count).desc())
             .limit(1)
         )
         result = await self.session.execute(query)
@@ -160,11 +164,15 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
 
     async def __favorite_community_creator(self) -> Optional[PokemonAnalytics]:
         query = (
-            select(Creator.id, Creator.name, func.avg(Fusion.vote_score).label("scores"))
+            select(
+                Creator.id,
+                Creator.name,
+                (func.sum(Fusion.vote_score) / func.sum(Fusion.vote_count)).label("scores"),
+            )
             .join(Fusion.creators)
             .group_by(Creator.id, Creator.name)
-            .order_by(func.avg(Fusion.vote_score).desc(), func.sum(Fusion.vote_count).desc())
-            .filter(Fusion.vote_count > 0)
+            .having(func.sum(Fusion.vote_count) >= 10)
+            .order_by(desc("scores"), func.sum(Fusion.vote_count).desc())
             .limit(1)
         )
         result = await self.session.execute(query)
