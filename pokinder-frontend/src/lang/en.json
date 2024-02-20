@@ -71,6 +71,7 @@
   "Vote type": "Vote type",
   "Vote types": "Vote types",
   "Voted": "Voted",
+  "N Vote_zero": "{{count}} vote",
   "N Vote_one": "{{count}} vote",
   "N Vote_other": "{{count}} votes",
 
