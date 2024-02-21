@@ -81,16 +81,33 @@ class PostgresVoteDependency(VoteDependency):
         return instances
 
     async def upsert(self, account_id: UUID, vote_add: VoteAdd) -> Vote:
-        # Update the score of the fusion
-        vote_score = vote_add.vote_type.to_score()
-        await self.session.execute(
-            update(Fusion)
-            .where(Fusion.id == vote_add.fusion_id)
-            .values(
-                vote_count=Fusion.vote_count + 1,
-                vote_score=((Fusion.vote_score * Fusion.vote_count) + vote_score) / (Fusion.vote_count + 1),
-            )
+        result = await self.session.scalars(
+            select(Vote).where(Vote.account_id == account_id, Vote.fusion_id == vote_add.fusion_id)
         )
+        maybe_old_vote = result.one_or_none()
+        vote_score = vote_add.vote_type.to_score()
+
+        # Update the score of the fusion
+        if maybe_old_vote:
+            old_vote_score = maybe_old_vote.vote_type.to_score()
+            # Update the score of the fusion
+            vote_score = vote_add.vote_type.to_score()
+            total_score = (Fusion.vote_score * Fusion.vote_count) + vote_score - old_vote_score
+            await self.session.execute(
+                update(Fusion)
+                .where(Fusion.id == vote_add.fusion_id)
+                .values(vote_score=(total_score / Fusion.vote_count))
+            )
+        else:
+            await self.session.execute(
+                update(Fusion)
+                .where(Fusion.id == vote_add.fusion_id)
+                .values(
+                    vote_count=Fusion.vote_count + 1,
+                    vote_score=((Fusion.vote_score * Fusion.vote_count) + vote_score) / (Fusion.vote_count + 1),
+                )
+            )
+
         await self.session.flush()
         await self.session.commit()
 
