@@ -78,6 +78,7 @@ class PostgresFusionDependency(FusionDependency):
                 joinedload(Fusion.body, innerjoin=True),
             )
             .order_by("rank")
+            .distinct("rank", Fusion.id)
         )
 
         if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
