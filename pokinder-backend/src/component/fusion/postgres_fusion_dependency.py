@@ -40,7 +40,7 @@ class PostgresFusionDependency(FusionDependency):
         )
 
         result = await self.session.scalars(query)
-        instances = result.all()
+        instances = result.unique().all()
 
         print(instances[0].creators)
 
