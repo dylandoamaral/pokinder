@@ -40,7 +40,7 @@ class PostgresFusionDependency(FusionDependency):
         )
 
         result = await self.session.scalars(query)
-        instances = result.unique().all()
+        instances = result.all()
 
         print(instances[0].creators)
 
@@ -74,11 +74,13 @@ class PostgresFusionDependency(FusionDependency):
             .join(Head, Fusion.head_id == Head.id)
             .join(Body, Fusion.body_id == Body.id)
             .options(
+                joinedload(Fusion.creators),
                 joinedload(Fusion.head, innerjoin=True),
                 joinedload(Fusion.body, innerjoin=True),
             )
             .order_by("rank")
-            .distinct("rank", Fusion.id)
+            # Avoid duplicate rank caused by multiple creators
+            .group_by(Fusion)
         )
 
         if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
