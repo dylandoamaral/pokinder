@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useMutation, useQuery } from "react-query";
 
@@ -33,7 +33,7 @@ function Vote() {
   const [absoluteIndex, setAbsoluteIndex] = useState(CACHED_FUSIONS - 1);
   const [relativeIndex, setRelativeIndex] = useState(0);
   const [carouselFusions, setCarouselFusions] = useState([]);
-  const [fusions, setFusions] = useState([]);
+  const fusions = useRef([]);
 
   // Init the carousel when the component is first rendered.
   function initCarouselFusions(fusions) {
@@ -56,29 +56,29 @@ function Vote() {
       if (carouselFusions.length === 0) {
         const newCarouselFusions = initCarouselFusions(newFusions);
         setCarouselFusions(newCarouselFusions);
-        setFusions(newFusions.slice(CACHED_FUSIONS, newFusions.length));
+        fusions.current = newFusions.slice(CACHED_FUSIONS, newFusions.length);
       }
       // We fetched new sprite, should fill the fusions but not the carousel.
       else {
         // We need to slice the first fusion moved to the carousel in onVote.
-        setFusions([...fusions, ...newFusions]);
+        fusions.current = [...fusions.current, ...newFusions];
       }
     }
   }
 
   // Apply vote when animation is complete.
   async function onVote() {
-    const previousFusion = carouselFusions[absoluteIndex - 1 - relativeIndex];
+    const previousFusion = carouselFusions[CACHED_FUSIONS - 1];
 
-    setFusions(fusions.slice(1));
-    setCarouselFusions([...carouselFusions.slice(1), fusions[0]]);
+    if (fusions.current.length < TRIGGER_FETCH_NEW_FUSIONS && !isFetching) {
+      refetchFusions();
+    }
+
+    fusions.current = fusions.current.slice(1);
+    setCarouselFusions([...carouselFusions.slice(1), fusions.current[0]]);
     setRelativeIndex(relativeIndex + 1);
 
     storeVote({ fusionId: previousFusion.id, voteType: voteType });
-
-    if (fusions.length < TRIGGER_FETCH_NEW_FUSIONS && !isFetching) {
-      await refetchFusions();
-    }
   }
 
   // Swipe the card and select the correct vote type.
