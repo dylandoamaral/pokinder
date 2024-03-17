@@ -21,9 +21,9 @@ function Vote() {
   const CACHED_FUSIONS = 6;
   // The duration of the swipe animation.
   const SWIPE_DURATION = 0.2;
-  // The space between two wards.
+  // The space between two cards.
   const CARD_SPACE = 290 + 16;
-  // The space between two wards.
+  // The time to wait between two votes.
   const MILLISECONDS_BETWEEN_VOTES = 250;
 
   const { t } = useTranslation();
@@ -61,7 +61,7 @@ function Vote() {
       // We fetched new sprite, should fill the fusions but not the carousel.
       else {
         // We need to slice the first fusion moved to the carousel in onVote.
-        setFusions([...fusions.slice(1), ...newFusions]);
+        setFusions([...fusions, ...newFusions]);
       }
     }
   }
@@ -70,6 +70,7 @@ function Vote() {
   async function onVote() {
     const previousFusion = carouselFusions[absoluteIndex - 1 - relativeIndex];
 
+    setFusions(fusions.slice(1));
     setCarouselFusions([...carouselFusions.slice(1), fusions[0]]);
     setRelativeIndex(relativeIndex + 1);
 
@@ -77,8 +78,6 @@ function Vote() {
 
     if (fusions.length < TRIGGER_FETCH_NEW_FUSIONS && !isFetching) {
       await refetchFusions();
-    } else {
-      setFusions(fusions.slice(1));
     }
   }
 
@@ -128,12 +127,12 @@ function Vote() {
       return (
         <div className={`${styles.container} ${styles.loading}`}>
           <div className={styles.votes}>
-            {Array.from({ length: CACHED_FUSIONS - 1 }, (_) => (
-              <LoadingVoteCard hidden />
+            {Array.from({ length: CACHED_FUSIONS - 1 }, (_, key) => (
+              <LoadingVoteCard hidden key={key} />
             ))}
             <LoadingVoteCard hasFocus />
-            {Array.from({ length: CACHED_FUSIONS - 1 }, (_) => (
-              <LoadingVoteCard />
+            {Array.from({ length: CACHED_FUSIONS - 1 }, (_, key) => (
+              <LoadingVoteCard key={key} />
             ))}
           </div>
           <div className={styles.buttons}>
