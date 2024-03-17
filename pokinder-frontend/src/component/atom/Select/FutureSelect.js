@@ -7,12 +7,10 @@ function FutureSelect({ onChange, futureValues, valueToOption, defaultValue }) {
   const [options, setOptions] = useState([]);
 
   function filterOptions(inputValue, options) {
-    console.log(options);
     return options.filter((i) => i.label.toLowerCase().includes(inputValue.toLowerCase()));
   }
 
   function loadOptions(inputValue, callback) {
-    console.log(options);
     if (options.length === 0) {
       futureValues().then((newValues) => {
         const newOptions = newValues.map((value) => valueToOption(value));
