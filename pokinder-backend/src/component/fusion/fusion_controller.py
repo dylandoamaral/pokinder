@@ -1,4 +1,5 @@
 from litestar import Controller, get
+import time
 
 from src.security import Request
 from src.utils.collection import arreyfy
