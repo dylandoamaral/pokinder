@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 
+import { randomBetween } from "../../utils/random";
+
 import Sprite from "../../component/atom/Sprite/Sprite";
 
 import styles from "./FavoritePanel.module.css";
@@ -36,7 +38,7 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
         <div className={styles.information}>
           <div className={styles.head}>
             <span className={styles.title}>{t(title)}</span>
-            <div className={styles.loadingName} />
+            <div className={styles.loadingName} style={{ width: randomBetween(80, 150) }} />
           </div>
           <div className={styles.loadingScore} />
         </div>
