@@ -100,6 +100,7 @@
 .sprite > div {
   width: 60%;
   height: 60%;
+  border-radius: var(--border-radius-L);
   background-color: var(--neutral-medium);
 }
 

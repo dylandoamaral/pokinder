@@ -126,13 +126,13 @@ code {
 
 @keyframes blink {
   50% {
-    opacity: 0;
+    opacity: 0.2;
   }
 }
 
 .loading {
-  opacity: 0.5;
-  animation: blink 1.5s ease-in-out infinite;
+  opacity: 0.7;
+  animation: blink 1.1s ease-in infinite;
 }
 
 .popup-arrow {

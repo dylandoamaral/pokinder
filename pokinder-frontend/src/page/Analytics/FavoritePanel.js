@@ -37,12 +37,12 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
       <div className={`${styles.container} loading`}>
         <div className={styles.information}>
           <div className={styles.head}>
-            <span className={styles.title}>{t(title)}</span>
+            <div className={styles.title}>{t(title)}</div>
             <div className={styles.loadingName} style={{ width: randomBetween(80, 150) }} />
           </div>
           <div className={styles.loadingScore} />
         </div>
-        <div className={styles.loadingSprite} />
+        <span className={styles.loadingSprite} />
       </div>
     );
 

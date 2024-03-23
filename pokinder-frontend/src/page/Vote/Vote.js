@@ -167,7 +167,7 @@ function Vote() {
 
     if (isLoading) {
       return (
-        <div className={`${styles.container} ${styles.loading}`}>
+        <div className={`${styles.container} loading`}>
           <div className={styles.votes}>
             {Array.from({ length: CACHED_FUSIONS - 1 }, (_, key) => (
               <LoadingVoteCard hidden key={key} />

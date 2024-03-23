@@ -33,6 +33,7 @@
 .sprite > div {
   width: 80%;
   height: 80%;
+  border-radius: var(--border-radius-L);
   background-color: var(--neutral-medium);
 }
 
