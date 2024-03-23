@@ -1,5 +1,7 @@
 import { useTranslation } from "react-i18next";
 
+import { randomBetween } from "../../utils/random";
+
 import styles from "./InformationPanel.module.css";
 
 function InformationPanel({ title, value, isLoading }) {
@@ -9,7 +11,7 @@ function InformationPanel({ title, value, isLoading }) {
     return (
       <div className={`${styles.container} loading`}>
         <span className={styles.title}>{t(title)}</span>
-        <div className={styles.loadingValue} />
+        <div className={styles.loadingValue} style={{ width: randomBetween(80, 150) }} />
       </div>
     );
 

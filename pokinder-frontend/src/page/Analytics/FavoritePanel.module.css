@@ -38,13 +38,12 @@
 
 .loadingName {
   height: 32px;
-  width: 100px;
   background-color: var(--neutral-medium);
 }
 
 .loadingScore {
   height: 24px;
-  width: 120px;
+  width: 160px;
   background-color: var(--neutral-medium);
 }
 
