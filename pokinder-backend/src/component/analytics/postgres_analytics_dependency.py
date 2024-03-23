@@ -1,5 +1,4 @@
 import asyncio
-import time
 from datetime import datetime
 from typing import Optional
 from uuid import UUID
@@ -222,8 +221,6 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
         return rank[0]
 
     async def get(self, account_id: UUID) -> list[Analytics]:
-        time.sleep(10)
-
         results = await asyncio.gather(
             self.__user_count(),
             self.__count(Fusion),

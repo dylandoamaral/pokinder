@@ -76,7 +76,7 @@ function Ranking() {
 
     if (isLoading) {
       return (
-        <div className={`${styles.wrapper} ${styles.loading}`}>
+        <div className={`${styles.wrapper} loading`}>
           <FilterPanel
             defaultFilters={defaultFilters}
             currentFilters={filters}
