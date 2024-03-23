@@ -31,6 +31,7 @@ function Sidebar({ isVisible, onClose, toggleLoginModal }) {
           navData.isActive ? `${styles.navlink} ${styles.navlink_active}` : `${styles.navlink}`
         }
         key={index}
+        reloadDocument
       >
         {link.title}
       </NavLink>
