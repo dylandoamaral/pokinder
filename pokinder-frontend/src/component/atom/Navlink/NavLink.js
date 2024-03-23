@@ -9,6 +9,7 @@ function NavLink({ link }) {
       className={(navData) =>
         navData.isActive ? `${styles.container}` : `${styles.container} ${styles.inactive}`
       }
+      reloadDocument
     >
       {link.title}
     </BaseNavLink>
