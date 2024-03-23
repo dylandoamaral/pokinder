@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useMutation, useQuery } from "react-query";
 
@@ -35,30 +35,30 @@ function Vote() {
   const [carouselFusions, setCarouselFusions] = useState([]);
   const fusions = useRef([]);
 
-  const persistKeyDate = "pokinderVoteDate"
-  const persistKeyFusions = "pokinderVoteFusions"
-  const persistKeyCarouselFusions = "pokinderVoteCarousselFusions"
+  const persistKeyDate = "pokinderVoteDate";
+  const persistKeyFusions = "pokinderVoteFusions";
+  const persistKeyCarouselFusions = "pokinderVoteCarousselFusions";
 
   function setAndPersistFusions(newFusions) {
-    fusions.current = newFusions
-    localStorage.setItem(persistKeyFusions, JSON.stringify(newFusions))
-    localStorage.setItem(persistKeyDate, new Date().getTime())
+    fusions.current = newFusions;
+    localStorage.setItem(persistKeyFusions, JSON.stringify(newFusions));
+    localStorage.setItem(persistKeyDate, new Date().getTime());
   }
 
   function setAndPersistCarouselFusions(newCarouselFusions) {
-    setCarouselFusions(newCarouselFusions)
-    localStorage.setItem(persistKeyCarouselFusions, JSON.stringify(newCarouselFusions))
+    setCarouselFusions(newCarouselFusions);
+    localStorage.setItem(persistKeyCarouselFusions, JSON.stringify(newCarouselFusions));
   }
 
   function shouldUsePersistedFusions() {
-    const maybeRefreshDate = localStorage.getItem(persistKeyDate)
+    const maybeRefreshDate = localStorage.getItem(persistKeyDate);
 
-    if (maybeRefreshDate === null) return false
+    if (maybeRefreshDate === null) return false;
 
     var oneMonthInMilliseconds = 31 * 24 * 60 * 60 * 1000;
     var currentTimestamp = Date.now();
 
-    return (currentTimestamp - maybeRefreshDate) < oneMonthInMilliseconds;
+    return currentTimestamp - maybeRefreshDate < oneMonthInMilliseconds;
   }
 
   // Init the carousel when the component is first rendered.
@@ -74,7 +74,7 @@ function Vote() {
 
   function getPersistedFusions() {
     setCarouselFusions(JSON.parse(localStorage.getItem(persistKeyCarouselFusions)));
-    fusions.current = JSON.parse(localStorage.getItem(persistKeyFusions))
+    fusions.current = JSON.parse(localStorage.getItem(persistKeyFusions));
   }
 
   async function drawNewFusions() {
@@ -88,22 +88,24 @@ function Vote() {
         const newCarouselFusions = initCarouselFusions(newFusions);
 
         setAndPersistCarouselFusions(newCarouselFusions);
-        setAndPersistFusions(newFusions.slice(CACHED_FUSIONS, newFusions.length))
+        setAndPersistFusions(newFusions.slice(CACHED_FUSIONS, newFusions.length));
       }
       // We fetched new sprite, should fill the fusions but not the carousel.
       else {
         // We need to slice the first fusion moved to the carousel in onVote.
-        setAndPersistFusions([...fusions.current, ...newFusions])
+        setAndPersistFusions([...fusions.current, ...newFusions]);
       }
     }
   }
 
   async function getFusions() {
-    const persistKeyFusionsExists = localStorage.getItem(persistKeyFusions) !== null
-    const persistKeyCarouselFusionsExists = localStorage.getItem(persistKeyCarouselFusions) !== null
+    const persistKeyFusionsExists = localStorage.getItem(persistKeyFusions) !== null;
+    const persistKeyCarouselFusionsExists =
+      localStorage.getItem(persistKeyCarouselFusions) !== null;
 
-    if (persistKeyFusionsExists && persistKeyCarouselFusionsExists && shouldUsePersistedFusions()) getPersistedFusions()
-    else await drawNewFusions()
+    if (persistKeyFusionsExists && persistKeyCarouselFusionsExists && shouldUsePersistedFusions())
+      getPersistedFusions();
+    else await drawNewFusions();
   }
 
   // Apply vote when animation is complete.
