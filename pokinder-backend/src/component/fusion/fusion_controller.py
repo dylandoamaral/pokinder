@@ -1,5 +1,6 @@
-from litestar import Controller, get
 import time
+
+from litestar import Controller, get
 
 from src.security import Request
 from src.utils.collection import arreyfy
