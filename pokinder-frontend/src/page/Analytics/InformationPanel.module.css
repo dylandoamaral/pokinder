@@ -27,6 +27,5 @@
 
 .loadingValue {
   height: 32px;
-  width: 100px;
   background-color: var(--neutral-medium);
 }
