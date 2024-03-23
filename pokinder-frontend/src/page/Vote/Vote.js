@@ -35,6 +35,32 @@ function Vote() {
   const [carouselFusions, setCarouselFusions] = useState([]);
   const fusions = useRef([]);
 
+  const persistKeyDate = "pokinderVoteDate"
+  const persistKeyFusions = "pokinderVoteFusions"
+  const persistKeyCarouselFusions = "pokinderVoteCarousselFusions"
+
+  function setAndPersistFusions(newFusions) {
+    fusions.current = newFusions
+    localStorage.setItem(persistKeyFusions, JSON.stringify(newFusions))
+    localStorage.setItem(persistKeyDate, new Date().getTime())
+  }
+
+  function setAndPersistCarouselFusions(newCarouselFusions) {
+    setCarouselFusions(newCarouselFusions)
+    localStorage.setItem(persistKeyCarouselFusions, JSON.stringify(newCarouselFusions))
+  }
+
+  function shouldUsePersistedFusions() {
+    const maybeRefreshDate = localStorage.getItem(persistKeyDate)
+
+    if (maybeRefreshDate === null) return false
+
+    var oneMonthInMilliseconds = 31 * 24 * 60 * 60 * 1000;
+    var currentTimestamp = Date.now();
+
+    return (currentTimestamp - maybeRefreshDate) < oneMonthInMilliseconds;
+  }
+
   // Init the carousel when the component is first rendered.
   function initCarouselFusions(fusions) {
     var queue = new Array(CACHED_FUSIONS - 1).fill({});
@@ -46,8 +72,13 @@ function Vote() {
     return queue;
   }
 
-  // Call the Pokinder API to fecth more fusions.
+  function getPersistedFusions() {
+    setCarouselFusions(JSON.parse(localStorage.getItem(persistKeyCarouselFusions)));
+    fusions.current = JSON.parse(localStorage.getItem(persistKeyFusions))
+  }
+
   async function drawNewFusions() {
+    // Call the Pokinder API to fecth more fusions.
     const data = await drawFusions(AMOUNT_FETCH_NEW_FUSIONS);
     const newFusions = data || [];
 
@@ -55,15 +86,24 @@ function Vote() {
       // First time, we fill the carousel with both data and empty objects.
       if (carouselFusions.length === 0) {
         const newCarouselFusions = initCarouselFusions(newFusions);
-        setCarouselFusions(newCarouselFusions);
-        fusions.current = newFusions.slice(CACHED_FUSIONS, newFusions.length);
+
+        setAndPersistCarouselFusions(newCarouselFusions);
+        setAndPersistFusions(newFusions.slice(CACHED_FUSIONS, newFusions.length))
       }
       // We fetched new sprite, should fill the fusions but not the carousel.
       else {
         // We need to slice the first fusion moved to the carousel in onVote.
-        fusions.current = [...fusions.current, ...newFusions];
+        setAndPersistFusions([...fusions.current, ...newFusions])
       }
     }
+  }
+
+  async function getFusions() {
+    const persistKeyFusionsExists = localStorage.getItem(persistKeyFusions) !== null
+    const persistKeyCarouselFusionsExists = localStorage.getItem(persistKeyCarouselFusions) !== null
+
+    if (persistKeyFusionsExists && persistKeyCarouselFusionsExists && shouldUsePersistedFusions()) getPersistedFusions()
+    else await drawNewFusions()
   }
 
   // Apply vote when animation is complete.
@@ -74,8 +114,8 @@ function Vote() {
       refetchFusions();
     }
 
-    fusions.current = fusions.current.slice(1);
-    setCarouselFusions([...carouselFusions.slice(1), fusions.current[0]]);
+    setAndPersistFusions(fusions.current.slice(1));
+    setAndPersistCarouselFusions([...carouselFusions.slice(1), fusions.current[0]]);
     setRelativeIndex(relativeIndex + 1);
 
     storeVote({ fusionId: previousFusion.id, voteType: voteType });
@@ -99,7 +139,7 @@ function Vote() {
     isFetching,
     isLoading,
     isError,
-  } = useQuery(["fusions"], drawNewFusions, {
+  } = useQuery(["fusions"], getFusions, {
     staleTime: 60 * 60 * 1000,
     cacheTime: 0,
   });
