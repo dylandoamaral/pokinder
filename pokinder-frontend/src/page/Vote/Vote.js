@@ -26,18 +26,28 @@ function Vote() {
   // The time to wait between two votes.
   const MILLISECONDS_BETWEEN_VOTES = 250;
 
+  const persistKeyDate = "pokinderVoteDate";
+  const persistKeyFusions = "pokinderVoteFusions";
+  const persistKeyCarouselFusions = "pokinderVoteCarousselFusions";
+
   const { t } = useTranslation();
 
   const [lastVoteTime, setLastVoteTime] = useState(new Date().getTime());
   const [voteType, setVoteType] = useState(0);
   const [absoluteIndex, setAbsoluteIndex] = useState(CACHED_FUSIONS - 1);
   const [relativeIndex, setRelativeIndex] = useState(0);
-  const [carouselFusions, setCarouselFusions] = useState([]);
-  const fusions = useRef([]);
+  const [carouselFusions, setCarouselFusions] = useState(
+    getPersistedValue(persistKeyCarouselFusions),
+  );
+  const fusions = useRef(getPersistedValue(persistKeyFusions));
 
-  const persistKeyDate = "pokinderVoteDate";
-  const persistKeyFusions = "pokinderVoteFusions";
-  const persistKeyCarouselFusions = "pokinderVoteCarousselFusions";
+  function getPersistedValue(key) {
+    if (shouldUsePersistedFusions()) {
+      return JSON.parse(localStorage.getItem(key)) || [];
+    } else {
+      return [];
+    }
+  }
 
   function setAndPersistFusions(newFusions) {
     fusions.current = newFusions;
@@ -58,7 +68,12 @@ function Vote() {
     var oneMonthInMilliseconds = 31 * 24 * 60 * 60 * 1000;
     var currentTimestamp = Date.now();
 
-    return currentTimestamp - maybeRefreshDate < oneMonthInMilliseconds;
+    const dataIsNotOutdated = currentTimestamp - maybeRefreshDate < oneMonthInMilliseconds;
+    const persistedFusionsExists = localStorage.getItem(persistKeyFusions) !== null;
+    const persistedCarousselFusionsExists =
+      localStorage.getItem(persistKeyCarouselFusions) !== null;
+
+    return dataIsNotOutdated && persistedFusionsExists && persistedCarousselFusionsExists;
   }
 
   // Init the carousel when the component is first rendered.
@@ -70,11 +85,6 @@ function Vote() {
     }
 
     return queue;
-  }
-
-  function getPersistedFusions() {
-    setCarouselFusions(JSON.parse(localStorage.getItem(persistKeyCarouselFusions)));
-    fusions.current = JSON.parse(localStorage.getItem(persistKeyFusions));
   }
 
   async function drawNewFusions() {
@@ -96,16 +106,6 @@ function Vote() {
         setAndPersistFusions([...fusions.current, ...newFusions]);
       }
     }
-  }
-
-  async function getFusions() {
-    const persistKeyFusionsExists = localStorage.getItem(persistKeyFusions) !== null;
-    const persistKeyCarouselFusionsExists =
-      localStorage.getItem(persistKeyCarouselFusions) !== null;
-
-    if (persistKeyFusionsExists && persistKeyCarouselFusionsExists && shouldUsePersistedFusions())
-      getPersistedFusions();
-    else await drawNewFusions();
   }
 
   // Apply vote when animation is complete.
@@ -141,9 +141,10 @@ function Vote() {
     isFetching,
     isLoading,
     isError,
-  } = useQuery(["fusions"], getFusions, {
+  } = useQuery(["fusions"], drawNewFusions, {
     staleTime: 60 * 60 * 1000,
     cacheTime: 0,
+    enabled: !shouldUsePersistedFusions(),
   });
 
   const { mutate: storeVote } = useMutation(async ({ fusionId, voteType }) => {
@@ -165,7 +166,7 @@ function Vote() {
       return <p>{t("The API is down for the moment, sorry for the inconvenience.")}</p>;
     }
 
-    if (isLoading) {
+    if (isLoading && fusions.current.length === 0) {
       return (
         <div className={`${styles.container} loading`}>
           <div className={styles.votes}>
