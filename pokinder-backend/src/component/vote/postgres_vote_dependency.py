@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import select, update
+from sqlalchemy import select, update, insert
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased, joinedload
 
@@ -80,17 +80,16 @@ class PostgresVoteDependency(VoteDependency):
 
         return instances
 
-    async def upsert(self, account_id: UUID, vote_add: VoteAdd) -> Vote:
+    async def upsert(self, account_id: UUID, vote_add: VoteAdd) -> None:
         result = await self.session.scalars(
             select(Vote).where(Vote.account_id == account_id, Vote.fusion_id == vote_add.fusion_id)
         )
         maybe_old_vote = result.one_or_none()
         vote_score = vote_add.vote_type.to_score()
 
-        # Update the score of the fusion
+        # Update the score of the vote
         if maybe_old_vote:
             old_vote_score = maybe_old_vote.vote_type.to_score()
-            # Update the score of the fusion
             vote_score = vote_add.vote_type.to_score()
             total_score = (Fusion.vote_score * Fusion.vote_count) + vote_score - old_vote_score
             await self.session.execute(
@@ -98,6 +97,12 @@ class PostgresVoteDependency(VoteDependency):
                 .where(Fusion.id == vote_add.fusion_id)
                 .values(vote_score=(total_score / Fusion.vote_count))
             )
+            await self.session.execute(
+                update(Vote)
+                .where(Vote.account_id == account_id, Vote.fusion_id == vote_add.fusion_id)
+                .values(vote_type=vote_add.vote_type)
+            )
+        # Insert a new vote to the system
         else:
             await self.session.execute(
                 update(Fusion)
@@ -107,14 +112,16 @@ class PostgresVoteDependency(VoteDependency):
                     vote_score=((Fusion.vote_score * Fusion.vote_count) + vote_score) / (Fusion.vote_count + 1),
                 )
             )
+            await self.session.execute(
+                insert(Vote).values(
+                    account_id=account_id,
+                    fusion_id=vote_add.fusion_id,
+                    vote_type=vote_add.vote_type,
+                )
+            )
 
         await self.session.flush()
         await self.session.commit()
-
-        vote = Vote(account_id=account_id, fusion_id=vote_add.fusion_id, vote_type=vote_add.vote_type)
-        vote = await self.repository.upsert(vote, auto_commit=True)
-
-        return vote
 
 
 def use_postgres_vote_dependency(db_session: AsyncSession) -> VoteDependency:

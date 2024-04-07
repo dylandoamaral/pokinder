@@ -1,4 +1,5 @@
 """Application ORM configuration."""
+
 from __future__ import annotations
 
 import re
@@ -6,6 +7,7 @@ from datetime import date, datetime, timezone
 from typing import TYPE_CHECKING, Any, ClassVar
 from uuid import UUID, uuid4
 
+from litestar.dto import dto_field
 from litestar.contrib.sqlalchemy.types import GUID, DateTimeUTC, JsonB
 from pydantic import AnyHttpUrl, AnyUrl, EmailStr
 from sqlalchemy import Date, MetaData, String
@@ -28,6 +30,10 @@ convention = {
     "pk": "pk_%(table_name)s",
 }
 """Templates for automated constraint name generation."""
+
+private = dto_field("private")
+read_only = dto_field("read-only")
+write_only = dto_field("write-only")
 
 
 class UUIDPrimaryKey:
@@ -104,4 +110,5 @@ def build_created_at_column() -> Mapped[datetime]:
     return mapped_column(  # pyright: ignore
         DateTimeUTC(timezone=True),
         default=lambda: datetime.now(timezone.utc),
+        info=read_only,
     )

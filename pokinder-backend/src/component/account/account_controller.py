@@ -16,12 +16,12 @@ from src.security.jwt import (
 from src.utils.exceptions import ConflictException
 
 from .account_model import AccountLogin, AccountSignup
-from .account_table import ReadDTO, WriteDTO
+from .account_dto import DTO, returnDTO
 
 
 class AccountController(Controller):
-    dto = WriteDTO
-    return_dto = ReadDTO
+    dto = DTO
+    return_dto = returnDTO
     path = "/account"
 
     @post(path="/signup", dto=None)

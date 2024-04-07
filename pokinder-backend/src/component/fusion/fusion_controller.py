@@ -3,16 +3,16 @@ import time
 from litestar import Controller, get
 
 from src.security import Request
-from src.utils.collection import arreyfy
 
 from .fusion_dependency import FusionDependency
 from .fusion_model import Ranking
-from .fusion_table import Fusion, ReadDTO, WriteDTO
+from .fusion_table import Fusion
+from .fusion_dto import DTO, ReturnDTO
 
 
 class FusionController(Controller):
-    dto = WriteDTO
-    return_dto = ReadDTO
+    dto = DTO
+    return_dto = ReturnDTO
     path = "/fusion"
 
     @get(path="/draw")
@@ -20,7 +20,7 @@ class FusionController(Controller):
         return await fusion_dependency.draw(request.user.id, limit)
 
     @get(path="/ranking")
-    async def retrieve_rankings(
+    async def list_rankings(
         self,
         fusion_dependency: FusionDependency,
         limit: int,

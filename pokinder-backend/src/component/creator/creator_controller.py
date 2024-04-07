@@ -4,12 +4,13 @@ from src.security import Request
 from src.utils.collection import arreyfy
 
 from .creator_dependency import CreatorDependency
-from .creator_table import Creator, ReadDTO, WriteDTO
+from .creator_table import Creator
+from .creator_dto import DTO, ReturnDTO
 
 
 class CreatorController(Controller):
-    dto = WriteDTO
-    return_dto = ReadDTO
+    dto = DTO
+    return_dto = ReturnDTO
     path = "/creator"
 
     @get(path="/")
