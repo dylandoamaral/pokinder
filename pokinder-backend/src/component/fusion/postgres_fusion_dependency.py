@@ -68,7 +68,6 @@ class PostgresFusionDependency(FusionDependency):
                 )
                 .label("rank"),
             )
-            .join(Creator, Fusion.creators)
             .join(Head, Fusion.head_id == Head.id)
             .join(Body, Fusion.body_id == Body.id)
             .options(
@@ -107,6 +106,11 @@ class PostgresFusionDependency(FusionDependency):
         objects = []
 
         for instance in instances:
+            fusion = model_to_dict(instance[0])  # TODO: we should use dto instead
+            del fusion["creators"]
+            del fusion["head_id"]
+            del fusion["body_id"]
+
             objects.append(
                 Ranking(
                     fusion=model_to_dict(instance[0]),

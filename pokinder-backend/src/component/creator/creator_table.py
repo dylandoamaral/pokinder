@@ -1,9 +1,6 @@
 from datetime import datetime
-from typing import TYPE_CHECKING, Annotated, List
 
-from litestar.contrib.sqlalchemy.dto import SQLAlchemyDTO
 from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
-from litestar.dto import DTOConfig
 from sqlalchemy import String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -22,11 +19,3 @@ class Creator(BaseTable, UUIDPrimaryKey):
 
 class CreatorRepository(SQLAlchemyAsyncRepository[Creator]):
     model_type = Creator
-
-
-write_config = DTOConfig()
-WriteDTO = SQLAlchemyDTO[Annotated[Creator, write_config]]
-
-
-class ReadDTO(SQLAlchemyDTO[Creator]):
-    config = DTOConfig(exclude={"created_at"})

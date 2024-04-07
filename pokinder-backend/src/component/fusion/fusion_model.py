@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 
-from src.component.fusion.fusion_table import Fusion
+from .fusion_table import Fusion
 
 
 @dataclass
 class Ranking:
-    fusion: Fusion
+    fusion: dict
     rank: int
