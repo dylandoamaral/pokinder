@@ -1,9 +1,6 @@
 from datetime import datetime
-from typing import Annotated, List
+from typing import List
 
-from litestar.contrib.sqlalchemy.dto import SQLAlchemyDTO
-from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
-from litestar.dto import DTOConfig
 from sqlalchemy import String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -28,12 +25,3 @@ class Pokemon(BaseTable, UUIDPrimaryKey):
     created_at: Mapped[datetime] = build_created_at_column()
 
     families: Mapped[List[Family]] = relationship(secondary=PokemonFamily)
-
-
-class PokemonRepository(SQLAlchemyAsyncRepository[Pokemon]):
-    model_type = Pokemon
-
-
-write_config = DTOConfig()
-WriteDTO = SQLAlchemyDTO[Annotated[Pokemon, write_config]]
-ReadDTO = SQLAlchemyDTO[Pokemon]
