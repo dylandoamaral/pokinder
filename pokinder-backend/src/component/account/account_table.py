@@ -4,7 +4,12 @@ from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column, private
+from src.utils.sqlalchemy import (
+    BaseTable,
+    UUIDPrimaryKey,
+    build_created_at_column,
+    private,
+)
 
 
 class Account(BaseTable, UUIDPrimaryKey):

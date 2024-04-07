@@ -7,8 +7,8 @@ from datetime import date, datetime, timezone
 from typing import TYPE_CHECKING, Any, ClassVar
 from uuid import UUID, uuid4
 
-from litestar.dto import dto_field
 from litestar.contrib.sqlalchemy.types import GUID, DateTimeUTC, JsonB
+from litestar.dto import dto_field
 from pydantic import AnyHttpUrl, AnyUrl, EmailStr
 from sqlalchemy import Date, MetaData, String
 from sqlalchemy.orm import (

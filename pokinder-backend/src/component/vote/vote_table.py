@@ -6,7 +6,12 @@ from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
 from sqlalchemy import ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.utils.sqlalchemy import BaseTable, build_created_at_column, read_only, write_only
+from src.utils.sqlalchemy import (
+    BaseTable,
+    build_created_at_column,
+    read_only,
+    write_only,
+)
 
 
 class VoteType(Enum):

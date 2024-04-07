@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import select, update, insert
+from sqlalchemy import insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased, joinedload
 

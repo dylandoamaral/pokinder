@@ -6,8 +6,8 @@ from src.component.vote.vote_model import VoteAdd
 from src.security import Request
 
 from .vote_dependency import VoteDependency
-from .vote_table import Vote, VoteType
 from .vote_dto import DTO, ReturnDTO
+from .vote_table import Vote, VoteType
 
 
 class VoteController(Controller):

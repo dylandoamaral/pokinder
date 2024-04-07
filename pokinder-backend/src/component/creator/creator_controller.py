@@ -4,8 +4,8 @@ from src.security import Request
 from src.utils.collection import arreyfy
 
 from .creator_dependency import CreatorDependency
-from .creator_table import Creator
 from .creator_dto import DTO, ReturnDTO
+from .creator_table import Creator
 
 
 class CreatorController(Controller):

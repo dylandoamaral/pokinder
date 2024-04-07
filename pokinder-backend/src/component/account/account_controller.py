@@ -15,8 +15,8 @@ from src.security.jwt import (
 )
 from src.utils.exceptions import ConflictException
 
-from .account_model import AccountLogin, AccountSignup
 from .account_dto import DTO, returnDTO
+from .account_model import AccountLogin, AccountSignup
 
 
 class AccountController(Controller):

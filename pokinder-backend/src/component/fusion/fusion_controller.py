@@ -5,9 +5,9 @@ from litestar import Controller, get
 from src.security import Request
 
 from .fusion_dependency import FusionDependency
+from .fusion_dto import DTO, ReturnDTO
 from .fusion_model import Ranking
 from .fusion_table import Fusion
-from .fusion_dto import DTO, ReturnDTO
 
 
 class FusionController(Controller):

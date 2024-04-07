@@ -8,7 +8,14 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.component.creator.creator_table import Creator
 from src.component.fusion_creator import FusionCreator
-from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column, private, read_only, write_only
+from src.utils.sqlalchemy import (
+    BaseTable,
+    UUIDPrimaryKey,
+    build_created_at_column,
+    private,
+    read_only,
+    write_only,
+)
 
 
 class Fusion(BaseTable, UUIDPrimaryKey):
