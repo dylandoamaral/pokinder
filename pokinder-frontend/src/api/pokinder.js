@@ -98,3 +98,15 @@ export async function addVote(fusionId, voteType) {
 
   return response.data;
 }
+
+export async function addReferenceProposal(fusionId, referenceName, referenceFamilyName) {
+  const body = {
+    fusions_id: fusionId,
+    reference_name: referenceName,
+    reference_family_name: referenceFamilyName,
+  };
+
+  const response = await http.post("/reference_proposal/", body);
+
+  return response.data;
+}

@@ -22,7 +22,7 @@ function Sprite({ className, href, filename, type, size, alt }) {
   }
 
   return (
-    <a style={{ textDecoration: "none" }} href={href} target="_blank" rel="noopener noreferrer">
+    <a className={className} style={{ textDecoration: "none" }} href={href} target="_blank" rel="noopener noreferrer">
       {renderPicture()}
     </a>
   );

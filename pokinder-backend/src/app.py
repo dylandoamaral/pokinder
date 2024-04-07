@@ -1,4 +1,6 @@
-import uvicorn
+from src.component.reference import ReferenceController, use_postgres_reference_dependency
+from src.component.reference_family import ReferenceFamilyController, use_postgres_reference_family_dependency
+from src.component.reference_proposal import ReferenceProposalController, use_postgres_reference_proposal_dependency
 from litestar import Litestar
 from litestar.config.compression import CompressionConfig
 from litestar.config.cors import CORSConfig
@@ -39,6 +41,9 @@ app = Litestar(
         AccountController,
         AnalyticsController,
         CreatorController,
+        ReferenceController,
+        ReferenceProposalController,
+        ReferenceFamilyController,
     ],
     dependencies={
         "vote_dependency": Provide(use_postgres_vote_dependency, sync_to_thread=False),
@@ -46,6 +51,9 @@ app = Litestar(
         "account_dependency": Provide(use_postgres_account_dependency, sync_to_thread=False),
         "analytics_dependency": Provide(use_postgres_analytics_dependency, sync_to_thread=False),
         "creator_dependency": Provide(use_postgres_creator_dependency, sync_to_thread=False),
+        "reference_dependency": Provide(use_postgres_reference_dependency, sync_to_thread=False),
+        "reference_proposal_dependency": Provide(use_postgres_reference_proposal_dependency, sync_to_thread=False),
+        "reference_family_dependency": Provide(use_postgres_reference_family_dependency, sync_to_thread=False),
     },
     exception_handlers={
         RepositoryException: repository_exception_to_http_response,  # type: ignore[dict-item]

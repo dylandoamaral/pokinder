@@ -8,7 +8,7 @@ from sqlalchemy import String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.component.fusion_creator import FusionCreator
-from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
+from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_date_column
 
 
 class Creator(BaseTable, UUIDPrimaryKey):
@@ -17,7 +17,7 @@ class Creator(BaseTable, UUIDPrimaryKey):
     __table_args__ = (UniqueConstraint("name", name="creator_name_should_be_unique"),)
 
     name: Mapped[str] = mapped_column(String(255), nullable=False)
-    created_at: Mapped[datetime] = build_created_at_column()
+    created_at: Mapped[datetime] = build_date_column()
 
 
 class CreatorRepository(SQLAlchemyAsyncRepository[Creator]):

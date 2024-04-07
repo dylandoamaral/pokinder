@@ -9,7 +9,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.component.family.family_table import Family
 from src.component.pokemon_family.pokemon_family_table import PokemonFamily
-from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
+from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_date_column
 
 
 class Pokemon(BaseTable, UUIDPrimaryKey):
@@ -25,7 +25,7 @@ class Pokemon(BaseTable, UUIDPrimaryKey):
     type_2: Mapped[str] = mapped_column(String(20), nullable=True)
     name_separator_index: Mapped[str] = mapped_column(String(5), nullable=False)
     pokedex_id: Mapped[int] = mapped_column(nullable=False)
-    created_at: Mapped[datetime] = build_created_at_column()
+    created_at: Mapped[datetime] = build_date_column()
 
     families: Mapped[List[Family]] = relationship(secondary=PokemonFamily)
 

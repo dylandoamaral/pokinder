@@ -7,6 +7,7 @@ Create Date: ${create_date}
 """
 from typing import Sequence, Union
 
+import advanced_alchemy
 from alembic import op
 import sqlalchemy as sa
 import litestar

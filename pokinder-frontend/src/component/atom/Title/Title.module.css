@@ -1,5 +1,4 @@
 .title {
   font-size: var(--font-size-3XL);
-  line-height: 0;
-  text-align: center;
+  line-height: var(--line-height-3XL);
 }

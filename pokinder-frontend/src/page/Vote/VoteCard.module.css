@@ -101,3 +101,67 @@
   line-height: 0;
   color: var(--neutral-high);
 }
+
+.references {
+  position: absolute;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-S);
+}
+
+.reference {
+  height: 24px;
+  padding: 2px 8px;
+  border-radius: 18px;
+
+  font-weight: 550;
+  line-height: 22px;
+  text-overflow: clip;
+
+  color: var(--font-background-color);
+
+  border: 4px solid var(--foreground-color);
+
+  display:flex;
+
+  cursor: pointer;
+}
+
+.reference span {
+  padding: 0;
+  white-space: nowrap;
+}
+.reference:hover .referenceOtherLetters {
+  display: block;
+}
+
+.referenceOtherLetters {
+  display: none;
+}
+
+.referenceButton {
+  width: 16px;
+  height: 16px;
+  padding: 6px;
+  border-radius: 18px;
+  border: 4px solid var(--foreground-color);
+  background-color: var(--neutral-higher);
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.referenceButtonIcon {
+  width: 14px;
+  height: 14px;
+  color: var(--foreground-color);
+}
+
+.referenceButton:hover .referenceButtonIcon {
+  width: 22px;
+  height: 22px;
+}

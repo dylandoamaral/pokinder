@@ -9,7 +9,7 @@ from litestar.dto import DTOConfig
 from sqlalchemy import ForeignKey, PrimaryKeyConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.utils.sqlalchemy import BaseTable, build_created_at_column
+from src.utils.sqlalchemy import BaseTable, build_date_column
 
 
 class VoteType(Enum):
@@ -35,9 +35,9 @@ class Vote(BaseTable):
     account_id: Mapped[UUID]
     fusion_id: Mapped[UUID] = mapped_column(ForeignKey("fusion.id"))
     vote_type: Mapped[VoteType]
-    created_at: Mapped[datetime] = build_created_at_column()
+    created_at: Mapped[datetime] = build_date_column()
 
-    fusion = relationship("Fusion", lazy="joined")
+    fusion = relationship("Fusion")
 
 
 class VoteRepository(SQLAlchemyAsyncRepository[Vote]):
@@ -53,3 +53,7 @@ class WriteDTO(SQLAlchemyDTO[Annotated[Vote, write_config]]):
 
 class ReadDTO(SQLAlchemyDTO[Vote]):
     config = DTOConfig(exclude={"fusion_id", "fusion.creators"})
+
+
+class PostDTO(SQLAlchemyDTO[Vote]):
+    config = DTOConfig(exclude={"fusion"})

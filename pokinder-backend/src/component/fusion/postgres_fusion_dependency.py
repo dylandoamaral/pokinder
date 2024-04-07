@@ -8,6 +8,8 @@ from src.component.creator import Creator
 from src.component.family.family_table import Family
 from src.component.pokemon import Pokemon
 from src.component.vote import Vote
+from src.component.reference import Reference
+from src.component.reference_family import ReferenceFamily
 from src.data.pokemon_families import pokemon_families
 from src.utils.sqlalchemy import model_to_dict
 
@@ -25,8 +27,8 @@ class PostgresFusionDependency(FusionDependency):
             select(Fusion)
             .filter(Fusion.is_removed == False)
             .join(Vote, and_(Fusion.id == Vote.fusion_id, Vote.account_id == account_id), isouter=True)
-            .filter(Vote.account_id.is_(None))
-            .order_by(func.random())
+            # .filter(Vote.account_id.is_(None))
+            .order_by(Fusion.path)  # .order_by(func.random())
             .limit(limit)
             .subquery()
         )
@@ -37,6 +39,7 @@ class PostgresFusionDependency(FusionDependency):
             joinedload(subquery_fusion.head, innerjoin=True),
             joinedload(subquery_fusion.body, innerjoin=True),
             joinedload(subquery_fusion.creators, innerjoin=True),
+            joinedload(subquery_fusion.references, innerjoin=False).joinedload(Reference.family),
         )
 
         result = await self.session.scalars(query)

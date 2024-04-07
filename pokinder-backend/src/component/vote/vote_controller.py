@@ -6,7 +6,7 @@ from src.component.vote.vote_model import VoteAdd
 from src.security import Request
 
 from .vote_dependency import VoteDependency
-from .vote_table import ReadDTO, Vote, VoteType, WriteDTO
+from .vote_table import ReadDTO, PostDTO, Vote, VoteType, WriteDTO
 
 
 class VoteController(Controller):
@@ -38,7 +38,7 @@ class VoteController(Controller):
             creator_name,
         )
 
-    @post(path="/", dto=None)
+    @post(path="/", dto=None, return_dto=PostDTO)
     async def post_vote(
         self,
         request: Request,

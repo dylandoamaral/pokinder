@@ -1,6 +1,6 @@
-import styles from "./Filter.module.css";
+import styles from "./Box.module.css";
 
-function Filter({ title, children }) {
+function Box({ title, children }) {
   return (
     <div className={styles.container}>
       <span className={styles.title}>{title}</span>
@@ -9,4 +9,4 @@ function Filter({ title, children }) {
   );
 }
 
-export default Filter;
+export default Box;
