@@ -3,6 +3,7 @@ import { IconContext } from "react-icons";
 import { FaCheck, FaTimes } from "react-icons/fa";
 
 import styles from "./Input.module.css";
+import Panel from "../Panel/Panel";
 
 function Input({
   title = undefined,
@@ -11,8 +12,8 @@ function Input({
   type = InputType.Text,
   required = true,
   validators = [],
-  setIsValid = (_) => {},
-  onChange = () => {},
+  setIsValid = (_) => { },
+  onChange = () => { },
   forceSpacer = false,
 }) {
   const [inputValue, setInputValue] = useState(defaultValue);
@@ -73,8 +74,7 @@ function Input({
   }
 
   return (
-    <div className={styles.container}>
-      <span className={styles.title}>{title}</span>
+    <Panel title={title}>
       <div className={styles.box}>
         <input
           className={styles.input}
@@ -87,7 +87,7 @@ function Input({
         {renderValidator()}
       </div>
       {renderErrorMessage()}
-    </div>
+    </Panel>
   );
 }
 
