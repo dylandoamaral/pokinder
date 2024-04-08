@@ -70,6 +70,7 @@ class PostgresFusionDependency(FusionDependency):
             )
             .join(Head, Fusion.head_id == Head.id)
             .join(Body, Fusion.body_id == Body.id)
+            .join(Fusion.creators)
             .options(
                 joinedload(Fusion.creators),
                 joinedload(Fusion.head, innerjoin=True),
