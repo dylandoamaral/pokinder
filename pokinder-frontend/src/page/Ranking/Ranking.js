@@ -32,7 +32,7 @@ function Ranking() {
   const [paramsNotifier, newFilters, setFilters] = useSearchParams(defaultFilters);
   const filters = { ...defaultFilters, ...newFilters };
 
-  const { data, refetch, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } =
+  const { data, refetch, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, isLoading, isError } =
     useInfiniteQuery({
       queryKey: ["ranking"],
       queryFn: ({ pageParam }) => {
@@ -43,14 +43,20 @@ function Ranking() {
         if (lastPage.records.length < POKEMON_PER_PAGES) return false;
         return lastPage.previousOffset + POKEMON_PER_PAGES;
       },
+      staleTime: 60 * 60 * 1000,
+      cacheTime: 0,
     });
 
   useAfterEffect(() => {
     scrollRef.current.scrollTop = 0;
-    queryClient.setQueryData(["ranking"], (data) => ({
-      pages: data.pages.slice(0, 1),
-      pageParams: data.pageParams.slice(0, 1),
-    }));
+    queryClient.setQueryData(["ranking"], (data) => {
+      if (data === undefined) return
+
+      return ({
+        pages: data.pages.slice(0, 1),
+        pageParams: data.pageParams.slice(0, 1),
+      })
+    });
     refetch({ pageParam: 0 });
   }, [paramsNotifier, refetch]);
 
@@ -74,7 +80,7 @@ function Ranking() {
       return <p>{t("The API is down for the moment, sorry for the inconvenience.")}</p>;
     }
 
-    if (isLoading) {
+    if (isLoading || isFetching) {
       return (
         <div className={`${styles.wrapper} loading`}>
           <FilterPanel

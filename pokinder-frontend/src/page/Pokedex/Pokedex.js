@@ -39,7 +39,7 @@ function Pokedex() {
   const [paramsNotifier, newFilters, setFilters] = useSearchParams(defaultFilters);
   const filters = { ...defaultFilters, ...newFilters };
 
-  const { data, refetch, hasNextPage, fetchNextPage, isError, isLoading, isFetchingNextPage } =
+  const { data, refetch, hasNextPage, fetchNextPage, isError, isLoading, isFetching, isFetchingNextPage } =
     useInfiniteQuery({
       queryKey: ["history"],
       queryFn: ({ pageParam }) => {
@@ -80,7 +80,7 @@ function Pokedex() {
       return <p>{t("The API is down for the moment, sorry for the inconvenience.")}</p>;
     }
 
-    if (isLoading) {
+    if (isLoading || isFetching) {
       return (
         <div className={`${styles.wrapper} loading`}>
           <FilterPanel
