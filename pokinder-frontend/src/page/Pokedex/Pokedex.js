@@ -1,4 +1,4 @@
-import { createRef } from "react";
+import { createRef, useState, useEffect } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useInfiniteQuery } from "react-query";
 import { Link } from "react-router-dom";
@@ -18,6 +18,16 @@ import { queryClient } from "../..";
 import LoadingPokedexCard from "./LoadingPokedexCard";
 import styles from "./Pokedex.module.css";
 import PokedexCard from "./PokedexCard";
+import { calculateCardsAmount } from "../../utils/math";
+
+const AMOUNT_CARDS_TO_GET_RATIOS = [
+  { maxWidth: 500, cardHeight: 104, cardsPerRow: 1 },
+  { maxWidth: 600, cardHeight: 250, cardsPerRow: 2 },
+  { maxWidth: 800, cardHeight: 250, cardsPerRow: 3 },
+  { maxWidth: 1000, cardHeight: 250, cardsPerRow: 4 },
+  { maxWidth: 1200, cardHeight: 250, cardsPerRow: 5 },
+  { maxWidth: Infinity, cardHeight: 250, cardsPerRow: 6 },
+]
 
 function Pokedex() {
   const { t } = useTranslation();
@@ -25,7 +35,7 @@ function Pokedex() {
 
   const scrollRef = createRef();
 
-  const POKEMON_PER_PAGES = 36;
+  const [amountCardsToGet, setAmountCardsToGet] = useState(calculateCardsAmount(AMOUNT_CARDS_TO_GET_RATIOS));
 
   const defaultFilters = {
     headNameOrCategory: "All",
@@ -44,15 +54,33 @@ function Pokedex() {
       queryKey: ["history"],
       queryFn: ({ pageParam }) => {
         const offset = pageParam || 0;
-        return getHistory(filters, POKEMON_PER_PAGES, offset);
+        return getHistory(filters, amountCardsToGet, offset);
       },
       getNextPageParam: (lastPage) => {
-        if (lastPage.records.length < POKEMON_PER_PAGES) return false;
-        return lastPage.previousOffset + POKEMON_PER_PAGES;
+        if (lastPage.records.length < amountCardsToGet) return false;
+        return lastPage.previousOffset + amountCardsToGet;
       },
       staleTime: 10 * 60 * 1000,
       cacheTime: 0,
     });
+
+
+  // When the number of item to fetch is greater then acutal fetched data, refetch the data.
+  useEffect(() => {
+    const handleResize = () => {
+      const newAmountCardsToGet = calculateCardsAmount(AMOUNT_CARDS_TO_GET_RATIOS);
+
+      if (newAmountCardsToGet - amountCardsToGet > 1) {
+        setAmountCardsToGet(newAmountCardsToGet)
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [amountCardsToGet]);
 
   useAfterEffect(() => {
     scrollRef.current.scrollTop = 0;
@@ -61,7 +89,7 @@ function Pokedex() {
       pageParams: data.pageParams.slice(0, 1),
     }));
     refetch({ pageParam: 0 });
-  }, [token, paramsNotifier, refetch]);
+  }, [token, amountCardsToGet, paramsNotifier, refetch]);
 
   const drawCards = (votes) => {
     return votes.map((vote) => <PokedexCard vote={vote} key={vote.fusion.id} />);
@@ -89,7 +117,7 @@ function Pokedex() {
             setFilters={setFilters}
           />
           <div className={styles.container}>
-            {Array.from({ length: 30 }, (_, index) => (
+            {Array.from({ length: amountCardsToGet }, (_, index) => (
               <LoadingPokedexCard key={index} />
             ))}
           </div>
