@@ -7,8 +7,8 @@ import { findOptionByValue, groupeOptions } from "../../../data/options";
 
 import Button from "../../atom/Button/Button";
 import CheckField from "../../atom/CheckField/CheckField";
-import Panel from "../../atom/Panel/Panel";
 import Modal from "../../atom/Modal/Modal";
+import Panel from "../../atom/Panel/Panel";
 import FutureSelect from "../../atom/Select/FutureSelect";
 import Select from "../../atom/Select/Select";
 import styles from "./FilterModal.module.css";

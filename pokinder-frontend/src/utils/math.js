@@ -18,11 +18,11 @@ export const calculateCardsAmount = (ratios) => {
   const windowWidth = window.innerWidth;
 
   for (const ratio of ratios) {
-    const { maxWidth, cardHeight, cardsPerRow } = ratio
-    if (windowWidth < maxWidth) return Math.ceil(windowHeight / cardHeight) * cardsPerRow
+    const { maxWidth, cardHeight, cardsPerRow } = ratio;
+    if (windowWidth < maxWidth) return Math.ceil(windowHeight / cardHeight) * cardsPerRow;
   }
 
   // Fallback to the last ratio otherwise
-  const { cardHeight, cardsPerRow } = ratios.slice(-1)
-  return Math.ceil(windowHeight / cardHeight) * cardsPerRow
-}
+  const { cardHeight, cardsPerRow } = ratios.slice(-1);
+  return Math.ceil(windowHeight / cardHeight) * cardsPerRow;
+};

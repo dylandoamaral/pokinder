@@ -26,13 +26,13 @@ export const AuthenticationProvider = ({ children }) => {
   }
 
   function retrieveGuestToken() {
-    const maybeGuestToken = localStorage.getItem(guestTokenKey)
+    const maybeGuestToken = localStorage.getItem(guestTokenKey);
     if (maybeGuestToken === null) {
-      const guestToken = uuidv4()
-      localStorage.setItem(guestTokenKey, guestToken)
-      return guestToken
+      const guestToken = uuidv4();
+      localStorage.setItem(guestTokenKey, guestToken);
+      return guestToken;
     } else {
-      return maybeGuestToken
+      return maybeGuestToken;
     }
   }
 
@@ -40,7 +40,7 @@ export const AuthenticationProvider = ({ children }) => {
     const token = localStorage.getItem(tokenKey);
 
     if (token === null) {
-      return retrieveGuestToken()
+      return retrieveGuestToken();
     } else {
       return token;
     }

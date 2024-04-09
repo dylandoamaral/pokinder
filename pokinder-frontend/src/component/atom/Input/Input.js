@@ -2,8 +2,8 @@ import { useState } from "react";
 import { IconContext } from "react-icons";
 import { FaCheck, FaTimes } from "react-icons/fa";
 
-import styles from "./Input.module.css";
 import Panel from "../Panel/Panel";
+import styles from "./Input.module.css";
 
 function Input({
   title = undefined,
@@ -12,8 +12,8 @@ function Input({
   type = InputType.Text,
   required = true,
   validators = [],
-  setIsValid = (_) => { },
-  onChange = () => { },
+  setIsValid = (_) => {},
+  onChange = () => {},
   forceSpacer = false,
 }) {
   const [inputValue, setInputValue] = useState(defaultValue);
