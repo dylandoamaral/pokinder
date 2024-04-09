@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useMutation, useQuery } from "react-query";
+
+import { useAfterEffect } from "../../hook/useAfterEffect";
 import { useAuthentication } from "../../hook/useAuthentication";
 
 import { addVote, drawFusions } from "../../api/pokinder";
@@ -12,7 +14,6 @@ import Page from "../../component/organism/Page/Page";
 import LoadingVoteCard from "./LoadingVoteCard";
 import styles from "./Vote.module.css";
 import VoteCard from "./VoteCard";
-import { useAfterEffect } from "../../hook/useAfterEffect";
 
 function Vote() {
   // The number of fusions fetched from the API.
