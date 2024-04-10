@@ -170,7 +170,7 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
             )
             .join(Fusion.creators)
             .group_by(Creator.id, Creator.name)
-            .having(func.sum(Fusion.vote_count) >= 10)
+            .having(func.sum(Fusion.vote_count) >= 25)
             .order_by(desc("scores"), func.sum(Fusion.vote_count).desc())
             .limit(1)
         )
