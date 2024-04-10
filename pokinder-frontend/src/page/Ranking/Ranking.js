@@ -65,6 +65,8 @@ function Ranking() {
     cacheTime: 0,
   });
 
+  const isFetchingFirstPage = isFetching && !isFetchingNextPage
+
   // When the number of item to fetch is greater then acutal fetched data, refetch the data.
   useEffect(() => {
     const handleResize = () => {
@@ -114,7 +116,7 @@ function Ranking() {
       return <p>{t("The API is down for the moment, sorry for the inconvenience.")}</p>;
     }
 
-    if (isLoading || isFetching) {
+    if (isLoading || isFetchingFirstPage) {
       return (
         <div className={`${styles.wrapper} loading`}>
           <FilterPanel
