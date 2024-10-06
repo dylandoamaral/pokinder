@@ -2,15 +2,18 @@ from uuid import UUID
 
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import aliased, joinedload
+from sqlalchemy.orm import aliased, raiseload, joinedload
 
 from src.component.creator.creator_table import Creator
 from src.component.family.family_table import Family
 from src.component.fusion.fusion_table import Fusion
 from src.component.pokemon.pokemon_table import Pokemon
+from src.component.reference.reference_table import Reference
+from src.component.reference_family.reference_family_table import ReferenceFamily
 from src.component.vote.vote_model import VoteAdd
 from src.component.vote.vote_table import VoteType
 from src.data.pokemon_families import pokemon_families
+from src.utils.sqlalchemy import model_to_dict
 
 from .vote_dependency import VoteDependency
 from .vote_table import Vote, VoteRepository, VoteType
@@ -41,6 +44,8 @@ class PostgresVoteDependency(VoteDependency):
             .join(Head, Fusion.head_id == Head.id)
             .join(Body, Fusion.body_id == Body.id)
             .join(Fusion.creators)
+            .outerjoin(Fusion.references)
+            .options(joinedload(Vote.fusion).raiseload(Fusion.references))
         )
 
         if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():

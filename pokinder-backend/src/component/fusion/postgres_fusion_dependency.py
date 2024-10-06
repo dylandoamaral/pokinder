@@ -39,7 +39,7 @@ class PostgresFusionDependency(FusionDependency):
             joinedload(subquery_fusion.head, innerjoin=True),
             joinedload(subquery_fusion.body, innerjoin=True),
             joinedload(subquery_fusion.creators, innerjoin=True),
-            joinedload(subquery_fusion.references, innerjoin=False).joinedload(Reference.family),
+            # joinedload(subquery_fusion.references, innerjoin=False).joinedload(Reference.family),
         )
 
         result = await self.session.scalars(query)

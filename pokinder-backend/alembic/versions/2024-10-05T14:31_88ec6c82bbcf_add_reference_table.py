@@ -1,8 +1,8 @@
 """Add reference table
 
-Revision ID: 003504678ed1
+Revision ID: 88ec6c82bbcf
 Revises: cbd742fb1fe8
-Create Date: 2024-04-05 18:16:45.489834
+Create Date: 2024-10-05 14:31:53.681287
 
 """
 from typing import Sequence, Union
@@ -14,7 +14,7 @@ import litestar
 
 
 # revision identifiers, used by Alembic.
-revision: str = '003504678ed1'
+revision: str = '88ec6c82bbcf'
 down_revision: Union[str, None] = 'cbd742fb1fe8'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -48,9 +48,9 @@ def upgrade() -> None:
     )
     op.create_table('reference_proposal',
     sa.Column('reference_name', sa.String(length=255), nullable=False),
-    sa.Column('reference_source', sa.String(), nullable=True),
     sa.Column('reference_family_name', sa.String(length=255), nullable=False),
     sa.Column('status', sa.Enum('PENDING', 'VALIDATED', 'REFUSED', name='referenceproposalstatus'), nullable=False),
+    sa.Column('reason', sa.String(length=255), nullable=False),
     sa.Column('fusion_id', advanced_alchemy.types.guid.GUID(length=16), nullable=False),
     sa.Column('proposer_id', advanced_alchemy.types.guid.GUID(length=16), nullable=False),
     sa.Column('judge_id', advanced_alchemy.types.guid.GUID(length=16), nullable=True),

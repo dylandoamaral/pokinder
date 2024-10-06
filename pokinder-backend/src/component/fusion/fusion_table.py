@@ -10,6 +10,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.component.creator.creator_table import Creator
 from src.component.fusion_creator import FusionCreator
+
 from src.component.fusion_reference.fusion_reference_table import FusionReference
 from src.component.reference.reference_table import Reference
 from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_date_column
@@ -44,7 +45,6 @@ WriteDTO = SQLAlchemyDTO[Annotated[Fusion, write_config]]
 read_config = DTOConfig(
     max_nested_depth=2,
     exclude=[
-        "references.0.family_id",
         "head.families",
         "body.families",
     ],

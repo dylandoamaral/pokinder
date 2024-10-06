@@ -14,7 +14,7 @@ from enum import Enum
 
 class ReferenceProposalChoice(Enum):
     VALIDATED = 0
-    REFUSED = 2
+    REFUSED = 1
 
     def to_status(self):
         if self == ReferenceProposalChoice.VALIDATED:
@@ -35,9 +35,9 @@ class ReferenceProposal(BaseTable, UUIDPrimaryKey):
     __tablename__ = "reference_proposal"  #  type: ignore[assignment]
 
     reference_name: Mapped[str] = mapped_column(String(255), nullable=False)
-    reference_source: Mapped[str] = mapped_column(nullable=True)
     reference_family_name: Mapped[str] = mapped_column(String(255), nullable=False)
     status: Mapped[ReferenceProposalStatus] = mapped_column(nullable=False)
+    reason: Mapped[str] = mapped_column(String(255), nullable=False)
     fusion_id: Mapped[UUID] = mapped_column(ForeignKey("fusion.id"), nullable=False)
     proposer_id: Mapped[UUID] = mapped_column(ForeignKey("account.id"), nullable=False)
     judge_id: Mapped[UUID] = mapped_column(ForeignKey("account.id"), nullable=True)

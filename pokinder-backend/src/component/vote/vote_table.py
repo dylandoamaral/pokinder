@@ -52,7 +52,13 @@ class WriteDTO(SQLAlchemyDTO[Annotated[Vote, write_config]]):
 
 
 class ReadDTO(SQLAlchemyDTO[Vote]):
-    config = DTOConfig(exclude={"fusion_id", "fusion.creators"})
+    config = DTOConfig(
+        exclude={
+            "fusion_id",
+            "fusion.creators",
+            # "fusion.references",
+        }
+    )
 
 
 class PostDTO(SQLAlchemyDTO[Vote]):
