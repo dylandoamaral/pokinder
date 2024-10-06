@@ -42,7 +42,6 @@ class PostgresReferenceProposalDependency(ReferenceProposalDependency):
             proposer_id=proposer_id,
             fusion_id=data.fusions_id,
             reference_name=data.reference_name,
-            reference_source=data.reference_source,
             reference_family_name=data.reference_family_name,
         )
 

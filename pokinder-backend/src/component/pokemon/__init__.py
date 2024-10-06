@@ -1,1 +1,1 @@
-from .pokemon_table import Pokemon, PokemonRepository  # noqa
+from .pokemon_table import Pokemon  # noqa

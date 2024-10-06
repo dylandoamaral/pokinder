@@ -3,6 +3,9 @@ import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useMutation, useQuery } from "react-query";
 
+import { useAfterEffect } from "../../hook/useAfterEffect";
+import { useAuthentication } from "../../hook/useAuthentication";
+
 import { addVote, drawFusions } from "../../api/pokinder";
 import ReferenceProposalModal from "../../component/organism/ReferenceProposalModal/ReferenceProposalModal"
 
@@ -28,9 +31,11 @@ function Vote() {
   // The time to wait between two votes.
   const MILLISECONDS_BETWEEN_VOTES = 250;
 
-  const persistKeyDate = "pokinderVoteDate";
-  const persistKeyFusions = "pokinderVoteFusions";
-  const persistKeyCarouselFusions = "pokinderVoteCarousselFusions";
+  const { accountId } = useAuthentication();
+
+  const persistKeyDate = `pokinderVoteDate=>${accountId}`;
+  const persistKeyFusions = `pokinderVoteFusionse=>${accountId}`;
+  const persistKeyCarouselFusions = `pokinderVoteCarousselFusionse=>${accountId}`;
 
   const { t } = useTranslation();
 
@@ -44,6 +49,11 @@ function Vote() {
     getPersistedValue(persistKeyCarouselFusions),
   );
   const fusions = useRef(getPersistedValue(persistKeyFusions));
+
+  // When we change account, reload the page to avoid caching wrong data.
+  useAfterEffect(() => {
+    window.location.reload();
+  }, [accountId]);
 
   function getPersistedValue(key) {
     if (shouldUsePersistedFusions()) {

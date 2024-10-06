@@ -25,11 +25,22 @@ export const AuthenticationProvider = ({ children }) => {
     }
   }
 
+  function retrieveGuestToken() {
+    const maybeGuestToken = localStorage.getItem(guestTokenKey);
+    if (maybeGuestToken === null) {
+      const guestToken = uuidv4();
+      localStorage.setItem(guestTokenKey, guestToken);
+      return guestToken;
+    } else {
+      return maybeGuestToken;
+    }
+  }
+
   function retrieveToken() {
     const token = localStorage.getItem(tokenKey);
 
     if (token === null) {
-      return uuidv4();
+      return retrieveGuestToken();
     } else {
       return token;
     }
@@ -47,6 +58,7 @@ export const AuthenticationProvider = ({ children }) => {
 
   const tokenKey = "pokinderToken";
   const refreshTokenKey = "pokinderRefreshToken";
+  const guestTokenKey = "pokinderGuestToken";
 
   // State to hold the authentication token
   const [token, storeToken] = useState(retrieveToken());
@@ -77,7 +89,7 @@ export const AuthenticationProvider = ({ children }) => {
 
     function disconnect() {
       if (!isUUIDv4(token)) {
-        setToken(uuidv4());
+        setToken(retrieveGuestToken());
         storeRefreshToken("none");
       }
     }

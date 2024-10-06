@@ -8,7 +8,7 @@ from litestar.dto import DTOConfig
 from sqlalchemy import String, UniqueConstraint, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_date_column
+from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
 from src.component.reference_family import ReferenceFamily
 
 
@@ -20,7 +20,7 @@ class Reference(BaseTable, UUIDPrimaryKey):
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     source: Mapped[str] = mapped_column(nullable=True)
     family_id: Mapped[UUID] = mapped_column(ForeignKey("reference_family.id"))
-    created_at: Mapped[datetime] = build_date_column()
+    created_at: Mapped[datetime] = build_created_at_column()
 
     family: Mapped[ReferenceFamily] = relationship("ReferenceFamily", foreign_keys=[family_id])
 

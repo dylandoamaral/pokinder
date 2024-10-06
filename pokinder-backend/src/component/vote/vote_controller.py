@@ -6,12 +6,13 @@ from src.component.vote.vote_model import VoteAdd
 from src.security import Request
 
 from .vote_dependency import VoteDependency
-from .vote_table import ReadDTO, PostDTO, Vote, VoteType, WriteDTO
+from .vote_dto import DTO, ReturnDTO
+from .vote_table import Vote, VoteType
 
 
 class VoteController(Controller):
-    dto = WriteDTO
-    return_dto = ReadDTO
+    dto = DTO
+    return_dto = ReturnDTO
     path = "/vote"
 
     @get(path="/")
@@ -38,11 +39,11 @@ class VoteController(Controller):
             creator_name,
         )
 
-    @post(path="/", dto=None, return_dto=PostDTO)
+    @post(path="/", dto=None)
     async def post_vote(
         self,
         request: Request,
         data: VoteAdd,
         vote_dependency: VoteDependency,
-    ) -> Vote:
+    ) -> None:
         return await vote_dependency.upsert(request.user.id, data)

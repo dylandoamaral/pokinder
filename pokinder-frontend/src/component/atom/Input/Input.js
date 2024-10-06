@@ -2,6 +2,7 @@ import { useState } from "react";
 import { IconContext } from "react-icons";
 import { FaCheck, FaTimes } from "react-icons/fa";
 
+import Panel from "../Panel/Panel";
 import styles from "./Input.module.css";
 
 function Input({
@@ -73,8 +74,7 @@ function Input({
   }
 
   return (
-    <div className={styles.container}>
-      <span className={styles.title}>{title}</span>
+    <Panel title={title}>
       <div className={styles.box}>
         <input
           className={styles.input}
@@ -87,7 +87,7 @@ function Input({
         {renderValidator()}
       </div>
       {renderErrorMessage()}
-    </div>
+    </Panel>
   );
 }
 

@@ -7,8 +7,8 @@ import { findOptionByValue, groupeOptions } from "../../../data/options";
 
 import Button from "../../atom/Button/Button";
 import CheckField from "../../atom/CheckField/CheckField";
-import Box from "../../atom/Box/Box";
 import Modal from "../../atom/Modal/Modal";
+import Panel from "../../atom/Panel/Panel";
 import FutureSelect from "../../atom/Select/FutureSelect";
 import Select from "../../atom/Select/Select";
 import styles from "./FilterModal.module.css";
@@ -42,20 +42,20 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
 
     return (
       <div className={styles.pokemons}>
-        <Box title={t("Pokemon head")}>
+        <Panel title={t("Pokemon head")}>
           <Select
             options={groupeOptions}
             onChange={setPokemonHeads}
             defaultValue={findOptionByValue(updatedFilters.headNameOrCategory)}
           />
-        </Box>
-        <Box title={t("Pokemon body")}>
+        </Panel>
+        <Panel title={t("Pokemon body")}>
           <Select
             options={groupeOptions}
             onChange={setPokemonBodies}
             defaultValue={findOptionByValue(updatedFilters.bodyNameOrCategory)}
           />
-        </Box>
+        </Panel>
       </div>
     );
   }
@@ -79,14 +79,14 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
 
     return (
       <div className={styles.pokemons}>
-        <Box title={t("Creator")}>
+        <Panel title={t("Creator")}>
           <FutureSelect
             futureValues={listCreators}
             valueToOption={valueToOption}
             onChange={setCreator}
             defaultValue={defaultValue}
           />
-        </Box>
+        </Panel>
       </div>
     );
   }
@@ -97,7 +97,7 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
     }
 
     return (
-      <Box title={t("Vote types")}>
+      <Panel title={t("Vote types")}>
         <div className={styles.votes}>
           <CheckField
             title={t("Downvote")}
@@ -115,7 +115,7 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
             isChecked={updatedFilters.upvoteEnabled}
           />
         </div>
-      </Box>
+      </Panel>
     );
   }
 

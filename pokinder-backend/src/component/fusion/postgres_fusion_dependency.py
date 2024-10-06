@@ -9,7 +9,6 @@ from src.component.family.family_table import Family
 from src.component.pokemon import Pokemon
 from src.component.vote import Vote
 from src.component.reference import Reference
-from src.component.reference_family import ReferenceFamily
 from src.data.pokemon_families import pokemon_families
 from src.utils.sqlalchemy import model_to_dict
 
@@ -39,7 +38,7 @@ class PostgresFusionDependency(FusionDependency):
             joinedload(subquery_fusion.head, innerjoin=True),
             joinedload(subquery_fusion.body, innerjoin=True),
             joinedload(subquery_fusion.creators, innerjoin=True),
-            # joinedload(subquery_fusion.references, innerjoin=False).joinedload(Reference.family),
+            joinedload(subquery_fusion.references, innerjoin=False).joinedload(Reference.family),
         )
 
         result = await self.session.scalars(query)
@@ -71,9 +70,9 @@ class PostgresFusionDependency(FusionDependency):
                 )
                 .label("rank"),
             )
-            .join(Creator, Fusion.creators)
             .join(Head, Fusion.head_id == Head.id)
             .join(Body, Fusion.body_id == Body.id)
+            .join(Fusion.creators)
             .options(
                 joinedload(Fusion.creators),
                 joinedload(Fusion.head, innerjoin=True),
@@ -110,6 +109,11 @@ class PostgresFusionDependency(FusionDependency):
         objects = []
 
         for instance in instances:
+            fusion = model_to_dict(instance[0])  # TODO: we should use dto instead
+            del fusion["creators"]
+            del fusion["head_id"]
+            del fusion["body_id"]
+
             objects.append(
                 Ranking(
                     fusion=model_to_dict(instance[0]),

@@ -1,4 +1,4 @@
-import { createRef } from "react";
+import { createRef, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useInfiniteQuery } from "react-query";
 import { Link } from "react-router-dom";
@@ -8,6 +8,8 @@ import { useAuthentication } from "../../hook/useAuthentication";
 import useSearchParams from "../../hook/useSearchParams";
 
 import { getHistory } from "../../api/pokinder";
+
+import { calculateCardsAmount } from "../../utils/math";
 
 import Loader from "../../component/atom/Loader/Loader";
 import Oak from "../../component/atom/Oak/Oak";
@@ -19,13 +21,24 @@ import LoadingPokedexCard from "./LoadingPokedexCard";
 import styles from "./Pokedex.module.css";
 import PokedexCard from "./PokedexCard";
 
+const AMOUNT_CARDS_TO_GET_RATIOS = [
+  { maxWidth: 500, cardHeight: 104, cardsPerRow: 1 },
+  { maxWidth: 600, cardHeight: 250, cardsPerRow: 2 },
+  { maxWidth: 800, cardHeight: 250, cardsPerRow: 3 },
+  { maxWidth: 1000, cardHeight: 250, cardsPerRow: 4 },
+  { maxWidth: 1200, cardHeight: 250, cardsPerRow: 5 },
+  { maxWidth: Infinity, cardHeight: 250, cardsPerRow: 6 },
+];
+
 function Pokedex() {
   const { t } = useTranslation();
   const { token } = useAuthentication();
 
   const scrollRef = createRef();
 
-  const POKEMON_PER_PAGES = 36;
+  const [amountCardsToGet, setAmountCardsToGet] = useState(
+    calculateCardsAmount(AMOUNT_CARDS_TO_GET_RATIOS),
+  );
 
   const defaultFilters = {
     headNameOrCategory: "All",
@@ -39,20 +52,47 @@ function Pokedex() {
   const [paramsNotifier, newFilters, setFilters] = useSearchParams(defaultFilters);
   const filters = { ...defaultFilters, ...newFilters };
 
-  const { data, refetch, hasNextPage, fetchNextPage, isError, isLoading, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: ["history"],
-      queryFn: ({ pageParam }) => {
-        const offset = pageParam || 0;
-        return getHistory(filters, POKEMON_PER_PAGES, offset);
-      },
-      getNextPageParam: (lastPage) => {
-        if (lastPage.records.length < POKEMON_PER_PAGES) return false;
-        return lastPage.previousOffset + POKEMON_PER_PAGES;
-      },
-      staleTime: 10 * 60 * 1000,
-      cacheTime: 0,
-    });
+  const {
+    data,
+    refetch,
+    hasNextPage,
+    fetchNextPage,
+    isError,
+    isLoading,
+    isFetching,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["history"],
+    queryFn: ({ pageParam }) => {
+      const offset = pageParam || 0;
+      return getHistory(filters, amountCardsToGet, offset);
+    },
+    getNextPageParam: (lastPage) => {
+      if (lastPage.records.length < amountCardsToGet) return false;
+      return lastPage.previousOffset + amountCardsToGet;
+    },
+    staleTime: 10 * 60 * 1000,
+    cacheTime: 0,
+  });
+
+  const isFetchingFirstPage = isFetching && !isFetchingNextPage
+
+  // When the number of item to fetch is greater then acutal fetched data, refetch the data.
+  useEffect(() => {
+    const handleResize = () => {
+      const newAmountCardsToGet = calculateCardsAmount(AMOUNT_CARDS_TO_GET_RATIOS);
+
+      if (newAmountCardsToGet - amountCardsToGet > 1) {
+        setAmountCardsToGet(newAmountCardsToGet);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [amountCardsToGet]);
 
   useAfterEffect(() => {
     scrollRef.current.scrollTop = 0;
@@ -61,7 +101,7 @@ function Pokedex() {
       pageParams: data.pageParams.slice(0, 1),
     }));
     refetch({ pageParam: 0 });
-  }, [token, paramsNotifier, refetch]);
+  }, [token, amountCardsToGet, paramsNotifier, refetch]);
 
   const drawCards = (votes) => {
     return votes.map((vote) => <PokedexCard vote={vote} key={vote.fusion.id} />);
@@ -80,7 +120,7 @@ function Pokedex() {
       return <p>{t("The API is down for the moment, sorry for the inconvenience.")}</p>;
     }
 
-    if (isLoading) {
+    if (isLoading || isFetchingFirstPage) {
       return (
         <div className={`${styles.wrapper} loading`}>
           <FilterPanel
@@ -89,7 +129,7 @@ function Pokedex() {
             setFilters={setFilters}
           />
           <div className={styles.container}>
-            {Array.from({ length: 30 }, (_, index) => (
+            {Array.from({ length: amountCardsToGet }, (_, index) => (
               <LoadingPokedexCard key={index} />
             ))}
           </div>

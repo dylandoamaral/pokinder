@@ -7,7 +7,7 @@ from litestar.dto import DTOConfig
 from sqlalchemy import String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_date_column
+from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
 from enum import Enum
 
 
@@ -28,7 +28,7 @@ class ReferenceFamily(BaseTable, UUIDPrimaryKey):
 
     name: Mapped[str] = mapped_column(String(255), nullable=False)
     color: Mapped[ReferenceFamilyColor] = mapped_column(nullable=False)
-    created_at: Mapped[datetime] = build_date_column()
+    created_at: Mapped[datetime] = build_created_at_column()
 
 
 class ReferenceFamilyRepository(SQLAlchemyAsyncRepository[ReferenceFamily]):

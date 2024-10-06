@@ -20,5 +20,5 @@ class VoteDependency(Protocol):
     ) -> list[Vote]:
         pass
 
-    async def upsert(self, account_id: UUID, vote_add: VoteAdd) -> Vote:
+    async def upsert(self, account_id: UUID, vote_add: VoteAdd) -> None:
         pass

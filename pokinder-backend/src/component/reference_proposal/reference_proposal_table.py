@@ -8,7 +8,7 @@ from litestar.dto import DTOConfig
 from sqlalchemy import ForeignKey, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_date_column
+from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
 from enum import Enum
 
 
@@ -37,12 +37,12 @@ class ReferenceProposal(BaseTable, UUIDPrimaryKey):
     reference_name: Mapped[str] = mapped_column(String(255), nullable=False)
     reference_family_name: Mapped[str] = mapped_column(String(255), nullable=False)
     status: Mapped[ReferenceProposalStatus] = mapped_column(nullable=False)
-    reason: Mapped[str] = mapped_column(String(255), nullable=False)
+    reason: Mapped[str] = mapped_column(String(255), nullable=True)
     fusion_id: Mapped[UUID] = mapped_column(ForeignKey("fusion.id"), nullable=False)
     proposer_id: Mapped[UUID] = mapped_column(ForeignKey("account.id"), nullable=False)
     judge_id: Mapped[UUID] = mapped_column(ForeignKey("account.id"), nullable=True)
-    judged_at: Mapped[datetime] = build_date_column(nullable=True)
-    created_at: Mapped[datetime] = build_date_column(nullable=False)
+    judged_at: Mapped[datetime] = build_created_at_column(nullable=True)
+    created_at: Mapped[datetime] = build_created_at_column(nullable=False)
 
     fusion = relationship("Fusion", foreign_keys=[fusion_id])
     proposer = relationship("Account", foreign_keys=[proposer_id])

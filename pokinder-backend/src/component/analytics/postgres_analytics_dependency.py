@@ -7,7 +7,6 @@ from sqlalchemy import case, desc, distinct, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.component.account.account_table import Account
-from src.component.analytics.analytics_dependency import AnalyticsDependency
 from src.component.creator.creator_table import Creator
 from src.component.fusion.fusion_table import Fusion
 from src.component.pokemon.pokemon_table import Pokemon
@@ -171,7 +170,7 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
             )
             .join(Fusion.creators)
             .group_by(Creator.id, Creator.name)
-            .having(func.sum(Fusion.vote_count) >= 10)
+            .having(func.sum(Fusion.vote_count) >= 25)
             .order_by(desc("scores"), func.sum(Fusion.vote_count).desc())
             .limit(1)
         )
