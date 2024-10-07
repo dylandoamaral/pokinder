@@ -5,24 +5,11 @@ from uuid import UUID
 from litestar.contrib.sqlalchemy.dto import SQLAlchemyDTO
 from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
 from litestar.dto import DTOConfig
-from sqlalchemy import ForeignKey, String, UniqueConstraint
+from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
+from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column, private, write_only
 from enum import Enum
-
-
-class ReferenceProposalChoice(Enum):
-    VALIDATED = 0
-    REFUSED = 1
-
-    def to_status(self):
-        if self == ReferenceProposalChoice.VALIDATED:
-            return ReferenceProposalStatus.VALIDATED
-        elif self == ReferenceProposalChoice.REFUSED:
-            return ReferenceProposalStatus.REFUSED
-        else:
-            raise ValueError("Invalid choice")
 
 
 class ReferenceProposalStatus(Enum):
@@ -37,16 +24,16 @@ class ReferenceProposal(BaseTable, UUIDPrimaryKey):
     reference_name: Mapped[str] = mapped_column(String(255), nullable=False)
     reference_family_name: Mapped[str] = mapped_column(String(255), nullable=False)
     status: Mapped[ReferenceProposalStatus] = mapped_column(nullable=False)
-    reason: Mapped[str] = mapped_column(String(255), nullable=True)
-    fusion_id: Mapped[UUID] = mapped_column(ForeignKey("fusion.id"), nullable=False)
-    proposer_id: Mapped[UUID] = mapped_column(ForeignKey("account.id"), nullable=False)
-    judge_id: Mapped[UUID] = mapped_column(ForeignKey("account.id"), nullable=True)
+    fusion_id: Mapped[UUID] = mapped_column(ForeignKey("fusion.id"), nullable=False, info=write_only)
+    proposer_id: Mapped[UUID] = mapped_column(ForeignKey("account.id"), nullable=False, info=write_only)
+    judge_id: Mapped[UUID] = mapped_column(ForeignKey("account.id"), nullable=True, info=write_only)
     judged_at: Mapped[datetime] = build_created_at_column(nullable=True)
+    reason: Mapped[str] = mapped_column(String(1023), nullable=True)
     created_at: Mapped[datetime] = build_created_at_column(nullable=False)
 
-    fusion = relationship("Fusion", foreign_keys=[fusion_id])
-    proposer = relationship("Account", foreign_keys=[proposer_id])
-    judge = relationship("Account", foreign_keys=[judge_id])
+    fusion = relationship("Fusion", lazy="joined", foreign_keys=[fusion_id])
+    proposer = relationship("Account", lazy="joined", foreign_keys=[proposer_id])
+    judge = relationship("Account", lazy="noload", foreign_keys=[judge_id], info=private)
 
 
 class ReferenceProposalRepository(SQLAlchemyAsyncRepository[ReferenceProposal]):

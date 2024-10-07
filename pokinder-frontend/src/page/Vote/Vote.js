@@ -5,17 +5,17 @@ import { useMutation, useQuery } from "react-query";
 
 import { useAfterEffect } from "../../hook/useAfterEffect";
 import { useAuthentication } from "../../hook/useAuthentication";
+import useToggle from "../../hook/useToggle";
 
 import { addVote, drawFusions } from "../../api/pokinder";
-import ReferenceProposalModal from "../../component/organism/ReferenceProposalModal/ReferenceProposalModal"
 
 import VoteButton from "../../component/atom/VoteButton/VoteButton";
 import Page from "../../component/organism/Page/Page";
+import ReferenceProposalModal from "../../component/organism/ReferenceProposalModal/ReferenceProposalModal";
 
 import LoadingVoteCard from "./LoadingVoteCard";
 import styles from "./Vote.module.css";
 import VoteCard from "./VoteCard";
-import useToggle from "../../hook/useToggle";
 
 function Vote() {
   // The number of fusions fetched from the API.
@@ -39,7 +39,7 @@ function Vote() {
 
   const { t } = useTranslation();
 
-  const [showReferenceProposalModa, toggleReferenceProposalModal] = useToggle();
+  const [showReferenceProposalModal, toggleReferenceProposalModal] = useToggle();
 
   const [lastVoteTime, setLastVoteTime] = useState(new Date().getTime());
   const [voteType, setVoteType] = useState(0);
@@ -201,7 +201,7 @@ function Vote() {
       );
     }
 
-    const focusedFusion = carouselFusions[absoluteIndex - relativeIndex]
+    const focusedFusion = carouselFusions[absoluteIndex - relativeIndex];
 
     return (
       <>
@@ -232,7 +232,7 @@ function Vote() {
           </div>
         </div>
         <ReferenceProposalModal
-          isVisible={showReferenceProposalModa}
+          isVisible={showReferenceProposalModal}
           onClose={toggleReferenceProposalModal}
           fusion={focusedFusion}
         />

@@ -124,7 +124,7 @@
 
   border: 4px solid var(--foreground-color);
 
-  display:flex;
+  display: flex;
 
   cursor: pointer;
 }

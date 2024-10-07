@@ -15,4 +15,8 @@ export const navlinks = (t) => [
     title: t("Analytics"),
     path: "/analytics",
   },
+  {
+    title: t("Admin"),
+    path: "/admin",
+  },
 ];

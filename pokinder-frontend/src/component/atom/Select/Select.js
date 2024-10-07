@@ -17,7 +17,9 @@ function Select({ options, onChange, defaultValue }) {
   }
 
   const translatedOptions = getTranslatedOptions();
-  const translatedDefaultValue = defaultValue ? { label: t(defaultValue.label), value: defaultValue.value } : null;
+  const translatedDefaultValue = defaultValue
+    ? { label: t(defaultValue.label), value: defaultValue.value }
+    : null;
 
   return (
     <BaseSelect

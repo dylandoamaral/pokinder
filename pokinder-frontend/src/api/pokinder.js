@@ -99,6 +99,17 @@ export async function addVote(fusionId, voteType) {
   return response.data;
 }
 
+export async function listReferenceProposal(limit, offset) {
+  const params = new URLSearchParams();
+
+  params.set("limit", limit);
+  params.set("offset", offset);
+
+  const response = await http.get("/reference_proposal?" + params.toString());
+
+  return { records: response.data, previousOffset: offset };
+}
+
 export async function addReferenceProposal(fusionId, referenceName, referenceFamilyName) {
   const body = {
     fusions_id: fusionId,
@@ -107,6 +118,17 @@ export async function addReferenceProposal(fusionId, referenceName, referenceFam
   };
 
   const response = await http.post("/reference_proposal/", body);
+
+  return response.data;
+}
+
+export async function refuseReferenceProposal(proposalId, reason) {
+  const body = {
+    proposal_id: proposalId,
+    reason: reason,
+  };
+
+  const response = await http.post("/reference_proposal/refuse", body);
 
   return response.data;
 }

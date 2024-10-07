@@ -1,13 +1,18 @@
 from typing import Protocol, runtime_checkable, Optional
 from uuid import UUID
 
-from .reference_proposal_table import ReferenceProposal, ReferenceProposalChoice
-from .reference_proposal_model import ReferenceProposalAdd
+from .reference_proposal_table import ReferenceProposal
+from .reference_proposal_model import ReferenceProposalAdd, ReferenceProposalRefuse
 
 
 @runtime_checkable
 class ReferenceProposalDependency(Protocol):
-    async def list(self) -> list[ReferenceProposal]:
+    async def list(
+        self,
+        account_id: UUID,
+        limit: int,
+        offset: int = 0,
+    ) -> list[ReferenceProposal]:
         pass
 
     async def post(
@@ -26,10 +31,9 @@ class ReferenceProposalDependency(Protocol):
     ) -> None:
         pass
 
-    async def judge(
+    async def refuse(
         self,
         judge_id: UUID,
-        proposal_id: UUID,
-        proposal_choice: ReferenceProposalChoice,
+        data: ReferenceProposalRefuse,
     ) -> None:
         pass

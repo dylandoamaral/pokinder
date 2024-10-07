@@ -1,8 +1,8 @@
 """Add reference table
 
-Revision ID: 88ec6c82bbcf
+Revision ID: bb41c25611ec
 Revises: cbd742fb1fe8
-Create Date: 2024-10-05 14:31:53.681287
+Create Date: 2024-10-07 17:49:40.070807
 
 """
 
@@ -12,7 +12,7 @@ import advanced_alchemy
 from alembic import op
 import sqlalchemy as sa
 
-revision: str = "88ec6c82bbcf"
+revision: str = "bb41c25611ec"
 down_revision: Union[str, None] = "cbd742fb1fe8"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -46,24 +46,15 @@ def upgrade() -> None:
         sa.UniqueConstraint("name", "family_id", name="reference_name_family_id_should_be_unique"),
     )
     op.create_table(
-        "fusion_reference",
-        sa.Column("fusion_id", advanced_alchemy.types.guid.GUID(length=16), nullable=False),
-        sa.Column("reference_id", advanced_alchemy.types.guid.GUID(length=16), nullable=False),
-        sa.ForeignKeyConstraint(["fusion_id"], ["fusion.id"], name=op.f("fk_fusion_reference_fusion_id_fusion")),
-        sa.ForeignKeyConstraint(
-            ["reference_id"], ["reference.id"], name=op.f("fk_fusion_reference_reference_id_reference")
-        ),
-    )
-    op.create_table(
         "reference_proposal",
         sa.Column("reference_name", sa.String(length=255), nullable=False),
         sa.Column("reference_family_name", sa.String(length=255), nullable=False),
         sa.Column("status", sa.Enum("PENDING", "VALIDATED", "REFUSED", name="referenceproposalstatus"), nullable=False),
-        sa.Column("reason", sa.String(length=255), nullable=True),
         sa.Column("fusion_id", advanced_alchemy.types.guid.GUID(length=16), nullable=False),
         sa.Column("proposer_id", advanced_alchemy.types.guid.GUID(length=16), nullable=False),
         sa.Column("judge_id", advanced_alchemy.types.guid.GUID(length=16), nullable=True),
         sa.Column("judged_at", advanced_alchemy.types.datetime.DateTimeUTC(timezone=True), nullable=True),
+        sa.Column("reason", sa.String(length=1023), nullable=True),
         sa.Column("created_at", advanced_alchemy.types.datetime.DateTimeUTC(timezone=True), nullable=False),
         sa.Column("id", advanced_alchemy.types.guid.GUID(length=16), nullable=False),
         sa.ForeignKeyConstraint(["fusion_id"], ["fusion.id"], name=op.f("fk_reference_proposal_fusion_id_fusion")),
@@ -73,11 +64,26 @@ def upgrade() -> None:
         ),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_reference_proposal")),
     )
+    op.create_table(
+        "fusion_reference",
+        sa.Column("fusion_id", advanced_alchemy.types.guid.GUID(length=16), nullable=False),
+        sa.Column("reference_id", advanced_alchemy.types.guid.GUID(length=16), nullable=False),
+        sa.Column("reference_proposal_id", advanced_alchemy.types.guid.GUID(length=16), nullable=False),
+        sa.ForeignKeyConstraint(["fusion_id"], ["fusion.id"], name=op.f("fk_fusion_reference_fusion_id_fusion")),
+        sa.ForeignKeyConstraint(
+            ["reference_id"], ["reference.id"], name=op.f("fk_fusion_reference_reference_id_reference")
+        ),
+        sa.ForeignKeyConstraint(
+            ["reference_proposal_id"],
+            ["reference_proposal.id"],
+            name=op.f("fk_fusion_reference_reference_proposal_id_reference_proposal"),
+        ),
+    )
 
 
 def downgrade() -> None:
-    op.drop_table("reference_proposal")
     op.drop_table("fusion_reference")
+    op.drop_table("reference_proposal")
     op.drop_table("reference")
     op.drop_table("reference_family")
     op.execute("DROP TYPE referencefamilycolor;")

@@ -2,7 +2,7 @@ from sqlalchemy import insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from uuid import UUID
 from litestar.exceptions import NotFoundException, MethodNotAllowedException
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 from src.component.fusion_reference.fusion_reference_table import FusionReference
@@ -13,10 +13,9 @@ from .reference_proposal_dependency import ReferenceProposalDependency
 from .reference_proposal_table import (
     ReferenceProposal,
     ReferenceProposalRepository,
-    ReferenceProposalChoice,
     ReferenceProposalStatus,
 )
-from .reference_proposal_model import ReferenceProposalAdd
+from .reference_proposal_model import ReferenceProposalAdd, ReferenceProposalRefuse
 
 
 class PostgresReferenceProposalDependency(ReferenceProposalDependency):
@@ -24,8 +23,19 @@ class PostgresReferenceProposalDependency(ReferenceProposalDependency):
         self.session = session
         self.repository = ReferenceProposalRepository(session=session)
 
-    async def list(self) -> list[ReferenceProposal]:
-        query = select(ReferenceProposal)
+    async def list(
+        self,
+        account_id: UUID,
+        limit: int,
+        offset: int = 0,
+    ) -> list[ReferenceProposal]:
+        query = (
+            select(ReferenceProposal)
+            .filter(ReferenceProposal.status == ReferenceProposalStatus.PENDING)
+            .order_by(ReferenceProposal.created_at.desc())
+            .offset(offset)
+            .limit(limit)
+        )
 
         result = await self.session.scalars(query)
         instances = result.all()
@@ -84,56 +94,21 @@ class PostgresReferenceProposalDependency(ReferenceProposalDependency):
         await self.session.flush()
         await self.session.commit()
 
-    async def judge(
+    async def refuse(
         self,
         judge_id: UUID,
-        proposal_id: UUID,
-        proposal_choice: ReferenceProposalChoice,
+        data: ReferenceProposalRefuse,
     ) -> None:
-        proposal = self.check_proposal_exists(proposal_id)
-
-        reference_family = await self.session.scalars(
-            select(ReferenceFamily).where(ReferenceFamily.name == proposal.reference_family_name)
-        )
-
-        if not reference_family:
-            raise NotFoundException()
-
-        maybe_reference = await self.session.scalars(
-            select(Reference).where(
-                Reference.name == proposal.reference_name, Reference.family_id == reference_family.id
-            )
-        )
-
-        if maybe_reference:
-            await insert(FusionReference).values(
-                fusion_id=proposal.fusion_id,
-                reference_id=maybe_reference.id,
-            )
-        else:
-            new_reference_id = await (
-                insert(Reference)
-                .values(
-                    name=proposal.reference_name,
-                    source=proposal.reference_source,
-                    family_id=reference_family.id,
-                    created_at=datetime.now(),
-                )
-                .returning(Reference.id)
-            )
-
-            await insert(FusionReference).values(
-                fusion_id=proposal.fusion_id,
-                reference_id=new_reference_id,
-            )
+        self.check_proposal_exists(data.proposal_id)
 
         await self.session.execute(
             update(ReferenceProposal)
-            .where(ReferenceProposal.id == proposal_id)
+            .where(ReferenceProposal.id == data.proposal_id)
             .values(
                 judge_id=judge_id,
-                judged_at=datetime.now(),
-                status=proposal_choice.to_status(),
+                judged_at=datetime.now(timezone.utc),
+                status=ReferenceProposalStatus.REFUSED,
+                reason=data.reason,
             )
         )
 

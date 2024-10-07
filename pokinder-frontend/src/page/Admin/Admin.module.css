@@ -1,0 +1,37 @@
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.table {
+  margin-top: 24px;
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.th {
+  border: solid 1px #ccc;
+  height: 40px;
+}
+
+.td {
+  border: solid 1px #ccc;
+}
+
+.rowSprite {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.rowButtons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.rowText {
+  padding-left: 16px;
+}

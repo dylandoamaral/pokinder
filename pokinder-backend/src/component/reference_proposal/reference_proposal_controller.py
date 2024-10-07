@@ -5,8 +5,8 @@ from typing import Optional
 from src.security import Request
 
 from .reference_proposal_dependency import ReferenceProposalDependency
-from .reference_proposal_table import ReferenceProposal, ReadDTO, PostDTO, ReferenceProposalChoice, WriteDTO
-from .reference_proposal_model import ReferenceProposalAdd
+from .reference_proposal_table import ReferenceProposal, ReadDTO, PostDTO, WriteDTO
+from .reference_proposal_model import ReferenceProposalAdd, ReferenceProposalRefuse
 
 
 class ReferenceProposalController(Controller):
@@ -17,9 +17,16 @@ class ReferenceProposalController(Controller):
     @get(path="/")
     async def list_reference_pruposals(
         self,
+        request: Request,
         reference_proposal_dependency: ReferenceProposalDependency,
+        limit: int,
+        offset: int = 0,
     ) -> list[ReferenceProposal]:
-        return await reference_proposal_dependency.list()
+        return await reference_proposal_dependency.list(
+            request.user.id,
+            limit,
+            offset,
+        )
 
     @post(path="/", dto=None, return_dto=PostDTO)
     async def post_reference_pruposal(
@@ -49,12 +56,11 @@ class ReferenceProposalController(Controller):
             maybe_reference_family_name,
         )
 
-    @post(path="/judge")
-    async def judge_reference_pruposal(
+    @post(path="/refuse", dto=None)
+    async def refuse_reference_pruposal(
         self,
         request: Request,
         reference_proposal_dependency: ReferenceProposalDependency,
-        proposal_id: UUID,
-        proposal_choice: ReferenceProposalChoice,
+        data: ReferenceProposalRefuse,
     ) -> None:
-        return await reference_proposal_dependency.judge(request.user.id, proposal_id, proposal_choice)
+        return await reference_proposal_dependency.refuse(request.user.id, data)

@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaPlus } from "react-icons/fa";
+
 import { useAuthentication } from "../../hook/useAuthentication";
 
 import { getName, getTypes } from "../../utils/pokemon";
@@ -77,7 +78,7 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
     defaultFusionSize,
     defaultPokemonSize,
     defaultReferenceTopPosition,
-    defaultReferenceLeftPosition
+    defaultReferenceLeftPosition,
   ]);
 
   useEffect(() => {
@@ -97,9 +98,15 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
   // https://stackoverflow.com/questions/11512989/display-first-letter-only
   function renderReference(reference, key) {
     return (
-      <div className={styles.reference} style={{ backgroundColor: `var(--reference-${reference.color}-background)` }} key={key}>
+      <div
+        className={styles.reference}
+        style={{ backgroundColor: `var(--reference-${reference.color}-background)` }}
+        key={key}
+      >
         <span>{reference.family.name[0]}</span>
-        <span className={styles.referenceOtherLetters}>{`${reference.family.name.slice(1)} [${reference.name}]`}</span>
+        <span className={styles.referenceOtherLetters}>{`${reference.family.name.slice(1)} [${
+          reference.name
+        }]`}</span>
       </div>
     );
   }
@@ -107,21 +114,21 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
   function mapNumberToReferenceColor(number) {
     switch (number) {
       case 0:
-        return 'blue';
+        return "blue";
       case 1:
-        return 'red';
+        return "red";
       case 2:
-        return 'green';
+        return "green";
       case 3:
-        return 'orange';
+        return "orange";
       case 4:
-        return 'purple';
+        return "purple";
       case 5:
-        return 'yellow';
+        return "yellow";
       case 6:
-        return 'pink';
+        return "pink";
       default:
-        return 'blue';
+        return "blue";
     }
   }
 
@@ -131,23 +138,31 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
         <div className={styles.referenceButton} onClick={() => onReferenceButtonClick()}>
           <FaPlus className={styles.referenceButtonIcon} />
         </div>
-      )
+      );
     } else {
-      return <></>
+      return <></>;
     }
   }
 
   function renderReferences(references) {
     if (!hasFocus) return null;
 
-    const sanitizedReferences = references.map((reference) => ({ ...reference, color: mapNumberToReferenceColor(reference.color) }))
+    const sanitizedReferences = references.map((reference) => ({
+      ...reference,
+      color: mapNumberToReferenceColor(reference.color),
+    }));
 
     return (
-      <motion.div className={styles.references} style={{ left: referenceLeftPosition, top: referenceTopPosition, opacity: opacity }}
+      <motion.div
+        className={styles.references}
+        style={{ left: referenceLeftPosition, top: referenceTopPosition, opacity: opacity }}
         animate={{
-          left: referenceLeftPosition, top: referenceTopPosition, opacity: opacity
+          left: referenceLeftPosition,
+          top: referenceTopPosition,
+          opacity: opacity,
         }}
-        transition={transition} >
+        transition={transition}
+      >
         {sanitizedReferences.map((reference, key) => renderReference(reference, key))}
         {renderReferenceButton()}
       </motion.div>
