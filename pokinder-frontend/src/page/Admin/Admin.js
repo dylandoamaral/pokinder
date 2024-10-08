@@ -88,9 +88,9 @@ function Admin() {
   }, [t, toggleAdminRefuseReferenceProposalModal]);
 
   const {
-    data
+    data: rawProposals
   } = useInfiniteQuery({
-    queryKey: ["history"],
+    queryKey: ["reference_proposals"],
     queryFn: ({ pageParam }) => {
       const offset = pageParam || 0;
       return listReferenceProposal(REFERENCE_PROPOSAL_LIMIT, offset);
@@ -101,12 +101,8 @@ function Admin() {
     staleTime: 10 * 60 * 1000,
     cacheTime: 0,
   });
-
   const [proposals, setProposals] = useState(() => []);
-
-  useEffect(() => {
-    setProposals(data?.pages.map((page) => page.records).flat() || []);
-  }, [data]);
+  useEffect(() => { setProposals(rawProposals?.pages.map((page) => page.records).flat() || []); }, [rawProposals]);
 
   const table = useReactTable({
     columns: columns,

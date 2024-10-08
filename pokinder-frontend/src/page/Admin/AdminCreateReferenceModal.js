@@ -8,14 +8,21 @@ import Modal from "../../component/atom/Modal/Modal";
 import Panel from "../../component/atom/Panel/Panel";
 import Title from "../../component/atom/Title/Title";
 import styles from "./AdminCreateReferenceModal.module.css";
+import FutureSelect from "../../component/atom/Select/FutureSelect";
+import { listReferenceFamilies, addReference } from "../../api/pokinder";
 
 function AdminCreateReferenceModal({ isVisible, onClose }) {
     const { t } = useTranslation();
 
     const [name, setName] = useState(undefined);
     const [source, setSource] = useState(undefined);
+    const [family, setFamily] = useState(undefined);
 
-    const createButtonDisabled = name === undefined || source === undefined;
+    function familyToSelect(family) {
+        return { value: family.id, label: family.name };
+    }
+
+    const createButtonDisabled = name === undefined || source === undefined || family === undefined;
 
     return (
         <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
@@ -27,6 +34,11 @@ function AdminCreateReferenceModal({ isVisible, onClose }) {
                 <Input onChange={setSource} />
             </Panel>
             <Panel title={t("Family")}>
+                <FutureSelect
+                    futureValues={listReferenceFamilies}
+                    valueToOption={familyToSelect}
+                    onChange={setFamily}
+                />
             </Panel>
             <div className={styles.buttons}>
                 <Button title={t("Cancel")} variant="text" foreground onClick={onClose} />
@@ -35,14 +47,16 @@ function AdminCreateReferenceModal({ isVisible, onClose }) {
                     foreground
                     disabled={createButtonDisabled}
                     onClick={() => {
+                        addReference(name, source, family.value)
                         setName(undefined);
                         setSource(undefined)
+                        setFamily(undefined)
                         toast.success("Reference created successfully !");
                         onClose();
                     }}
                 />
             </div>
-        </Modal>
+        </Modal >
     );
 }
 
