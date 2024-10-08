@@ -4,38 +4,40 @@ import {
   getCoreRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useInfiniteQuery } from "react-query";
 
-import { listReferenceProposal } from "../../api/pokinder";
+import useToggle from "../../hook/useToggle";
+
+import { listReferenceProposals } from "../../api/pokinder";
+
+import { getDaenaLink } from "../../utils/website";
 
 import Button from "../../component/atom/Button/Button";
 import Sprite from "../../component/atom/Sprite/Sprite";
 import Page from "../../component/organism/Page/Page";
-import AdminRefuseReferenceProposalModal from "./AdminRefuseReferenceProposalModal";
-import AdminCreateReferenceModal from "./AdminCreateReferenceModal";
-import AdminCreateReferenceFamilyModal from "./AdminCreateReferenceFamilyModal";
 
 import styles from "./Admin.module.css";
-import { getDaenaLink } from "../../utils/website";
-import useToggle from "../../hook/useToggle";
-// Add "Create Reference Family button"
-// Add "Create Reference button"
-// Not appear when not correct user + not appear when no user logged
-// Accept a proposal
-// Update the table when refuse or accept
+import AdminAcceptReferenceProposalModal from "./AdminAcceptReferenceProposalModal";
+import AdminCreateReferenceFamilyModal from "./AdminCreateReferenceFamilyModal";
+import AdminCreateReferenceModal from "./AdminCreateReferenceModal";
+import AdminRefuseReferenceProposalModal from "./AdminRefuseReferenceProposalModal";
 
-// https://stackoverflow.com/questions/73892333/react-table-v8-how-to-render-custom-cell-content
+// Not appear when not correct user + not appear when no user logged
+// Update the table when refuse or accept
 
 const REFERENCE_PROPOSAL_LIMIT = 20;
 
 function Admin() {
   const { t } = useTranslation();
 
-  const [showAdminRefuseReferenceProposalModal, toggleAdminRefuseReferenceProposalModal] = useToggle();
   const [showAdminCreateReferenceModal, toggleAdminCreateReferenceModal] = useToggle();
   const [showAdminCreateReferenceFamilyModal, toggleAdminCreateReferenceFamilyModal] = useToggle();
+  const [showAdminAcceptReferenceProposalModal, toggleAdminAcceptReferenceProposalModal] =
+    useToggle();
+  const [showAdminRefuseReferenceProposalModal, toggleAdminRefuseReferenceProposalModal] =
+    useToggle();
 
   const [focusedProposal, setFocusedProposal] = useState();
 
@@ -73,27 +75,35 @@ function Admin() {
         header: t("Actions"),
         cell: (props) => (
           <div className={styles.rowButtons}>
-            <Button title={t("Accept")} foreground variant="filled" onClick={() => {
-              setFocusedProposal(props.getValue())
-              toggleAdminRefuseReferenceProposalModal()
-            }} />
-            <Button title={t("Refuse")} foreground variant="filled" onClick={() => {
-              setFocusedProposal(props.row.original)
-              toggleAdminRefuseReferenceProposalModal()
-            }} />
+            <Button
+              title={t("Accept")}
+              foreground
+              variant="filled"
+              onClick={() => {
+                setFocusedProposal(props.row.original);
+                toggleAdminAcceptReferenceProposalModal();
+              }}
+            />
+            <Button
+              title={t("Refuse")}
+              foreground
+              variant="filled"
+              onClick={() => {
+                setFocusedProposal(props.row.original);
+                toggleAdminRefuseReferenceProposalModal();
+              }}
+            />
           </div>
         ),
       }),
-    ]
-  }, [t, toggleAdminRefuseReferenceProposalModal]);
+    ];
+  }, [t, toggleAdminAcceptReferenceProposalModal, toggleAdminRefuseReferenceProposalModal]);
 
-  const {
-    data: rawProposals
-  } = useInfiniteQuery({
+  const { data } = useInfiniteQuery({
     queryKey: ["reference_proposals"],
     queryFn: ({ pageParam }) => {
       const offset = pageParam || 0;
-      return listReferenceProposal(REFERENCE_PROPOSAL_LIMIT, offset);
+      return listReferenceProposals(REFERENCE_PROPOSAL_LIMIT, offset);
     },
     getNextPageParam: (lastPage) => {
       return lastPage.previousOffset + REFERENCE_PROPOSAL_LIMIT;
@@ -102,7 +112,9 @@ function Admin() {
     cacheTime: 0,
   });
   const [proposals, setProposals] = useState(() => []);
-  useEffect(() => { setProposals(rawProposals?.pages.map((page) => page.records).flat() || []); }, [rawProposals]);
+  useEffect(() => {
+    setProposals(data?.pages.map((page) => page.records).flat() || []);
+  }, [data]);
 
   const table = useReactTable({
     columns: columns,
@@ -114,8 +126,18 @@ function Admin() {
     <>
       <Page name={t("Admin")} overflow={"scroll"}>
         <div className={styles.buttons}>
-          <Button title={t("Create a reference")} foreground variant="filled" onClick={toggleAdminCreateReferenceModal} />
-          <Button title={t("Create a reference family")} foreground variant="filled" onClick={toggleAdminCreateReferenceFamilyModal} />
+          <Button
+            title={t("Create a reference")}
+            foreground
+            variant="filled"
+            onClick={toggleAdminCreateReferenceModal}
+          />
+          <Button
+            title={t("Create a reference family")}
+            foreground
+            variant="filled"
+            onClick={toggleAdminCreateReferenceFamilyModal}
+          />
         </div>
         <table className={styles.table}>
           <thead>
@@ -151,6 +173,11 @@ function Admin() {
       <AdminCreateReferenceFamilyModal
         isVisible={showAdminCreateReferenceFamilyModal}
         onClose={toggleAdminCreateReferenceFamilyModal}
+      />
+      <AdminAcceptReferenceProposalModal
+        isVisible={showAdminAcceptReferenceProposalModal}
+        onClose={toggleAdminAcceptReferenceProposalModal}
+        referenceProposal={focusedProposal}
       />
       <AdminRefuseReferenceProposalModal
         isVisible={showAdminRefuseReferenceProposalModal}
