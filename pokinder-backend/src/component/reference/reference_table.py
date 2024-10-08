@@ -24,9 +24,4 @@ class Reference(BaseTable, UUIDPrimaryKey):
     family_id: Mapped[UUID] = mapped_column(ForeignKey("reference_family.id"), info=write_only)
     created_at: Mapped[datetime] = build_created_at_column()
 
-    family: Mapped[ReferenceFamily] = relationship(
-        "ReferenceFamily",
-        lazy="joined",
-        foreign_keys=[family_id],
-        info=read_only,
-    )
+    family: Mapped[ReferenceFamily] = relationship("ReferenceFamily", foreign_keys=[family_id], info=read_only)

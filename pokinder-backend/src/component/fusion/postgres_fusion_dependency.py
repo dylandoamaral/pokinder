@@ -2,7 +2,7 @@ from uuid import UUID
 
 from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import aliased, joinedload
+from sqlalchemy.orm import aliased, joinedload, noload
 
 from src.component.creator import Creator
 from src.component.family.family_table import Family
@@ -39,6 +39,7 @@ class PostgresFusionDependency(FusionDependency):
             joinedload(subquery_fusion.body, innerjoin=True),
             joinedload(subquery_fusion.creators, innerjoin=True),
             joinedload(subquery_fusion.references, innerjoin=False).joinedload(Reference.family),
+            noload("*"),
         )
 
         result = await self.session.scalars(query)
