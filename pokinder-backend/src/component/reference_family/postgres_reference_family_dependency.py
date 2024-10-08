@@ -1,7 +1,6 @@
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.component.reference_family import ReferenceFamily
 from src.component.reference_family.reference_family_model import ReferenceFamilyInsert
 
 from .reference_family_dependency import ReferenceFamilyDependency

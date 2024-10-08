@@ -1,12 +1,7 @@
 from datetime import datetime
-from enum import Enum
-from typing import Annotated
 
-from litestar.contrib.sqlalchemy.dto import SQLAlchemyDTO
-from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
-from litestar.dto import DTOConfig
 from sqlalchemy import String, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
 from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
 
