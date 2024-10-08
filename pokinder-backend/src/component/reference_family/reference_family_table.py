@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 from typing import Annotated
 
 from litestar.contrib.sqlalchemy.dto import SQLAlchemyDTO
@@ -8,7 +9,6 @@ from sqlalchemy import String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
-from enum import Enum
 
 
 class ReferenceFamily(BaseTable, UUIDPrimaryKey):

@@ -1,12 +1,19 @@
 from datetime import datetime
+from enum import Enum
 from uuid import UUID
 
 from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column, private, write_only, read_only
-from enum import Enum
+from src.utils.sqlalchemy import (
+    BaseTable,
+    UUIDPrimaryKey,
+    build_created_at_column,
+    private,
+    read_only,
+    write_only,
+)
 
 
 class ReferenceProposalStatus(Enum):

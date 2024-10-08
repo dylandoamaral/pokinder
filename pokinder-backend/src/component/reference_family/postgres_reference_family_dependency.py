@@ -1,4 +1,4 @@
-from sqlalchemy import select, insert
+from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.component.reference_family import ReferenceFamily

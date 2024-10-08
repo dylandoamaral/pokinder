@@ -1,9 +1,10 @@
 from litestar import Controller, get, post
+
 from src.component.reference_family.reference_family_model import ReferenceFamilyInsert
 
 from .reference_family_dependency import ReferenceFamilyDependency
-from .reference_family_table import ReferenceFamily
 from .reference_family_dto import DTO, ReturnDTO
+from .reference_family_table import ReferenceFamily
 
 
 class ReferenceFamilyController(Controller):

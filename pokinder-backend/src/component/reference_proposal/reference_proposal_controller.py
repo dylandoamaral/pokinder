@@ -1,13 +1,18 @@
-from litestar import Controller, get, post
-from uuid import UUID
 from typing import Optional
+from uuid import UUID
+
+from litestar import Controller, get, post
 
 from src.security import Request
 
 from .reference_proposal_dependency import ReferenceProposalDependency
-from .reference_proposal_table import ReferenceProposal
-from .reference_proposal_model import ReferenceProposalAdd, ReferenceProposalRefuse
 from .reference_proposal_dto import DTO, ReturnDTO
+from .reference_proposal_model import (
+    ReferenceProposalAccept,
+    ReferenceProposalAdd,
+    ReferenceProposalRefuse,
+)
+from .reference_proposal_table import ReferenceProposal
 
 
 class ReferenceProposalController(Controller):
@@ -65,3 +70,12 @@ class ReferenceProposalController(Controller):
         data: ReferenceProposalRefuse,
     ) -> None:
         return await reference_proposal_dependency.refuse(request.user.id, data)
+
+    @post(path="/accept", dto=None)
+    async def accept(
+        self,
+        request: Request,
+        reference_proposal_dependency: ReferenceProposalDependency,
+        data: ReferenceProposalAccept,
+    ) -> None:
+        return await reference_proposal_dependency.accept(request.user.id, data)

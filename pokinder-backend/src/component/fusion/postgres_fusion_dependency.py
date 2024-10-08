@@ -7,8 +7,8 @@ from sqlalchemy.orm import aliased, joinedload
 from src.component.creator import Creator
 from src.component.family.family_table import Family
 from src.component.pokemon import Pokemon
-from src.component.vote import Vote
 from src.component.reference import Reference
+from src.component.vote import Vote
 from src.data.pokemon_families import pokemon_families
 from src.utils.sqlalchemy import model_to_dict
 

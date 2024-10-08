@@ -1,21 +1,24 @@
-from sqlalchemy import insert, select, update
-from sqlalchemy.ext.asyncio import AsyncSession
-from uuid import UUID
-from litestar.exceptions import NotFoundException, MethodNotAllowedException
 from datetime import datetime, timezone
 from typing import Optional
+from uuid import UUID
+
+from litestar.exceptions import MethodNotAllowedException, NotFoundException
+from sqlalchemy import insert, select, update
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.component.fusion_reference.fusion_reference_table import FusionReference
-from src.component.reference.reference_table import Reference
-from src.component.reference_family import ReferenceFamily
 
 from .reference_proposal_dependency import ReferenceProposalDependency
+from .reference_proposal_model import (
+    ReferenceProposalAccept,
+    ReferenceProposalAdd,
+    ReferenceProposalRefuse,
+)
 from .reference_proposal_table import (
     ReferenceProposal,
     ReferenceProposalRepository,
     ReferenceProposalStatus,
 )
-from .reference_proposal_model import ReferenceProposalAdd, ReferenceProposalRefuse
 
 
 class PostgresReferenceProposalDependency(ReferenceProposalDependency):
@@ -99,16 +102,44 @@ class PostgresReferenceProposalDependency(ReferenceProposalDependency):
         judge_id: UUID,
         data: ReferenceProposalRefuse,
     ) -> None:
-        self.check_proposal_exists(data.proposal_id)
+        self.check_proposal_exists(data.reference_proposal_id)
 
         await self.session.execute(
             update(ReferenceProposal)
-            .where(ReferenceProposal.id == data.proposal_id)
+            .where(ReferenceProposal.id == data.reference_proposal_id)
             .values(
                 judge_id=judge_id,
                 judged_at=datetime.now(timezone.utc),
                 status=ReferenceProposalStatus.REFUSED,
                 reason=data.reason,
+            )
+        )
+
+        await self.session.flush()
+        await self.session.commit()
+
+    async def accept(
+        self,
+        judge_id: UUID,
+        data: ReferenceProposalAccept,
+    ) -> None:
+        self.check_proposal_exists(data.reference_proposal_id)
+
+        await self.session.execute(
+            update(ReferenceProposal)
+            .where(ReferenceProposal.id == data.reference_proposal_id)
+            .values(
+                judge_id=judge_id,
+                judged_at=datetime.now(timezone.utc),
+                status=ReferenceProposalStatus.VALIDATED,
+            )
+        )
+
+        await self.session.execute(
+            insert(FusionReference).values(
+                fusion_id=data.fusion_id,
+                reference_id=data.reference_id,
+                reference_proposal_id=data.reference_proposal_id,
             )
         )
 

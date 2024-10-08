@@ -10,5 +10,11 @@ class ReferenceProposalAdd(BaseModel):
 
 
 class ReferenceProposalRefuse(BaseModel):
-    proposal_id: UUID
+    reference_proposal_id: UUID
     reason: str
+
+
+class ReferenceProposalAccept(BaseModel):
+    reference_proposal_id: UUID
+    reference_id: UUID
+    fusion_id: UUID

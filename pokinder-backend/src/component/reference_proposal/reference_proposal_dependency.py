@@ -1,8 +1,12 @@
-from typing import Protocol, runtime_checkable, Optional
+from typing import Optional, Protocol, runtime_checkable
 from uuid import UUID
 
+from .reference_proposal_model import (
+    ReferenceProposalAccept,
+    ReferenceProposalAdd,
+    ReferenceProposalRefuse,
+)
 from .reference_proposal_table import ReferenceProposal
-from .reference_proposal_model import ReferenceProposalAdd, ReferenceProposalRefuse
 
 
 @runtime_checkable
@@ -35,5 +39,12 @@ class ReferenceProposalDependency(Protocol):
         self,
         judge_id: UUID,
         data: ReferenceProposalRefuse,
+    ) -> None:
+        pass
+
+    async def accept(
+        self,
+        judge_id: UUID,
+        data: ReferenceProposalAccept,
     ) -> None:
         pass

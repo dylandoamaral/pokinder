@@ -1,8 +1,10 @@
-from sqlalchemy import select, insert
+from uuid import UUID
+
+from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
 from src.component.reference import Reference
-from sqlalchemy.orm import joinedload
 from src.component.reference.reference_model import ReferenceInsert
 
 from .reference_dependency import ReferenceDependency
@@ -13,8 +15,14 @@ class PostgresReferenceDependency(ReferenceDependency):
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def list(self) -> list[Reference]:
-        query = select(Reference).options(joinedload(Reference.family))
+    async def list(
+        self,
+        reference_family_id: UUID | None = None,
+    ) -> list[Reference]:
+        query = select(Reference)
+
+        if reference_family_id is not None:
+            query = query.filter(Reference.family_id == reference_family_id)
 
         result = await self.session.scalars(query)
         instances = result.all()

@@ -1,6 +1,3 @@
-from src.component.reference import ReferenceController, use_postgres_reference_dependency
-from src.component.reference_family import ReferenceFamilyController, use_postgres_reference_family_dependency
-from src.component.reference_proposal import ReferenceProposalController, use_postgres_reference_proposal_dependency
 from litestar import Litestar
 from litestar.config.compression import CompressionConfig
 from litestar.config.cors import CORSConfig
@@ -22,6 +19,18 @@ from src.component.analytics import (
 )
 from src.component.creator import CreatorController, use_postgres_creator_dependency
 from src.component.fusion import FusionController, use_postgres_fusion_dependency
+from src.component.reference import (
+    ReferenceController,
+    use_postgres_reference_dependency,
+)
+from src.component.reference_family import (
+    ReferenceFamilyController,
+    use_postgres_reference_family_dependency,
+)
+from src.component.reference_proposal import (
+    ReferenceProposalController,
+    use_postgres_reference_proposal_dependency,
+)
 from src.component.vote import VoteController, use_postgres_vote_dependency
 from src.security.middleware import JWTAuthenticationMiddleware
 from src.utils.env import (
