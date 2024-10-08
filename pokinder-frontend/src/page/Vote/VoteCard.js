@@ -12,6 +12,7 @@ import Sprite from "../../component/atom/Sprite/Sprite";
 import Type from "../../component/atom/Type/Type";
 
 import styles from "./VoteCard.module.css";
+import VoteCardReference from "./VoteCardReference";
 
 function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false }) {
   const { t } = useTranslation();
@@ -95,41 +96,8 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
     return <div style={{ width: cardWidth }} />;
   }
 
-  // https://stackoverflow.com/questions/11512989/display-first-letter-only
   function renderReference(reference, key) {
-    return (
-      <div
-        className={styles.reference}
-        style={{ backgroundColor: `var(--reference-${reference.color}-background)` }}
-        key={key}
-      >
-        <span>{reference.family.name[0]}</span>
-        <span className={styles.referenceOtherLetters}>{`${reference.family.name.slice(1)} [${
-          reference.name
-        }]`}</span>
-      </div>
-    );
-  }
-
-  function mapNumberToReferenceColor(number) {
-    switch (number) {
-      case 0:
-        return "blue";
-      case 1:
-        return "red";
-      case 2:
-        return "green";
-      case 3:
-        return "orange";
-      case 4:
-        return "purple";
-      case 5:
-        return "yellow";
-      case 6:
-        return "pink";
-      default:
-        return "blue";
-    }
+    return <VoteCardReference key={key} reference={reference} />
   }
 
   function renderReferenceButton() {
@@ -147,11 +115,6 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
   function renderReferences(references) {
     if (!hasFocus) return null;
 
-    const sanitizedReferences = references.map((reference) => ({
-      ...reference,
-      color: mapNumberToReferenceColor(reference.color),
-    }));
-
     return (
       <motion.div
         className={styles.references}
@@ -163,7 +126,7 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
         }}
         transition={transition}
       >
-        {sanitizedReferences.map((reference, key) => renderReference(reference, key))}
+        {references.map((reference, key) => renderReference(reference, key))}
         {renderReferenceButton()}
       </motion.div>
     );

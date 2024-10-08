@@ -26,6 +26,7 @@ import AdminRefuseReferenceProposalModal from "./AdminRefuseReferenceProposalMod
 
 // Not appear when not correct user + not appear when no user logged
 // Update the table when refuse or accept
+// Add family filter
 
 const REFERENCE_PROPOSAL_LIMIT = 20;
 

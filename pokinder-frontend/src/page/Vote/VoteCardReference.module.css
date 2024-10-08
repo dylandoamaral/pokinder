@@ -1,0 +1,39 @@
+.reference {
+  height: 28px;
+  width: 28px;
+
+  border-radius: 18px;
+
+  border: 4px solid var(--foreground-color);
+  background-color: var(--neutral-higher);
+  color: var(--foreground-color);
+
+  font-weight: 550;
+  line-height: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
+
+.referenceHover {
+  height: 20px;
+  padding: 4px 8px;
+
+  border-radius: 18px;
+
+  border: 4px solid var(--foreground-color);
+  background-color: var(--neutral-higher);
+  color: var(--foreground-color);
+
+  font-weight: 550;
+
+  cursor: pointer;
+}
+
+.referenceHover span {
+  padding: 0;
+  white-space: nowrap;
+}
