@@ -1,14 +1,11 @@
 from datetime import datetime
-from typing import Annotated
 from uuid import UUID
 
-from litestar.contrib.sqlalchemy.dto import SQLAlchemyDTO
 from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
-from litestar.dto import DTOConfig
 from sqlalchemy import ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column, private, write_only
+from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column, private, write_only, read_only
 from enum import Enum
 
 
@@ -31,22 +28,10 @@ class ReferenceProposal(BaseTable, UUIDPrimaryKey):
     reason: Mapped[str] = mapped_column(String(1023), nullable=True)
     created_at: Mapped[datetime] = build_created_at_column(nullable=False)
 
-    fusion = relationship("Fusion", lazy="joined", foreign_keys=[fusion_id])
-    proposer = relationship("Account", lazy="joined", foreign_keys=[proposer_id])
+    fusion = relationship("Fusion", lazy="joined", foreign_keys=[fusion_id], info=read_only)
+    proposer = relationship("Account", lazy="joined", foreign_keys=[proposer_id], info=read_only)
     judge = relationship("Account", lazy="noload", foreign_keys=[judge_id], info=private)
 
 
 class ReferenceProposalRepository(SQLAlchemyAsyncRepository[ReferenceProposal]):
     model_type = ReferenceProposal
-
-
-write_config = DTOConfig()
-WriteDTO = SQLAlchemyDTO[Annotated[ReferenceProposal, write_config]]
-
-
-class ReadDTO(SQLAlchemyDTO[ReferenceProposal]):
-    config = DTOConfig(exclude={"created_at", "judged_at"})
-
-
-class PostDTO(SQLAlchemyDTO[ReferenceProposal]):
-    config = DTOConfig(exclude={"fusion", "proposer", "judge"})

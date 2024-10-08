@@ -5,13 +5,14 @@ from typing import Optional
 from src.security import Request
 
 from .reference_proposal_dependency import ReferenceProposalDependency
-from .reference_proposal_table import ReferenceProposal, ReadDTO, PostDTO, WriteDTO
+from .reference_proposal_table import ReferenceProposal
 from .reference_proposal_model import ReferenceProposalAdd, ReferenceProposalRefuse
+from .reference_proposal_dto import DTO, ReturnDTO
 
 
 class ReferenceProposalController(Controller):
-    dto = WriteDTO
-    return_dto = ReadDTO
+    dto = DTO
+    return_dto = ReturnDTO
     path = "/reference_proposal"
 
     @get(path="/")
@@ -28,7 +29,7 @@ class ReferenceProposalController(Controller):
             offset,
         )
 
-    @post(path="/", dto=None, return_dto=PostDTO)
+    @post(path="/", dto=None)
     async def post_reference_pruposal(
         self,
         request: Request,

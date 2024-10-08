@@ -1,8 +1,8 @@
 """Add reference table
 
-Revision ID: bb41c25611ec
+Revision ID: 26ce77c6f57c
 Revises: cbd742fb1fe8
-Create Date: 2024-10-07 17:49:40.070807
+Create Date: 2024-10-08 08:24:30.519121
 
 """
 
@@ -12,7 +12,8 @@ import advanced_alchemy
 from alembic import op
 import sqlalchemy as sa
 
-revision: str = "bb41c25611ec"
+
+revision: str = "26ce77c6f57c"
 down_revision: Union[str, None] = "cbd742fb1fe8"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -22,11 +23,6 @@ def upgrade() -> None:
     op.create_table(
         "reference_family",
         sa.Column("name", sa.String(length=255), nullable=False),
-        sa.Column(
-            "color",
-            sa.Enum("BLUE", "RED", "GREEN", "ORANGE", "PURPLE", "YELLOW", "PINK", name="referencefamilycolor"),
-            nullable=False,
-        ),
         sa.Column("created_at", advanced_alchemy.types.datetime.DateTimeUTC(timezone=True), nullable=False),
         sa.Column("id", advanced_alchemy.types.guid.GUID(length=16), nullable=False),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_reference_family")),
@@ -86,5 +82,4 @@ def downgrade() -> None:
     op.drop_table("reference_proposal")
     op.drop_table("reference")
     op.drop_table("reference_family")
-    op.execute("DROP TYPE referencefamilycolor;")
     op.execute("DROP TYPE referenceproposalstatus;")

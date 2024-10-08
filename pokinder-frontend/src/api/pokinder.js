@@ -132,3 +132,12 @@ export async function refuseReferenceProposal(proposalId, reason) {
 
   return response.data;
 }
+export async function addReferenceFamily(referenceFamilyName) {
+  const body = {
+    reference_family_name: referenceFamilyName,
+  };
+
+  const response = await http.post("/reference_family/", body);
+
+  return response.data;
+}

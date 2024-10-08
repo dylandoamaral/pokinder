@@ -1,12 +1,10 @@
 from litestar import Controller, get
 
 from .reference_dependency import ReferenceDependency
-from .reference_table import Reference, ReadDTO, WriteDTO
+from .reference_table import Reference
 
 
 class ReferenceController(Controller):
-    dto = WriteDTO
-    return_dto = ReadDTO
     path = "/reference"
 
     @get(path="/")

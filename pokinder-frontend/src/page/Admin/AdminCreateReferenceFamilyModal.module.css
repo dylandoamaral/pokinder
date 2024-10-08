@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 25vw;
+    min-width: 300px;
+    max-width: 500px;
+    margin: var(--spacing-XL);
+  
+    color: var(--font-foreground-color);
+  }
+  
+  .sprite {
+    align-self: center;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
