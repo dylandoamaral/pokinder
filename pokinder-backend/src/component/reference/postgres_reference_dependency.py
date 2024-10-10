@@ -18,7 +18,7 @@ class PostgresReferenceDependency(ReferenceDependency):
         self,
         reference_family_id: UUID | None = None,
     ) -> list[Reference]:
-        query = select(Reference)
+        query = select(Reference).options(joinedload(Reference.family))
 
         if reference_family_id is not None:
             query = query.filter(Reference.family_id == reference_family_id)
@@ -40,9 +40,13 @@ class PostgresReferenceDependency(ReferenceDependency):
         await self.session.flush()
         await self.session.commit()
 
-        query = select(Reference).where(
-            Reference.name == data.reference_name,
-            Reference.family_id == data.reference_family_id,
+        query = (
+            select(Reference)
+            .where(
+                Reference.name == data.reference_name,
+                Reference.family_id == data.reference_family_id,
+            )
+            .options(joinedload(Reference.family))
         )
 
         result = await self.session.scalars(query)

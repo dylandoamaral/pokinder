@@ -7,7 +7,6 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useInfiniteQuery } from "react-query";
-import { Navigate } from 'react-router-dom'
 
 import useToggle from "../../hook/useToggle";
 
