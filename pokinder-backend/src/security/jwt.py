@@ -5,8 +5,9 @@ from uuid import UUID
 from joserfc import jwt
 from joserfc.errors import InvalidPayloadError
 from litestar.exceptions import NotAuthorizedException
-from pydantic import BaseModel, validator
+from pydantic import BaseModel, field_serializer, field_validator
 
+from src.component.account.account_table import AccountRole
 from src.utils.env import retrieve_jwt_secret
 
 DEFAULT_TIME_DELTA = timedelta(days=1)
@@ -19,6 +20,18 @@ JWT_SECRET = retrieve_jwt_secret()
 class Subject(BaseModel):
     account_id: UUID
     username: str
+    role: AccountRole
+
+    @field_serializer("role")
+    def serialize_role(self, role: AccountRole):
+        return role.name
+
+    @field_validator("role", mode="before")
+    @classmethod
+    def deserialize_role(cls, v) -> AccountRole:
+        if isinstance(v, AccountRole):
+            return v
+        return AccountRole[v]
 
 
 class TokenType(Enum):
@@ -46,6 +59,8 @@ def decode_jwt_token(encoded_token: str) -> Token:
     """
     try:
         payload = jwt.decode(encoded_token, JWT_SECRET).claims
+        if payload["sub"].get("role") is None:
+            payload["sub"]["role"] = AccountRole.USER.stringify()
         token = Token(**payload)
 
         if token.exp < datetime.now():

@@ -2,7 +2,7 @@ import styles from "./VoteCardReference.module.css";
 
 import useHover from "../../hook/useHover";
 
-function VoteCardReference({ key, reference }) {
+function VoteCardReference({ reference }) {
     const [isHover, events] = useHover()
 
 
@@ -10,7 +10,7 @@ function VoteCardReference({ key, reference }) {
         <a style={{ textDecoration: "none" }}
             href={reference.source}
             target="_blank"
-            rel="noopener noreferrer" className={isHover ? styles.referenceHover : styles.reference} key={key} {...events}>
+            rel="noopener noreferrer" className={isHover ? styles.referenceHover : styles.reference} {...events}>
             <span className={styles.referenceOtherLetters}>{isHover ? `${reference.family.name} - ${reference.name}` : reference.family.name[0]}</span>
         </a>
     );

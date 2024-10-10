@@ -7,6 +7,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useInfiniteQuery } from "react-query";
+import { Navigate } from 'react-router-dom'
 
 import useToggle from "../../hook/useToggle";
 
@@ -23,15 +24,19 @@ import AdminAcceptReferenceProposalModal from "./AdminAcceptReferenceProposalMod
 import AdminCreateReferenceFamilyModal from "./AdminCreateReferenceFamilyModal";
 import AdminCreateReferenceModal from "./AdminCreateReferenceModal";
 import AdminRefuseReferenceProposalModal from "./AdminRefuseReferenceProposalModal";
+import { useAuthentication } from "../../hook/useAuthentication";
+import NotFound from "../NotFound/NotFound";
 
-// Not appear when not correct user + not appear when no user logged
 // Update the table when refuse or accept
 // Add family filter
+// Add reference analysis
+// Remove functionnality on phone
 
 const REFERENCE_PROPOSAL_LIMIT = 20;
 
 function Admin() {
   const { t } = useTranslation();
+  const { isAdmin } = useAuthentication();
 
   const [showAdminCreateReferenceModal, toggleAdminCreateReferenceModal] = useToggle();
   const [showAdminCreateReferenceFamilyModal, toggleAdminCreateReferenceFamilyModal] = useToggle();
@@ -122,6 +127,10 @@ function Admin() {
     data: proposals,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  if (!isAdmin) {
+    return <NotFound />
+  }
 
   return (
     <>

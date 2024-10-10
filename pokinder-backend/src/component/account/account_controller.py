@@ -5,6 +5,7 @@ from litestar import Controller, post
 from litestar.exceptions import NotAuthorizedException, NotFoundException
 
 from src.component.account.account_dependency import AccountDependency
+from src.component.account.account_table import AccountRole
 from src.security.jwt import (
     DEFAULT_REFRESH_TIME_DELTA,
     EncodedTokens,
@@ -44,7 +45,7 @@ class AccountController(Controller):
         hashed_password = hashpw(data.password.encode("utf-8"), gensalt())
         await account_dependency.signup(data, hashed_password)
 
-        return self.generateTokens(Subject(account_id=data.account_id, username=data.username))
+        return self.generateTokens(Subject(account_id=data.account_id, username=data.username, role=AccountRole.USER))
 
     @post(path="/login", dto=None)
     async def login(self, account_dependency: AccountDependency, data: AccountLogin) -> UUID:
@@ -57,7 +58,7 @@ class AccountController(Controller):
             # We don't want the "hacker" to know if the name exists or not.
             raise NotFoundException()
 
-        return self.generateTokens(Subject(account_id=account.id, username=account.username))
+        return self.generateTokens(Subject(account_id=account.id, username=account.username, role=account.role))
 
     @post(path="/refresh", dto=None)
     async def refresh(self, refresh_token: str) -> UUID:

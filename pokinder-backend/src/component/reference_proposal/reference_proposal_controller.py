@@ -4,6 +4,7 @@ from uuid import UUID
 from litestar import Controller, get, post
 
 from src.security import Request
+from src.security.guard import admin_only
 
 from .reference_proposal_dependency import ReferenceProposalDependency
 from .reference_proposal_dto import DTO, ReturnDTO
@@ -46,23 +47,7 @@ class ReferenceProposalController(Controller):
             data,
         )
 
-    @post(path="/modify")
-    async def modify_reference_pruposal(
-        self,
-        reference_proposal_dependency: ReferenceProposalDependency,
-        proposal_id: UUID,
-        maybe_reference_name: Optional[str],
-        maybe_reference_source: Optional[str],
-        maybe_reference_family_name: Optional[str],
-    ) -> None:
-        return await reference_proposal_dependency.modify(
-            proposal_id,
-            maybe_reference_name,
-            maybe_reference_source,
-            maybe_reference_family_name,
-        )
-
-    @post(path="/refuse", dto=None)
+    @post(path="/refuse", dto=None, guards=[admin_only])
     async def refuse_reference_pruposal(
         self,
         request: Request,
@@ -71,7 +56,7 @@ class ReferenceProposalController(Controller):
     ) -> None:
         return await reference_proposal_dependency.refuse(request.user.id, data)
 
-    @post(path="/accept", dto=None)
+    @post(path="/accept", dto=None, guards=[admin_only])
     async def accept(
         self,
         request: Request,

@@ -3,6 +3,7 @@ from uuid import UUID
 from litestar import Controller, get, post
 
 from src.component.reference.reference_model import ReferenceInsert
+from src.security.guard import admin_only
 
 from .reference_dependency import ReferenceDependency
 from .reference_dto import DTO, ReturnDTO
@@ -22,7 +23,7 @@ class ReferenceController(Controller):
     ) -> list[Reference]:
         return await reference_dependency.list(reference_family_id)
 
-    @post(path="/", dto=None)
+    @post(path="/", dto=None, guards=[admin_only])
     async def insert_reference(
         self,
         reference_dependency: ReferenceDependency,

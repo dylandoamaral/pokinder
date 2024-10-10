@@ -106,6 +106,7 @@ export const AuthenticationProvider = ({ children }) => {
       accountId: subject.account_id,
       username: subject.username,
       isUser: subject.username !== undefined,
+      isAdmin: subject.role === "ADMIN",
       setToken: setToken,
       setRefreshToken: storeRefreshToken,
       disconnect: disconnect,

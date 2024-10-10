@@ -4,14 +4,14 @@ import { NavLink } from "react-router-dom";
 
 import { useAuthentication } from "../../../hook/useAuthentication";
 
-import { navlinks } from "../../../data/navlinks";
+import { authorizedNavlinks } from "../../../data/navlinks";
 
 import Button from "../../atom/Button/Button";
 import styles from "./Sidebar.module.css";
 
 function Sidebar({ isVisible, onClose, toggleLoginModal }) {
   const { t } = useTranslation();
-  const { isUser, username, disconnect } = useAuthentication();
+  const { isUser, isAdmin, username, disconnect } = useAuthentication();
 
   function disconnectAndClose() {
     onClose();
@@ -56,7 +56,7 @@ function Sidebar({ isVisible, onClose, toggleLoginModal }) {
       <FaTimes className={styles.close} onClick={onClose} />
       <nav className={styles.nav}>
         <div className={styles.navlinks}>
-          {navlinks(t).map((link, index) => renderNavLink(link, index))}
+          {authorizedNavlinks(t, isAdmin).map((link, index) => renderNavLink(link, index))}
         </div>
         {renderAccount()}
       </nav>

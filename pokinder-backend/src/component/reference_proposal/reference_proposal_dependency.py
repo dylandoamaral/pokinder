@@ -26,15 +26,6 @@ class ReferenceProposalDependency(Protocol):
     ) -> ReferenceProposal:
         pass
 
-    async def modify(
-        self,
-        proposal_id: UUID,
-        maybe_reference_name: Optional[str],
-        maybe_reference_source: Optional[str],
-        maybe_reference_family_name: Optional[str],
-    ) -> None:
-        pass
-
     async def refuse(
         self,
         judge_id: UUID,

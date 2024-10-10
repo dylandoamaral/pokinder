@@ -1,6 +1,7 @@
 from litestar import Controller, get, post
 
 from src.component.reference_family.reference_family_model import ReferenceFamilyInsert
+from src.security.guard import admin_only
 
 from .reference_family_dependency import ReferenceFamilyDependency
 from .reference_family_dto import DTO, ReturnDTO
@@ -19,7 +20,7 @@ class ReferenceFamilyController(Controller):
     ) -> list[ReferenceFamily]:
         return await reference_family_dependency.list()
 
-    @post(path="/", dto=None)
+    @post(path="/", dto=None, guards=[admin_only])
     async def insert_reference_family(
         self,
         data: ReferenceFamilyInsert,

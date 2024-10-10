@@ -69,34 +69,6 @@ class PostgresReferenceProposalDependency(ReferenceProposalDependency):
 
         return proposal
 
-    async def modify(
-        self,
-        proposal_id: UUID,
-        maybe_reference_name: Optional[str],
-        maybe_reference_source: Optional[str],
-        maybe_reference_family_name: Optional[str],
-    ) -> None:
-        proposal = self.check_proposal_exists(proposal_id)
-
-        if proposal.status != ReferenceProposalStatus.PENDING:
-            raise MethodNotAllowedException()
-
-        update_values = {}
-
-        if maybe_reference_name is not None:
-            update_values["reference_name"] = maybe_reference_name
-        if maybe_reference_source is not None:
-            update_values["reference_source"] = maybe_reference_source
-        if maybe_reference_family_name is not None:
-            update_values["reference_family_name"] = maybe_reference_family_name
-
-        await self.session.execute(
-            update(ReferenceProposal).where(ReferenceProposal.id == proposal_id).values(update_values)
-        )
-
-        await self.session.flush()
-        await self.session.commit()
-
     async def refuse(
         self,
         judge_id: UUID,
