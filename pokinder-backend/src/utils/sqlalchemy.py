@@ -106,9 +106,10 @@ class BaseTable(CommonTableAttributes, DeclarativeBase):
     registry = orm_registry
 
 
-def build_created_at_column() -> Mapped[datetime]:
+def build_created_at_column(nullable=False) -> Mapped[datetime]:
     return mapped_column(  # pyright: ignore
         DateTimeUTC(timezone=True),
-        default=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(timezone.utc) if not nullable else None,
         info=read_only,
+        nullable=nullable,
     )

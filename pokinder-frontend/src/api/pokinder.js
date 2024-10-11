@@ -59,6 +59,8 @@ export async function getHistory(filters, limit, offset) {
 
   params.set("head_name_or_category", filters.headNameOrCategory);
   params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("reference_family_name", filters.referenceFamilyName);
+  params.set("reference_name", filters.referenceName);
   params.set("creator_name", filters.creatorName);
   params.set("limit", limit);
   params.set("offset", offset);
@@ -73,6 +75,8 @@ export async function getRanking(filters, limit, offset) {
 
   params.set("head_name_or_category", filters.headNameOrCategory);
   params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("reference_family_name", filters.referenceFamilyName);
+  params.set("reference_name", filters.referenceName);
   params.set("creator_name", filters.creatorName);
   params.set("limit", limit);
   params.set("offset", offset);
@@ -95,6 +99,94 @@ export async function addVote(fusionId, voteType) {
   };
 
   const response = await http.post("/vote/", body);
+
+  return response.data;
+}
+
+export async function listReferenceFamilies() {
+  const response = await http.get("/reference_family");
+
+  return response.data;
+}
+
+export async function addReferenceFamily(referenceFamilyName) {
+  const body = {
+    reference_family_name: referenceFamilyName,
+  };
+
+  const response = await http.post("/reference_family/", body);
+
+  return response.data;
+}
+
+export async function listReferences(referenceFamilyId, referenceFamilyName) {
+  if (referenceFamilyId === undefined && referenceFamilyName === undefined)
+    return Promise.resolve([]);
+
+  const params = new URLSearchParams();
+
+  if (referenceFamilyId !== undefined) params.set("reference_family_id", referenceFamilyId);
+  if (referenceFamilyName !== undefined) params.set("reference_family_name", referenceFamilyName);
+
+  const response = await http.get("/reference?" + params.toString());
+
+  return response.data;
+}
+
+export async function addReference(referenceName, referenceSource, referenceFamilyId) {
+  const body = {
+    reference_name: referenceName,
+    reference_source: referenceSource,
+    reference_family_id: referenceFamilyId,
+  };
+
+  const response = await http.post("/reference/", body);
+
+  return response.data;
+}
+
+export async function listReferenceProposals(limit, offset) {
+  const params = new URLSearchParams();
+
+  params.set("limit", limit);
+  params.set("offset", offset);
+
+  const response = await http.get("/reference_proposal?" + params.toString());
+
+  return { records: response.data, previousOffset: offset };
+}
+
+export async function addReferenceProposal(fusionId, referenceName, referenceFamilyName) {
+  const body = {
+    fusions_id: fusionId,
+    reference_name: referenceName,
+    reference_family_name: referenceFamilyName,
+  };
+
+  const response = await http.post("/reference_proposal/", body);
+
+  return response.data;
+}
+
+export async function refuseReferenceProposal(referenceProposalId, reason) {
+  const body = {
+    reference_proposal_id: referenceProposalId,
+    reason: reason,
+  };
+
+  const response = await http.post("/reference_proposal/refuse", body);
+
+  return response.data;
+}
+
+export async function acceptReferenceProposal(fusionId, referenceId, referenceProposalId) {
+  const body = {
+    fusion_id: fusionId,
+    reference_id: referenceId,
+    reference_proposal_id: referenceProposalId,
+  };
+
+  const response = await http.post("/reference_proposal/accept", body);
 
   return response.data;
 }

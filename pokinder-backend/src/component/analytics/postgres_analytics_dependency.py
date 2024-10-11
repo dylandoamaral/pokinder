@@ -9,7 +9,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.component.account.account_table import Account
 from src.component.creator.creator_table import Creator
 from src.component.fusion.fusion_table import Fusion
+from src.component.fusion_reference.fusion_reference_table import FusionReference
 from src.component.pokemon.pokemon_table import Pokemon
+from src.component.reference.reference_table import Reference
+from src.component.reference_family.reference_family_table import ReferenceFamily
 from src.component.vote import Vote
 from src.component.vote.vote_model import VoteType
 
@@ -234,6 +237,9 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
             self.__favorite_account_pokemon(is_head=True, account_id=account_id),
             self.__favorite_account_pokemon(is_head=False, account_id=account_id),
             self.__favorite_account_creator(account_id=account_id),
+            self.__count(ReferenceFamily),
+            self.__count(Reference),
+            self.__count(FusionReference),
         )
 
         dislike_count = results[3].get(VoteType.DISLIKED, 0)
@@ -258,6 +264,9 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
                 favorite_pokemon_head=results[4],
                 favorite_pokemon_body=results[5],
                 favorite_creator=results[6],
+                reference_family_count=results[13],
+                reference_count=results[14],
+                reference_fusion_count=results[15],
             ),
             user=UserAnalytics(
                 rank=results[7] or results[0],

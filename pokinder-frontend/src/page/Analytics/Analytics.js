@@ -116,6 +116,23 @@ function Analytics() {
             isLoading={isLoading}
           />
         </div>
+        <div className={getGridStyle(3)}>
+          <InformationPanel
+            title="Number of reference families"
+            value={data?.community?.reference_family_count}
+            isLoading={isLoading}
+          />
+          <InformationPanel
+            title="Number of references"
+            value={data?.community?.reference_count}
+            isLoading={isLoading}
+          />
+          <InformationPanel
+            title="Number of reference fusions"
+            value={data?.community?.reference_fusion_count}
+            isLoading={isLoading}
+          />
+        </div>
       </div>
       <h2 className={styles.title}>{t("User statistics")}</h2>
       <div className={styles.grids}>

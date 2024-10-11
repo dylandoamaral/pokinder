@@ -2,24 +2,25 @@ from uuid import UUID
 
 from sqlalchemy import insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import aliased, joinedload
+from sqlalchemy.orm import aliased, joinedload, raiseload
 
 from src.component.creator.creator_table import Creator
 from src.component.family.family_table import Family
 from src.component.fusion.fusion_table import Fusion
 from src.component.pokemon.pokemon_table import Pokemon
+from src.component.reference.reference_table import Reference
+from src.component.reference_family.reference_family_table import ReferenceFamily
 from src.component.vote.vote_model import VoteAdd
 from src.component.vote.vote_table import VoteType
 from src.data.pokemon_families import pokemon_families
 
 from .vote_dependency import VoteDependency
-from .vote_table import Vote, VoteRepository, VoteType
+from .vote_table import Vote, VoteType
 
 
 class PostgresVoteDependency(VoteDependency):
     def __init__(self, session: AsyncSession):
         self.session = session
-        self.repository = VoteRepository(session=session)
 
     async def list(
         self,
@@ -30,6 +31,8 @@ class PostgresVoteDependency(VoteDependency):
         vote_types: list[VoteType] | None = None,
         head_name_or_category: str | None = None,
         body_name_or_category: str | None = None,
+        reference_family_name: str | None = None,
+        reference_name: str | None = None,
         creator_name: str | None = None,
     ) -> list[Vote]:
         Head = aliased(Pokemon)
@@ -41,6 +44,9 @@ class PostgresVoteDependency(VoteDependency):
             .join(Head, Fusion.head_id == Head.id)
             .join(Body, Fusion.body_id == Body.id)
             .join(Fusion.creators)
+            .outerjoin(Fusion.references)
+            .outerjoin(Reference.family)
+            .options(joinedload(Vote.fusion).raiseload(Fusion.references))
         )
 
         if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
@@ -67,6 +73,12 @@ class PostgresVoteDependency(VoteDependency):
                 query = query.filter(Body.families.any(Family.id == families[body_name_or_category]))
             else:
                 query = query.filter(Body.name == body_name_or_category)
+
+        if reference_family_name is not None and reference_family_name != "All":
+            query = query.filter(ReferenceFamily.name == reference_family_name)
+
+        if reference_name is not None and reference_name != "All":
+            query = query.filter(Reference.name == reference_name)
 
         if creator_name is not None and creator_name != "All":
             query = query.filter(Creator.name == creator_name)

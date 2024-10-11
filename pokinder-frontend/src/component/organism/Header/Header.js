@@ -5,7 +5,7 @@ import { useAuthentication } from "../../../hook/useAuthentication";
 import { useTheme } from "../../../hook/useTheme";
 import useToggle from "../../../hook/useToggle";
 
-import { navlinks } from "../../../data/navlinks";
+import { authorizedNavlinks } from "../../../data/navlinks";
 
 import Button from "../../atom/Button/Button";
 import Logo from "../../atom/Logo/Logo";
@@ -18,7 +18,7 @@ import SignupModal from "./SignupModal";
 function Header() {
   const { theme } = useTheme();
   const { t } = useTranslation();
-  const { isUser, username, disconnect } = useAuthentication();
+  const { isUser, isAdmin, username, disconnect } = useAuthentication();
 
   const [showSignupModal, toggleSignupModal] = useToggle();
   const [showLoginModal, toggleLoginModal] = useToggle();
@@ -49,7 +49,7 @@ function Header() {
         </div>
         <div className={`${styles.center} pc_only`}>
           <nav className={styles.nav}>
-            {navlinks(t).map((link, index) => (
+            {authorizedNavlinks(t, isAdmin).map((link, index) => (
               <NavLink link={link} key={index} />
             ))}
           </nav>

@@ -8,7 +8,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.component.account import Account
-from src.security.jwt import Subject, decode_jwt_token
+from src.component.account.account_table import AccountRole
+from src.security.jwt import decode_jwt_token
 from src.utils.uuid import is_uuid
 
 API_KEY_HEADER = "X-API-KEY"
@@ -65,6 +66,6 @@ class JWTAuthenticationMiddleware(AbstractAuthenticationMiddleware):
             if account is not None:
                 raise NotAuthorizedException()
 
-            account = Account(id=account_id, username="Guest", email="", password=b"")
+            account = Account(id=account_id, username="Guest", email="", role=AccountRole.USER, password=b"")
 
             return AuthenticationResult(user=account, auth=account_id)

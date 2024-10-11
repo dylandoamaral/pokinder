@@ -40,7 +40,3 @@ class Vote(BaseTable):
     created_at: Mapped[datetime] = build_created_at_column()
 
     fusion = relationship("Fusion", lazy="joined", info=read_only)
-
-
-class VoteRepository(SQLAlchemyAsyncRepository[Vote]):
-    model_type = Vote

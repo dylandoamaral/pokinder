@@ -28,6 +28,9 @@ class CommunityAnalytics(BaseModel):
     favorite_pokemon_head: PokemonAnalytics
     favorite_pokemon_body: PokemonAnalytics
     favorite_creator: CreatorAnalytics
+    reference_family_count: int
+    reference_count: int
+    reference_fusion_count: int
 
 
 class UserAnalytics(BaseModel):
