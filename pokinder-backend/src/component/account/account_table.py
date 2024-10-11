@@ -17,9 +17,6 @@ class AccountRole(Enum):
     USER = 0
     ADMIN = 1
 
-    def stringify(self):
-        return self.name.lower()
-
 
 class Account(BaseTable, UUIDPrimaryKey):
     __tablename__ = "account"  #  type: ignore[assignment]

@@ -60,7 +60,7 @@ def decode_jwt_token(encoded_token: str) -> Token:
     try:
         payload = jwt.decode(encoded_token, JWT_SECRET).claims
         if payload["sub"].get("role") is None:
-            payload["sub"]["role"] = AccountRole.USER.stringify()
+            payload["sub"]["role"] = AccountRole.USER.name
         token = Token(**payload)
 
         if token.exp < datetime.now():
@@ -69,7 +69,8 @@ def decode_jwt_token(encoded_token: str) -> Token:
         return Token(**payload)
     except InvalidPayloadError as e:
         raise NotAuthorizedException(detail="INVALID_TOKEN") from e
-
+    except Exception as e:
+        raise NotAuthorizedException() from e
 
 def encode_jwt_token(subject: Subject, typ: TokenType, expiration: timedelta = DEFAULT_TIME_DELTA) -> str:
     """Helper function that encodes a JWT token with expiration and a given user_id"""
