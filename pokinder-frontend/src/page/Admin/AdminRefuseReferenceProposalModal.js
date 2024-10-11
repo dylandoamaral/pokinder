@@ -15,7 +15,7 @@ import Title from "../../component/atom/Title/Title";
 
 import styles from "./AdminRefuseReferenceProposalModal.module.css";
 
-function AdminRefuseReferenceProposalModal({ isVisible, onClose, referenceProposal }) {
+function AdminRefuseReferenceProposalModal({ isVisible, onClose, referenceProposal, refreshProposals }) {
   const { t } = useTranslation();
 
   const [reason, setReason] = useState(undefined);
@@ -43,6 +43,11 @@ function AdminRefuseReferenceProposalModal({ isVisible, onClose, referencePropos
       <Panel title={t("Proposed reference")}>
         <span>{referenceProposal.reference_name}</span>
       </Panel>
+      <Panel title={t("Existing references")}>
+        <ul>
+          {referenceProposal.fusion.references.map((reference) => <li>{`${reference.family.name} - ${reference.name}`}</li>)}
+        </ul>
+      </Panel>
       <Panel title={t("Reason")}>
         <Input onChange={setReason} />
       </Panel>
@@ -56,6 +61,7 @@ function AdminRefuseReferenceProposalModal({ isVisible, onClose, referencePropos
             refuseReferenceProposal(referenceProposal.id, reason);
             setReason(undefined);
             toast.success("Proposal refused successfully !");
+            refreshProposals({ pageParam: 0 })
             onClose();
           }}
         />

@@ -7,7 +7,7 @@ from src.security import Request
 from src.security.guard import admin_only
 
 from .reference_proposal_dependency import ReferenceProposalDependency
-from .reference_proposal_dto import DTO, ReturnDTO
+from .reference_proposal_dto import DTO, ReturnDTO, ReturnDTOList
 from .reference_proposal_model import (
     ReferenceProposalAccept,
     ReferenceProposalAdd,
@@ -21,16 +21,14 @@ class ReferenceProposalController(Controller):
     return_dto = ReturnDTO
     path = "/reference_proposal"
 
-    @get(path="/")
+    @get(path="/", return_dto=ReturnDTOList)
     async def list_reference_pruposals(
         self,
-        request: Request,
         reference_proposal_dependency: ReferenceProposalDependency,
         limit: int,
         offset: int = 0,
     ) -> list[ReferenceProposal]:
         return await reference_proposal_dependency.list(
-            request.user.id,
             limit,
             offset,
         )

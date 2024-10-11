@@ -15,7 +15,7 @@ import Title from "../../component/atom/Title/Title";
 
 import styles from "./AdminAcceptReferenceProposalModal.module.css";
 
-function AdminAcceptReferenceProposalModal({ isVisible, onClose, referenceProposal }) {
+function AdminAcceptReferenceProposalModal({ isVisible, onClose, referenceProposal, refreshProposals }) {
   const { t } = useTranslation();
 
   const [family, setFamily] = useState(undefined);
@@ -51,6 +51,11 @@ function AdminAcceptReferenceProposalModal({ isVisible, onClose, referencePropos
       </Panel>
       <Panel title={t("Proposed reference")}>
         <span>{referenceProposal.reference_name}</span>
+      </Panel>
+      <Panel title={t("Existing references")}>
+        <ul>
+          {referenceProposal.fusion.references.map((reference) => <li>{`${reference.family.name} - ${reference.name}`}</li>)}
+        </ul>
       </Panel>
       <Panel title={t("Matching reference family")}>
         <FutureSelect
@@ -93,6 +98,7 @@ function AdminAcceptReferenceProposalModal({ isVisible, onClose, referencePropos
             setFamily(undefined);
             setReference(undefined);
             toast.success("Proposal accepted successfully !");
+            refreshProposals({ pageParam: 0 });
             onClose();
           }}
         />

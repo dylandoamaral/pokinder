@@ -13,7 +13,6 @@ from .reference_proposal_table import ReferenceProposal
 class ReferenceProposalDependency(Protocol):
     async def list(
         self,
-        account_id: UUID,
         limit: int,
         offset: int = 0,
     ) -> list[ReferenceProposal]:

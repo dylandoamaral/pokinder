@@ -26,7 +26,6 @@ import AdminRefuseReferenceProposalModal from "./AdminRefuseReferenceProposalMod
 import { useAuthentication } from "../../hook/useAuthentication";
 import NotFound from "../NotFound/NotFound";
 
-// Update the table when refuse or accept
 // Add family filter
 // Add reference analysis
 
@@ -103,7 +102,7 @@ function Admin() {
     ];
   }, [t, toggleAdminAcceptReferenceProposalModal, toggleAdminRefuseReferenceProposalModal]);
 
-  const { data } = useInfiniteQuery({
+  const { data, refetch } = useInfiniteQuery({
     queryKey: ["reference_proposals"],
     queryFn: ({ pageParam }) => {
       const offset = pageParam || 0;
@@ -186,11 +185,13 @@ function Admin() {
         isVisible={showAdminAcceptReferenceProposalModal}
         onClose={toggleAdminAcceptReferenceProposalModal}
         referenceProposal={focusedProposal}
+        refreshProposals={refetch}
       />
       <AdminRefuseReferenceProposalModal
         isVisible={showAdminRefuseReferenceProposalModal}
         onClose={toggleAdminRefuseReferenceProposalModal}
         referenceProposal={focusedProposal}
+        refreshProposals={refetch}
       />
     </>
   );

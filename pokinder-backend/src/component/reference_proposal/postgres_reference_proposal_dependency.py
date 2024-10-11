@@ -1,12 +1,14 @@
 from datetime import datetime, timezone
-from typing import Optional
 from uuid import UUID
 
-from litestar.exceptions import MethodNotAllowedException, NotFoundException
+from litestar.exceptions import NotFoundException
 from sqlalchemy import insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import joinedload
 
+from src.component.fusion.fusion_table import Fusion
 from src.component.fusion_reference.fusion_reference_table import FusionReference
+from src.component.reference.reference_table import Reference
 
 from .reference_proposal_dependency import ReferenceProposalDependency
 from .reference_proposal_model import (
@@ -28,12 +30,12 @@ class PostgresReferenceProposalDependency(ReferenceProposalDependency):
 
     async def list(
         self,
-        account_id: UUID,
         limit: int,
         offset: int = 0,
     ) -> list[ReferenceProposal]:
         query = (
             select(ReferenceProposal)
+            .options(joinedload(ReferenceProposal.fusion).joinedload(Fusion.references).joinedload(Reference.family))
             .filter(ReferenceProposal.status == ReferenceProposalStatus.PENDING)
             .order_by(ReferenceProposal.created_at.desc())
             .offset(offset)
@@ -41,7 +43,7 @@ class PostgresReferenceProposalDependency(ReferenceProposalDependency):
         )
 
         result = await self.session.scalars(query)
-        instances = result.all()
+        instances = result.unique().all()
 
         return instances
 

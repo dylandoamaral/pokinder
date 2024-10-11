@@ -5,7 +5,7 @@ from litestar import Controller, get
 from src.security import Request
 
 from .fusion_dependency import FusionDependency
-from .fusion_dto import DTO, ReturnDTO
+from .fusion_dto import DTO, ReturnDTO, ReturnDTODraw
 from .fusion_model import Ranking
 from .fusion_table import Fusion
 
@@ -15,7 +15,7 @@ class FusionController(Controller):
     return_dto = ReturnDTO
     path = "/fusion"
 
-    @get(path="/draw")
+    @get(path="/draw", return_dto=ReturnDTODraw)
     async def draw_fusions(self, request: Request, fusion_dependency: FusionDependency, limit: int) -> list[Fusion]:
         return await fusion_dependency.draw(request.user.id, limit)
 
