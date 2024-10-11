@@ -62,7 +62,11 @@ function FilterChoices({ defaultFilters, currentFilters, setFilters }) {
         operator={translator[key].operator || "="}
         value={value}
         onClick={() => {
-          setFilters({ ...currentFilters, [key]: defaultFilters[key] });
+          if (key === "referenceFamilyName") {
+            setFilters({ ...currentFilters, referenceFamilyName: defaultFilters["referenceFamilyName"], referenceName: defaultFilters["referenceName"] });
+          } else {
+            setFilters({ ...currentFilters, [key]: defaultFilters[key] });
+          }
         }}
       />
     );
