@@ -2,11 +2,13 @@ from uuid import UUID
 
 from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import aliased, joinedload
+from sqlalchemy.orm import aliased, joinedload, noload
 
 from src.component.creator import Creator
 from src.component.family.family_table import Family
 from src.component.pokemon import Pokemon
+from src.component.reference import Reference
+from src.component.reference_family.reference_family_table import ReferenceFamily
 from src.component.vote import Vote
 from src.data.pokemon_families import pokemon_families
 from src.utils.sqlalchemy import model_to_dict
@@ -37,6 +39,8 @@ class PostgresFusionDependency(FusionDependency):
             joinedload(subquery_fusion.head, innerjoin=True),
             joinedload(subquery_fusion.body, innerjoin=True),
             joinedload(subquery_fusion.creators, innerjoin=True),
+            joinedload(subquery_fusion.references, innerjoin=False).joinedload(Reference.family),
+            noload("*"),
         )
 
         result = await self.session.scalars(query)
@@ -50,6 +54,8 @@ class PostgresFusionDependency(FusionDependency):
         offset: int = 0,
         head_name_or_category: str | None = None,
         body_name_or_category: str | None = None,
+        reference_family_name: str | None = None,
+        reference_name: str | None = None,
         creator_name: str | None = None,
     ) -> list[Ranking]:
         Head = aliased(Pokemon)
@@ -71,6 +77,8 @@ class PostgresFusionDependency(FusionDependency):
             .join(Head, Fusion.head_id == Head.id)
             .join(Body, Fusion.body_id == Body.id)
             .join(Fusion.creators)
+            .outerjoin(Fusion.references)
+            .outerjoin(Reference.family)
             .options(
                 joinedload(Fusion.creators),
                 joinedload(Fusion.head, innerjoin=True),
@@ -95,6 +103,12 @@ class PostgresFusionDependency(FusionDependency):
                 query = query.filter(Body.families.any(Family.id == families[body_name_or_category]))
             else:
                 query = query.filter(Body.name == body_name_or_category)
+
+        if reference_family_name is not None and reference_family_name != "All":
+            query = query.filter(ReferenceFamily.name == reference_family_name)
+
+        if reference_name is not None and reference_name != "All":
+            query = query.filter(Reference.name == reference_name)
 
         if creator_name is not None and creator_name != "All":
             query = query.filter(Creator.name == creator_name)

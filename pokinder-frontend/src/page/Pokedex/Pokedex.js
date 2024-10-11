@@ -43,6 +43,8 @@ function Pokedex() {
   const defaultFilters = {
     headNameOrCategory: "All",
     bodyNameOrCategory: "All",
+    referenceFamilyName: "All",
+    referenceName: "All",
     creatorName: "All",
     downvoteEnabled: true,
     favoriteEnabled: true,
@@ -75,7 +77,7 @@ function Pokedex() {
     cacheTime: 0,
   });
 
-  const isFetchingFirstPage = isFetching && !isFetchingNextPage
+  const isFetchingFirstPage = isFetching && !isFetchingNextPage;
 
   // When the number of item to fetch is greater then acutal fetched data, refetch the data.
   useEffect(() => {

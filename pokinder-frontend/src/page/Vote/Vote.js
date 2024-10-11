@@ -5,11 +5,13 @@ import { useMutation, useQuery } from "react-query";
 
 import { useAfterEffect } from "../../hook/useAfterEffect";
 import { useAuthentication } from "../../hook/useAuthentication";
+import useToggle from "../../hook/useToggle";
 
 import { addVote, drawFusions } from "../../api/pokinder";
 
 import VoteButton from "../../component/atom/VoteButton/VoteButton";
 import Page from "../../component/organism/Page/Page";
+import ReferenceProposalModal from "../../component/organism/ReferenceProposalModal/ReferenceProposalModal";
 
 import LoadingVoteCard from "./LoadingVoteCard";
 import styles from "./Vote.module.css";
@@ -36,6 +38,8 @@ function Vote() {
   const persistKeyCarouselFusions = `pokinderVoteCarousselFusionse=>${accountId}`;
 
   const { t } = useTranslation();
+
+  const [showReferenceProposalModal, toggleReferenceProposalModal] = useToggle();
 
   const [lastVoteTime, setLastVoteTime] = useState(new Date().getTime());
   const [voteType, setVoteType] = useState(0);
@@ -75,7 +79,7 @@ function Vote() {
 
     if (maybeRefreshDate === null) return false;
 
-    var oneMonthInMilliseconds = 31 * 24 * 60 * 60 * 1000;
+    var oneMonthInMilliseconds = 0; //31 * 24 * 60 * 60 * 1000;
     var currentTimestamp = Date.now();
 
     const dataIsNotOutdated = currentTimestamp - maybeRefreshDate < oneMonthInMilliseconds;
@@ -197,32 +201,42 @@ function Vote() {
       );
     }
 
+    const focusedFusion = carouselFusions[absoluteIndex - relativeIndex];
+
     return (
-      <div className={styles.container}>
-        <div style={{ transform: `translateX(${relativeOffset}px)` }}>
-          <motion.div
-            initial={false}
-            animate={{ x: absoluteOffset }}
-            transition={transition}
-            className={styles.votes}
-            onAnimationComplete={onVote}
-          >
-            {carouselFusions.map((fusion, key) => (
-              <VoteCard
-                key={fusion.path || key}
-                fusion={fusion}
-                transition={transition}
-                hasFocus={fusion.path === carouselFusions[absoluteIndex - relativeIndex]?.path}
-              />
-            ))}
-          </motion.div>
+      <>
+        <div className={styles.container}>
+          <div style={{ transform: `translateX(${relativeOffset}px)` }}>
+            <motion.div
+              initial={false}
+              animate={{ x: absoluteOffset }}
+              transition={transition}
+              className={styles.votes}
+              onAnimationComplete={onVote}
+            >
+              {carouselFusions.map((fusion, key) => (
+                <VoteCard
+                  key={fusion.path || key}
+                  fusion={fusion}
+                  transition={transition}
+                  hasFocus={fusion.path === focusedFusion.path}
+                  onReferenceButtonClick={toggleReferenceProposalModal}
+                />
+              ))}
+            </motion.div>
+          </div>
+          <div className={styles.buttons}>
+            <VoteButton variant="downvote" onClick={() => vote(1)} />
+            <VoteButton variant="favorite" onClick={() => vote(2)} />
+            <VoteButton variant="upvote" onClick={() => vote(0)} />
+          </div>
         </div>
-        <div className={styles.buttons}>
-          <VoteButton variant="downvote" onClick={() => vote(1)} />
-          <VoteButton variant="favorite" onClick={() => vote(2)} />
-          <VoteButton variant="upvote" onClick={() => vote(0)} />
-        </div>
-      </div>
+        <ReferenceProposalModal
+          isVisible={showReferenceProposalModal}
+          onClose={toggleReferenceProposalModal}
+          fusion={focusedFusion}
+        />
+      </>
     );
   }
 

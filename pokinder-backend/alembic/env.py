@@ -23,6 +23,9 @@ from src.component.family import Family  # noqa
 from src.component.fusion import Fusion  # noqa
 from src.component.pokemon import Pokemon  # noqa
 from src.component.pokemon_family import PokemonFamily  # noqa
+from src.component.reference import Reference  # noqa
+from src.component.reference_family import ReferenceFamily  # noqa
+from src.component.reference_proposal import ReferenceProposal  # noqa
 from src.component.vote import Vote  # noqa
 from src.utils.env import retrieve_postgres_connection_string
 from src.utils.sqlalchemy import BaseTable

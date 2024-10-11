@@ -5,6 +5,7 @@
   text-align: center;
   text-decoration: none;
   border: none;
+  height: 40px;
 }
 
 .container:hover {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { listCreators } from "../../../api/pokinder";
+import { listCreators, listReferenceFamilies, listReferences } from "../../../api/pokinder";
 
 import { findOptionByValue, groupeOptions } from "../../../data/options";
 
@@ -16,6 +16,9 @@ import styles from "./FilterModal.module.css";
 function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, onClose }) {
   const { t } = useTranslation();
   const [updatedFilters, setUpdatedFilters] = useState(currentFilters);
+  const [selectedReferenceFamilyName, setSelectedReferenceFamilyName] = useState(
+    currentFilters.referenceFamilyName,
+  );
 
   const updateFilters = (newFilters) => {
     setUpdatedFilters({ ...updatedFilters, ...newFilters });
@@ -27,6 +30,9 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
     updateFilters({ headNameOrCategory: pokemonHeads.value });
   const setPokemonBodies = (pokemonBodies) =>
     updateFilters({ bodyNameOrCategory: pokemonBodies.value });
+  const setReferenceFamily = (referenceFamily) =>
+    updateFilters({ referenceFamilyName: referenceFamily.value });
+  const setReference = (reference) => updateFilters({ referenceName: reference.value });
   const setCreator = (creator) => updateFilters({ creatorName: creator.value });
   const toggleDownvoteEnabled = () => {
     updateFilters({ downvoteEnabled: !updatedFilters.downvoteEnabled });
@@ -60,6 +66,59 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
     );
   }
 
+  function renderReference() {
+    if (!updatedFilters.hasOwnProperty("referenceName")) {
+      return null;
+    }
+
+    function valueToOption(value) {
+      return { value: value.name, label: value.name };
+    }
+
+    async function listReferencesByCurrentReferenceFamily() {
+      if (selectedReferenceFamilyName === undefined) return [];
+      if (selectedReferenceFamilyName === "All") return [];
+      return await listReferences(undefined, selectedReferenceFamilyName);
+    }
+
+    const referencFamilyDefaultValue = {
+      value: updatedFilters.referenceFamilyName,
+      label: t(updatedFilters.referenceFamilyName),
+    };
+
+    const referenceDefaultValue = {
+      value: updatedFilters.referenceName,
+      label: t(updatedFilters.referenceName),
+    };
+
+    return (
+      <div className={styles.pokemons}>
+        <Panel title={t("Reference family")}>
+          <FutureSelect
+            futureValues={listReferenceFamilies}
+            valueToOption={valueToOption}
+            onChange={(option) => {
+              setReferenceFamily(option);
+              setSelectedReferenceFamilyName(option.value);
+            }}
+            defaultValue={referencFamilyDefaultValue}
+            allOption
+          />
+        </Panel>
+        <Panel title={t("Reference")}>
+          <FutureSelect
+            futureValues={listReferencesByCurrentReferenceFamily}
+            valueToOption={valueToOption}
+            onChange={setReference}
+            defaultValue={referenceDefaultValue}
+            updateKey={selectedReferenceFamilyName} // NOTE: trick to force rerendering when family change.
+            allOption
+          />
+        </Panel>
+      </div>
+    );
+  }
+
   function renderCreator() {
     if (!updatedFilters.hasOwnProperty("creatorName")) {
       return null;
@@ -85,6 +144,7 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
             valueToOption={valueToOption}
             onChange={setCreator}
             defaultValue={defaultValue}
+            allOption
           />
         </Panel>
       </div>
@@ -122,6 +182,7 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
   return (
     <Modal isVisible={isVisible} onClose={onClose} className={styles.container}>
       {renderPokemonParts()}
+      {renderReference()}
       {renderCreator()}
       {renderVoteTypes()}
       <div className={styles.buttons}>

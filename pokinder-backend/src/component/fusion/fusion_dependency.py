@@ -16,6 +16,8 @@ class FusionDependency(Protocol):
         offset: int = 0,
         head_name_or_category: str | None = None,
         body_name_or_category: str | None = None,
+        reference_family_name: str | None = None,
+        reference_name: str | None = None,
         creator_name: str | None = None,
     ) -> list[Ranking]:
         pass

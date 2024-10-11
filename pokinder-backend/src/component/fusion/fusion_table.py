@@ -8,6 +8,8 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.component.creator.creator_table import Creator
 from src.component.fusion_creator import FusionCreator
+from src.component.fusion_reference.fusion_reference_table import FusionReference
+from src.component.reference.reference_table import Reference
 from src.utils.sqlalchemy import (
     BaseTable,
     UUIDPrimaryKey,
@@ -35,6 +37,8 @@ class Fusion(BaseTable, UUIDPrimaryKey):
     is_removed: Mapped[bool] = mapped_column(nullable=False, info=private)
 
     creators: Mapped[List[Creator]] = relationship(secondary=FusionCreator, info=read_only)
+    references: Mapped[List[Reference]] = relationship(secondary=FusionReference, info=read_only)
+
     head = relationship("Pokemon", foreign_keys=[head_id], info=read_only)
     body = relationship("Pokemon", foreign_keys=[body_id], info=read_only)
 
