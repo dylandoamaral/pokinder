@@ -26,8 +26,6 @@ import AdminRefuseReferenceProposalModal from "./AdminRefuseReferenceProposalMod
 import { useAuthentication } from "../../hook/useAuthentication";
 import NotFound from "../NotFound/NotFound";
 
-// Add reference analysis
-
 const REFERENCE_PROPOSAL_LIMIT = 20;
 
 function Admin() {
