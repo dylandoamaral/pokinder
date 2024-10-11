@@ -11,6 +11,7 @@ class ReferenceDependency(Protocol):
     async def list(
         self,
         reference_family_id: UUID | None = None,
+        reference_family_name: str | None = None,
     ) -> list[Reference]:
         pass
 

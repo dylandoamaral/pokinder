@@ -59,6 +59,8 @@ export async function getHistory(filters, limit, offset) {
 
   params.set("head_name_or_category", filters.headNameOrCategory);
   params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("reference_family_name", filters.referenceFamilyName);
+  params.set("reference_name", filters.referenceName);
   params.set("creator_name", filters.creatorName);
   params.set("limit", limit);
   params.set("offset", offset);
@@ -73,6 +75,8 @@ export async function getRanking(filters, limit, offset) {
 
   params.set("head_name_or_category", filters.headNameOrCategory);
   params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("reference_family_name", filters.referenceFamilyName);
+  params.set("reference_name", filters.referenceName);
   params.set("creator_name", filters.creatorName);
   params.set("limit", limit);
   params.set("offset", offset);
@@ -115,10 +119,13 @@ export async function addReferenceFamily(referenceFamilyName) {
   return response.data;
 }
 
-export async function listReferences(referenceFamilyId) {
+export async function listReferences(referenceFamilyId, referenceFamilyName) {
+  if (referenceFamilyId === undefined && referenceFamilyName === undefined) return Promise.resolve([])
+
   const params = new URLSearchParams();
 
-  params.set("reference_family_id", referenceFamilyId);
+  if (referenceFamilyId !== undefined) params.set("reference_family_id", referenceFamilyId);
+  if (referenceFamilyName !== undefined) params.set("reference_family_name", referenceFamilyName);
 
   const response = await http.get("/reference?" + params.toString());
 

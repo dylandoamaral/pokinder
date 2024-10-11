@@ -67,7 +67,7 @@ function AdminAcceptReferenceProposalModal({ isVisible, onClose, referencePropos
       <Panel title={t("Matching reference")}>
         <FutureSelect
           futureValues={async () =>
-            family === undefined ? [] : await listReferences(family.value)
+            family === undefined ? [] : await listReferences(family.value, undefined)
           }
           valueToOption={referenceToSelect}
           onChange={setReference}

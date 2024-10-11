@@ -20,8 +20,9 @@ class ReferenceController(Controller):
         self,
         reference_dependency: ReferenceDependency,
         reference_family_id: UUID | None = None,
+        reference_family_name: str | None = None,
     ) -> list[Reference]:
-        return await reference_dependency.list(reference_family_id)
+        return await reference_dependency.list(reference_family_id, reference_family_name)
 
     @post(path="/", dto=None, guards=[admin_only])
     async def insert_reference(

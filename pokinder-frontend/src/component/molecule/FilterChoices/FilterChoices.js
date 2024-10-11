@@ -25,6 +25,12 @@ function FilterChoices({ defaultFilters, currentFilters, setFilters }) {
     bodyNameOrCategory: {
       key: "Pokemon body",
     },
+    referenceFamilyName: {
+      key: "Reference family",
+    },
+    referenceName: {
+      key: "Reference",
+    },
     creatorName: {
       key: "Creator",
     },

@@ -26,6 +26,8 @@ class VoteController(Controller):
         vote_types: list[VoteType] | None = None,
         head_name_or_category: str | None = None,
         body_name_or_category: str | None = None,
+        reference_family_name: str | None = None,
+        reference_name: str | None = None,
         creator_name: str | None = None,
     ) -> list[Vote]:
         return await vote_dependency.list(
@@ -36,6 +38,8 @@ class VoteController(Controller):
             vote_types,
             head_name_or_category,
             body_name_or_category,
+            reference_family_name,
+            reference_name,
             creator_name,
         )
 
