@@ -3,18 +3,20 @@ import AsyncSelect from "react-select/async";
 
 import styles from "./Select.module.css";
 
-function FutureSelect({ onChange, futureValues, valueToOption, defaultValue }) {
+function FutureSelect({ onChange, futureValues, valueToOption, defaultValue, updateKey }) {
   const [options, setOptions] = useState([]);
+  const [oldUpdateKey, setOldUpdateKey] = useState(updateKey);
 
   function filterOptions(inputValue, options) {
     return options.filter((i) => i.label.toLowerCase().includes(inputValue.toLowerCase()));
   }
 
   function loadOptions(inputValue, callback) {
-    if (options.length === 0) {
+    if (options.length === 0 || oldUpdateKey !== updateKey) {
       futureValues().then((newValues) => {
         const newOptions = newValues.map((value) => valueToOption(value));
         setOptions(newOptions);
+        setOldUpdateKey(updateKey);
         callback(filterOptions(inputValue, newOptions));
       });
     } else {
@@ -30,6 +32,7 @@ function FutureSelect({ onChange, futureValues, valueToOption, defaultValue }) {
       defaultOptions={true}
       defaultValue={defaultValue}
       classNamePrefix="select"
+      key={JSON.stringify(updateKey)}
     />
   );
 }

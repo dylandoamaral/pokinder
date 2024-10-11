@@ -66,7 +66,7 @@ function AdminAcceptReferenceProposalModal({ isVisible, onClose, referencePropos
           }
           valueToOption={referenceToSelect}
           onChange={setReference}
-          key={family} // NOTE: trick to force rerendering when family change.
+          updateKey={family} // NOTE: trick to force rerendering when family change.
         />
       </Panel>
       <div className={styles.buttons}>
