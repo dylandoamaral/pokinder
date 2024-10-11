@@ -26,9 +26,7 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
     <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
       <div>
         <Title title={t("Reference proposal title")} textAlign="left" />
-        <p>
-          {t("Reference proposal description")}
-        </p>
+        <p>{t("Reference proposal description")}</p>
       </div>
       <Panel title={t("Fusion")}>
         <Sprite
