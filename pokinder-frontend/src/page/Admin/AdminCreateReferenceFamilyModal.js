@@ -21,7 +21,7 @@ function AdminCreateReferenceFamilyModal({ isVisible, onClose }) {
 
   return (
     <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
-      <Title title={t("A new reference family has been discovered ?")} textAlign="left" />
+      <Title title={t("Reference family creation title")} textAlign="left" />
       <Panel title={t("Name")}>
         <Input onChange={setName} />
       </Panel>
@@ -36,13 +36,13 @@ function AdminCreateReferenceFamilyModal({ isVisible, onClose }) {
           }}
         />
         <Button
-          title={t("Create reference family")}
+          title={t("Create a reference family")}
           foreground
           disabled={createButtonDisabled}
           onClick={() => {
             addReferenceFamily(name);
             setName(undefined);
-            toast.success("Reference family created successfully !");
+            toast.success("Reference family creation toast");
             onClose();
           }}
         />

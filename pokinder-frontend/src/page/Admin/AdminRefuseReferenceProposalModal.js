@@ -31,7 +31,7 @@ function AdminRefuseReferenceProposalModal({
 
   return (
     <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
-      <Title title={t("The proposal is not appropriated ?")} textAlign="left" />
+      <Title title={t("Reference cancellation title")} textAlign="left" />
       <Panel title={t("Fusion")}>
         <Sprite
           className={styles.sprite}
@@ -61,13 +61,13 @@ function AdminRefuseReferenceProposalModal({
       <div className={styles.buttons}>
         <Button title={t("Cancel")} variant="text" foreground onClick={onClose} />
         <Button
-          title={t("Refuse proposal")}
+          title={t("Reference cancellation action")}
           foreground
           disabled={proposeButtonDisabled}
           onClick={() => {
             refuseReferenceProposal(referenceProposal.id, reason);
             setReason(undefined);
-            toast.success("Proposal refused successfully !");
+            toast.success(t("Reference cancellation success"));
             refreshProposals({ pageParam: 0 });
             onClose();
           }}

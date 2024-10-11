@@ -28,7 +28,7 @@ function AdminCreateReferenceModal({ isVisible, onClose }) {
 
   return (
     <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
-      <Title title={t("A new reference has been discovered ?")} textAlign="left" />
+      <Title title={t("Reference creation title")} textAlign="left" />
       <Panel title={t("Name")}>
         <Input onChange={setName} />
       </Panel>
@@ -55,7 +55,7 @@ function AdminCreateReferenceModal({ isVisible, onClose }) {
           }}
         />
         <Button
-          title={t("Create reference")}
+          title={t("Create a reference")}
           foreground
           disabled={createButtonDisabled}
           onClick={() => {
@@ -63,7 +63,7 @@ function AdminCreateReferenceModal({ isVisible, onClose }) {
             setName(undefined);
             setSource(undefined);
             setFamily(undefined);
-            toast.success("Reference created successfully !");
+            toast.success(t("Reference creation success"));
             onClose();
           }}
         />
