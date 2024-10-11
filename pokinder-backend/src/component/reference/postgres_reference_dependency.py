@@ -2,7 +2,7 @@ from uuid import UUID
 
 from sqlalchemy import insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import contains_eager
+from sqlalchemy.orm import contains_eager, joinedload
 
 from src.component.reference.reference_model import ReferenceInsert
 from src.component.reference_family.reference_family_table import ReferenceFamily
