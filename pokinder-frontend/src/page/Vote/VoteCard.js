@@ -97,7 +97,7 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
   }
 
   function renderReference(reference, key) {
-    return <VoteCardReference key={key} reference={reference} />
+    return <VoteCardReference key={key} reference={reference} />;
   }
 
   function renderReferenceButton() {

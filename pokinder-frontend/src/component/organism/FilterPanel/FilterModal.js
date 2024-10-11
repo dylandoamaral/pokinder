@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { listCreators, listReferences, listReferenceFamilies } from "../../../api/pokinder";
+import { listCreators, listReferenceFamilies, listReferences } from "../../../api/pokinder";
 
 import { findOptionByValue, groupeOptions } from "../../../data/options";
 
@@ -16,7 +16,9 @@ import styles from "./FilterModal.module.css";
 function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, onClose }) {
   const { t } = useTranslation();
   const [updatedFilters, setUpdatedFilters] = useState(currentFilters);
-  const [selectedReferenceFamilyName, setSelectedReferenceFamilyName] = useState(currentFilters.referenceFamilyName);
+  const [selectedReferenceFamilyName, setSelectedReferenceFamilyName] = useState(
+    currentFilters.referenceFamilyName,
+  );
 
   const updateFilters = (newFilters) => {
     setUpdatedFilters({ ...updatedFilters, ...newFilters });
@@ -28,7 +30,8 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
     updateFilters({ headNameOrCategory: pokemonHeads.value });
   const setPokemonBodies = (pokemonBodies) =>
     updateFilters({ bodyNameOrCategory: pokemonBodies.value });
-  const setReferenceFamily = (referenceFamily) => updateFilters({ referenceFamilyName: referenceFamily.value });
+  const setReferenceFamily = (referenceFamily) =>
+    updateFilters({ referenceFamilyName: referenceFamily.value });
   const setReference = (reference) => updateFilters({ referenceName: reference.value });
   const setCreator = (creator) => updateFilters({ creatorName: creator.value });
   const toggleDownvoteEnabled = () => {
@@ -73,19 +76,19 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
     }
 
     async function listReferencesByCurrentReferenceFamily() {
-      if (selectedReferenceFamilyName === undefined) return []
-      if (selectedReferenceFamilyName === "All") return []
-      return await listReferences(undefined, selectedReferenceFamilyName)
+      if (selectedReferenceFamilyName === undefined) return [];
+      if (selectedReferenceFamilyName === "All") return [];
+      return await listReferences(undefined, selectedReferenceFamilyName);
     }
 
     const referencFamilyDefaultValue = {
       value: updatedFilters.referenceFamilyName,
-      label: t(updatedFilters.referenceFamilyName)
+      label: t(updatedFilters.referenceFamilyName),
     };
 
     const referenceDefaultValue = {
       value: updatedFilters.referenceName,
-      label: t(updatedFilters.referenceName)
+      label: t(updatedFilters.referenceName),
     };
 
     return (

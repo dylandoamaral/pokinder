@@ -23,5 +23,5 @@ export const navlinks = (t) => [
 ];
 
 export const authorizedNavlinks = (t, isAdmin) => {
-  return navlinks(t).filter((navlink) => isAdmin ? true : !(navlink.admin === true))
-}
+  return navlinks(t).filter((navlink) => (isAdmin ? true : !(navlink.admin === true)));
+};

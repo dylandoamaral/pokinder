@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useInfiniteQuery } from "react-query";
 
+import { useAuthentication } from "../../hook/useAuthentication";
 import useToggle from "../../hook/useToggle";
 
 import { listReferenceProposals } from "../../api/pokinder";
@@ -18,13 +19,12 @@ import Button from "../../component/atom/Button/Button";
 import Sprite from "../../component/atom/Sprite/Sprite";
 import Page from "../../component/organism/Page/Page";
 
+import NotFound from "../NotFound/NotFound";
 import styles from "./Admin.module.css";
 import AdminAcceptReferenceProposalModal from "./AdminAcceptReferenceProposalModal";
 import AdminCreateReferenceFamilyModal from "./AdminCreateReferenceFamilyModal";
 import AdminCreateReferenceModal from "./AdminCreateReferenceModal";
 import AdminRefuseReferenceProposalModal from "./AdminRefuseReferenceProposalModal";
-import { useAuthentication } from "../../hook/useAuthentication";
-import NotFound from "../NotFound/NotFound";
 
 const REFERENCE_PROPOSAL_LIMIT = 20;
 
@@ -123,7 +123,7 @@ function Admin() {
   });
 
   if (!isAdmin) {
-    return <NotFound />
+    return <NotFound />;
   }
 
   return (

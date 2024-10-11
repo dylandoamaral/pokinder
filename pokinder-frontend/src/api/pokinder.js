@@ -120,7 +120,8 @@ export async function addReferenceFamily(referenceFamilyName) {
 }
 
 export async function listReferences(referenceFamilyId, referenceFamilyName) {
-  if (referenceFamilyId === undefined && referenceFamilyName === undefined) return Promise.resolve([])
+  if (referenceFamilyId === undefined && referenceFamilyName === undefined)
+    return Promise.resolve([]);
 
   const params = new URLSearchParams();
 

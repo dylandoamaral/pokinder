@@ -1,10 +1,17 @@
 import { useState } from "react";
-import AsyncSelect from "react-select/async";
 import { useTranslation } from "react-i18next";
+import AsyncSelect from "react-select/async";
 
 import styles from "./Select.module.css";
 
-function FutureSelect({ onChange, futureValues, valueToOption, defaultValue, updateKey, allOption = false }) {
+function FutureSelect({
+  onChange,
+  futureValues,
+  valueToOption,
+  defaultValue,
+  updateKey,
+  allOption = false,
+}) {
   const { t } = useTranslation();
 
   const [options, setOptions] = useState([]);
@@ -18,7 +25,7 @@ function FutureSelect({ onChange, futureValues, valueToOption, defaultValue, upd
     if (options.length === 0 || oldUpdateKey !== updateKey) {
       futureValues().then((newValues) => {
         const newOptions = newValues.map((value) => valueToOption(value));
-        if (allOption) newOptions.unshift({ value: "All", label: t("All") })
+        if (allOption) newOptions.unshift({ value: "All", label: t("All") });
 
         setOptions(newOptions);
         setOldUpdateKey(updateKey);
