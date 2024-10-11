@@ -29,7 +29,6 @@ import NotFound from "../NotFound/NotFound";
 // Update the table when refuse or accept
 // Add family filter
 // Add reference analysis
-// Remove functionnality on phone
 
 const REFERENCE_PROPOSAL_LIMIT = 20;
 

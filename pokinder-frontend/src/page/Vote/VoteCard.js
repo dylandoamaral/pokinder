@@ -20,10 +20,10 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
 
   const MOBILE_RATIO = 0.75;
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 400 || window.innerHeight < 850);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 450 || window.innerHeight < 850);
 
   const defaultOpacity = hasFocus ? 1 : 0.3;
-  // The mobile moving part is images taking 432px.
+  // NOTE: The mobile moving part is images taking 432px.
   const defaultHeight = isMobile ? 617 - 432 + 432 * MOBILE_RATIO : 617;
 
   const defaultBackgroundWidthDesktop = hasFocus ? 380 : 290;
@@ -113,7 +113,7 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
   }
 
   function renderReferences(references) {
-    if (!hasFocus) return null;
+    if (!hasFocus || isMobile) return null;
 
     return (
       <motion.div
