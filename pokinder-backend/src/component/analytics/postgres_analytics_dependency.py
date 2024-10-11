@@ -9,9 +9,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.component.account.account_table import Account
 from src.component.creator.creator_table import Creator
 from src.component.fusion.fusion_table import Fusion
+from src.component.fusion_reference.fusion_reference_table import FusionReference
 from src.component.pokemon.pokemon_table import Pokemon
 from src.component.reference.reference_table import Reference
-from src.component.fusion_reference.fusion_reference_table import FusionReference
 from src.component.reference_family.reference_family_table import ReferenceFamily
 from src.component.vote import Vote
 from src.component.vote.vote_model import VoteType

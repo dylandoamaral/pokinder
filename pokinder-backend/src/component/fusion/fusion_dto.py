@@ -1,6 +1,7 @@
+from typing import Annotated
+
 from litestar.contrib.sqlalchemy.dto import SQLAlchemyDTO
 from litestar.dto import DTOConfig
-from typing import Annotated
 
 from .fusion_table import Fusion
 
