@@ -25,11 +25,9 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
   return (
     <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
       <div>
-        <Title title={t("What inspired this fusion ?")} textAlign="left" />
+        <Title title={t("Reference proposal title")} textAlign="left" />
         <p>
-          {t(
-            "Enhance our reference system by suggesting a reference for this fusion, enriching the community's knowledge base.",
-          )}
+          {t("Reference proposal description")}
         </p>
       </div>
       <Panel title={t("Fusion")}>
@@ -51,12 +49,12 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
       <div className={styles.buttons}>
         <Button title={t("Cancel")} variant="text" foreground onClick={onClose} />
         <Button
-          title={t("Propose a reference")}
+          title={t("Reference proposal action")}
           foreground
           disabled={proposeButtonDisabled}
           onClick={() => {
             addReferenceProposal(fusion.id, name, family);
-            toast.success("Proposal sent successfully !");
+            toast.success(t("Reference proposal success"));
             setName(undefined);
             setFamily(undefined);
             onClose();

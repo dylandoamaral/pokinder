@@ -40,7 +40,7 @@ function AdminAcceptReferenceProposalModal({
 
   return (
     <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
-      <Title title={t("The proposal is relevant ?")} textAlign="left" />
+      <Title title={t("Reference validation title")} textAlign="left" />
       <Panel title={t("Fusion")}>
         <Sprite
           className={styles.sprite}
@@ -93,7 +93,7 @@ function AdminAcceptReferenceProposalModal({
           }}
         />
         <Button
-          title={t("Accept proposal")}
+          title={t("Reference validation action")}
           foreground
           disabled={proposeButtonDisabled}
           onClick={() => {
@@ -104,7 +104,7 @@ function AdminAcceptReferenceProposalModal({
             );
             setFamily(undefined);
             setReference(undefined);
-            toast.success("Proposal accepted successfully !");
+            toast.success(t("Reference validation success"));
             refreshProposals({ pageParam: 0 });
             onClose();
           }}
