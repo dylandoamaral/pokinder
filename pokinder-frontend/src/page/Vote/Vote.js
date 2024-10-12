@@ -226,9 +226,9 @@ function Vote() {
             </motion.div>
           </div>
           <div className={styles.buttons}>
-            <VoteButton variant="downvote" onClick={() => vote(1)} />
-            <VoteButton variant="favorite" onClick={() => vote(2)} />
-            <VoteButton variant="upvote" onClick={() => vote(0)} />
+            <VoteButton variant="downvote" onClick={() => vote(1)} disabled={showReferenceProposalModal} />
+            <VoteButton variant="favorite" onClick={() => vote(2)} disabled={showReferenceProposalModal} />
+            <VoteButton variant="upvote" onClick={() => vote(0)} disabled={showReferenceProposalModal} />
           </div>
         </div>
         <ReferenceProposalModal
