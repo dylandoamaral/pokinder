@@ -13,7 +13,7 @@ function Sprite({ className, href, filename, type, size, alt }) {
 
   function renderPicture() {
     return (
-      <Picture className={className} src={src} width={size} height={size} alt={alt || defaultAlt} />
+      <Picture src={src} width={size} height={size} alt={alt || defaultAlt} />
     );
   }
 
