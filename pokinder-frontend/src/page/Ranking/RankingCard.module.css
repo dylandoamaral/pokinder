@@ -1,7 +1,7 @@
 .container {
   position: relative;
   height: 104px;
-  margin: var(--spacing-L);
+  margin: 20px 24px;
 
   background-color: var(--foreground-color);
   border-radius: var(--border-radius-L);
@@ -110,7 +110,7 @@
 
   .container {
     height: 84px;
-    margin: 10px;
+    margin: 24px 20px 0 16px;
   }
 
   .rank {
