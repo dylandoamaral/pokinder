@@ -116,7 +116,7 @@ function Analytics() {
             isLoading={isLoading}
           />
         </div>
-        <div className={getGridStyle(3)}>
+        <div className={getGridStyle(4)}>
           <InformationPanel
             title="Number of reference families"
             value={data?.community?.reference_family_count}
@@ -130,6 +130,11 @@ function Analytics() {
           <InformationPanel
             title="Number of reference fusions"
             value={data?.community?.reference_fusion_count}
+            isLoading={isLoading}
+          />
+          <InformationPanel
+            title="Number of reference proposals"
+            value={data?.community?.reference_proposal_count}
             isLoading={isLoading}
           />
         </div>
@@ -195,6 +200,20 @@ function Analytics() {
             title="Favorite creator"
             data={data?.user?.favorite_creator}
             type="fusion"
+            isUser={true}
+            isLoading={isLoading}
+          />
+        </div>
+        <div className={getGridStyle(2)}>
+          <InformationPanel
+            title="Number of validated reference proposals"
+            value={data?.user?.validated_reference_proposal_count}
+            isUser={true}
+            isLoading={isLoading}
+          />
+          <InformationPanel
+            title="Number of reference proposals"
+            value={data?.user?.reference_proposal_count}
             isUser={true}
             isLoading={isLoading}
           />
