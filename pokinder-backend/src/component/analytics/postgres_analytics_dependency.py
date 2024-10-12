@@ -13,6 +13,7 @@ from src.component.fusion_reference.fusion_reference_table import FusionReferenc
 from src.component.pokemon.pokemon_table import Pokemon
 from src.component.reference.reference_table import Reference
 from src.component.reference_family.reference_family_table import ReferenceFamily
+from src.component.reference_proposal.reference_proposal_table import ReferenceProposal, ReferenceProposalStatus
 from src.component.vote import Vote
 from src.component.vote.vote_model import VoteType
 
@@ -222,6 +223,25 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
             return None
         return rank[0]
 
+    async def __validated_reference_proposal_count(self, account_id) -> int:
+        query = (
+            select(func.count())
+            .select_from(ReferenceProposal)
+            .where(
+                ReferenceProposal.proposer_id == account_id,
+                ReferenceProposal.status == ReferenceProposalStatus.VALIDATED,
+            )
+        )
+        result = await self.session.execute(query)
+        count = result.scalar()
+        return count
+
+    async def __reference_proposal_count(self, account_id) -> int:
+        query = select(func.count()).select_from(ReferenceProposal).where(ReferenceProposal.proposer_id == account_id)
+        result = await self.session.execute(query)
+        count = result.scalar()
+        return count
+
     async def get(self, account_id: UUID) -> list[Analytics]:
         results = await asyncio.gather(
             self.__user_count(),
@@ -240,6 +260,9 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
             self.__count(ReferenceFamily),
             self.__count(Reference),
             self.__count(FusionReference),
+            self.__count(ReferenceProposal),
+            self.__validated_reference_proposal_count(account_id=account_id),
+            self.__reference_proposal_count(account_id=account_id),
         )
 
         dislike_count = results[3].get(VoteType.DISLIKED, 0)
@@ -267,6 +290,7 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
                 reference_family_count=results[13],
                 reference_count=results[14],
                 reference_fusion_count=results[15],
+                reference_proposal_count=results[16],
             ),
             user=UserAnalytics(
                 rank=results[7] or results[0],
@@ -278,6 +302,8 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
                 favorite_pokemon_head=results[10],
                 favorite_pokemon_body=results[11],
                 favorite_creator=results[12],
+                validated_reference_proposal_count=results[17],
+                reference_proposal_count=results[18],
             ),
         )
 
