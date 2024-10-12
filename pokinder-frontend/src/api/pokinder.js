@@ -106,7 +106,7 @@ export async function addVote(fusionId, voteType) {
 export async function listReferenceFamilies() {
   const response = await http.get("/reference_family");
 
-  return response.data;
+  return response.data.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export async function addReferenceFamily(referenceFamilyName) {
@@ -130,7 +130,7 @@ export async function listReferences(referenceFamilyId, referenceFamilyName) {
 
   const response = await http.get("/reference?" + params.toString());
 
-  return response.data;
+  return response.data.sort((a, b) => a.name.localeCompare(b.name));
 }
 
 export async function addReference(referenceName, referenceSource, referenceFamilyId) {
