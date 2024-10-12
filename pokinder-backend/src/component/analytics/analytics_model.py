@@ -31,6 +31,7 @@ class CommunityAnalytics(BaseModel):
     reference_family_count: int
     reference_count: int
     reference_fusion_count: int
+    reference_proposal_count: int
 
 
 class UserAnalytics(BaseModel):
@@ -43,6 +44,8 @@ class UserAnalytics(BaseModel):
     favorite_pokemon_head: Optional[PokemonAnalytics]
     favorite_pokemon_body: Optional[PokemonAnalytics]
     favorite_creator: Optional[CreatorAnalytics]
+    validated_reference_proposal_count: int
+    reference_proposal_count: int
 
 
 class Analytics(BaseModel):
