@@ -16,9 +16,6 @@ import styles from "./FilterModal.module.css";
 function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, onClose }) {
   const { t } = useTranslation();
   const [updatedFilters, setUpdatedFilters] = useState(currentFilters);
-  const [selectedReferenceFamilyName, setSelectedReferenceFamilyName] = useState(
-    currentFilters.referenceFamilyName,
-  );
 
   const updateFilters = (newFilters) => {
     setUpdatedFilters({ ...updatedFilters, ...newFilters });
@@ -30,8 +27,6 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
     updateFilters({ headNameOrCategory: pokemonHeads.value });
   const setPokemonBodies = (pokemonBodies) =>
     updateFilters({ bodyNameOrCategory: pokemonBodies.value });
-  const setReferenceFamily = (referenceFamily) =>
-    updateFilters({ referenceFamilyName: referenceFamily.value });
   const setReference = (reference) => updateFilters({ referenceName: reference.value });
   const setCreator = (creator) => updateFilters({ creatorName: creator.value });
   const toggleDownvoteEnabled = () => {
@@ -76,9 +71,9 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
     }
 
     async function listReferencesByCurrentReferenceFamily() {
-      if (selectedReferenceFamilyName === undefined) return [];
-      if (selectedReferenceFamilyName === "All") return [];
-      return await listReferences(undefined, selectedReferenceFamilyName);
+      if (updatedFilters.referenceFamilyName === undefined) return [];
+      if (updatedFilters.referenceFamilyName === "All") return [];
+      return await listReferences(undefined, updatedFilters.referenceFamilyName);
     }
 
     const referencFamilyDefaultValue = {
@@ -86,7 +81,8 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
       label: t(updatedFilters.referenceFamilyName),
     };
 
-    const referenceDefaultValue = {
+    const referenceDefaultValue =
+    {
       value: updatedFilters.referenceName,
       label: t(updatedFilters.referenceName),
     };
@@ -98,8 +94,10 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
             futureValues={listReferenceFamilies}
             valueToOption={valueToOption}
             onChange={(option) => {
-              setReferenceFamily(option);
-              setSelectedReferenceFamilyName(option.value);
+              updateFilters({
+                referenceName: "All",
+                referenceFamilyName: option.value
+              })
             }}
             defaultValue={referencFamilyDefaultValue}
             allOption
@@ -111,7 +109,7 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
             valueToOption={valueToOption}
             onChange={setReference}
             defaultValue={referenceDefaultValue}
-            updateKey={selectedReferenceFamilyName} // NOTE: trick to force rerendering when family change.
+            updateKey={referencFamilyDefaultValue} // NOTE: trick to force rerendering when family change.
             allOption
           />
         </Panel>
