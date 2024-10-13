@@ -50,8 +50,8 @@ function AdminRefuseReferenceProposalModal({
       </Panel>
       <Panel title={t("Existing references")}>
         <ul>
-          {referenceProposal.fusion.references.map((reference) => (
-            <li>{`${reference.family.name} - ${reference.name}`}</li>
+          {referenceProposal.fusion.references.map((reference, key) => (
+            <li key={key}>{`${reference.family.name} - ${reference.name}`}</li>
           ))}
         </ul>
       </Panel>
@@ -64,11 +64,11 @@ function AdminRefuseReferenceProposalModal({
           title={t("Reference cancellation action")}
           foreground
           disabled={proposeButtonDisabled}
-          onClick={() => {
-            refuseReferenceProposal(referenceProposal.id, reason);
+          onClick={async () => {
+            await refuseReferenceProposal(referenceProposal.id, reason);
             setReason(undefined);
             toast.success(t("Reference cancellation success"));
-            refreshProposals({ pageParam: 0 });
+            refreshProposals();
             onClose();
           }}
         />
