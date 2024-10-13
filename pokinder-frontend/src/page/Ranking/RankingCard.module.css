@@ -99,7 +99,7 @@
   right: -10px;
 }
 
-.spriteSize {
+.sprite_size {
   width: 144px !important;
   height: 144px !important;
 }
@@ -141,7 +141,7 @@
     right: -15px;
   }
 
-  .spriteSize {
+  .sprite_size {
     width: 104px !important;
     height: 104px !important;
   }

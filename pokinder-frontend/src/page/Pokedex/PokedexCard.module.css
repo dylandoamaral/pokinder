@@ -78,6 +78,9 @@
 
   .sprite {
     margin-left: var(--spacing-L);
+  }
+
+  .sprite_size {
     width: 104px !important;
     height: 104px !important;
   }

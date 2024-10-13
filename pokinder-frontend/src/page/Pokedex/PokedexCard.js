@@ -60,7 +60,8 @@ const PokedexVote = memo(function PokedexVote({ vote }) {
     <div className={styles.container} key={vote.fusion.path}>
       <div className={styles.content}>
         <Sprite
-          className={styles.sprite}
+          className={`${styles.sprite} ${styles.spriteSize}`}
+          sizeClassName={styles.spriteSize}
           filename={vote.fusion.id}
           href={getDaenaLink(vote.fusion.path)}
           size={144}
