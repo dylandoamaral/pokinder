@@ -71,15 +71,16 @@
   }
 
   .background {
-    height: auto;
+    height: 104px;
     width: auto;
+    top: 50%;
+    transform: translateY(-50%);
     left: 0;
-    top: var(--spacing-M);
-    bottom: var(--spacing-M);
-    right: var(--spacing-L);
+    right: 0;
   }
 
   .content {
+    height: 144px;
     display: flex;
     justify-content: space-between;
     flex-direction: row-reverse;
