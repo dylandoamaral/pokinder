@@ -78,7 +78,8 @@ const RankingCard = memo(function RankingCard({ ranking }) {
         <span className={styles.count}>{t("N Vote", { count: ranking.fusion.vote_count })}</span>
       </div>
       <Sprite
-        className={styles.sprite}
+        className={`${styles.sprite} ${styles.spriteSize}`}
+        sizeClassName={styles.spriteSize}
         filename={ranking.fusion.id}
         href={getDaenaLink(ranking.fusion.path)}
         size={144}
