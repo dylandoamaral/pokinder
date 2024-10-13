@@ -14,7 +14,7 @@
 }
 
 .modal {
-  max-height: 75%;
+  max-height: 80%;
   overflow-y: auto;
   cursor: default;
   padding: var(--spacing-2XL);
