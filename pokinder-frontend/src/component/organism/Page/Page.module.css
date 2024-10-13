@@ -14,7 +14,7 @@
   margin: var(--spacing-L);
   gap: var(--spacing-L);
 
-  height: calc(100svh - var(--spacing-L) * 2);
+  height: calc(100dvh - var(--spacing-L) * 2);
   width: calc(100vw - var(--spacing-L) * 2);
 }
 
@@ -31,7 +31,7 @@
   .content {
     gap: var(--spacing-M);
     margin: var(--spacing-M);
-    min-height: calc(100svh - var(--spacing-M) * 2);
+    min-height: calc(100dvh - var(--spacing-M) * 2);
     width: calc(100vw - var(--spacing-M) * 2);
   }
 }
