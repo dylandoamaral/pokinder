@@ -81,8 +81,7 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
       label: t(updatedFilters.referenceFamilyName),
     };
 
-    const referenceDefaultValue =
-    {
+    const referenceDefaultValue = {
       value: updatedFilters.referenceName,
       label: t(updatedFilters.referenceName),
     };
@@ -96,8 +95,8 @@ function FilterModal({ defaultFilters, currentFilters, setFilters, isVisible, on
             onChange={(option) => {
               updateFilters({
                 referenceName: "All",
-                referenceFamilyName: option.value
-              })
+                referenceFamilyName: option.value,
+              });
             }}
             defaultValue={referencFamilyDefaultValue}
             allOption
