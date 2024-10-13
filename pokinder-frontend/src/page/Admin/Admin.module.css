@@ -4,6 +4,11 @@
   gap: 16px;
 }
 
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+}
+
 .table {
   margin-top: 24px;
   width: 100%;
@@ -30,8 +35,27 @@
   display: flex;
   justify-content: center;
   gap: 16px;
+  padding: 0 16px;
 }
 
 .rowText {
-  padding-left: 16px;
+  padding: 0 16px;
+}
+
+@media (max-width: 768px) {
+  .td:nth-child(2),
+  .th:nth-child(2) {
+    display: none;
+  }
+
+  .rowButtons {
+    flex-direction: column;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 500px) {
+  .buttons {
+    flex-direction: column;
+  }
 }
