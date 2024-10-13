@@ -59,8 +59,8 @@ function AdminAcceptReferenceProposalModal({
       </Panel>
       <Panel title={t("Existing references")}>
         <ul>
-          {referenceProposal.fusion.references.map((reference) => (
-            <li>{`${reference.family.name} - ${reference.name}`}</li>
+          {referenceProposal.fusion.references.map((reference, key) => (
+            <li key={key}>{`${reference.family.name} - ${reference.name}`}</li>
           ))}
         </ul>
       </Panel>
@@ -96,8 +96,8 @@ function AdminAcceptReferenceProposalModal({
           title={t("Reference validation action")}
           foreground
           disabled={proposeButtonDisabled}
-          onClick={() => {
-            acceptReferenceProposal(
+          onClick={async () => {
+            await acceptReferenceProposal(
               referenceProposal.fusion.id,
               reference.value,
               referenceProposal.id,
@@ -105,7 +105,7 @@ function AdminAcceptReferenceProposalModal({
             setFamily(undefined);
             setReference(undefined);
             toast.success(t("Reference validation success"));
-            refreshProposals({ pageParam: 0 });
+            refreshProposals();
             onClose();
           }}
         />
