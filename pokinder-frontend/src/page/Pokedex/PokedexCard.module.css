@@ -51,12 +51,12 @@
   }
 
   .background {
-    height: auto;
+    height: 104px;
     width: auto;
+    top: 50%;
+    transform: translateY(-50%);
     left: 0;
     right: 0;
-    top: var(--spacing-M);
-    bottom: var(--spacing-M);
   }
 
   .content {
