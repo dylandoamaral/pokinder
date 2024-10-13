@@ -34,8 +34,8 @@ function Vote() {
   const { accountId } = useAuthentication();
 
   const persistKeyDate = `pokinderVoteDate=>${accountId}`;
-  const persistKeyFusions = `pokinderVoteFusionse=>${accountId}`;
-  const persistKeyCarouselFusions = `pokinderVoteCarousselFusionse=>${accountId}`;
+  const persistKeyFusions = `pokinderVoteFusions=>${accountId}`;
+  const persistKeyCarouselFusions = `pokinderVoteCarousselFusions=>${accountId}`;
 
   const { t } = useTranslation();
 
@@ -79,15 +79,15 @@ function Vote() {
 
     if (maybeRefreshDate === null) return false;
 
-    var oneMonthInMilliseconds = 0; //31 * 24 * 60 * 60 * 1000;
+    var oneMonthInMilliseconds = 31 * 24 * 60 * 60 * 1000;
     var currentTimestamp = Date.now();
 
-    const dataIsNotOutdated = currentTimestamp - maybeRefreshDate < oneMonthInMilliseconds;
+    const dataIsOutdated = currentTimestamp - maybeRefreshDate > oneMonthInMilliseconds;
     const persistedFusionsExists = localStorage.getItem(persistKeyFusions) !== null;
     const persistedCarousselFusionsExists =
       localStorage.getItem(persistKeyCarouselFusions) !== null;
 
-    return dataIsNotOutdated && persistedFusionsExists && persistedCarousselFusionsExists;
+    return !dataIsOutdated && persistedFusionsExists && persistedCarousselFusionsExists;
   }
 
   // Init the carousel when the component is first rendered.
