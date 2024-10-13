@@ -13,7 +13,10 @@ from src.component.fusion_reference.fusion_reference_table import FusionReferenc
 from src.component.pokemon.pokemon_table import Pokemon
 from src.component.reference.reference_table import Reference
 from src.component.reference_family.reference_family_table import ReferenceFamily
-from src.component.reference_proposal.reference_proposal_table import ReferenceProposal, ReferenceProposalStatus
+from src.component.reference_proposal.reference_proposal_table import (
+    ReferenceProposal,
+    ReferenceProposalStatus,
+)
 from src.component.vote import Vote
 from src.component.vote.vote_model import VoteType
 
