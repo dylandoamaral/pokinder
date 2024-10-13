@@ -37,7 +37,7 @@ class PostgresReferenceProposalDependency(ReferenceProposalDependency):
             select(ReferenceProposal)
             .options(joinedload(ReferenceProposal.fusion).joinedload(Fusion.references).joinedload(Reference.family))
             .filter(ReferenceProposal.status == ReferenceProposalStatus.PENDING)
-            .order_by(ReferenceProposal.created_at.desc())
+            .order_by(ReferenceProposal.created_at)
             .offset(offset)
             .limit(limit)
         )
