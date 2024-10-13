@@ -97,8 +97,11 @@
   position: absolute;
   top: calc(-1 * (144px - 104px) / 2);
   right: -10px;
-  width: 144px;
-  height: 144px;
+}
+
+.spriteSize {
+  width: 144px !important;
+  height: 144px !important;
 }
 
 @media (max-width: 860px) {
@@ -135,9 +138,12 @@
   .sprite {
     position: absolute;
     top: calc(-1 * (104px - 84px) / 2);
+    right: -15px;
+  }
+
+  .spriteSize {
     width: 104px !important;
     height: 104px !important;
-    right: -10px;
   }
 
   .rank_title {
