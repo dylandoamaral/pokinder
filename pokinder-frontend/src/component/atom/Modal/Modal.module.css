@@ -14,8 +14,8 @@
 }
 
 .modal {
-  max-height: 80vh;
-  overflow: scroll;
+  max-height: 75%;
+  overflow-y: auto;
   cursor: default;
   padding: var(--spacing-2XL);
   background-color: var(--foreground-color);
