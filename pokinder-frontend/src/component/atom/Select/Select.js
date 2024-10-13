@@ -27,6 +27,12 @@ function Select({ options, onChange, defaultValue }) {
       options={translatedOptions}
       onChange={onChange}
       defaultValue={translatedDefaultValue}
+      // NOTE: allow the select to overflow from modal.
+      menuPortalTarget={document.body}
+      styles={{
+        menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+      }}
+      // END
       classNamePrefix="select"
     />
   );
