@@ -44,6 +44,12 @@ function FutureSelect({
       defaultOptions={true}
       defaultValue={defaultValue}
       classNamePrefix="select"
+      // NOTE: allow the select to overflow from modal.
+      menuPortalTarget={document.body}
+      styles={{
+        menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+      }}
+      // END
       key={JSON.stringify(updateKey)}
     />
   );
