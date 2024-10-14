@@ -19,20 +19,21 @@ function AdminCreateReferenceModal({ isVisible, onClose }) {
   const defaultForm = {
     name: undefined,
     source: undefined,
-    family: undefined
-  }
+    family: undefined,
+  };
 
-  const [form, setForm] = useState(defaultForm)
+  const [form, setForm] = useState(defaultForm);
 
-  const setName = (name) => setForm({ ...form, name: name })
-  const setSource = (source) => setForm({ ...form, source: source })
-  const setFamily = (family) => setForm({ ...form, family: family })
+  const setName = (name) => setForm({ ...form, name: name });
+  const setSource = (source) => setForm({ ...form, source: source });
+  const setFamily = (family) => setForm({ ...form, family: family });
 
   function familyToSelect(family) {
     return { value: family.id, label: family.name };
   }
 
-  const createButtonDisabled = form.name === undefined || form.source === undefined || form.family === undefined;
+  const createButtonDisabled =
+    form.name === undefined || form.source === undefined || form.family === undefined;
 
   return (
     <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
