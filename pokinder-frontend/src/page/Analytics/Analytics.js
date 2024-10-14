@@ -133,8 +133,8 @@ function Analytics() {
             isLoading={isLoading}
           />
           <InformationPanel
-            title="Number of reference proposals"
-            value={data?.community?.reference_proposal_count}
+            title="Number of proposers"
+            value={data?.community?.reference_proposer_count}
             isLoading={isLoading}
           />
         </div>

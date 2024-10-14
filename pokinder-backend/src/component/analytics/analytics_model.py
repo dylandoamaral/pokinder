@@ -31,7 +31,7 @@ class CommunityAnalytics(BaseModel):
     reference_family_count: int
     reference_count: int
     reference_fusion_count: int
-    reference_proposal_count: int
+    reference_proposer_count: int
 
 
 class UserAnalytics(BaseModel):

@@ -226,6 +226,16 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
             return None
         return rank[0]
 
+    async def __reference_proposer_count(self) -> int:
+        query = (
+            select(func.count(distinct(ReferenceProposal.proposer_id)))
+            .select_from(ReferenceProposal)
+            .where(ReferenceProposal.status == ReferenceProposalStatus.VALIDATED)
+        )
+        result = await self.session.execute(query)
+        count = result.scalar()
+        return count
+
     async def __validated_reference_proposal_count(self, account_id) -> int:
         query = (
             select(func.count())
@@ -263,7 +273,7 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
             self.__count(ReferenceFamily),
             self.__count(Reference),
             self.__count(FusionReference),
-            self.__count(ReferenceProposal),
+            self.__reference_proposer_count(),
             self.__validated_reference_proposal_count(account_id=account_id),
             self.__reference_proposal_count(account_id=account_id),
         )
@@ -293,7 +303,7 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
                 reference_family_count=results[13],
                 reference_count=results[14],
                 reference_fusion_count=results[15],
-                reference_proposal_count=results[16],
+                reference_proposer_count=results[16],
             ),
             user=UserAnalytics(
                 rank=results[7] or results[0],
