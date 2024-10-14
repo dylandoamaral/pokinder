@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pokinder-backend"
-version = "0.15.5"
+version = "0.15.6"
 description = "The backend system of Pokinder."
 authors = ["dylandoamaral <do.amaral.dylan@gmail.com>"]
 readme = "README.md"
