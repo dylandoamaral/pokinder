@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 
+import useIsMobile from "../../hook/useIsMobile";
+
 import styles from "./LoadingVoteCard.module.css";
 
 function LoadingVoteCard({ hasFocus = false, hidden = false }) {
   const MOBILE_RATIO = 0.75;
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 400 || window.innerHeight < 850);
+  const [isMobile] = useIsMobile();
 
   const defaultOpacity = hasFocus ? 1 : hidden ? 0 : 0.3;
   // The mobile moving part is images taking 432px.
@@ -58,14 +60,6 @@ function LoadingVoteCard({ hasFocus = false, hidden = false }) {
     defaultFusionSize,
     defaultPokemonSize,
   ]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 400 || window.innerHeight < 850);
-    };
-
-    window.addEventListener("resize", handleResize);
-  });
 
   return (
     <div style={{ width: width, height: height, opacity: opacity }} className={styles.container}>

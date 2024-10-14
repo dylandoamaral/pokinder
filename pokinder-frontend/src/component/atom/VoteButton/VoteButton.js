@@ -9,12 +9,14 @@ import {
 } from "react-icons/fa6";
 
 import useEventListener from "../../../hook/useEventListener";
+import useIsMobile from "../../../hook/useIsMobile";
 
 import styles from "./VoteButton.module.css";
 
 function VoteButton({ variant, onClick, disabled = false }) {
   const { t } = useTranslation();
   const [scope, animate] = useAnimate();
+  const [isMobile] = useIsMobile();
 
   const variants = {
     downvote: {
@@ -61,6 +63,17 @@ function VoteButton({ variant, onClick, disabled = false }) {
     await animate(scope.current, animations.rest, transition);
   });
 
+  function renderIndication() {
+    if (isMobile) return <></>;
+
+    return (
+      <div className={styles.information}>
+        <span className={styles.or}>{t("Or")} </span>
+        {configuration.keyboardIcon}
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <motion.button
@@ -76,10 +89,7 @@ function VoteButton({ variant, onClick, disabled = false }) {
       >
         {disabled ? null : configuration.buttonIcon}
       </motion.button>
-      <div className={styles.information}>
-        <span className={styles.or}>{t("Or")} </span>
-        {configuration.keyboardIcon}
-      </div>
+      {renderIndication()}
     </div>
   );
 }

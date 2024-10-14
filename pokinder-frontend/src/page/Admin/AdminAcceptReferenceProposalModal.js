@@ -25,14 +25,13 @@ function AdminAcceptReferenceProposalModal({
 
   const defaultForm = {
     family: undefined,
-    reference: undefined
-  }
+    reference: undefined,
+  };
 
-  const [form, setForm] = useState(defaultForm)
+  const [form, setForm] = useState(defaultForm);
 
-  const setFamily = (family) => setForm({ ...form, family: family })
-  const setReference = (reference) => setForm({ ...form, reference: reference })
-
+  const setFamily = (family) => setForm({ ...form, family: family });
+  const setReference = (reference) => setForm({ ...form, reference: reference });
 
   function familyToSelect(family) {
     return { value: family.id, label: family.name };

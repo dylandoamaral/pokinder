@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { FaPlus } from "react-icons/fa";
 
 import { useAuthentication } from "../../hook/useAuthentication";
+import useIsMobile from "../../hook/useIsMobile";
 
 import { getName, getTypes } from "../../utils/pokemon";
 import { getDaenaLink } from "../../utils/website";
@@ -20,7 +21,7 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
 
   const MOBILE_RATIO = 0.75;
 
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 450 || window.innerHeight < 850);
+  const [isMobile] = useIsMobile();
 
   const defaultOpacity = hasFocus ? 1 : 0.3;
   // NOTE: The mobile moving part is images taking 432px.
@@ -83,14 +84,6 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
     defaultReferenceTopPosition,
     defaultReferenceLeftPosition,
   ]);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 400 || window.innerHeight < 850);
-    };
-
-    window.addEventListener("resize", handleResize);
-  });
 
   const cardWidth = hasFocus ? 380 : 290;
 
