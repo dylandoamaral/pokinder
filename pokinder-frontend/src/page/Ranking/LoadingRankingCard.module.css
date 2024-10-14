@@ -1,7 +1,7 @@
 .container {
   position: relative;
   height: 104px;
-  margin: var(--spacing-L);
+  margin: 20px;
 
   background-color: var(--foreground-color);
   border-radius: var(--border-radius-L);
