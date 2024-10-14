@@ -16,15 +16,23 @@ import styles from "./AdminCreateReferenceModal.module.css";
 function AdminCreateReferenceModal({ isVisible, onClose }) {
   const { t } = useTranslation();
 
-  const [name, setName] = useState(undefined);
-  const [source, setSource] = useState(undefined);
-  const [family, setFamily] = useState(undefined);
+  const defaultForm = {
+    name: undefined,
+    source: undefined,
+    family: undefined
+  }
+
+  const [form, setForm] = useState(defaultForm)
+
+  const setName = (name) => setForm({ ...form, name: name })
+  const setSource = (source) => setForm({ ...form, source: source })
+  const setFamily = (family) => setForm({ ...form, family: family })
 
   function familyToSelect(family) {
     return { value: family.id, label: family.name };
   }
 
-  const createButtonDisabled = name === undefined || source === undefined || family === undefined;
+  const createButtonDisabled = form.name === undefined || form.source === undefined || form.family === undefined;
 
   return (
     <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
@@ -48,9 +56,7 @@ function AdminCreateReferenceModal({ isVisible, onClose }) {
           variant="text"
           foreground
           onClick={() => {
-            setName(undefined);
-            setSource(undefined);
-            setFamily(undefined);
+            setForm(defaultForm);
             onClose();
           }}
         />
@@ -59,10 +65,8 @@ function AdminCreateReferenceModal({ isVisible, onClose }) {
           foreground
           disabled={createButtonDisabled}
           onClick={() => {
-            addReference(name, source, family.value);
-            setName(undefined);
-            setSource(undefined);
-            setFamily(undefined);
+            addReference(form.name, form.source, form.family.value);
+            setForm(defaultForm);
             toast.success(t("Reference creation success"));
             onClose();
           }}

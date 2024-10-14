@@ -23,8 +23,16 @@ function AdminAcceptReferenceProposalModal({
 }) {
   const { t } = useTranslation();
 
-  const [family, setFamily] = useState(undefined);
-  const [reference, setReference] = useState(undefined);
+  const defaultForm = {
+    family: undefined,
+    reference: undefined
+  }
+
+  const [form, setForm] = useState(defaultForm)
+
+  const setFamily = (family) => setForm({ ...form, family: family })
+  const setReference = (reference) => setForm({ ...form, reference: reference })
+
 
   function familyToSelect(family) {
     return { value: family.id, label: family.name };
@@ -34,7 +42,7 @@ function AdminAcceptReferenceProposalModal({
     return { value: reference.id, label: reference.name };
   }
 
-  const proposeButtonDisabled = family === undefined && reference === undefined;
+  const proposeButtonDisabled = form.family === undefined && form.reference === undefined;
 
   if (referenceProposal === undefined) return <></>;
 
@@ -74,11 +82,11 @@ function AdminAcceptReferenceProposalModal({
       <Panel title={t("Matching reference")}>
         <FutureSelect
           futureValues={async () =>
-            family === undefined ? [] : await listReferences(family.value, undefined)
+            form.family === undefined ? [] : await listReferences(form.family.value, undefined)
           }
           valueToOption={referenceToSelect}
           onChange={setReference}
-          updateKey={family} // NOTE: trick to force rerendering when family change.
+          updateKey={form.family} // NOTE: trick to force rerendering when family change.
         />
       </Panel>
       <div className={styles.buttons}>
@@ -87,8 +95,7 @@ function AdminAcceptReferenceProposalModal({
           variant="text"
           foreground
           onClick={() => {
-            setFamily(undefined);
-            setReference(undefined);
+            setForm(defaultForm);
             onClose();
           }}
         />
@@ -99,11 +106,10 @@ function AdminAcceptReferenceProposalModal({
           onClick={async () => {
             await acceptReferenceProposal(
               referenceProposal.fusion.id,
-              reference.value,
+              form.reference.value,
               referenceProposal.id,
             );
-            setFamily(undefined);
-            setReference(undefined);
+            setForm(defaultForm);
             toast.success(t("Reference validation success"));
             refreshProposals();
             onClose();
