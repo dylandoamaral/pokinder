@@ -46,8 +46,10 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
   const defaultPokemonSizeMobile = defaultPokemonSizeDesktop * MOBILE_RATIO;
   const defaultPokemonSize = isMobile ? defaultPokemonSizeMobile : defaultPokemonSizeDesktop;
 
-  const defaultReferenceTopPosition = hasFocus ? 144 : 260;
-  const defaultReferenceLeftPosition = defaultBackgroundWidthDesktop - 16;
+  const defaultReferenceTopPosition = isMobile ? 150 : 144;
+  const defaultReferenceLeftPosition = isMobile
+    ? defaultBackgroundWidthMobile - 24
+    : defaultBackgroundWidthDesktop - 16;
 
   const [opacity, setOpacity] = useState(defaultOpacity);
   const [backgroundWidth, setBackgroundWidth] = useState(defaultBackgroundWidth);
@@ -97,23 +99,23 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
   }
 
   function renderReference(reference, key) {
+    if (isMobile) return <></>;
+
     return <VoteCardReference key={key} reference={reference} />;
   }
 
   function renderReferenceButton() {
-    if (isUser) {
-      return (
-        <div className={styles.referenceButton} onClick={() => onReferenceButtonClick()}>
-          <FaPlus className={styles.referenceButtonIcon} />
-        </div>
-      );
-    } else {
-      return <></>;
-    }
+    if (!isUser) return <></>;
+
+    return (
+      <div className={styles.referenceButton} onClick={() => onReferenceButtonClick()}>
+        <FaPlus className={styles.referenceButtonIcon} />
+      </div>
+    );
   }
 
   function renderReferences(references) {
-    if (!hasFocus || isMobile) return null;
+    if (!hasFocus) return <></>;
 
     return (
       <motion.div
