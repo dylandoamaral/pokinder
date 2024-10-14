@@ -22,6 +22,7 @@ services:
   minio:
     container_name: pokinder-minio
     image: "minio/minio:latest"
+    restart: always
     ports:
       - "9000:9000"
       - "8900:8900"
