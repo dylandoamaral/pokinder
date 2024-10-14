@@ -54,6 +54,9 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
         counts = {vote_type: count for vote_type, count in result}
         return counts
 
+    def __calculate_average_score(self, vote_score_column, vote_count_column):
+        return func.round(func.sum(vote_score_column * vote_count_column) / func.sum(vote_count_column))
+
     async def __favorite_account_pokemon(self, is_head, account_id=None) -> Optional[PokemonAnalytics]:
         fusion_attribute = "head_id" if is_head else "body_id"
         scores = (
@@ -76,11 +79,18 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
         )
         scores = scores.subquery()
         query = (
-            select(Pokemon.name, Pokemon.pokedex_id, func.avg(scores.c.score))
+            select(
+                Pokemon.name,
+                Pokemon.pokedex_id,
+                self.__calculate_average_score(
+                    vote_score_column=scores.c.score,
+                    vote_count_column=scores.c.count,
+                ).label("scores"),
+            )
             .join(Fusion, Pokemon.id == getattr(Fusion, fusion_attribute))
             .join(scores, Fusion.id == scores.c.fusion_id)
             .group_by(Pokemon.name, Pokemon.pokedex_id)
-            .order_by(func.avg(scores.c.score).desc(), func.sum(scores.c.count).desc())
+            .order_by(desc("scores"), func.sum(scores.c.count).desc())
             .limit(1)
         )
         result = await self.session.execute(query)
@@ -96,10 +106,17 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
     async def __favorite_community_pokemon(self, is_head) -> Optional[PokemonAnalytics]:
         fusion_attribute = "head_id" if is_head else "body_id"
         query = (
-            select(Pokemon.name, Pokemon.pokedex_id, func.avg(Fusion.vote_score))
+            select(
+                Pokemon.name,
+                Pokemon.pokedex_id,
+                self.__calculate_average_score(
+                    vote_score_column=Fusion.vote_score,
+                    vote_count_column=Fusion.vote_count,
+                ).label("scores"),
+            )
             .join(Fusion, Pokemon.id == getattr(Fusion, fusion_attribute))
             .group_by(Pokemon.name, Pokemon.pokedex_id)
-            .order_by(func.avg(Fusion.vote_score).desc(), func.sum(Fusion.vote_count).desc())
+            .order_by(desc("scores"), func.sum(Fusion.vote_count).desc())
             .filter(Fusion.vote_count > 0)
             .limit(1)
         )
@@ -137,7 +154,10 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
             select(
                 Creator.id,
                 Creator.name,
-                (func.sum(scores.c.score) / func.sum(scores.c.count)).label("scores"),
+                self.__calculate_average_score(
+                    vote_score_column=scores.c.score,
+                    vote_count_column=scores.c.count,
+                ).label("scores"),
             )
             .join(Fusion.creators)
             .join(scores, Fusion.id == scores.c.fusion_id)
@@ -173,7 +193,10 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
             select(
                 Creator.id,
                 Creator.name,
-                (func.sum(Fusion.vote_score) / func.sum(Fusion.vote_count)).label("scores"),
+                self.__calculate_average_score(
+                    vote_score_column=Fusion.vote_score,
+                    vote_count_column=Fusion.vote_count,
+                ).label("scores"),
             )
             .join(Fusion.creators)
             .group_by(Creator.id, Creator.name)
