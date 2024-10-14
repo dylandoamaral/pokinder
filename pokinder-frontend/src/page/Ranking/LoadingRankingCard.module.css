@@ -109,12 +109,11 @@
     width: auto;
     left: 0;
     right: 0;
+
+    height: 84px;
+    margin: 12px 10px 12px 16px;
   }
 
-  .container {
-    height: 84px;
-    margin: 10px;
-  }
 
   .rank {
     position: absolute;
