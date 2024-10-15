@@ -9,11 +9,12 @@ function Input({
   title = undefined,
   placeholder = undefined,
   defaultValue = undefined,
+  foreground = true,
   type = InputType.Text,
   required = true,
   validators = [],
-  setIsValid = (_) => {},
-  onChange = () => {},
+  setIsValid = (_) => { },
+  onChange = () => { },
   forceSpacer = false,
 }) {
   const [inputValue, setInputValue] = useState(defaultValue);
@@ -74,7 +75,7 @@ function Input({
   }
 
   return (
-    <Panel title={title}>
+    <Panel title={title} foreground={foreground}>
       <div className={styles.box}>
         <input
           className={styles.input}

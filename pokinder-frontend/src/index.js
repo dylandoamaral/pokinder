@@ -8,9 +8,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Admin from "./page/Admin/Admin";
 import Analytics from "./page/Analytics/Analytics";
+import LogIn from "./page/LogIn/LogIn";
 import NotFound from "./page/NotFound/NotFound";
 import Pokedex from "./page/Pokedex/Pokedex";
 import Ranking from "./page/Ranking/Ranking";
+import Signup from "./page/SignUp/SignUp";
 import Vote from "./page/Vote/Vote";
 
 import { AuthenticationProvider } from "./context/authentication";
@@ -30,6 +32,8 @@ const router = createBrowserRouter([
   { path: "/ranking", element: <Ranking /> },
   { path: "/analytics", element: <Analytics /> },
   { path: "/admin", element: <Admin /> },
+  { path: "/login", element: <LogIn /> },
+  { path: "/signup", element: <Signup /> },
   { path: "*", element: <NotFound /> },
 ]);
 
