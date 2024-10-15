@@ -20,7 +20,7 @@ class ReferenceFamilyController(Controller):
     ) -> list[ReferenceFamily]:
         return await reference_family_dependency.list()
 
-    @post(path="/", dto=None, guards=[admin_only])
+    @post(path="/", dto=None, guards=[admin_only], include_in_schema=False)
     async def insert_reference_family(
         self,
         data: ReferenceFamilyInsert,
