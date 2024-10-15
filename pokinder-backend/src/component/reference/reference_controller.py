@@ -24,7 +24,7 @@ class ReferenceController(Controller):
     ) -> list[Reference]:
         return await reference_dependency.list(reference_family_id, reference_family_name)
 
-    @post(path="/", dto=None, guards=[admin_only])
+    @post(path="/", dto=None, guards=[admin_only], include_in_schema=False)
     async def insert_reference(
         self,
         reference_dependency: ReferenceDependency,

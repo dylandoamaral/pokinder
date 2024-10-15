@@ -33,7 +33,7 @@ class ReferenceProposalController(Controller):
             offset,
         )
 
-    @post(path="/", dto=None)
+    @post(path="/", dto=None, include_in_schema=False)
     async def post_reference_pruposal(
         self,
         request: Request,
@@ -45,7 +45,7 @@ class ReferenceProposalController(Controller):
             data,
         )
 
-    @post(path="/refuse", dto=None, guards=[admin_only])
+    @post(path="/refuse", dto=None, guards=[admin_only], include_in_schema=False)
     async def refuse_reference_pruposal(
         self,
         request: Request,
@@ -54,7 +54,7 @@ class ReferenceProposalController(Controller):
     ) -> None:
         return await reference_proposal_dependency.refuse(request.user.id, data)
 
-    @post(path="/accept", dto=None, guards=[admin_only])
+    @post(path="/accept", dto=None, guards=[admin_only], include_in_schema=False)
     async def accept(
         self,
         request: Request,
