@@ -33,6 +33,13 @@ def retrieve_postgres_connection_string(local=False) -> str:
     return f"postgresql+asyncpg://postgres:{postgres_password}@{postgres_host}:5432/{postgres_db}"
 
 
+def retrieve_backend_host() -> str:
+    load_pokinder_dotenv()
+    backend_host = get_env_named_("BACKEND_HOST")
+
+    return backend_host
+
+
 def retrieve_frontend_endpoint() -> str:
     load_pokinder_dotenv()
     frontend_host = get_env_named_("FRONTEND_HOST")
@@ -51,3 +58,8 @@ def retrieve_version() -> str:
 def retrieve_jwt_secret() -> str:
     load_pokinder_dotenv()
     return get_env_named_("JWT_SECRET")
+
+
+def retrieve_csrf_secret() -> str:
+    load_pokinder_dotenv()
+    return get_env_named_("CSRF_secret")

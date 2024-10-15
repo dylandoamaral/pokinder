@@ -11,13 +11,25 @@ import { refresh } from "../api/pokinder";
 import { convertResponseToMessage } from "../data/errors";
 import { isThemeLight } from "../data/themes";
 
+import { getCookie } from "../utils/cookie";
+
 function AxiosErrorHandler({ children }) {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const { refreshToken, setToken, setRefreshToken, disconnect } = useAuthentication();
 
   useEffect(() => {
-    const interceptor = http.instance.interceptors.response.use(null, async (error) => {
+    function onSuccessRequest(config) {
+      const csrfToken = getCookie("XSRF-TOKEN");
+
+      if (csrfToken && ["POST", "PUT", "PATCH", "DELETE"].includes(config.method.toUpperCase())) {
+        config.headers["X-XSRF-TOKEN"] = csrfToken;
+      }
+
+      return config;
+    }
+
+    async function onErrorResponse(error, interceptor) {
       // Handle refresh token
       if (error.response !== undefined && error.response.status === 401) {
         http.instance.interceptors.response.eject(interceptor);
@@ -58,10 +70,21 @@ function AxiosErrorHandler({ children }) {
       }
 
       return Promise.reject(error);
-    });
+    }
+
+    const requestInterceptor = http.instance.interceptors.request.use(
+      (config) => onSuccessRequest(config),
+      null,
+    );
+
+    const responseInterceptor = http.instance.interceptors.response.use(
+      null,
+      async (error) => await onErrorResponse(error, responseInterceptor),
+    );
 
     return () => {
-      http.instance.interceptors.response.eject(interceptor);
+      http.instance.interceptors.request.eject(requestInterceptor);
+      http.instance.interceptors.response.eject(responseInterceptor);
     };
   }, [refreshToken, setToken, setRefreshToken, disconnect, t, theme]);
 
