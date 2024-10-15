@@ -43,7 +43,7 @@ class VoteController(Controller):
             creator_name,
         )
 
-    @post(path="/", dto=None)
+    @post(path="/", dto=None, include_in_schema=False)
     async def post_vote(
         self,
         request: Request,

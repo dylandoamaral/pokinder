@@ -6,8 +6,9 @@ const https = is_localhost ? "http" : "https";
 const instance = axios.create({
   baseURL: `${https}://${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`,
   timeout: 50000,
+  withCredentials: true,
   headers: {
-    "Content-type": "application/json",
+    "Content-Type": "application/json",
   },
 });
 

@@ -24,6 +24,7 @@ class AccountController(Controller):
     dto = DTO
     return_dto = returnDTO
     path = "/account"
+    include_in_schema = False
 
     @post(path="/signup", dto=None)
     async def signup(self, account_dependency: AccountDependency, data: AccountSignup) -> UUID:
