@@ -8,10 +8,6 @@ const instance = axios.create({
   timeout: 50000,
   withCredentials: true,
   headers: {
-    //'Access-Control-Allow-Credentials': 'true',
-    //'Access-Control-Allow-Origin': '*',
-    //'Access-Control-Allow-Headers': 'X-PINGOTHER, Content-Type',
-    //'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS',
     "Content-Type": "application/json",
   },
 });
