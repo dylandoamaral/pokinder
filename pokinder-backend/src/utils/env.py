@@ -33,9 +33,9 @@ def retrieve_postgres_connection_string(local=False) -> str:
     return f"postgresql+asyncpg://postgres:{postgres_password}@{postgres_host}:5432/{postgres_db}"
 
 
-def retrieve_backend_host() -> str:
+def retrieve_frontend_host() -> str:
     load_pokinder_dotenv()
-    backend_host = get_env_named_("BACKEND_HOST")
+    backend_host = get_env_named_("FRONTEND_HOST")
 
     return backend_host
 
