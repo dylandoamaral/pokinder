@@ -36,6 +36,12 @@ export const AuthenticationProvider = ({ children }) => {
     }
   }
 
+  function generateGuestToken() {
+    const guestToken = uuidv4();
+    localStorage.setItem(guestTokenKey, guestToken);
+    return guestToken;
+  }
+
   function retrieveToken() {
     const token = localStorage.getItem(tokenKey);
 
@@ -110,6 +116,7 @@ export const AuthenticationProvider = ({ children }) => {
       setToken: setToken,
       setRefreshToken: storeRefreshToken,
       disconnect: disconnect,
+      generateGuestToken: generateGuestToken,
     };
   }, [token, refreshToken]);
 

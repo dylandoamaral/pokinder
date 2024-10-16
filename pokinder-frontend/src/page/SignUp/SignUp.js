@@ -20,7 +20,7 @@ import styles from "../../shared/style/Identification.module.css";
 function Signup() {
   const { theme } = useTheme();
   const { t } = useTranslation();
-  const { isUser, accountId, setToken, setRefreshToken } = useAuthentication();
+  const { isUser, accountId, setToken, setRefreshToken, generateGuestToken } = useAuthentication();
 
   const defaultForm = {
     username: undefined,
@@ -45,6 +45,7 @@ function Signup() {
     const tokens = await signup(accountId, form.username, form.email, form.password);
     setToken(tokens.token);
     setRefreshToken(tokens.refresh);
+    generateGuestToken();
   });
 
   return (
