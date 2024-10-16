@@ -13,3 +13,12 @@ class AccountSignup(BaseModel):
 class AccountLogin(BaseModel):
     username_or_email: str
     password: str
+
+
+class AccountResetPassword(BaseModel):
+    email: str
+
+
+class AccountChangePassword(BaseModel):
+    token: str
+    password: str

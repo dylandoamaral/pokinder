@@ -62,4 +62,14 @@ def retrieve_jwt_secret() -> str:
 
 def retrieve_csrf_secret() -> str:
     load_pokinder_dotenv()
-    return get_env_named_("CSRF_secret")
+    return get_env_named_("CSRF_SECRET")
+
+
+def retrieve_gmail_email() -> str:
+    load_pokinder_dotenv()
+    return get_env_named_("GMAIL_EMAIL")
+
+
+def retrieve_gmail_password() -> str:
+    load_pokinder_dotenv()
+    return get_env_named_("GMAIL_PASSWORD")

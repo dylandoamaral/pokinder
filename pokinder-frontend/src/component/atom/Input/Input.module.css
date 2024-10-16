@@ -21,7 +21,7 @@
 }
 
 .input {
-  color: var(--input-foreground-color);
+  color: var(--font-foreground-color);
   font-size: var(--font-size-M);
   background-color: var(--input-background-color);
   line-height: var(--line-height-M);
@@ -47,7 +47,7 @@
   font-size: var(--font-size-S);
   line-height: var(--line-height-S);
   align-self: flex-end;
-  color: var(--ko-color);
+  color: var(--ko-message-color);
 }
 
 .errorSpacer {

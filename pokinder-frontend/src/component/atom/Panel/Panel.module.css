@@ -7,8 +7,15 @@
 }
 
 .title {
-  color: var(--font-foreground-color);
   font-size: var(--font-size-M);
   line-height: var(--line-height-M);
   font-weight: bold;
+}
+
+.title_background {
+  color: var(--font-background-color);
+}
+
+.title_foreground {
+  color: var(--font-foreground-color);
 }

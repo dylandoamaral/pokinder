@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { FaTimes } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useAuthentication } from "../../../hook/useAuthentication";
 
@@ -9,18 +10,14 @@ import { authorizedNavlinks } from "../../../data/navlinks";
 import Button from "../../atom/Button/Button";
 import styles from "./Sidebar.module.css";
 
-function Sidebar({ isVisible, onClose, toggleLoginModal }) {
+function Sidebar({ isVisible, onClose }) {
   const { t } = useTranslation();
   const { isUser, isAdmin, username, disconnect } = useAuthentication();
+  const navigate = useNavigate();
 
   function disconnectAndClose() {
     onClose();
     disconnect();
-  }
-
-  function loginAndClose() {
-    onClose();
-    toggleLoginModal();
   }
 
   function renderNavLink(link, index) {
@@ -47,7 +44,7 @@ function Sidebar({ isVisible, onClose, toggleLoginModal }) {
         </div>
       );
     } else {
-      return <Button title={t("Log In")} onClick={loginAndClose} foreground />;
+      return <Button title={t("Log In")} onClick={() => navigate("/login")} foreground />;
     }
   }
 
