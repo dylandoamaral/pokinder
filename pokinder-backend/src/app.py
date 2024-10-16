@@ -40,9 +40,9 @@ from src.component.vote import VoteController, use_postgres_vote_dependency
 from src.security.middleware import JWTAuthenticationMiddleware
 from src.shared.dependency.gmail_email_dependency import use_gmail_email_dependency
 from src.utils.env import (
-    retrieve_backend_host,
     retrieve_csrf_secret,
     retrieve_frontend_endpoint,
+    retrieve_frontend_host,
     retrieve_postgres_connection_string,
     retrieve_version,
 )
@@ -106,6 +106,6 @@ app = Litestar(
     cors_config=CORSConfig(allow_origins=[retrieve_frontend_endpoint()], allow_credentials=True),
     plugins=[SQLAlchemyInitPlugin(config=sqlalchemy_config)],
     compression_config=CompressionConfig(backend="gzip", gzip_compress_level=9),
-    allowed_hosts=AllowedHostsConfig(allowed_hosts=[f"{retrieve_backend_host()}"]),
+    allowed_hosts=AllowedHostsConfig(allowed_hosts=[f"{retrieve_frontend_host()}"]),
     middleware=[jwt_middleware, rate_limit_middleware, logging_middleware],
 )
