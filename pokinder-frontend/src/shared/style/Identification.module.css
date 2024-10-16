@@ -20,11 +20,29 @@
   gap: 8px;
 }
 
+.forgot {
+  font-size: var(--font-size-S);
+  color: var(--font-background-color);
+  text-align: right;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .action {
   color: var(--primary-medium-background);
+  text-decoration: none;
+  font-weight: bold;
 }
 
 .action:hover {
   text-decoration: underline;
   cursor: pointer;
+}
+
+.header {
+  text-align: center;
+}
+
+.footer {
+  text-align: center;
 }

@@ -34,6 +34,23 @@ export async function refresh(refreshToken) {
   return response.data;
 }
 
+export async function resetPassword(email) {
+  const body = {
+    email: email,
+  };
+
+  await http.post("/account/reset_password/", body);
+}
+
+export async function changePassword(token, password) {
+  const body = {
+    token: token,
+    password: password,
+  };
+
+  await http.post("/account/change_password/", body);
+}
+
 export async function listCreators() {
   const response = await http.get("/creator");
 

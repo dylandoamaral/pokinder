@@ -1,27 +1,26 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "react-query";
-import { useNavigate, Navigate } from "react-router-dom";
-import { useTheme } from "../../hook/useTheme";
+import { Link, Navigate } from "react-router-dom";
 
 import { useAuthentication } from "../../hook/useAuthentication";
+import { useTheme } from "../../hook/useTheme";
 
 import { signup } from "../../api/pokinder";
 
 import Button from "../../component/atom/Button/Button";
 import Input from "../../component/atom/Input/Input";
 import { InputType } from "../../component/atom/Input/Input";
-import { InputValidator } from "../../component/atom/Input/Input";
+import { InputValidator, validateEmail } from "../../component/atom/Input/Input";
 import Title from "../../component/atom/Title/Title";
 import Page from "../../component/organism/Page/Page";
 
-import styles from "./SignUp.module.css";
+import styles from "../../shared/style/Identification.module.css";
 
 function Signup() {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const { isUser, accountId, setToken, setRefreshToken } = useAuthentication();
-  const navigate = useNavigate();
 
   const defaultForm = {
     username: undefined,
@@ -48,17 +47,12 @@ function Signup() {
     setRefreshToken(tokens.refresh);
   });
 
-  function validateEmail(email) {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
-  }
-
   return (
-    <Page name={t("Log In")}>
-      {isUser && (<Navigate to=".." relative="path"></Navigate>)}
+    <Page name={t("Sign Up")}>
+      {isUser && <Navigate to=".." relative="path"></Navigate>}
       <div className={styles.container}>
         <div className={styles.form}>
-          <Title title={t("Sign Up")} />
+          <Title title={t("Become a trainer !")} />
           <div className={styles.inputs}>
             <Input
               title={t("Username")}
@@ -120,17 +114,18 @@ function Signup() {
             />
           </div>
           <Button
-            title={t("Become a trainer !")}
+            title={t("Sign Up")}
             disabled={!isFormValid}
             onClick={submit}
             foreground={theme !== "pokeball"}
             variant="filled"
           />
-          <span>
+          <span className={styles.footer}>
             {t("Already trainer ?")}{" "}
-            <span className={styles.action} onClick={() => navigate("/login")}>
+            <Link className={styles.action} to="/login">
+              {" "}
               {t("Log In")}
-            </span>
+            </Link>
           </span>
         </div>
       </div>

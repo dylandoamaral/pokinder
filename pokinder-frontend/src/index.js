@@ -8,7 +8,9 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Admin from "./page/Admin/Admin";
 import Analytics from "./page/Analytics/Analytics";
+import ForgotPassword from "./page/ForgotPassword/ForgotPassword";
 import LogIn from "./page/LogIn/LogIn";
+import NewPassword from "./page/NewPassword/NewPassword";
 import NotFound from "./page/NotFound/NotFound";
 import Pokedex from "./page/Pokedex/Pokedex";
 import Ranking from "./page/Ranking/Ranking";
@@ -34,6 +36,8 @@ const router = createBrowserRouter([
   { path: "/admin", element: <Admin /> },
   { path: "/login", element: <LogIn /> },
   { path: "/signup", element: <Signup /> },
+  { path: "/forgotpassword", element: <ForgotPassword /> },
+  { path: "/newpassword", element: <NewPassword /> },
   { path: "*", element: <NotFound /> },
 ]);
 

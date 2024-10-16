@@ -13,8 +13,8 @@ function Input({
   type = InputType.Text,
   required = true,
   validators = [],
-  setIsValid = (_) => { },
-  onChange = () => { },
+  setIsValid = (_) => {},
+  onChange = () => {},
   forceSpacer = false,
 }) {
   const [inputValue, setInputValue] = useState(defaultValue);
@@ -22,7 +22,7 @@ function Input({
   const handleInputChange = (e) => {
     const value = e.target.value === "" ? undefined : e.target.value;
     setInputValue(value);
-    setIsValid(retrieveUnresolvedValidator(value) === undefined);
+    setIsValid(value === undefined ? false : retrieveUnresolvedValidator(value) === undefined);
     onChange(value);
   };
 
@@ -107,6 +107,11 @@ export class InputValidator {
   isValid(input) {
     return this.predicate(input);
   }
+}
+
+export function validateEmail(email) {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailPattern.test(email);
 }
 
 export default Input;

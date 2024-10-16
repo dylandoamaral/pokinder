@@ -38,6 +38,7 @@ from src.component.reference_proposal import (
 )
 from src.component.vote import VoteController, use_postgres_vote_dependency
 from src.security.middleware import JWTAuthenticationMiddleware
+from src.shared.dependency.gmail_email_dependency import use_gmail_email_dependency
 from src.utils.env import (
     retrieve_backend_host,
     retrieve_csrf_secret,
@@ -94,6 +95,7 @@ app = Litestar(
         "reference_dependency": Provide(use_postgres_reference_dependency, sync_to_thread=False),
         "reference_proposal_dependency": Provide(use_postgres_reference_proposal_dependency, sync_to_thread=False),
         "reference_family_dependency": Provide(use_postgres_reference_family_dependency, sync_to_thread=False),
+        "email_dependency": Provide(use_gmail_email_dependency, sync_to_thread=False),
     },
     exception_handlers={
         RepositoryException: repository_exception_to_http_response,  # type: ignore[dict-item]
