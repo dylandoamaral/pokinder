@@ -38,3 +38,4 @@ def upgrade() -> None:
 
 def downgrade() -> None:
     op.drop_table("account_reset_password")
+    op.execute("DROP TYPE accountresetpasswordstatus;")
