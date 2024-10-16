@@ -33,11 +33,13 @@
 :root[theme="pokeball"] {
   --ok-color: #008000;
   --ko-color: #c42833;
+  --ko-message-color: #ffffff;
 
   --downvote-color: #c42833;
   --favorite-color: #eda756;
   --upvote-color: #5285ea;
 
+  --primary-medium-background: #ffffff;
   --primary-medium: #e13d48;
   --primary-high: #c42833;
 
@@ -58,11 +60,13 @@
 :root[theme="superball"] {
   --ok-color: #008000;
   --ko-color: #c42833;
+  --ko-message-color: #c42833;
 
   --downvote-color: #c42833;
   --favorite-color: #eda756;
   --upvote-color: #5285ea;
 
+  --primary-medium-background: #0178c8;
   --primary-medium: #0178c8;
   --primary-high: #0262a6;
 
@@ -83,11 +87,13 @@
 :root[theme="hyperball"] {
   --ok-color: #008000;
   --ko-color: #c42833;
+  --ko-message-color: #c42833;
 
   --downvote-color: #c42833;
   --favorite-color: #eda756;
   --upvote-color: #5285ea;
 
+  --primary-medium-background: #e7b90b;
   --primary-medium: #e7b90b;
   --primary-high: #c79007;
 

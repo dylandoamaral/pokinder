@@ -9,6 +9,7 @@ function Input({
   title = undefined,
   placeholder = undefined,
   defaultValue = undefined,
+  foreground = true,
   type = InputType.Text,
   required = true,
   validators = [],
@@ -21,7 +22,7 @@ function Input({
   const handleInputChange = (e) => {
     const value = e.target.value === "" ? undefined : e.target.value;
     setInputValue(value);
-    setIsValid(retrieveUnresolvedValidator(value) === undefined);
+    setIsValid(value === undefined ? false : retrieveUnresolvedValidator(value) === undefined);
     onChange(value);
   };
 
@@ -74,7 +75,7 @@ function Input({
   }
 
   return (
-    <Panel title={title}>
+    <Panel title={title} foreground={foreground}>
       <div className={styles.box}>
         <input
           className={styles.input}
@@ -106,6 +107,11 @@ export class InputValidator {
   isValid(input) {
     return this.predicate(input);
   }
+}
+
+export function validateEmail(email) {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailPattern.test(email);
 }
 
 export default Input;

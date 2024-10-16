@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 import { useAuthentication } from "../../../hook/useAuthentication";
 import { useTheme } from "../../../hook/useTheme";
@@ -12,16 +13,13 @@ import Logo from "../../atom/Logo/Logo";
 import NavLink from "../../atom/Navlink/NavLink";
 import Sidebar from "../../molecule/Sidebar/Sidebar";
 import styles from "./Header.module.css";
-import LoginModal from "./LoginModal";
-import SignupModal from "./SignupModal";
 
 function Header() {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const { isUser, isAdmin, username, disconnect } = useAuthentication();
+  const navigate = useNavigate();
 
-  const [showSignupModal, toggleSignupModal] = useToggle();
-  const [showLoginModal, toggleLoginModal] = useToggle();
   const [showSidebar, toggleSidebar] = useToggle();
 
   function renderAccount() {
@@ -34,7 +32,11 @@ function Header() {
       );
     else
       return (
-        <Button foreground={theme !== "pokeball"} title={t("Log In")} onClick={toggleLoginModal} />
+        <Button
+          foreground={theme !== "pokeball"}
+          title={t("Log In")}
+          onClick={() => navigate("/login")}
+        />
       );
   }
 
@@ -65,21 +67,7 @@ function Header() {
           <div className="pc_only">{renderAccount()}</div>
         </div>
       </header>
-      <SignupModal
-        isVisible={showSignupModal}
-        onClose={toggleSignupModal}
-        openLogin={toggleLoginModal}
-      />
-      <LoginModal
-        isVisible={showLoginModal}
-        onClose={toggleLoginModal}
-        openSignup={toggleSignupModal}
-      />
-      <Sidebar
-        isVisible={showSidebar}
-        onClose={toggleSidebar}
-        toggleLoginModal={toggleLoginModal}
-      />
+      <Sidebar isVisible={showSidebar} onClose={toggleSidebar} toggleLoginModal={() => {}} />
     </>
   );
 }

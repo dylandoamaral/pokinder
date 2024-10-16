@@ -8,7 +8,7 @@ export const ThemeProvider = ({ children }) => {
   function retrieveTheme() {
     const prefereDark =
       window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const defaultTheme = prefereDark ? "hyperball" : "pokeball";
+    const defaultTheme = prefereDark ? "hyperball" : "superball";
     const token = localStorage.getItem(tokenKey);
 
     return token || defaultTheme;
