@@ -16,7 +16,7 @@ function Analytics() {
   const { t, i18n } = useTranslation();
   const { token } = useAuthentication();
 
-  const { refetch, data, isLoading, isError } = useQuery(["anyltics"], getAnalytics, {
+  const { refetch, data, isFetching, isError } = useQuery(["analytics"], getAnalytics, {
     staleTime: 60 * 60 * 1000,
     cacheTime: 0,
   });
@@ -63,32 +63,32 @@ function Analytics() {
           <InformationPanel
             title="Number of votes"
             value={data?.community?.vote_count}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Number of fusions"
             value={data?.community?.fusion_count}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Number of creators"
             value={data?.community?.creator_count}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Percentage of dislikes"
             value={getPercentage(data?.community?.dislike_count, data?.community?.vote_count)}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Percentage of favorites"
             value={getPercentage(data?.community?.favorite_count, data?.community?.vote_count)}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Percentage of likes"
             value={getPercentage(data?.community?.like_count, data?.community?.vote_count)}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
         </div>
         <div className={getGridStyle("3favorite")}>
@@ -98,7 +98,7 @@ function Analytics() {
             type="pokemon"
             isUser={false}
             isHead={true}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <FavoritePanel
             title="Favorite pokemon body"
@@ -106,36 +106,36 @@ function Analytics() {
             type="pokemon"
             isUser={false}
             isHead={false}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <FavoritePanel
             title="Favorite creator"
             data={data?.community?.favorite_creator}
             type="fusion"
             isUser={false}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
         </div>
         <div className={getGridStyle(4)}>
           <InformationPanel
             title="Number of reference families"
             value={data?.community?.reference_family_count}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Number of references"
             value={data?.community?.reference_count}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Number of reference fusions"
             value={data?.community?.reference_fusion_count}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Number of proposers"
             value={data?.community?.reference_proposer_count}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
         </div>
       </div>
@@ -145,38 +145,38 @@ function Analytics() {
           <InformationPanel
             title="Rank"
             value={`${data?.user?.rank} / ${data?.community?.account_count}`}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Percentage of contribution"
             value={getPercentage(data?.user?.vote_count, data?.community?.vote_count)}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Collection"
             value={getPercentage(data?.user?.vote_count, data?.community?.fusion_count)}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
-          <InformationPanel title="Date of inscription" value={getDate()} isLoading={isLoading} />
+          <InformationPanel title="Date of inscription" value={getDate()} isLoading={isFetching} />
           <InformationPanel
             title="Number of votes"
             value={data?.user?.vote_count}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Percentage of dislikes"
             value={getPercentage(data?.user?.dislike_count, data?.user?.vote_count)}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Percentage of favorites"
             value={getPercentage(data?.user?.favorite_count, data?.user?.vote_count)}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Percentage of likes"
             value={getPercentage(data?.user?.like_count, data?.user?.vote_count)}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
         </div>
         <div className={getGridStyle("3favorite")}>
@@ -186,7 +186,7 @@ function Analytics() {
             type="pokemon"
             isUser={true}
             isHead={true}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <FavoritePanel
             title="Favorite pokemon body"
@@ -194,14 +194,14 @@ function Analytics() {
             type="pokemon"
             isUser={true}
             isHead={false}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <FavoritePanel
             title="Favorite creator"
             data={data?.user?.favorite_creator}
             type="fusion"
             isUser={true}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
         </div>
         <div className={getGridStyle(2)}>
@@ -209,13 +209,13 @@ function Analytics() {
             title="Number of validated reference proposals"
             value={data?.user?.validated_reference_proposal_count}
             isUser={true}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
           <InformationPanel
             title="Number of reference proposals"
             value={data?.user?.reference_proposal_count}
             isUser={true}
-            isLoading={isLoading}
+            isLoading={isFetching}
           />
         </div>
       </div>
