@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useMutation } from "react-query";
 import { toast } from "react-toastify";
 
 import { acceptReferenceProposal, listReferenceFamilies, listReferences } from "../../api/pokinder";
@@ -32,6 +33,24 @@ function AdminAcceptReferenceProposalModal({
 
   const setFamily = (family) => setForm({ ...form, family: family });
   const setReference = (reference) => setForm({ ...form, reference: reference });
+
+  const { mutate: submit } = useMutation(
+    async () => {
+      await acceptReferenceProposal(
+        referenceProposal.fusion.id,
+        form.reference.value,
+        referenceProposal.id,
+      );
+    },
+    {
+      onSuccess: () => {
+        setForm(defaultForm);
+        toast.success(t("Reference validation success"));
+        refreshProposals();
+        onClose();
+      },
+    },
+  );
 
   function familyToSelect(family) {
     return { value: family.id, label: family.name };
@@ -102,17 +121,7 @@ function AdminAcceptReferenceProposalModal({
           title={t("Reference validation action")}
           foreground
           disabled={proposeButtonDisabled}
-          onClick={async () => {
-            await acceptReferenceProposal(
-              referenceProposal.fusion.id,
-              form.reference.value,
-              referenceProposal.id,
-            );
-            setForm(defaultForm);
-            toast.success(t("Reference validation success"));
-            refreshProposals();
-            onClose();
-          }}
+          onClick={submit}
         />
       </div>
     </Modal>
