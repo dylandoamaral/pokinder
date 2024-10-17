@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useMutation } from "react-query";
 import { toast } from "react-toastify";
 
 import { addReferenceProposal } from "../../../api/pokinder";
@@ -17,10 +18,30 @@ import styles from "./ReferenceProposalModal.module.css";
 function ReferenceProposalModal({ isVisible, onClose, fusion }) {
   const { t } = useTranslation();
 
-  const [name, setName] = useState(undefined);
-  const [family, setFamily] = useState(undefined);
+  const defaultForm = {
+    name: undefined,
+    family: undefined,
+  };
 
-  const proposeButtonDisabled = name === undefined || family === undefined;
+  const [form, setForm] = useState(defaultForm);
+
+  const setName = (name) => setForm({ ...form, name: name });
+  const setFamily = (family) => setForm({ ...form, family: family });
+
+  const { mutate: submit } = useMutation(
+    async () => {
+      await addReferenceProposal(fusion.id, form.name, form.family);
+    },
+    {
+      onSuccess: () => {
+        toast.success(t("Reference proposal success"));
+        setForm(defaultForm);
+        onClose();
+      },
+    },
+  );
+
+  const proposeButtonDisabled = form.name === undefined || form.family === undefined;
 
   return (
     <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
@@ -50,13 +71,7 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
           title={t("Reference proposal action")}
           foreground
           disabled={proposeButtonDisabled}
-          onClick={() => {
-            addReferenceProposal(fusion.id, name, family);
-            toast.success(t("Reference proposal success"));
-            setName(undefined);
-            setFamily(undefined);
-            onClose();
-          }}
+          onClick={submit}
         />
       </div>
     </Modal>
