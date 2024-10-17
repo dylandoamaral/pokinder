@@ -9,7 +9,7 @@ from .analytics_model import Analytics
 class AnalyticsController(Controller):
     path = "/analytics"
 
-    @get(path="/")
+    @get(path="/", cache=120)
     async def retrieve_rankings(
         self,
         request: Request,

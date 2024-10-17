@@ -19,7 +19,7 @@ class FusionController(Controller):
     async def draw_fusions(self, request: Request, fusion_dependency: FusionDependency, limit: int) -> list[Fusion]:
         return await fusion_dependency.draw(request.user.id, limit)
 
-    @get(path="/ranking")
+    @get(path="/ranking", cache=120)
     async def list_rankings(
         self,
         fusion_dependency: FusionDependency,
