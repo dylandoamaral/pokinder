@@ -101,7 +101,7 @@ app = Litestar(
         RepositoryException: repository_exception_to_http_response,  # type: ignore[dict-item]
     },
     logging_config=logging_config,
-    csrf_config=CSRFConfig(secret=retrieve_csrf_secret(), cookie_name="XSRF-TOKEN", header_name="X-XSRF-TOKEN"),
+    # csrf_config=CSRFConfig(secret=retrieve_csrf_secret(), cookie_name="XSRF-TOKEN", header_name="X-XSRF-TOKEN"),
     openapi_config=OpenAPIConfig(title="Pokinder", version=retrieve_version()),
     cors_config=CORSConfig(allow_origins=[retrieve_frontend_endpoint()], allow_credentials=True),
     plugins=[SQLAlchemyInitPlugin(config=sqlalchemy_config)],
