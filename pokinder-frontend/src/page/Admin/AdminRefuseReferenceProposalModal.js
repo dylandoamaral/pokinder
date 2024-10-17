@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useMutation } from "react-query";
 import { toast } from "react-toastify";
 
 import { refuseReferenceProposal } from "../../api/pokinder";
@@ -24,6 +25,20 @@ function AdminRefuseReferenceProposalModal({
   const { t } = useTranslation();
 
   const [reason, setReason] = useState(undefined);
+
+  const { mutate: submit } = useMutation(
+    async () => {
+      await refuseReferenceProposal(referenceProposal.id, reason);
+    },
+    {
+      onSuccess: () => {
+        setReason(undefined);
+        toast.success(t("Reference cancellation success"));
+        refreshProposals();
+        onClose();
+      },
+    },
+  );
 
   const proposeButtonDisabled = reason === undefined;
 
@@ -64,13 +79,7 @@ function AdminRefuseReferenceProposalModal({
           title={t("Reference cancellation action")}
           foreground
           disabled={proposeButtonDisabled}
-          onClick={async () => {
-            await refuseReferenceProposal(referenceProposal.id, reason);
-            setReason(undefined);
-            toast.success(t("Reference cancellation success"));
-            refreshProposals();
-            onClose();
-          }}
+          onClick={submit}
         />
       </div>
     </Modal>

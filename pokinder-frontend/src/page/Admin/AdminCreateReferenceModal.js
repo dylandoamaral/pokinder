@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useMutation } from "react-query";
 import { toast } from "react-toastify";
 
 import { addReference, listReferenceFamilies } from "../../api/pokinder";
@@ -27,6 +28,19 @@ function AdminCreateReferenceModal({ isVisible, onClose }) {
   const setName = (name) => setForm({ ...form, name: name });
   const setSource = (source) => setForm({ ...form, source: source });
   const setFamily = (family) => setForm({ ...form, family: family });
+
+  const { mutate: submit } = useMutation(
+    async () => {
+      await addReference(form.name, form.source, form.family.value);
+    },
+    {
+      onSuccess: () => {
+        setForm(defaultForm);
+        toast.success(t("Reference creation success"));
+        onClose();
+      },
+    },
+  );
 
   function familyToSelect(family) {
     return { value: family.id, label: family.name };
@@ -65,12 +79,7 @@ function AdminCreateReferenceModal({ isVisible, onClose }) {
           title={t("Create a reference")}
           foreground
           disabled={createButtonDisabled}
-          onClick={() => {
-            addReference(form.name, form.source, form.family.value);
-            setForm(defaultForm);
-            toast.success(t("Reference creation success"));
-            onClose();
-          }}
+          onClick={submit}
         />
       </div>
     </Modal>

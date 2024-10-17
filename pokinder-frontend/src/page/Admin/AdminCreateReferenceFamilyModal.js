@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useMutation } from "react-query";
 import { toast } from "react-toastify";
 
 import { addReferenceFamily } from "../../api/pokinder";
@@ -16,6 +17,19 @@ function AdminCreateReferenceFamilyModal({ isVisible, onClose }) {
   const { t } = useTranslation();
 
   const [name, setName] = useState(undefined);
+
+  const { mutate: submit } = useMutation(
+    async () => {
+      await addReferenceFamily(name);
+    },
+    {
+      onSuccess: () => {
+        setName(undefined);
+        toast.success("Reference family creation toast");
+        onClose();
+      },
+    },
+  );
 
   const createButtonDisabled = name === undefined;
 
@@ -39,12 +53,7 @@ function AdminCreateReferenceFamilyModal({ isVisible, onClose }) {
           title={t("Create a reference family")}
           foreground
           disabled={createButtonDisabled}
-          onClick={() => {
-            addReferenceFamily(name);
-            setName(undefined);
-            toast.success("Reference family creation toast");
-            onClose();
-          }}
+          onClick={submit}
         />
       </div>
     </Modal>
