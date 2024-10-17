@@ -16,9 +16,7 @@ function Analytics() {
   const { t, i18n } = useTranslation();
   const { token } = useAuthentication();
 
-  console.log(token)
-
-  const { refetch, data, isFetching, isError } = useQuery(["anyltics"], getAnalytics, {
+  const { refetch, data, isFetching, isError } = useQuery(["analytics"], getAnalytics, {
     staleTime: 60 * 60 * 1000,
     cacheTime: 0,
   });
