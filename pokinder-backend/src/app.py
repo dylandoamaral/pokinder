@@ -1,8 +1,12 @@
-from litestar import Litestar
+from litestar import Litestar, Request
 from litestar.config.allowed_hosts import AllowedHostsConfig
 from litestar.config.compression import CompressionConfig
 from litestar.config.cors import CORSConfig
 from litestar.config.csrf import CSRFConfig
+from litestar.config.response_cache import (
+    ResponseCacheConfig,
+    default_cache_key_builder,
+)
 from litestar.contrib.repository.exceptions import (
     RepositoryError as RepositoryException,
 )
@@ -16,6 +20,7 @@ from litestar.middleware.base import DefineMiddleware
 from litestar.middleware.logging import LoggingMiddlewareConfig
 from litestar.middleware.rate_limit import RateLimitConfig
 from litestar.openapi import OpenAPIConfig
+from litestar.stores.redis import RedisStore
 
 from src.component.account import AccountController, use_postgres_account_dependency
 from src.component.analytics import (
@@ -37,7 +42,7 @@ from src.component.reference_proposal import (
     use_postgres_reference_proposal_dependency,
 )
 from src.component.vote import VoteController, use_postgres_vote_dependency
-from src.security.middleware import JWTAuthenticationMiddleware
+from src.security.middleware import API_KEY_HEADER, JWTAuthenticationMiddleware
 from src.shared.dependency.gmail_email_dependency import use_gmail_email_dependency
 from src.utils.env import (
     retrieve_backend_host,
@@ -48,13 +53,20 @@ from src.utils.env import (
     retrieve_version,
 )
 from src.utils.exceptions import repository_exception_to_http_response
-from litestar.stores.redis import RedisStore
 
 sqlalchemy_config = SQLAlchemyAsyncConfig(connection_string=retrieve_postgres_connection_string())
 sqlalchemy_plugin = SQLAlchemyInitPlugin(config=sqlalchemy_config)
 
 redis_store = RedisStore.with_client(url=retrieve_redis_endpoint(), port=6379, db=0)
 cache_store = redis_store.with_namespace("cache")
+
+
+def key_builder(request: Request) -> str:
+    return default_cache_key_builder(request) + request.headers.get(API_KEY_HEADER, "")
+
+
+response_cache_config = ResponseCacheConfig(key_builder=key_builder, store="cache")
+rate_limit_middleware = RateLimitConfig(rate_limit=("second", 5), exclude=["/schema"], store="cache").middleware
 
 logging_config = LoggingConfig(
     root={"level": "INFO", "handlers": ["queue_listener"]},
@@ -72,8 +84,6 @@ jwt_middleware = DefineMiddleware(
         "creator",
     ],
 )
-
-rate_limit_middleware = RateLimitConfig(rate_limit=("second", 5), exclude=["/schema"], store="cache").middleware
 
 logging_middleware = LoggingMiddlewareConfig().middleware
 
@@ -106,6 +116,7 @@ app = Litestar(
         RepositoryException: repository_exception_to_http_response,  # type: ignore[dict-item]
     },
     logging_config=logging_config,
+    response_cache_config=response_cache_config,
     # csrf_config=CSRFConfig(secret=retrieve_csrf_secret(), cookie_name="XSRF-TOKEN", header_name="X-XSRF-TOKEN"),
     openapi_config=OpenAPIConfig(title="Pokinder", version=retrieve_version()),
     cors_config=CORSConfig(allow_origins=[retrieve_frontend_endpoint()], allow_credentials=True),
