@@ -44,12 +44,17 @@ from src.utils.env import (
     retrieve_csrf_secret,
     retrieve_frontend_endpoint,
     retrieve_postgres_connection_string,
+    retrieve_redis_endpoint,
     retrieve_version,
 )
 from src.utils.exceptions import repository_exception_to_http_response
+from litestar.stores.redis import RedisStore
 
 sqlalchemy_config = SQLAlchemyAsyncConfig(connection_string=retrieve_postgres_connection_string())
 sqlalchemy_plugin = SQLAlchemyInitPlugin(config=sqlalchemy_config)
+
+redis_store = RedisStore.with_client(url=retrieve_redis_endpoint(), port=6379, db=0)
+cache_store = redis_store.with_namespace("cache")
 
 logging_config = LoggingConfig(
     root={"level": "INFO", "handlers": ["queue_listener"]},
@@ -68,10 +73,7 @@ jwt_middleware = DefineMiddleware(
     ],
 )
 
-rate_limit_middleware = RateLimitConfig(
-    rate_limit=("second", 5),
-    exclude=["/schema"],
-).middleware
+rate_limit_middleware = RateLimitConfig(rate_limit=("second", 5), exclude=["/schema"], store="cache").middleware
 
 logging_middleware = LoggingMiddlewareConfig().middleware
 
@@ -96,6 +98,9 @@ app = Litestar(
         "reference_proposal_dependency": Provide(use_postgres_reference_proposal_dependency, sync_to_thread=False),
         "reference_family_dependency": Provide(use_postgres_reference_family_dependency, sync_to_thread=False),
         "email_dependency": Provide(use_gmail_email_dependency, sync_to_thread=False),
+    },
+    stores={
+        "cache": cache_store,
     },
     exception_handlers={
         RepositoryException: repository_exception_to_http_response,  # type: ignore[dict-item]
