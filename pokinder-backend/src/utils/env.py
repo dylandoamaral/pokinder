@@ -50,6 +50,14 @@ def retrieve_frontend_endpoint() -> str:
         return f"https://{frontend_host}"
 
 
+def retrieve_redis_endpoint() -> str:
+    load_pokinder_dotenv()
+    redis_host = get_env_named_("REDIS_HOST")
+    redis_password = get_env_named_("REDIS_PASSWORD")
+
+    return f"redis://:{redis_password}@{redis_host}:6379/"
+
+
 def retrieve_version() -> str:
     load_pokinder_dotenv()
     return get_env_named_("VERSION")

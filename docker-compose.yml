@@ -1,5 +1,3 @@
-version: "3.1"
-
 services:
   db:
     container_name: pokinder-postgres
@@ -41,8 +39,34 @@ services:
       retries: 3
       timeout: 5s
 
+  redis:
+    container_name: pokinder-redis
+    image: redis:7.4.1
+    restart: always
+    ports:
+      - '6379:6379'
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+    command:
+      - /bin/sh
+      - -c
+      - redis-server --loglevel warning  --requirepass "$${REDIS_PASSWORD:?REDIS_PASSWORD variable is not set}"
+    volumes: 
+      - pokinder-redis:/data
+    healthcheck:
+      test: 
+        - "CMD"
+        - "redis-cli"
+        - "ping"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
 volumes:
   pokinder-postgres:
     name: pokinder-postgres
   pokinder-minio:
     name: pokinder-minio
+  pokinder-redis:
+    name: pokinder-redis
