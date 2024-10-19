@@ -13,7 +13,6 @@ export const clamp = (val, min, max) => {
 };
 
 export const calculateCardsAmount = (ratios) => {
-  // We fetch 20% more cards just in case the user is resizing the window
   const windowHeight = window.innerHeight;
   const windowWidth = window.innerWidth;
 
@@ -22,7 +21,9 @@ export const calculateCardsAmount = (ratios) => {
     if (windowWidth < maxWidth) return Math.ceil(windowHeight / cardHeight) * cardsPerRow;
   }
 
-  // Fallback to the last ratio otherwise
+  // NOTE: Fallback to the last ratio otherwise
   const { cardHeight, cardsPerRow } = ratios.slice(-1);
-  return Math.ceil(windowHeight / cardHeight) * cardsPerRow;
+
+  // NOTE: Lets fetch 200% of the space to allow smooth infinite scrolling
+  return Math.ceil(windowHeight / cardHeight) * cardsPerRow * 2;
 };
