@@ -18,3 +18,19 @@ class ReferenceProposalAccept(BaseModel):
     reference_proposal_id: UUID
     reference_id: UUID
     fusion_id: UUID
+
+
+class ReferenceProposalAcceptReference(BaseModel):
+    reference_proposal_id: UUID
+    reference_family_id: UUID
+    reference_name: str
+    reference_source: str
+    fusion_id: UUID
+
+
+class ReferenceProposalAcceptReferenceFamily(BaseModel):
+    reference_proposal_id: UUID
+    reference_family_name: str
+    reference_name: str
+    reference_source: str
+    fusion_id: UUID

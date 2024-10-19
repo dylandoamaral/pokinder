@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { CgPokemon } from "react-icons/cg";
 import { DiGitBranch } from "react-icons/di";
-import { FaPalette, FaDiscord } from "react-icons/fa";
+import { FaDiscord, FaPalette } from "react-icons/fa";
 import { IoLanguageOutline } from "react-icons/io5";
 import { LiaGithub } from "react-icons/lia";
 
