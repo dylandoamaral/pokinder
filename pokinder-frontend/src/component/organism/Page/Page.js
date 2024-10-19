@@ -10,10 +10,10 @@ function Page({
   children,
   overflow = "none",
   scrollRef = null,
-  onScrollFinish = () => {},
+  onScrollFinish = () => { },
 }) {
   function onScroll(e) {
-    const threshold = 25 / 100;
+    const threshold = 50 / 100;
     const scrollPosition = e.target.scrollHeight - e.target.scrollTop;
     const thresholdPosition = e.target.clientHeight * (1 + threshold);
 
