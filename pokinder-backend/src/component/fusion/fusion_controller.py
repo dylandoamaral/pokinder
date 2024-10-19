@@ -1,6 +1,5 @@
-import time
-
 from litestar import Controller, get
+from litestar.config.response_cache import default_cache_key_builder
 
 from src.security import Request
 
@@ -19,7 +18,7 @@ class FusionController(Controller):
     async def draw_fusions(self, request: Request, fusion_dependency: FusionDependency, limit: int) -> list[Fusion]:
         return await fusion_dependency.draw(request.user.id, limit)
 
-    @get(path="/ranking", cache=120)
+    @get(path="/ranking", cache=120, cache_key_builder=default_cache_key_builder)
     async def list_rankings(
         self,
         fusion_dependency: FusionDependency,
