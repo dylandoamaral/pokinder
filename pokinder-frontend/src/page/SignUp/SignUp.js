@@ -61,6 +61,18 @@ function Signup() {
               validators={[
                 new InputValidator((input) => input.length > 3, t("Username is too short")),
                 new InputValidator((input) => input.length < 10, t("Username is too long")),
+                new InputValidator(
+                  (input) => !input.startsWith(" "),
+                  t("Username cannot start with a space"),
+                ),
+                new InputValidator(
+                  (input) => !input.endsWith(" "),
+                  t("Username cannot end with a space"),
+                ),
+                new InputValidator(
+                  (input) => /^[a-zA-Z0-9_]+$/.test(input),
+                  t("Username can only contain letters, numbers, and underscores"),
+                ),
               ]}
               setIsValid={setIsUsernameValid}
               onChange={setUsername}
