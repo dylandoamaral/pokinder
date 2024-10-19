@@ -14,6 +14,13 @@
   align-self: center;
 }
 
+.warning {
+  text-align: right;
+  font-size: var(--font-size-S);
+  line-height: var(--line-height-S);
+  color: var(--ko-message-color);
+}
+
 .buttons {
   display: flex;
   justify-content: flex-end;

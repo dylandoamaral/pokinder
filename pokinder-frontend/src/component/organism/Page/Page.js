@@ -10,7 +10,7 @@ function Page({
   children,
   overflow = "none",
   scrollRef = null,
-  onScrollFinish = () => { },
+  onScrollFinish = () => {},
 }) {
   function onScroll(e) {
     const threshold = 50 / 100;
