@@ -8,13 +8,15 @@ import { refuseReferenceProposal } from "../../api/pokinder";
 import { getDaenaLink } from "../../utils/website";
 
 import Button from "../../component/atom/Button/Button";
-import Input from "../../component/atom/Input/Input";
 import Modal from "../../component/atom/Modal/Modal";
 import Panel from "../../component/atom/Panel/Panel";
+import CreatableSelect from "../../component/atom/Select/CreatableSelect";
 import Sprite from "../../component/atom/Sprite/Sprite";
 import Title from "../../component/atom/Title/Title";
 
 import styles from "./AdminRefuseReferenceProposalModal.module.css";
+
+const REASON_DEFAULT_LABELS = ["The reference is already linked."];
 
 function AdminRefuseReferenceProposalModal({
   isVisible,
@@ -40,6 +42,20 @@ function AdminRefuseReferenceProposalModal({
     },
   );
 
+  function renderExistingReferences() {
+    if (referenceProposal.fusion.references.length === 0) return <></>;
+
+    return (
+      <Panel title={t("Existing references")}>
+        <ul>
+          {referenceProposal.fusion.references.map((reference, key) => (
+            <li key={key}>{`${reference.family.name} - ${reference.name}`}</li>
+          ))}
+        </ul>
+      </Panel>
+    );
+  }
+
   const proposeButtonDisabled = reason === undefined;
 
   if (referenceProposal === undefined) return <></>;
@@ -63,15 +79,12 @@ function AdminRefuseReferenceProposalModal({
       <Panel title={t("Proposed reference")}>
         <span>{referenceProposal.reference_name}</span>
       </Panel>
-      <Panel title={t("Existing references")}>
-        <ul>
-          {referenceProposal.fusion.references.map((reference, key) => (
-            <li key={key}>{`${reference.family.name} - ${reference.name}`}</li>
-          ))}
-        </ul>
-      </Panel>
+      {renderExistingReferences()}
       <Panel title={t("Reason")}>
-        <Input onChange={setReason} />
+        <CreatableSelect
+          options={REASON_DEFAULT_LABELS.map((label) => ({ label: label, value: label }))}
+          onChange={(option) => setReason(option.label)}
+        />
       </Panel>
       <div className={styles.buttons}>
         <Button title={t("Cancel")} variant="text" foreground onClick={onClose} />

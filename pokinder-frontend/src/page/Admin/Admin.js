@@ -22,8 +22,6 @@ import Page from "../../component/organism/Page/Page";
 import NotFound from "../NotFound/NotFound";
 import styles from "./Admin.module.css";
 import AdminAcceptReferenceProposalModal from "./AdminAcceptReferenceProposalModal";
-import AdminCreateReferenceFamilyModal from "./AdminCreateReferenceFamilyModal";
-import AdminCreateReferenceModal from "./AdminCreateReferenceModal";
 import AdminRefuseReferenceProposalModal from "./AdminRefuseReferenceProposalModal";
 
 const REFERENCE_PROPOSAL_LIMIT = 20;
@@ -32,8 +30,6 @@ function Admin() {
   const { t } = useTranslation();
   const { isAdmin } = useAuthentication();
 
-  const [showAdminCreateReferenceModal, toggleAdminCreateReferenceModal] = useToggle();
-  const [showAdminCreateReferenceFamilyModal, toggleAdminCreateReferenceFamilyModal] = useToggle();
   const [showAdminAcceptReferenceProposalModal, toggleAdminAcceptReferenceProposalModal] =
     useToggle();
   const [showAdminRefuseReferenceProposalModal, toggleAdminRefuseReferenceProposalModal] =
@@ -129,20 +125,6 @@ function Admin() {
   return (
     <>
       <Page name={t("Admin")} overflow={"scroll"}>
-        <div className={styles.buttons}>
-          <Button
-            title={t("Create a reference")}
-            foreground
-            variant="filled"
-            onClick={toggleAdminCreateReferenceModal}
-          />
-          <Button
-            title={t("Create a reference family")}
-            foreground
-            variant="filled"
-            onClick={toggleAdminCreateReferenceFamilyModal}
-          />
-        </div>
         <div className={styles.tableContainer}>
           <table className={styles.table}>
             <thead>
@@ -172,14 +154,6 @@ function Admin() {
           </table>
         </div>
       </Page>
-      <AdminCreateReferenceModal
-        isVisible={showAdminCreateReferenceModal}
-        onClose={toggleAdminCreateReferenceModal}
-      />
-      <AdminCreateReferenceFamilyModal
-        isVisible={showAdminCreateReferenceFamilyModal}
-        onClose={toggleAdminCreateReferenceFamilyModal}
-      />
       <AdminAcceptReferenceProposalModal
         isVisible={showAdminAcceptReferenceProposalModal}
         onClose={toggleAdminAcceptReferenceProposalModal}

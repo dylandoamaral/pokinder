@@ -126,16 +126,6 @@ export async function listReferenceFamilies() {
   return response.data.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export async function addReferenceFamily(referenceFamilyName) {
-  const body = {
-    reference_family_name: referenceFamilyName,
-  };
-
-  const response = await http.post("/reference_family/", body);
-
-  return response.data;
-}
-
 export async function listReferences(referenceFamilyId, referenceFamilyName) {
   if (referenceFamilyId === undefined && referenceFamilyName === undefined)
     return Promise.resolve([]);
@@ -148,18 +138,6 @@ export async function listReferences(referenceFamilyId, referenceFamilyName) {
   const response = await http.get("/reference?" + params.toString());
 
   return response.data.sort((a, b) => a.name.localeCompare(b.name));
-}
-
-export async function addReference(referenceName, referenceSource, referenceFamilyId) {
-  const body = {
-    reference_name: referenceName,
-    reference_source: referenceSource,
-    reference_family_id: referenceFamilyId,
-  };
-
-  const response = await http.post("/reference/", body);
-
-  return response.data;
 }
 
 export async function listReferenceProposals(limit, offset) {
@@ -192,6 +170,48 @@ export async function refuseReferenceProposal(referenceProposalId, reason) {
   };
 
   const response = await http.post("/reference_proposal/refuse", body);
+
+  return response.data;
+}
+
+export async function acceptReferenceProposalAndCreateReferenceAndFamily(
+  fusionId,
+  referenceFamilyName,
+  referenceName,
+  referenceSource,
+  referenceProposalId,
+) {
+  const body = {
+    fusion_id: fusionId,
+    reference_family_name: referenceFamilyName,
+    reference_name: referenceName,
+    reference_source: referenceSource,
+    reference_proposal_id: referenceProposalId,
+  };
+
+  const response = await http.post("/reference_proposal/accept_reference_family", body);
+
+  return response.data;
+}
+
+export async function acceptReferenceProposalAndCreateReference(
+  fusionId,
+  referenceFamilyId,
+  referenceName,
+  referenceSource,
+  referenceProposalId,
+) {
+  const body = {
+    fusion_id: fusionId,
+    reference_family_id: referenceFamilyId,
+    reference_name: referenceName,
+    reference_source: referenceSource,
+    reference_proposal_id: referenceProposalId,
+  };
+
+  console.log(body);
+
+  const response = await http.post("/reference_proposal/accept_reference", body);
 
   return response.data;
 }
