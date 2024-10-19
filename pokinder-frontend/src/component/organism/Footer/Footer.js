@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { CgPokemon } from "react-icons/cg";
 import { DiGitBranch } from "react-icons/di";
-import { FaPalette } from "react-icons/fa";
+import { FaPalette, FaDiscord } from "react-icons/fa";
 import { IoLanguageOutline } from "react-icons/io5";
 import { LiaGithub } from "react-icons/lia";
 
@@ -45,6 +45,9 @@ function Footer() {
             link="https://infinitefusion.fandom.com/wiki/Pok%C3%A9mon_Infinite_Fusion_Wiki"
           >
             <CgPokemon />
+          </FooterButton>
+          <FooterButton name="Discord" link="https://discord.gg/mH2YkzR6">
+            <FaDiscord />
           </FooterButton>
         </div>
         <div className={styles.right}>
