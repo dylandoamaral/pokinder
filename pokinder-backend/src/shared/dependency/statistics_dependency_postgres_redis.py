@@ -1,9 +1,6 @@
-from ast import Store
-from typing import Optional
-from uuid import UUID
-
 from litestar import Request
-from sqlalchemy import exists, func, or_, select, update
+from litestar.stores.base import Store
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.component.account.account_table import Account
