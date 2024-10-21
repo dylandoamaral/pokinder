@@ -43,7 +43,13 @@ from src.component.reference_proposal import (
 )
 from src.component.vote import VoteController, use_postgres_vote_dependency
 from src.security.middleware import API_KEY_HEADER, JWTAuthenticationMiddleware
+from src.shared.dependency.discord_notification_dependency import (
+    use_discord_notification_dependency,
+)
 from src.shared.dependency.gmail_email_dependency import use_gmail_email_dependency
+from src.shared.dependency.postgres_redis_statistics_dependency import (
+    use_postgres_redis_statistics_dependency,
+)
 from src.utils.env import (
     retrieve_backend_host,
     retrieve_csrf_secret,
@@ -59,6 +65,7 @@ sqlalchemy_plugin = SQLAlchemyInitPlugin(config=sqlalchemy_config)
 
 redis_store = RedisStore.with_client(url=retrieve_redis_endpoint(), port=6379, db=0)
 cache_store = redis_store.with_namespace("cache")
+statistics_store = redis_store.with_namespace("statistics")
 
 
 def key_builder(request: Request) -> str:
@@ -108,9 +115,12 @@ app = Litestar(
         "reference_proposal_dependency": Provide(use_postgres_reference_proposal_dependency, sync_to_thread=False),
         "reference_family_dependency": Provide(use_postgres_reference_family_dependency, sync_to_thread=False),
         "email_dependency": Provide(use_gmail_email_dependency, sync_to_thread=False),
+        "notification_dependency": Provide(use_discord_notification_dependency, sync_to_thread=False),
+        "statistics_dependency": Provide(use_postgres_redis_statistics_dependency, sync_to_thread=False),
     },
     stores={
         "cache": cache_store,
+        "statistics": statistics_store,
     },
     exception_handlers={
         RepositoryException: repository_exception_to_http_response,  # type: ignore[dict-item]
