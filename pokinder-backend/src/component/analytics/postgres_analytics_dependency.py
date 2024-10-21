@@ -19,6 +19,7 @@ from src.component.reference_proposal.reference_proposal_table import (
 )
 from src.component.vote import Vote
 from src.component.vote.vote_model import VoteType
+from src.shared.dependency.statistics_dependency import StatisticsDependency
 
 from .analytics_dependency import AnalyticsDependency
 from .analytics_model import (
@@ -31,8 +32,9 @@ from .analytics_model import (
 
 
 class PostgresAnalyticsDependency(AnalyticsDependency):
-    def __init__(self, session: AsyncSession):
+    def __init__(self, session: AsyncSession, statistics_dependency: StatisticsDependency):
         self.session = session
+        self.statistics_dependency = statistics_dependency
 
     async def __count(self, table) -> int:
         query = select(func.count()).select_from(table)
@@ -295,7 +297,7 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
             self.__favorite_account_creator(account_id=account_id),
             self.__count(ReferenceFamily),
             self.__count(Reference),
-            self.__count(FusionReference),
+            self.statistics_dependency.get_total_reference(),
             self.__reference_proposer_count(),
             self.__validated_reference_proposal_count(account_id=account_id),
             self.__reference_proposal_count(account_id=account_id),
@@ -344,5 +346,8 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
         )
 
 
-def use_postgres_analytics_dependency(db_session: AsyncSession) -> AnalyticsDependency:
-    return PostgresAnalyticsDependency(db_session)
+def use_postgres_analytics_dependency(
+    db_session: AsyncSession,
+    statistics_dependency: StatisticsDependency,
+) -> AnalyticsDependency:
+    return PostgresAnalyticsDependency(db_session, statistics_dependency)

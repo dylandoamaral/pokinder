@@ -2,11 +2,10 @@ import hashlib
 import random
 import string
 from datetime import datetime, timedelta, timezone
-from uuid import UUID
 
 from bcrypt import checkpw, gensalt, hashpw
 from litestar import Controller, post
-from litestar.exceptions import NotAuthorizedException, NotFoundException
+from litestar.exceptions import NotFoundException
 
 from src.component.account.account_dependency import AccountDependency
 from src.component.account.account_reset_password_table import (
@@ -22,7 +21,10 @@ from src.security.jwt import (
     encode_jwt_token,
 )
 from src.shared.dependency.email_dependency import EmailDependency
-from src.utils.env import retrieve_frontend_endpoint
+from src.shared.dependency.notification_dependency import NotificationDependency
+from src.shared.dependency.statistics_dependency import StatisticsDependency
+from src.utils.discord import render_milestone_total
+from src.utils.env import retrieve_frontend_endpoint, retrieve_milestone_account
 from src.utils.exceptions import ConflictException
 
 from .account_dto import DTO, returnDTO
@@ -41,7 +43,13 @@ class AccountController(Controller):
     include_in_schema = False
 
     @post(path="/signup", dto=None)
-    async def signup(self, account_dependency: AccountDependency, data: AccountSignup) -> EncodedTokens:
+    async def signup(
+        self,
+        account_dependency: AccountDependency,
+        statistics_dependency: StatisticsDependency,
+        notification_dependency: NotificationDependency,
+        data: AccountSignup,
+    ) -> EncodedTokens:
         is_username_exists = await account_dependency.check_username_exists(data.username)
 
         if is_username_exists:
@@ -59,6 +67,10 @@ class AccountController(Controller):
 
         hashed_password = hashpw(data.password.encode("utf-8"), gensalt())
         await account_dependency.signup(data, hashed_password)
+
+        total_account = await statistics_dependency.add_total_account()
+        if total_account % retrieve_milestone_account() == 0:
+            notification_dependency.send_notification(render_milestone_total(total_account, "users"))
 
         return self.generateTokens(Subject(account_id=data.account_id, username=data.username, role=AccountRole.USER))
 

@@ -50,6 +50,17 @@ def retrieve_frontend_endpoint() -> str:
         return f"https://{frontend_host}"
 
 
+def retrieve_minio_endpoint() -> str:
+    load_pokinder_dotenv()
+    minio_host = get_env_named_("MINIO_HOST")
+    minio_port = get_env_named_("MINIO_PORT")
+
+    if minio_host == "localhost":
+        return f"http://localhost:{minio_port}"
+    else:
+        return f"https://{minio_host}:{minio_port}"
+
+
 def retrieve_redis_endpoint() -> str:
     load_pokinder_dotenv()
     redis_host = get_env_named_("REDIS_HOST")
@@ -81,3 +92,23 @@ def retrieve_gmail_email() -> str:
 def retrieve_gmail_password() -> str:
     load_pokinder_dotenv()
     return get_env_named_("GMAIL_PASSWORD")
+
+
+def retrieve_discord_url() -> str:
+    load_pokinder_dotenv()
+    return get_env_named_("DISCORD_URL")
+
+
+def retrieve_milestone_vote() -> int:
+    load_pokinder_dotenv()
+    return int(get_env_named_("MILESTONE_VOTE"))
+
+
+def retrieve_milestone_account() -> int:
+    load_pokinder_dotenv()
+    return int(get_env_named_("MILESTONE_ACCOUNT"))
+
+
+def retrieve_milestone_reference() -> int:
+    load_pokinder_dotenv()
+    return int(get_env_named_("MILESTONE_REFERENCE"))
