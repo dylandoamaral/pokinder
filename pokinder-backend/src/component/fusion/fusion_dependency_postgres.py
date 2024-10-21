@@ -18,7 +18,7 @@ from .fusion_model import Ranking
 from .fusion_table import Fusion
 
 
-class PostgresFusionDependency(FusionDependency):
+class FusionDependencyPostgres(FusionDependency):
     def __init__(self, session: AsyncSession):
         self.session = session
 
@@ -136,5 +136,5 @@ class PostgresFusionDependency(FusionDependency):
         return objects
 
 
-def use_postgres_fusion_dependency(db_session: AsyncSession) -> FusionDependency:
-    return PostgresFusionDependency(db_session)
+def use_fusion_dependency_postgres(db_session: AsyncSession) -> FusionDependency:
+    return FusionDependencyPostgres(db_session)

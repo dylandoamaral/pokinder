@@ -22,33 +22,33 @@ from litestar.middleware.rate_limit import RateLimitConfig
 from litestar.openapi import OpenAPIConfig
 from litestar.stores.redis import RedisStore
 
-from src.component.account import AccountController, use_postgres_account_dependency
+from src.component.account import AccountController, use_account_dependency_postgres
 from src.component.analytics import (
     AnalyticsController,
-    use_postgres_analytics_dependency,
+    use_analytics_dependency_postgres,
 )
-from src.component.creator import CreatorController, use_postgres_creator_dependency
-from src.component.fusion import FusionController, use_postgres_fusion_dependency
+from src.component.creator import CreatorController, use_creator_dependency_postgres
+from src.component.fusion import FusionController, use_fusion_dependency_postgres
 from src.component.reference import (
     ReferenceController,
-    use_postgres_reference_dependency,
+    use_reference_dependency_postgres,
 )
 from src.component.reference_family import (
     ReferenceFamilyController,
-    use_postgres_reference_family_dependency,
+    use_reference_family_dependency_postgres,
 )
 from src.component.reference_proposal import (
     ReferenceProposalController,
-    use_postgres_reference_proposal_dependency,
+    use_reference_proposal_dependency_postgres,
 )
-from src.component.vote import VoteController, use_postgres_vote_dependency
+from src.component.vote import VoteController, use_vote_dependency_postgres
 from src.security.middleware import API_KEY_HEADER, JWTAuthenticationMiddleware
-from src.shared.dependency.discord_notification_dependency import (
-    use_discord_notification_dependency,
+from src.shared.dependency.email_dependency_gmail import use_email_dependency_gmail
+from src.shared.dependency.notification_dependency_discord import (
+    use_notification_dependency_discord,
 )
-from src.shared.dependency.gmail_email_dependency import use_gmail_email_dependency
-from src.shared.dependency.postgres_redis_statistics_dependency import (
-    use_postgres_redis_statistics_dependency,
+from src.shared.dependency.statistics_dependency_postgres_redis import (
+    use_statistics_dependency_postgres_redis,
 )
 from src.utils.env import (
     retrieve_backend_host,
@@ -106,17 +106,17 @@ app = Litestar(
         ReferenceFamilyController,
     ],
     dependencies={
-        "vote_dependency": Provide(use_postgres_vote_dependency, sync_to_thread=False),
-        "fusion_dependency": Provide(use_postgres_fusion_dependency, sync_to_thread=False),
-        "account_dependency": Provide(use_postgres_account_dependency, sync_to_thread=False),
-        "analytics_dependency": Provide(use_postgres_analytics_dependency, sync_to_thread=False),
-        "creator_dependency": Provide(use_postgres_creator_dependency, sync_to_thread=False),
-        "reference_dependency": Provide(use_postgres_reference_dependency, sync_to_thread=False),
-        "reference_proposal_dependency": Provide(use_postgres_reference_proposal_dependency, sync_to_thread=False),
-        "reference_family_dependency": Provide(use_postgres_reference_family_dependency, sync_to_thread=False),
-        "email_dependency": Provide(use_gmail_email_dependency, sync_to_thread=False),
-        "notification_dependency": Provide(use_discord_notification_dependency, sync_to_thread=False),
-        "statistics_dependency": Provide(use_postgres_redis_statistics_dependency, sync_to_thread=False),
+        "vote_dependency": Provide(use_vote_dependency_postgres, sync_to_thread=False),
+        "fusion_dependency": Provide(use_fusion_dependency_postgres, sync_to_thread=False),
+        "account_dependency": Provide(use_account_dependency_postgres, sync_to_thread=False),
+        "analytics_dependency": Provide(use_analytics_dependency_postgres, sync_to_thread=False),
+        "creator_dependency": Provide(use_creator_dependency_postgres, sync_to_thread=False),
+        "reference_dependency": Provide(use_reference_dependency_postgres, sync_to_thread=False),
+        "reference_proposal_dependency": Provide(use_reference_proposal_dependency_postgres, sync_to_thread=False),
+        "reference_family_dependency": Provide(use_reference_family_dependency_postgres, sync_to_thread=False),
+        "email_dependency": Provide(use_email_dependency_gmail, sync_to_thread=False),
+        "notification_dependency": Provide(use_notification_dependency_discord, sync_to_thread=False),
+        "statistics_dependency": Provide(use_statistics_dependency_postgres_redis, sync_to_thread=False),
     },
     stores={
         "cache": cache_store,

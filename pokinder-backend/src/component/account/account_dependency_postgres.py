@@ -13,7 +13,7 @@ from .account_reset_password_table import (
 from .account_table import Account
 
 
-class PostgresAccountDependency(AccountDependency):
+class AccountDependencyPostgres(AccountDependency):
     def __init__(self, session: AsyncSession):
         self.session = session
 
@@ -84,5 +84,5 @@ class PostgresAccountDependency(AccountDependency):
         await self.session.commit()
 
 
-def use_postgres_account_dependency(db_session: AsyncSession) -> AccountDependency:
-    return PostgresAccountDependency(db_session)
+def use_account_dependency_postgres(db_session: AsyncSession) -> AccountDependency:
+    return AccountDependencyPostgres(db_session)

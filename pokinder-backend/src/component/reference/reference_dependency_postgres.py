@@ -11,7 +11,7 @@ from .reference_dependency import ReferenceDependency
 from .reference_table import Reference
 
 
-class PostgresReferenceDependency(ReferenceDependency):
+class ReferenceDependencyPostgres(ReferenceDependency):
     def __init__(self, session: AsyncSession):
         self.session = session
 
@@ -60,5 +60,5 @@ class PostgresReferenceDependency(ReferenceDependency):
         return instance
 
 
-def use_postgres_reference_dependency(db_session: AsyncSession) -> ReferenceDependency:
-    return PostgresReferenceDependency(db_session)
+def use_reference_dependency_postgres(db_session: AsyncSession) -> ReferenceDependency:
+    return ReferenceDependencyPostgres(db_session)
