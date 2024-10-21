@@ -7,7 +7,7 @@ from .reference_family_dependency import ReferenceFamilyDependency
 from .reference_family_table import ReferenceFamily
 
 
-class PostgresReferenceFamilyDependency(ReferenceFamilyDependency):
+class ReferenceFamilyDependencyPostgres(ReferenceFamilyDependency):
     def __init__(self, session: AsyncSession):
         self.session = session
 
@@ -39,5 +39,5 @@ class PostgresReferenceFamilyDependency(ReferenceFamilyDependency):
         return instance
 
 
-def use_postgres_reference_family_dependency(db_session: AsyncSession) -> ReferenceFamilyDependency:
-    return PostgresReferenceFamilyDependency(db_session)
+def use_reference_family_dependency_postgres(db_session: AsyncSession) -> ReferenceFamilyDependency:
+    return ReferenceFamilyDependencyPostgres(db_session)

@@ -31,7 +31,7 @@ from .analytics_model import (
 )
 
 
-class PostgresAnalyticsDependency(AnalyticsDependency):
+class AnalyticsDependencyPostgres(AnalyticsDependency):
     def __init__(self, session: AsyncSession, statistics_dependency: StatisticsDependency):
         self.session = session
         self.statistics_dependency = statistics_dependency
@@ -346,8 +346,8 @@ class PostgresAnalyticsDependency(AnalyticsDependency):
         )
 
 
-def use_postgres_analytics_dependency(
+def use_analytics_dependency_postgres(
     db_session: AsyncSession,
     statistics_dependency: StatisticsDependency,
 ) -> AnalyticsDependency:
-    return PostgresAnalyticsDependency(db_session, statistics_dependency)
+    return AnalyticsDependencyPostgres(db_session, statistics_dependency)

@@ -2,9 +2,8 @@ from datetime import datetime
 
 from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
 from sqlalchemy import String, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column
 
-from src.component.fusion_creator import FusionCreator
 from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey, build_created_at_column
 
 

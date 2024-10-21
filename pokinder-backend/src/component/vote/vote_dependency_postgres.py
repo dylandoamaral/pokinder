@@ -18,7 +18,7 @@ from .vote_dependency import VoteDependency
 from .vote_table import Vote, VoteType
 
 
-class PostgresVoteDependency(VoteDependency):
+class VoteDependencyPostgres(VoteDependency):
     def __init__(self, session: AsyncSession):
         self.session = session
 
@@ -136,5 +136,5 @@ class PostgresVoteDependency(VoteDependency):
         await self.session.commit()
 
 
-def use_postgres_vote_dependency(db_session: AsyncSession) -> VoteDependency:
-    return PostgresVoteDependency(db_session)
+def use_vote_dependency_postgres(db_session: AsyncSession) -> VoteDependency:
+    return VoteDependencyPostgres(db_session)
