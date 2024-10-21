@@ -23,7 +23,7 @@ from .reference_proposal_table import (
 )
 
 
-class PostgresReferenceProposalDependency(ReferenceProposalDependency):
+class ReferenceProposalDependencyPostgres(ReferenceProposalDependency):
     def __init__(self, session: AsyncSession):
         self.session = session
         self.repository = ReferenceProposalRepository(session=session)
@@ -121,5 +121,5 @@ class PostgresReferenceProposalDependency(ReferenceProposalDependency):
         await self.session.commit()
 
 
-def use_postgres_reference_proposal_dependency(db_session: AsyncSession) -> ReferenceProposalDependency:
-    return PostgresReferenceProposalDependency(db_session)
+def use_reference_proposal_dependency_postgres(db_session: AsyncSession) -> ReferenceProposalDependency:
+    return ReferenceProposalDependencyPostgres(db_session)

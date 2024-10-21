@@ -17,7 +17,7 @@ TOTAL_REFERENCE_KEY = "total_reference"
 TOTAL_ACCOUNT_KEY = "total_account"
 
 
-class PostgresRedisStatisticsDependency(StatisticsDependency):
+class StatisticsDependencyPostgresRedis(StatisticsDependency):
     def __init__(self, session: AsyncSession, store: Store):
         self.session = session
         self.store = store
@@ -68,5 +68,5 @@ class PostgresRedisStatisticsDependency(StatisticsDependency):
         return await self.__add_one(Account, TOTAL_ACCOUNT_KEY)
 
 
-def use_postgres_redis_statistics_dependency(db_session: AsyncSession, request: Request) -> StatisticsDependency:
-    return PostgresRedisStatisticsDependency(db_session, request.app.stores.get("statistics"))
+def use_statistics_dependency_postgres_redis(db_session: AsyncSession, request: Request) -> StatisticsDependency:
+    return StatisticsDependencyPostgresRedis(db_session, request.app.stores.get("statistics"))

@@ -7,7 +7,7 @@ from src.utils.env import retrieve_gmail_email, retrieve_gmail_password
 from .email_dependency import EmailDependency
 
 
-class GmailEmailDependency(EmailDependency):
+class EmailDependencyGmail(EmailDependency):
     def send_email(self, subject: str, to: str, body: str) -> None:
         email = retrieve_gmail_email()
         password = retrieve_gmail_password()
@@ -27,5 +27,5 @@ class GmailEmailDependency(EmailDependency):
         smtpserver.close()
 
 
-def use_gmail_email_dependency() -> EmailDependency:
-    return GmailEmailDependency()
+def use_email_dependency_gmail() -> EmailDependency:
+    return EmailDependencyGmail()
