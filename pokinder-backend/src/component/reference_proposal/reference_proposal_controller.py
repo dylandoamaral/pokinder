@@ -1,4 +1,3 @@
-from typing import Optional
 from uuid import UUID
 
 from litestar import Controller, get, post
@@ -11,6 +10,10 @@ from src.component.reference_family.reference_family_dependency import (
 from src.component.reference_family.reference_family_model import ReferenceFamilyInsert
 from src.security import Request
 from src.security.guard import admin_only
+from src.shared.dependency.notification_dependency import NotificationDependency
+from src.shared.dependency.statistics_dependency import StatisticsDependency
+from src.utils.discord import render_milestone_total, render_milestone_total_with_image
+from src.utils.env import retrieve_milestone_reference, retrieve_minio_endpoint
 
 from .reference_proposal_dependency import ReferenceProposalDependency
 from .reference_proposal_dto import DTO, ReturnDTO, ReturnDTOList
@@ -62,14 +65,43 @@ class ReferenceProposalController(Controller):
     ) -> None:
         return await reference_proposal_dependency.refuse(request.user.id, data)
 
+    async def __accept(
+        self,
+        account_id: UUID,
+        reference_proposal_accept: ReferenceProposalAccept,
+        reference_proposal_dependency: ReferenceProposalDependency,
+        statistics_dependency: StatisticsDependency,
+        notification_dependency: NotificationDependency,
+    ) -> None:
+        total_reference = await statistics_dependency.add_total_reference()
+        if total_reference % retrieve_milestone_reference() == 0:
+            fusion_url = f"{retrieve_minio_endpoint()}/fusions/{reference_proposal_accept.fusion_id}.webp"
+            notification_dependency.send_notification(
+                render_milestone_total_with_image(
+                    total_reference,
+                    "references",
+                    fusion_url,
+                )
+            )
+
+        return await reference_proposal_dependency.accept(account_id, reference_proposal_accept)
+
     @post(path="/accept", dto=None, guards=[admin_only], include_in_schema=False)
     async def accept(
         self,
         request: Request,
         reference_proposal_dependency: ReferenceProposalDependency,
+        statistics_dependency: StatisticsDependency,
+        notification_dependency: NotificationDependency,
         data: ReferenceProposalAccept,
     ) -> None:
-        return await reference_proposal_dependency.accept(request.user.id, data)
+        return await self.__accept(
+            request.user.id,
+            data,
+            reference_proposal_dependency,
+            statistics_dependency,
+            notification_dependency,
+        )
 
     @post(path="/accept_reference", dto=None, guards=[admin_only], include_in_schema=False)
     async def accept_reference(
@@ -77,6 +109,8 @@ class ReferenceProposalController(Controller):
         request: Request,
         reference_dependency: ReferenceDependency,
         reference_proposal_dependency: ReferenceProposalDependency,
+        statistics_dependency: StatisticsDependency,
+        notification_dependency: NotificationDependency,
         data: ReferenceProposalAcceptReference,
     ) -> None:
         reference_insert = ReferenceInsert(
@@ -93,7 +127,13 @@ class ReferenceProposalController(Controller):
             fusion_id=data.fusion_id,
         )
 
-        return await reference_proposal_dependency.accept(request.user.id, reference_proposal_accept)
+        return await self.__accept(
+            request.user.id,
+            reference_proposal_accept,
+            reference_proposal_dependency,
+            statistics_dependency,
+            notification_dependency,
+        )
 
     @post(path="/accept_reference_family", dto=None, guards=[admin_only], include_in_schema=False)
     async def accept_reference_family(
@@ -102,6 +142,8 @@ class ReferenceProposalController(Controller):
         reference_dependency: ReferenceDependency,
         reference_family_dependency: ReferenceFamilyDependency,
         reference_proposal_dependency: ReferenceProposalDependency,
+        statistics_dependency: StatisticsDependency,
+        notification_dependency: NotificationDependency,
         data: ReferenceProposalAcceptReferenceFamily,
     ) -> None:
         reference_family_insert = ReferenceFamilyInsert(reference_family_name=data.reference_family_name)
@@ -122,4 +164,10 @@ class ReferenceProposalController(Controller):
             fusion_id=data.fusion_id,
         )
 
-        return await reference_proposal_dependency.accept(request.user.id, reference_proposal_accept)
+        return await self.__accept(
+            request.user.id,
+            reference_proposal_accept,
+            reference_proposal_dependency,
+            statistics_dependency,
+            notification_dependency,
+        )
