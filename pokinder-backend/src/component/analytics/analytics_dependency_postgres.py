@@ -3,6 +3,8 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
+from litestar import Request
+from litestar.stores.base import Store
 from sqlalchemy import case, desc, distinct, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -20,6 +22,7 @@ from src.component.reference_proposal.reference_proposal_table import (
 from src.component.vote import Vote
 from src.component.vote.vote_model import VoteType
 from src.shared.dependency.statistics_dependency import StatisticsDependency
+from src.utils.cache import ONE_MINUTE, Cache
 
 from .analytics_dependency import AnalyticsDependency
 from .analytics_model import (
@@ -32,8 +35,10 @@ from .analytics_model import (
 
 
 class AnalyticsDependencyPostgres(AnalyticsDependency):
-    def __init__(self, session: AsyncSession, statistics_dependency: StatisticsDependency):
+    def __init__(self, session: AsyncSession, store: Store, statistics_dependency: StatisticsDependency):
         self.session = session
+        self.store = store
+        self.cache = Cache(store)
         self.statistics_dependency = statistics_dependency
 
     async def __count(self, table) -> int:
@@ -48,12 +53,12 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         count = result.scalar()
         return count
 
-    async def __vote_type_count(self, maybe_account_id=None) -> int:
+    async def __vote_type_count(self, maybe_account_id=None) -> dict:
         query = select(Vote.vote_type, func.count().label("count")).group_by(Vote.vote_type)
         if maybe_account_id:
             query = query.filter(Vote.account_id == maybe_account_id)
         result = await self.session.execute(query)
-        counts = {vote_type: count for vote_type, count in result}
+        counts = {vote_type.value: count for vote_type, count in result}
         return counts
 
     def __calculate_average_score(self, vote_score_column, vote_count_column):
@@ -190,7 +195,7 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
             average_score=int(average_score),
         )
 
-    async def __favorite_community_creator(self) -> Optional[PokemonAnalytics]:
+    async def __favorite_community_creator(self) -> Optional[CreatorAnalytics]:
         query = (
             select(
                 Creator.id,
@@ -280,15 +285,59 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         count = result.scalar()
         return count
 
+    async def _fake_user_count() -> int:
+        return 1
+
     async def get(self, account_id: UUID) -> list[Analytics]:
+        ten_minutes = ONE_MINUTE * 10
+
+        user_count_query = self.cache.get_or_set_int(
+            key="user_count",
+            awaitable=self.__user_count(),
+            expires_in=ten_minutes,
+        )
+        fusion_count_query = self.cache.get_or_set_int(
+            key="fusion_count",
+            awaitable=self.__count(Fusion),
+            expires_in=ten_minutes,
+        )
+        creator_count_query = self.cache.get_or_set_int(
+            key="creator_count",
+            awaitable=self.__count(Creator),
+            expires_in=ten_minutes,
+        )
+        vote_type_count_query = self.cache.get_or_set_dict(
+            key="vote_type_count",
+            awaitable=self.__vote_type_count(),
+            expires_in=ten_minutes,
+        )
+        favorite_pokemon_head_query = self.cache.get_or_set_model(
+            key="favorite_pokemon_head",
+            model=PokemonAnalytics,
+            awaitable=self.__favorite_community_pokemon(is_head=True),
+            expires_in=ten_minutes,
+        )
+        favorite_pokemon_body_query = self.cache.get_or_set_model(
+            key="favorite_pokemon_body",
+            model=PokemonAnalytics,
+            awaitable=self.__favorite_community_pokemon(is_head=False),
+            expires_in=ten_minutes,
+        )
+        favorite_creator_query = self.cache.get_or_set_model(
+            key="favorite_creator",
+            model=CreatorAnalytics,
+            awaitable=self.__favorite_community_creator(),
+            expires_in=ten_minutes,
+        )
+
         results = await asyncio.gather(
-            self.__user_count(),
-            self.__count(Fusion),
-            self.__count(Creator),
-            self.__vote_type_count(),
-            self.__favorite_community_pokemon(is_head=True),
-            self.__favorite_community_pokemon(is_head=False),
-            self.__favorite_community_creator(),
+            user_count_query,
+            fusion_count_query,
+            creator_count_query,
+            vote_type_count_query,
+            favorite_pokemon_head_query,
+            favorite_pokemon_body_query,
+            favorite_creator_query,
             self.__rank(account_id),
             self.__created_at(account_id),
             self.__vote_type_count(account_id),
@@ -303,14 +352,14 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
             self.__reference_proposal_count(account_id=account_id),
         )
 
-        dislike_count = results[3].get(VoteType.DISLIKED, 0)
-        favorite_count = results[3].get(VoteType.FAVORITE, 0)
-        like_count = results[3].get(VoteType.LIKED, 0)
+        dislike_count = results[3].get(str(VoteType.DISLIKED.value), 0)
+        favorite_count = results[3].get(str(VoteType.FAVORITE.value), 0)
+        like_count = results[3].get(str(VoteType.LIKED.value), 0)
         vote_count = dislike_count + favorite_count + like_count
 
-        user_dislike_count = results[9].get(VoteType.DISLIKED, 0)
-        user_favorite_count = results[9].get(VoteType.FAVORITE, 0)
-        user_like_count = results[9].get(VoteType.LIKED, 0)
+        user_dislike_count = results[9].get(str(VoteType.DISLIKED.value), 0)
+        user_favorite_count = results[9].get(str(VoteType.FAVORITE.value), 0)
+        user_like_count = results[9].get(str(VoteType.LIKED.value), 0)
         user_vote_count = user_dislike_count + user_favorite_count + user_like_count
 
         return Analytics(
@@ -348,6 +397,7 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
 
 def use_analytics_dependency_postgres(
     db_session: AsyncSession,
+    request: Request,
     statistics_dependency: StatisticsDependency,
 ) -> AnalyticsDependency:
-    return AnalyticsDependencyPostgres(db_session, statistics_dependency)
+    return AnalyticsDependencyPostgres(db_session, request.app.stores.get("statistics"), statistics_dependency)
