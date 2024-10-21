@@ -58,7 +58,7 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         if maybe_account_id:
             query = query.filter(Vote.account_id == maybe_account_id)
         result = await self.session.execute(query)
-        counts = {vote_type.value: count for vote_type, count in result}
+        counts = {str(vote_type.value): count for vote_type, count in result}
         return counts
 
     def __calculate_average_score(self, vote_score_column, vote_count_column):
