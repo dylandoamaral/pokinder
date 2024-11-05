@@ -1,0 +1,45 @@
+.container {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+}
+
+.details {
+  width: 100%;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+.rank {
+  width: 50px;
+  height: 50px;
+  background-color: var(--card-illustration-color);
+  border-radius: var(--border-radius-M);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: var(--font-size-L);
+  font-weight: bold;
+  font-style: italic;
+}
+
+.information {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: space-between;
+}
+
+.score {
+  font-size: var(--font-size-XL);
+  font-weight: bold;
+}
+
+.vote {
+  font-size: var(--font-size-2XS);
+  color: var(--neutral-high);
+}

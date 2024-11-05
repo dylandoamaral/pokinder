@@ -1,0 +1,99 @@
+.container {
+  width: calc((var(--card-width) - var(--card-padding) * 2) * 1px);
+  height: calc((var(--card-height) - var(--card-padding) * 2) * 1px);
+  padding: calc(var(--card-padding) * 1px);
+  background-color: var(--card-color);
+  border-radius: var(--border-radius-M);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  color: var(--font-foreground-color);
+}
+
+.illustration {
+  min-width: 160px;
+  min-height: 160px;
+  background-color: var(--card-illustration-color);
+  border-radius: var(--border-radius-S);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.name {
+  font-size: var(--font-size-XS);
+  line-height: var(--line-height-XS);
+  font-weight: bold;
+}
+
+.path {
+  font-size: var(--font-size-XS);
+  line-height: var(--line-height-XS);
+  color: var(--neutral-high);
+}
+
+.lockSprite {
+  filter: grayscale(1) brightness(0.1);
+}
+
+.lockContainer {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lockContainer > svg {
+  color: black;
+  width: 36px;
+  height: 36px;
+}
+
+.loadingIllustration {
+  min-width: 160px;
+  min-height: 160px;
+  background-color: var(--neutral-medium);
+}
+
+.loadingName {
+  height: 16px;
+  width: 32px;
+  background-color: var(--neutral-medium);
+}
+
+.loadingPath {
+  height: 16px;
+  width: 32px;
+  background-color: var(--neutral-medium);
+}
+
+.loadingDetails {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.loadingDetail {
+  height: 12px;
+  width: 100%;
+  background-color: var(--neutral-medium);
+}
+
+.loadingDetail:last-child {
+  width: 70%;
+}

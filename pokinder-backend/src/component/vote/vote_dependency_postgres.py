@@ -1,8 +1,8 @@
 from uuid import UUID
 
-from sqlalchemy import insert, select, update
+from sqlalchemy import distinct, func, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import aliased, joinedload, raiseload
+from sqlalchemy.orm import aliased, joinedload, noload
 
 from src.component.creator.creator_table import Creator
 from src.component.family.family_table import Family
@@ -21,76 +21,6 @@ from .vote_table import Vote, VoteType
 class VoteDependencyPostgres(VoteDependency):
     def __init__(self, session: AsyncSession):
         self.session = session
-
-    async def list(
-        self,
-        account_id: UUID,
-        limit: int,
-        offset: int = 0,
-        fusion_ids: list[int] | None = None,
-        vote_types: list[VoteType] | None = None,
-        head_name_or_category: str | None = None,
-        body_name_or_category: str | None = None,
-        reference_family_name: str | None = None,
-        reference_name: str | None = None,
-        creator_name: str | None = None,
-    ) -> list[Vote]:
-        Head = aliased(Pokemon)
-        Body = aliased(Pokemon)
-
-        query = (
-            select(Vote)
-            .join(Fusion, Vote.fusion_id == Fusion.id)
-            .join(Head, Fusion.head_id == Head.id)
-            .join(Body, Fusion.body_id == Body.id)
-            .join(Fusion.creators)
-            .outerjoin(Fusion.references)
-            .outerjoin(Reference.family)
-            .options(joinedload(Vote.fusion).raiseload(Fusion.references))
-        )
-
-        if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
-            families_result = await self.session.scalars(select(Family))
-            families = {family.name: family.id for family in families_result.all()}
-
-        if vote_types is not None:
-            query = query.filter(Vote.vote_type.in_(vote_types))
-        else:
-            return []
-
-        query = query.filter(Vote.account_id == account_id)
-
-        if fusion_ids is not None:
-            query = query.filter(Vote.fusion_id.in_(fusion_ids))
-
-        if head_name_or_category is not None and head_name_or_category != "All":
-            if head_name_or_category in pokemon_families.keys():
-                query = query.filter(Head.families.any(Family.id == families[head_name_or_category]))
-            else:
-                query = query.filter(Head.name == head_name_or_category)
-        if body_name_or_category is not None and body_name_or_category != "All":
-            if body_name_or_category in pokemon_families.keys():
-                query = query.filter(Body.families.any(Family.id == families[body_name_or_category]))
-            else:
-                query = query.filter(Body.name == body_name_or_category)
-
-        if reference_family_name is not None and reference_family_name != "All":
-            query = query.filter(ReferenceFamily.name == reference_family_name)
-
-        if reference_name is not None and reference_name != "All":
-            query = query.filter(Reference.name == reference_name)
-
-        if creator_name is not None and creator_name != "All":
-            query = query.filter(Creator.name == creator_name)
-
-        query = (
-            query.order_by(Vote.created_at.desc()).offset(offset).limit(limit).distinct(Vote.created_at, Vote.fusion_id)
-        )
-
-        result = await self.session.scalars(query)
-        instances = result.all()
-
-        return instances
 
     async def upsert(self, account_id: UUID, vote_add: VoteAdd) -> None:
         result = await self.session.scalars(

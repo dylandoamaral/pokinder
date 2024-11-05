@@ -110,6 +110,8 @@
 
   "Art by": "Art by {{creator}}",
 
+  "Discovered by": "Discovered by {{proposer}}",
+
   "Pokemon head": "Pokemon head",
   "Pokemon body": "Pokemon body",
   "Creator": "Creator",

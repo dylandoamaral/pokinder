@@ -1,0 +1,100 @@
+.container {
+  height: 32px;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.filters {
+  display: flex;
+  gap: 4px;
+
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.filters::-webkit-scrollbar {
+  display: none;
+}
+
+.filter {
+  padding: 0;
+  border: none;
+  background: none;
+
+  height: 100%;
+  padding: 0 8px;
+  border-radius: var(--border-radius-M);
+  color: var(--font-foreground-color);
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+
+  background-color: var(--foreground-color);
+
+  cursor: pointer;
+}
+
+.filterButton {
+  padding: 0;
+  border: none;
+  background: none;
+
+  height: 100%;
+  padding: 0 8px;
+  border-radius: var(--border-radius-M);
+  color: var(--font-foreground-color);
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+
+  background-color: color-mix(in sRGB, var(--foreground-color) 45%, var(--background-color) 55%);
+
+  cursor: pointer;
+}
+
+.filterButton:hover {
+  background-color: color-mix(in sRGB, var(--foreground-color) 80%, var(--background-color) 20%);
+}
+
+.modes {
+  display: flex;
+}
+
+.mode {
+  padding: 0;
+  border: none;
+  background: none;
+
+  height: 100%;
+  width: 100px;
+  color: var(--font-foreground-color);
+}
+
+.mode:first-child {
+  border-radius: var(--border-radius-M) 0 0 var(--border-radius-M);
+}
+
+.mode:last-child {
+  border-radius: 0 var(--border-radius-M) var(--border-radius-M) 0;
+}
+
+.mode[data-checked="true"] {
+  background-color: var(--foreground-color);
+  font-weight: bold;
+}
+
+.mode[data-checked="false"] {
+  background-color: color-mix(in sRGB, var(--foreground-color) 45%, var(--background-color) 55%);
+  cursor: pointer;
+}
+
+.mode[data-checked="false"]:hover {
+  background-color: color-mix(in sRGB, var(--foreground-color) 80%, var(--background-color) 20%);
+}
