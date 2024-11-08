@@ -470,6 +470,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             .join(Fusion.creators)
             .join(Reference, FusionReference.c.reference_id == Reference.id)
             .join(Reference.family)
+            .group_by(Fusion, ReferenceFamily)
         )
 
         if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
