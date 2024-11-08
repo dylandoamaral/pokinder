@@ -19,7 +19,7 @@ class ExploreController(Controller):
     include_in_schema = False
 
     # Note: used by pokinder website for history mode in explore panel
-    @get(path="/history/count")
+    @get(path="/history/count", cache=120)
     async def retrieve_history_count(
         self,
         request: Request,
@@ -44,7 +44,7 @@ class ExploreController(Controller):
         )
 
     # Note: used by pokinder website for history mode in explore panel
-    @get(path="/history")
+    @get(path="/history", cache=120)
     async def retrieve_history(
         self,
         request: Request,
@@ -73,7 +73,7 @@ class ExploreController(Controller):
         )
 
     # Note: used by pokinder website for both pokedex and ranking modes in explore panel
-    @get(path="/fusion/count", cache=120, cache_key_builder=default_cache_key_builder)
+    @get(path="/fusion/count", cache=3600, cache_key_builder=default_cache_key_builder)
     async def count_fusion(
         self,
         explore_dependency: ExploreDependency,
@@ -92,7 +92,7 @@ class ExploreController(Controller):
         )
 
     # Note: used by pokinder website for ranking mode in explore panel
-    @get(path="/ranking", cache=120, cache_key_builder=default_cache_key_builder)
+    @get(path="/ranking", cache=600, cache_key_builder=default_cache_key_builder)
     async def list_rankings(
         self,
         explore_dependency: ExploreDependency,
@@ -115,7 +115,7 @@ class ExploreController(Controller):
         )
 
     # Note: used by pokinder website for pokedex mode in explore panel
-    @get(path="/pokedex")
+    @get(path="/pokedex", cache=120)
     async def list_pokedex(
         self,
         request: Request,
@@ -140,7 +140,7 @@ class ExploreController(Controller):
         )
 
     # Note: used by pokinder website for reference mode in explore panel
-    @get(path="/reference/count")
+    @get(path="/reference/count", cache=600, cache_key_builder=default_cache_key_builder)
     async def count_references(
         self,
         explore_dependency: ExploreDependency,
@@ -159,7 +159,7 @@ class ExploreController(Controller):
         )
 
     # Note: used by pokinder website for reference mode in explore panel
-    @get(path="/reference")
+    @get(path="/reference", cache=600, cache_key_builder=default_cache_key_builder)
     async def list_references(
         self,
         explore_dependency: ExploreDependency,

@@ -276,6 +276,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             .outerjoin(Fusion.references)
             .outerjoin(Reference.family)
             .order_by("rank")
+            .group_by(Fusion, Head, Body)
         )
 
         if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
