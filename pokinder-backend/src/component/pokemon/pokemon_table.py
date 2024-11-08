@@ -20,6 +20,8 @@ class Pokemon(BaseTable, UUIDPrimaryKey):
     name: Mapped[str] = mapped_column(String(50), nullable=False)
     type_1: Mapped[str] = mapped_column(String(20), nullable=False)
     type_2: Mapped[str] = mapped_column(String(20), nullable=True)
+    height: Mapped[int] = mapped_column(nullable=False)
+    weight: Mapped[int] = mapped_column(nullable=False)
     name_separator_index: Mapped[str] = mapped_column(String(5), nullable=False)
     pokedex_id: Mapped[int] = mapped_column(nullable=False)
     created_at: Mapped[datetime] = build_created_at_column()

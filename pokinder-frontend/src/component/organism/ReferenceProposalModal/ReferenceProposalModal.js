@@ -50,8 +50,6 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
     if (form.family === undefined) return false;
     if (form.name === undefined) return false;
 
-    console.log(form);
-
     for (const reference of fusion.references) {
       const isSameFamily = levenshtein(reference.family.name, form.family.label) < 3;
       const isSameName = levenshtein(reference.name, form.name.label) < 3;

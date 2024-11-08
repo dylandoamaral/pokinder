@@ -14,6 +14,8 @@
   --border-radius-XL: 24px;
   --border-radius-round: 9999px;
 
+  --font-size-2XS: 0.625rem;
+  --line-height-2XS: 0.75rem;
   --font-size-XS: 0.75rem;
   --line-height-XS: 1rem;
   --font-size-S: 0.875rem;
@@ -34,6 +36,9 @@
   --ok-color: #008000;
   --ko-color: #c42833;
   --ko-message-color: #ffffff;
+  --gold-color: #ffd700;
+  --silver-color: #c0c0c0;
+  --bronze-color: #cd7f32;
 
   --downvote-color: #c42833;
   --favorite-color: #eda756;
@@ -55,12 +60,18 @@
   --font-foreground-color: var(--neutral-higher);
   --input-background-color: var(--neutral-lower);
   --border-color: var(--neutral-medium);
+
+  --card-color: var(--neutral-lower);
+  --card-illustration-color: var(--neutral-low);
 }
 
 :root[theme="superball"] {
   --ok-color: #008000;
   --ko-color: #c42833;
   --ko-message-color: #c42833;
+  --gold-color: #ffd700;
+  --silver-color: #c0c0c0;
+  --bronze-color: #cd7f32;
 
   --downvote-color: #c42833;
   --favorite-color: #eda756;
@@ -82,12 +93,18 @@
   --font-foreground-color: var(--neutral-higher);
   --input-background-color: var(--neutral-lower);
   --border-color: var(--neutral-medium);
+
+  --card-color: var(--neutral-lower);
+  --card-illustration-color: var(--neutral-low);
 }
 
 :root[theme="hyperball"] {
   --ok-color: #008000;
   --ko-color: #c42833;
   --ko-message-color: #c42833;
+  --gold-color: #ffda44;
+  --silver-color: #a0a0a0;
+  --bronze-color: #b08d57;
 
   --downvote-color: #c42833;
   --favorite-color: #eda756;
@@ -109,6 +126,9 @@
   --font-foreground-color: var(--neutral-higher);
   --input-background-color: var(--neutral-low);
   --border-color: var(--neutral-medium);
+
+  --card-color: var(--neutral-lower);
+  --card-illustration-color: var(--neutral-low);
 }
 
 * {
@@ -138,7 +158,7 @@ code {
 
 .loading {
   opacity: 0.7;
-  animation: blink 1.1s ease-in infinite;
+  animation: blink 2s ease-in infinite;
 }
 
 .popup-arrow {

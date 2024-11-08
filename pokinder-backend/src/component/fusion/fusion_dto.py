@@ -10,3 +10,6 @@ ReturnDTO = SQLAlchemyDTO[Fusion]
 
 returnDTODrawConfig = DTOConfig(max_nested_depth=2, exclude={"head.families", "body.families"})
 ReturnDTODraw = SQLAlchemyDTO[Annotated[Fusion, returnDTODrawConfig]]
+
+returnDTOReferenceConfig = DTOConfig(max_nested_depth=3, exclude={"head", "body", "creators"})
+ReturnDTOReference = SQLAlchemyDTO[Annotated[Fusion, returnDTOReferenceConfig]]

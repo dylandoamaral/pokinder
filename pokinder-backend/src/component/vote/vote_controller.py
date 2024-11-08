@@ -17,34 +17,6 @@ class VoteController(Controller):
     return_dto = ReturnDTO
     path = "/vote"
 
-    @get(path="/")
-    async def retrieve_votes(
-        self,
-        request: Request,
-        vote_dependency: VoteDependency,
-        limit: int,
-        offset: int = 0,
-        fusion_ids: list[int] | None = None,
-        vote_types: list[VoteType] | None = None,
-        head_name_or_category: str | None = None,
-        body_name_or_category: str | None = None,
-        reference_family_name: str | None = None,
-        reference_name: str | None = None,
-        creator_name: str | None = None,
-    ) -> list[Vote]:
-        return await vote_dependency.list(
-            request.user.id,
-            limit,
-            offset,
-            fusion_ids,
-            vote_types,
-            head_name_or_category,
-            body_name_or_category,
-            reference_family_name,
-            reference_name,
-            creator_name,
-        )
-
     @post(path="/", dto=None, include_in_schema=False)
     async def post_vote(
         self,

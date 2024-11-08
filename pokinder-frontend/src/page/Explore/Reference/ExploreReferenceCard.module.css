@@ -1,0 +1,22 @@
+.details {
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-S);
+}
+
+.reference {
+  width: 100%;
+
+  font-size: var(--font-size-M);
+  color: var(--font-foreground-color);
+  text-align: center;
+}
+
+.credit {
+  font-size: var(--font-size-2XS);
+  line-height: var(--line-height-2XS);
+  color: var(--neutral-high);
+  text-align: center;
+}

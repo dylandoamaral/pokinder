@@ -7,20 +7,5 @@ from src.component.vote.vote_table import Vote, VoteType
 
 @runtime_checkable
 class VoteDependency(Protocol):
-    async def list(
-        self,
-        account_id: UUID,
-        limit: int,
-        offset: int = 0,
-        fusion_ids: list[int] | None = None,
-        vote_type: list[VoteType] | None = None,
-        head_name_or_category: str | None = None,
-        body_name_or_category: str | None = None,
-        reference_family_name: str | None = None,
-        reference_name: str | None = None,
-        creator_name: str | None = None,
-    ) -> list[Vote]:
-        pass
-
     async def upsert(self, account_id: UUID, vote_add: VoteAdd) -> None:
         pass
