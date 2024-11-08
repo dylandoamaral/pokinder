@@ -18,44 +18,25 @@ import ExploreCardLoading from "../ExploreCardLoading";
 import ExploreReferenceCard from "./ExploreReferenceCard";
 import styles from "./ExploreReferenceCards.module.css";
 
-export default function ExploreReferenceCards({ filters }) {
+function List({ width, height, items, state, counts, filters }) {
   const infiniteLoaderRef = useRef(null);
-
-  const [state, setState] = useState({ id: uuidv4() });
-  let items = {};
-
   const queries = useRef({});
 
-  const { data: counts, isRefetching } = useQuery(
-    ["card", state.id],
-    async () => loadItemsCount(filters),
-    { staleTime: 10 * 60 * 1000, cacheTime: 0 },
-  );
+  const itemCount = counts.length;
+  const cardsPerRow = calculateCardsPerRow(width);
 
-  useAfterEffect(() => {
-    setState({ id: uuidv4() });
-  }, [filters, isRefetching]);
+  const requestsPerSecond = 4;
+
+  const refreshId = state.id + cardsPerRow;
 
   useEffect(() => {
     if (!infiniteLoaderRef.current) return;
 
     infiniteLoaderRef.current.resetloadMoreItemsCache();
-  }, [state.id]);
-
-  if (counts === undefined) {
-    return (
-      <div className={styles.loading}>
-        <Loader loading={true} />
-      </div>
-    );
-  }
+  }, [refreshId]);
 
   async function loadItems(filters, limit, offset) {
     return await getExploreReference(filters, limit, offset);
-  }
-
-  async function loadItemsCount() {
-    return await getExploreReferenceCount(filters);
   }
 
   function getStartIndex(counts, rowIndex) {
@@ -125,115 +106,146 @@ export default function ExploreReferenceCards({ filters }) {
     );
   }
 
-  function renderList(width, height) {
-    const itemCount = counts.length;
-    const cardsPerRow = calculateCardsPerRow(width);
+  function getItemSize(index) {
+    const itemsAmount = counts[index]["count"];
+    const rowAmount = Math.ceil(itemsAmount / cardsPerRow);
+    const titleSize = 80;
 
-    const requestsPerSecond = 4;
+    return CARD_HEIGHT * rowAmount + CARD_GAP * (rowAmount - 1) + titleSize;
+  }
 
-    function getItemSize(index) {
-      const itemsAmount = counts[index]["count"];
-      const rowAmount = Math.ceil(itemsAmount / cardsPerRow);
-      const titleSize = 80;
+  // NOTE: The goal is to delay query when we reach more than {requestsPerSecond} per secondes.
+  function calculateQueryStartDate(now) {
+    const allQueries = Object.values(queries.current);
 
-      return CARD_HEIGHT * rowAmount + CARD_GAP * (rowAmount - 1) + titleSize;
+    if (allQueries.length < requestsPerSecond) return now;
+
+    const oneSecondAgo = now - 1000;
+    const recentQueries = allQueries.filter((data) => data["startDate"] >= oneSecondAgo);
+
+    if (recentQueries.length < requestsPerSecond) return now;
+
+    const sortedQueries = recentQueries.sort(
+      (a, b) => new Date(a["startDate"]) - new Date(b["startDate"]),
+    );
+    const farAwayQuery = sortedQueries[sortedQueries.length - requestsPerSecond];
+
+    return farAwayQuery["startDate"] + 1000;
+  }
+
+  async function loadMoreItems(startIndex, stopIndex) {
+    const now = Date.now();
+    const queryId = uuidv4();
+    const queryData = { startDate: calculateQueryStartDate(now), status: "IN_PROGRESS" };
+
+    queries.current[queryId] = queryData;
+
+    const offset = startIndex;
+    const limit = stopIndex - startIndex + 1;
+
+    const firstCardFetched = getStartIndex(counts, startIndex);
+    const lastCardFetched = getStartIndex(counts, stopIndex) + counts[stopIndex]["count"];
+    const amountCardFetched = lastCardFetched - firstCardFetched;
+
+    for (let index = 0; index < amountCardFetched; index++) {
+      items[index + firstCardFetched] = "WAITING";
     }
 
-    // NOTE: The goal is to delay query when we reach more than {requestsPerSecond} per secondes.
-    function calculateQueryStartDate(now) {
-      const allQueries = Object.values(queries.current);
+    const delayQuery = new Promise((resolve) => {
+      return setTimeout(resolve, queryData["startDate"] - now);
+    });
 
-      if (allQueries.length < requestsPerSecond) return now;
+    const runQuery = () =>
+      new Promise((resolve) => {
+        loadItems(filters, limit, offset).then((data) => {
+          for (let index = 0; index < amountCardFetched; index++) {
+            if (data[index]) items[index + firstCardFetched] = data[index];
+            else items[index + firstCardFetched] = "UNAVAILABLE";
+          }
 
-      const oneSecondAgo = now - 1000;
-      const recentQueries = allQueries.filter((data) => data["startDate"] >= oneSecondAgo);
-
-      if (recentQueries.length < requestsPerSecond) return now;
-
-      const sortedQueries = recentQueries.sort(
-        (a, b) => new Date(a["startDate"]) - new Date(b["startDate"]),
-      );
-      const farAwayQuery = sortedQueries[sortedQueries.length - requestsPerSecond];
-
-      return farAwayQuery["startDate"] + 1000;
-    }
-
-    async function loadMoreItems(startIndex, stopIndex) {
-      const now = Date.now();
-      const queryId = uuidv4();
-      const queryData = { startDate: calculateQueryStartDate(now), status: "IN_PROGRESS" };
-
-      queries.current[queryId] = queryData;
-
-      const offset = startIndex;
-      const limit = stopIndex - startIndex + 1;
-
-      const firstCardFetched = getStartIndex(counts, startIndex);
-      const lastCardFetched = getStartIndex(counts, stopIndex) + counts[stopIndex]["count"];
-      const amountCardFetched = lastCardFetched - firstCardFetched;
-
-      for (let index = 0; index < amountCardFetched; index++) {
-        items[index + firstCardFetched] = "WAITING";
-      }
-
-      const delayQuery = new Promise((resolve) => {
-        return setTimeout(resolve, queryData["startDate"] - now);
+          queries.current[queryId]["status"] = { status: "DONE" };
+          resolve();
+        });
       });
 
-      const runQuery = () =>
-        new Promise((resolve) => {
-          loadItems(filters, limit, offset).then((data) => {
-            for (let index = 0; index < amountCardFetched; index++) {
-              if (data[index]) items[index + firstCardFetched] = data[index];
-              else items[index + firstCardFetched] = "UNAVAILABLE";
-            }
+    return delayQuery
+      .then(() => runQuery())
+      .catch((error) => console.error("Error in chain:", error));
+  }
 
-            queries.current[queryId]["status"] = { status: "DONE" };
-            resolve();
-          });
-        });
+  function isItemLoaded(index) {
+    const startIndex = getStartIndex(counts, index);
 
-      return delayQuery
-        .then(() => runQuery())
-        .catch((error) => console.error("Error in chain:", error));
-    }
+    return !!items[startIndex];
+  }
 
-    function isItemLoaded(index) {
-      const startIndex = getStartIndex(counts, index);
+  return (
+    <InfiniteLoader
+      key={refreshId}
+      ref={infiniteLoaderRef}
+      isItemLoaded={isItemLoaded}
+      itemCount={itemCount}
+      loadMoreItems={loadMoreItems}
+      minimumBatchSize={5}
+      threshold={5}
+    >
+      {({ onItemsRendered, ref }) => (
+        <VariableSizeList
+          height={height}
+          className={styles.loader}
+          itemCount={itemCount}
+          itemSize={getItemSize}
+          onItemsRendered={onItemsRendered}
+          ref={ref}
+          width={width}
+        >
+          {({ index, style }) => renderRow(index, style, cardsPerRow)}
+        </VariableSizeList>
+      )}
+    </InfiniteLoader>
+  );
+}
 
-      return !!items[startIndex];
-    }
+export default function ExploreReferenceCards({ filters }) {
+  let items = {};
 
+  async function loadItemsCount() {
+    return await getExploreReferenceCount(filters);
+  }
+
+  const [state, setState] = useState({ id: uuidv4() });
+  const { data: counts, isRefetching } = useQuery(
+    ["card", state.id],
+    async () => loadItemsCount(filters),
+    { staleTime: 10 * 60 * 1000, cacheTime: 0 },
+  );
+
+  useAfterEffect(() => {
+    setState({ id: uuidv4() });
+  }, [filters, isRefetching]);
+
+  if (counts === undefined) {
     return (
-      <InfiniteLoader
-        key={state.id}
-        ref={infiniteLoaderRef}
-        isItemLoaded={isItemLoaded}
-        itemCount={itemCount}
-        loadMoreItems={loadMoreItems}
-        minimumBatchSize={5}
-        threshold={5}
-      >
-        {({ onItemsRendered, ref }) => (
-          <VariableSizeList
-            height={height}
-            className={styles.loader}
-            itemCount={itemCount}
-            itemSize={getItemSize}
-            onItemsRendered={onItemsRendered}
-            ref={ref}
-            width={width}
-          >
-            {({ index, style }) => renderRow(index, style, cardsPerRow)}
-          </VariableSizeList>
-        )}
-      </InfiniteLoader>
+      <div className={styles.loading}>
+        <Loader loading={true} />
+      </div>
     );
   }
 
   return (
     <div style={{ flex: "1 1 auto" }}>
-      <AutoSizer>{({ height, width }) => renderList(width, height)}</AutoSizer>
+      <AutoSizer>
+        {({ height, width }) => (
+          <List
+            width={width}
+            height={height}
+            items={items}
+            state={state}
+            counts={counts}
+            filters={filters}
+          />
+        )}
+      </AutoSizer>
     </div>
   );
 }
