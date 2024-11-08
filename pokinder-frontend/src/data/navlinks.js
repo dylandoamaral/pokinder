@@ -1,15 +1,13 @@
+import { MODE_POKEDEX } from "../page/Explore/Explore";
+
 export const navlinks = (t) => [
   {
     title: t("Vote"),
     path: "/",
   },
   {
-    title: t("History"),
-    path: "/history",
-  },
-  {
-    title: t("Ranking"),
-    path: "/ranking",
+    title: t("Explore"),
+    path: `/explore?mode=${MODE_POKEDEX}`,
   },
   {
     title: t("Analytics"),

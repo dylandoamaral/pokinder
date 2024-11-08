@@ -465,19 +465,9 @@ export function allPokemonNames() {
 }
 
 export function getTypes(headType1, headType2, bodyType1, bodyType2) {
-  if (headType2 === null && bodyType2 === null) {
-    if (headType1 === bodyType1) return [headType1];
-    else return [headType1, bodyType1];
-  } else if (bodyType2 === null) {
-    if (headType1 === bodyType1) return [headType1];
-    else return [headType1, bodyType1];
-  } else if (headType2 === null) {
-    if (headType1 === bodyType1) return [headType1];
-    else return [headType1, bodyType2];
-  } else {
-    if (headType1 === bodyType2) return [headType1, bodyType1];
-    else return [headType1, bodyType2];
-  }
+  if (bodyType2 != null && headType1 !== bodyType2) return [headType1, bodyType2];
+  if (bodyType1 != null && headType1 !== bodyType1) return [headType1, bodyType1];
+  return [headType1];
 }
 
 export function getName(headName, headNameSeparatorIndex, bodyName, bodyNameSeparatorIndex) {

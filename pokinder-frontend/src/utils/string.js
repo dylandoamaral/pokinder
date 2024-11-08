@@ -23,3 +23,7 @@ export function levenshtein(word1, word2) {
   }
   return dp[len1][len2];
 }
+
+export function capitalize(val) {
+  return String(val).charAt(0).toUpperCase() + String(val).slice(1).toLocaleLowerCase();
+}

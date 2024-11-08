@@ -28,6 +28,7 @@ from src.component.analytics import (
     use_analytics_dependency_postgres,
 )
 from src.component.creator import CreatorController, use_creator_dependency_postgres
+from src.component.explore import ExploreController, use_explore_dependency_postgres
 from src.component.fusion import FusionController, use_fusion_dependency_postgres
 from src.component.reference import (
     ReferenceController,
@@ -104,6 +105,7 @@ app = Litestar(
         ReferenceController,
         ReferenceProposalController,
         ReferenceFamilyController,
+        ExploreController,
     ],
     dependencies={
         "vote_dependency": Provide(use_vote_dependency_postgres, sync_to_thread=False),
@@ -114,6 +116,7 @@ app = Litestar(
         "reference_dependency": Provide(use_reference_dependency_postgres, sync_to_thread=False),
         "reference_proposal_dependency": Provide(use_reference_proposal_dependency_postgres, sync_to_thread=False),
         "reference_family_dependency": Provide(use_reference_family_dependency_postgres, sync_to_thread=False),
+        "explore_dependency": Provide(use_explore_dependency_postgres, sync_to_thread=False),
         "email_dependency": Provide(use_email_dependency_gmail, sync_to_thread=False),
         "notification_dependency": Provide(use_notification_dependency_discord, sync_to_thread=False),
         "statistics_dependency": Provide(use_statistics_dependency_postgres_redis, sync_to_thread=False),

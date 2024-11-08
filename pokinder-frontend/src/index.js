@@ -8,12 +8,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 import Admin from "./page/Admin/Admin";
 import Analytics from "./page/Analytics/Analytics";
+import Explore from "./page/Explore/Explore";
 import ForgotPassword from "./page/ForgotPassword/ForgotPassword";
 import LogIn from "./page/LogIn/LogIn";
 import NewPassword from "./page/NewPassword/NewPassword";
 import NotFound from "./page/NotFound/NotFound";
-import Pokedex from "./page/Pokedex/Pokedex";
-import Ranking from "./page/Ranking/Ranking";
 import Signup from "./page/SignUp/SignUp";
 import Vote from "./page/Vote/Vote";
 
@@ -30,8 +29,7 @@ export const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   { path: "/", element: <Vote /> },
-  { path: "/history", element: <Pokedex /> },
-  { path: "/ranking", element: <Ranking /> },
+  { path: "/explore", element: <Explore /> },
   { path: "/analytics", element: <Analytics /> },
   { path: "/admin", element: <Admin /> },
   { path: "/login", element: <LogIn /> },

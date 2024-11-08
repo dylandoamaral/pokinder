@@ -103,6 +103,120 @@ export async function getRanking(filters, limit, offset) {
   return { records: response.data, previousOffset: offset };
 }
 
+export async function getExploreHistoryCount(filters) {
+  const params = new URLSearchParams();
+
+  if (filters.downvoteEnabled) params.append("vote_types", 1);
+  if (filters.favoriteEnabled) params.append("vote_types", 2);
+  if (filters.upvoteEnabled) params.append("vote_types", 0);
+
+  params.set("head_name_or_category", filters.headNameOrCategory);
+  params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("reference_family_name", filters.referenceFamilyName);
+  params.set("reference_name", filters.referenceName);
+  params.set("creator_name", filters.creatorName);
+
+  const response = await http.get("/explore/history/count?" + params.toString());
+
+  return response.data;
+}
+
+export async function getExploreHistory(filters, limit, offset) {
+  const params = new URLSearchParams();
+
+  if (filters.downvoteEnabled) params.append("vote_types", 1);
+  if (filters.favoriteEnabled) params.append("vote_types", 2);
+  if (filters.upvoteEnabled) params.append("vote_types", 0);
+
+  params.set("head_name_or_category", filters.headNameOrCategory);
+  params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("reference_family_name", filters.referenceFamilyName);
+  params.set("reference_name", filters.referenceName);
+  params.set("creator_name", filters.creatorName);
+  params.set("limit", limit);
+  params.set("offset", offset);
+
+  const response = await http.get("/explore/history?" + params.toString());
+
+  return response.data;
+}
+
+export async function getExploreFusionCount(filters) {
+  const params = new URLSearchParams();
+
+  params.set("head_name_or_category", filters.headNameOrCategory);
+  params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("reference_family_name", filters.referenceFamilyName);
+  params.set("reference_name", filters.referenceName);
+  params.set("creator_name", filters.creatorName);
+
+  const response = await http.get("/explore/fusion/count?" + params.toString());
+
+  return response.data;
+}
+
+export async function getExplorePokedex(filters, limit, offset) {
+  const params = new URLSearchParams();
+
+  params.set("head_name_or_category", filters.headNameOrCategory);
+  params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("reference_family_name", filters.referenceFamilyName);
+  params.set("reference_name", filters.referenceName);
+  params.set("creator_name", filters.creatorName);
+  params.set("limit", limit);
+  params.set("offset", offset);
+
+  const response = await http.get("/explore/pokedex?" + params.toString());
+
+  return response.data;
+}
+
+export async function getExploreRanking(filters, limit, offset) {
+  const params = new URLSearchParams();
+
+  params.set("head_name_or_category", filters.headNameOrCategory);
+  params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("reference_family_name", filters.referenceFamilyName);
+  params.set("reference_name", filters.referenceName);
+  params.set("creator_name", filters.creatorName);
+  params.set("limit", limit);
+  params.set("offset", offset);
+
+  const response = await http.get("/explore/ranking?" + params.toString());
+
+  return response.data;
+}
+
+export async function getExploreReferenceCount(filters) {
+  const params = new URLSearchParams();
+
+  params.set("head_name_or_category", filters.headNameOrCategory);
+  params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("reference_family_name", filters.referenceFamilyName);
+  params.set("reference_name", filters.referenceName);
+  params.set("creator_name", filters.creatorName);
+
+  const response = await http.get("/explore/reference/count?" + params.toString());
+
+  return response.data;
+}
+
+export async function getExploreReference(filters, limit, offset) {
+  const params = new URLSearchParams();
+
+  params.set("head_name_or_category", filters.headNameOrCategory);
+  params.set("body_name_or_category", filters.bodyNameOrCategory);
+  params.set("reference_family_name", filters.referenceFamilyName);
+  params.set("reference_name", filters.referenceName);
+  params.set("creator_name", filters.creatorName);
+  params.set("limit", limit);
+  params.set("offset", offset);
+
+  const response = await http.get("/explore/reference?" + params.toString());
+
+  return response.data;
+}
+
 export async function getAnalytics() {
   const response = await http.get("/analytics");
 
@@ -208,8 +322,6 @@ export async function acceptReferenceProposalAndCreateReference(
     reference_source: referenceSource,
     reference_proposal_id: referenceProposalId,
   };
-
-  console.log(body);
 
   const response = await http.post("/reference_proposal/accept_reference", body);
 
