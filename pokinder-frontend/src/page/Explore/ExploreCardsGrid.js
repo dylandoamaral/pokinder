@@ -175,6 +175,7 @@ function List({ width, height, items, state, count, filters, loadItems, renderCa
         return (
           <FixedSizeList
             height={height}
+            className={styles.loader}
             itemCount={itemCount}
             itemSize={itemSize}
             onItemsRendered={onItemsRendered}

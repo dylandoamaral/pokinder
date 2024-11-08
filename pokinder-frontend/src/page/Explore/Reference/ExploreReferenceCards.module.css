@@ -7,6 +7,15 @@
   justify-content: center;
 }
 
+.loader::-webkit-scrollbar {
+  display: none;
+}
+
+.loader {
+  -ms-overflow-style: none; 
+  scrollbar-width: none;
+}
+
 .row {
   display: flex;
   flex-direction: column;
