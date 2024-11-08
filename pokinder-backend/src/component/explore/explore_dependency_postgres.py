@@ -526,14 +526,14 @@ class ExploreDependencyPostgres(ExploreDependency):
         Head = aliased(Pokemon)
         Body = aliased(Pokemon)
 
-        subquery = select(ReferenceFamily.id).order_by(ReferenceFamily.name).offset(offset).limit(limit)
+        # subquery = select(ReferenceFamily.id).order_by(ReferenceFamily.name).offset(offset).limit(limit)
 
-        if reference_family_name is not None and reference_family_name != "All":
-            subquery = subquery.filter(ReferenceFamily.name == reference_family_name)
+        # if reference_family_name is not None and reference_family_name != "All":
+        #    subquery = subquery.filter(ReferenceFamily.name == reference_family_name)
 
-        subquery = subquery.subquery()
+        # subquery = subquery.subquery()
 
-        query = (
+        cte = (
             select(
                 Fusion.id,
                 Fusion.path,
@@ -544,6 +544,7 @@ class ExploreDependencyPostgres(ExploreDependency):
                 Reference.name,
                 Reference.source,
                 Account.username,
+                ReferenceFamily.name.label("reference_family_name"),
             )
             .select_from(FusionReference)
             .join(Fusion, FusionReference.c.fusion_id == Fusion.id)
@@ -554,7 +555,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             .join(Reference.family)
             .join(ReferenceProposal, ReferenceProposal.id == FusionReference.c.reference_proposal_id)
             .join(Account, Account.id == ReferenceProposal.proposer_id)
-            .filter(Reference.family_id.in_(select(subquery)))
+            # .filter(Reference.family_id.in_(select(subquery)))
             .order_by(ReferenceFamily.name, Reference.name, Head.pokedex_id, Body.pokedex_id, Fusion.path)
         )
 
@@ -564,23 +565,35 @@ class ExploreDependencyPostgres(ExploreDependency):
 
         if head_name_or_category is not None and head_name_or_category != "All":
             if head_name_or_category in pokemon_families.keys():
-                query = query.filter(Head.families.any(Family.id == families[head_name_or_category]))
+                cte = cte.filter(Head.families.any(Family.id == families[head_name_or_category]))
             else:
-                query = query.filter(Head.name == head_name_or_category)
+                cte = cte.filter(Head.name == head_name_or_category)
         if body_name_or_category is not None and body_name_or_category != "All":
             if body_name_or_category in pokemon_families.keys():
-                query = query.filter(Body.families.any(Family.id == families[body_name_or_category]))
+                cte = cte.filter(Body.families.any(Family.id == families[body_name_or_category]))
             else:
-                query = query.filter(Body.name == body_name_or_category)
+                cte = cte.filter(Body.name == body_name_or_category)
 
         if reference_family_name is not None and reference_family_name != "All":
-            query = query.filter(ReferenceFamily.name == reference_family_name)
+            cte = cte.filter(ReferenceFamily.name == reference_family_name)
 
         if reference_name is not None and reference_name != "All":
-            query = query.filter(Reference.name == reference_name)
+            cte = cte.filter(Reference.name == reference_name)
 
         if creator_name is not None and creator_name != "All":
-            query = query.filter(Creator.name == creator_name)
+            cte = cte.filter(Creator.name == creator_name)
+
+        cte = cte.cte()
+
+        subquery = (
+            select(cte.c.reference_family_name)
+            .group_by(cte.c.reference_family_name)
+            .order_by(cte.c.reference_family_name)
+            .offset(offset)
+            .limit(limit)
+        ).subquery()
+
+        query = select(cte).filter(cte.c.reference_family_name.in_(select(subquery)))
 
         result = await self.session.execute(query)
         instances = result.unique().all()
