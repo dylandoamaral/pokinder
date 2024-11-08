@@ -7,6 +7,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import { useAfterEffect } from "../../hook/useAfterEffect";
 
+import Loader from "../../component/atom/Loader/Loader";
+
 import { CARD_GAP, CARD_HEIGHT, CARD_WIDTH, calculateCardsPerRow } from "./ExploreCard";
 import ExploreCardLoading from "./ExploreCardLoading";
 import styles from "./ExploreCardsGrid.module.css";
@@ -202,13 +204,11 @@ export default function ExploreCardsGrid({ filters, loadItems, loadItemsCount, r
   }, [filters, isRefetching]);
 
   if (count === undefined) {
-    return null;
-
-    //return (
-    //  <div className={styles.loading}>
-    //    <Loader loading={true} />
-    //  </div>
-    //)
+    return (
+      <div className={styles.loading}>
+        <Loader loading={true} />
+      </div>
+    );
   }
 
   return (

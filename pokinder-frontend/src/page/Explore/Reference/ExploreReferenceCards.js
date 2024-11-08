@@ -11,6 +11,8 @@ import { getExploreReference, getExploreReferenceCount } from "../../../api/poki
 
 import { getName } from "../../../utils/pokemon";
 
+import Loader from "../../component/atom/Loader/Loader";
+
 import { CARD_GAP, CARD_HEIGHT, CARD_WIDTH, calculateCardsPerRow } from "../ExploreCard";
 import ExploreCardLoading from "../ExploreCardLoading";
 import ExploreReferenceCard from "./ExploreReferenceCard";
@@ -41,13 +43,11 @@ export default function ExploreReferenceCards({ filters }) {
   }, [state.id]);
 
   if (counts === undefined) {
-    return null;
-
-    //return (
-    //  <div className={styles.loading}>
-    //    <Loader loading={true} />
-    //  </div>
-    //)
+    return (
+      <div className={styles.loading}>
+        <Loader loading={true} />
+      </div>
+    );
   }
 
   async function loadItems(filters, limit, offset) {
