@@ -11,14 +11,11 @@ import { getExploreReference, getExploreReferenceCount } from "../../../api/poki
 
 import { getName } from "../../../utils/pokemon";
 
-import Loader from "../../../component/atom/Loader/Loader";
-
 import { CARD_GAP, CARD_HEIGHT, CARD_WIDTH, calculateCardsPerRow } from "../ExploreCard";
 import ExploreCardLoading from "../ExploreCardLoading";
 import ExploreReferenceCard from "./ExploreReferenceCard";
 import styles from "./ExploreReferenceCards.module.css";
 
-// TODO: http://localhost:3000/explore?mode=reference&referenceFamilyName=dqqdsdqs&headNameOrCategory=Cubone
 export default function ExploreReferenceCards({ filters }) {
   const infiniteLoaderRef = useRef(null);
 

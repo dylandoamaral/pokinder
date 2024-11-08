@@ -7,8 +7,6 @@ import { v4 as uuidv4 } from "uuid";
 
 import { useAfterEffect } from "../../hook/useAfterEffect";
 
-import Loader from "../../component/atom/Loader/Loader";
-
 import { CARD_GAP, CARD_HEIGHT, CARD_WIDTH, calculateCardsPerRow } from "./ExploreCard";
 import ExploreCardLoading from "./ExploreCardLoading";
 import styles from "./ExploreCardsGrid.module.css";
