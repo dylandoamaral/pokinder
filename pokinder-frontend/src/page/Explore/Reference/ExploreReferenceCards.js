@@ -217,7 +217,7 @@ export default function ExploreReferenceCards({ filters }) {
   const { data: counts, isRefetching } = useQuery(
     ["card", state.id],
     async () => loadItemsCount(filters),
-    { staleTime: 10 * 60 * 1000, cacheTime: 0 },
+    { staleTime: Infinity, cacheTime: 0 },
   );
 
   useAfterEffect(() => {
