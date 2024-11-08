@@ -263,11 +263,15 @@ class ExploreDependencyPostgres(ExploreDependency):
                     order_by=(
                         Fusion.vote_score.desc(),
                         Fusion.vote_count.desc(),
-                        Fusion.id,
+                        Head.pokedex_id,
+                        Body.pokedex_id,
+                        Fusion.path,
                     )
                 )
                 .label("rank"),
             )
+            .join(Head, Fusion.head_id == Head.id)
+            .join(Body, Fusion.body_id == Body.id)
         ).subquery()
 
         query = (
