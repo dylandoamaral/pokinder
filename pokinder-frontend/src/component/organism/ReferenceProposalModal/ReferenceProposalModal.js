@@ -3,15 +3,15 @@ import { useTranslation } from "react-i18next";
 import { useMutation } from "react-query";
 import { toast } from "react-toastify";
 
-import { addReferenceProposal, listReferenceFamilies, listReferences } from "../../../api/pokinder";
+import { addReferenceProposal } from "../../../api/pokinder";
 
 import { levenshtein } from "../../../utils/string";
 import { getDaenaLink } from "../../../utils/website";
 
 import Button from "../../atom/Button/Button";
+import Input from "../../atom/Input/Input";
 import Modal from "../../atom/Modal/Modal";
 import Panel from "../../atom/Panel/Panel";
-import FutureCreatableSelect from "../../atom/Select/FutureCreatableSelect";
 import Sprite from "../../atom/Sprite/Sprite";
 import Title from "../../atom/Title/Title";
 import styles from "./ReferenceProposalModal.module.css";
@@ -26,12 +26,12 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
 
   const [form, setForm] = useState(defaultForm);
 
-  const setFamily = (family) => setForm({ ...form, family: family, name: undefined });
+  const setFamily = (family) => setForm({ ...form, family: family });
   const setName = (name) => setForm({ ...form, name: name });
 
   const { mutate: submit } = useMutation(
     async () => {
-      await addReferenceProposal(fusion.id, form.name.label, form.family.label);
+      await addReferenceProposal(fusion.id, form.name, form.family);
     },
     {
       onSuccess: () => {
@@ -42,17 +42,13 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
     },
   );
 
-  function optionify(value) {
-    return { value: value.id, label: value.name };
-  }
-
   function isReferenceExists() {
     if (form.family === undefined) return false;
     if (form.name === undefined) return false;
 
     for (const reference of fusion.references) {
-      const isSameFamily = levenshtein(reference.family.name, form.family.label) < 3;
-      const isSameName = levenshtein(reference.name, form.name.label) < 3;
+      const isSameFamily = levenshtein(reference.family.name, form.family) < 3;
+      const isSameName = levenshtein(reference.name, form.name) < 3;
       if (isSameFamily && isSameName) {
         return true;
       }
@@ -66,13 +62,6 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
     if (form.name === undefined) return true;
 
     return isReferenceExists();
-  }
-
-  async function fetchReferences() {
-    if (form.family === undefined) return [];
-    if (form.family.__isNew__ === true) return [];
-
-    return await listReferences(form.family.value, undefined);
   }
 
   function renderExistingReferences() {
@@ -114,20 +103,11 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
         />
       </Panel>
       {renderExistingReferences()}
-      <Panel title={t("Family")}>
-        <FutureCreatableSelect
-          futureValues={listReferenceFamilies}
-          valueToOption={optionify}
-          onChange={setFamily}
-        />
-      </Panel>
       <Panel title={t("Name")}>
-        <FutureCreatableSelect
-          futureValues={fetchReferences}
-          valueToOption={optionify}
-          onChange={setName}
-          updateKey={form.family} // NOTE: trick to force rerendering when family change.
-        />
+        <Input placeholder="Monkey D. Luffy" onChange={setName} />
+      </Panel>
+      <Panel title={t("Family")}>
+        <Input placeholder="One Piece" onChange={setFamily} />
       </Panel>
       {renderReferenceExists()}
       <div className={styles.buttons}>
