@@ -1,27 +1,15 @@
-import { now } from "moment";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
 
 import useQueryParameters from "../../hook/useQueryParameters";
 
 import Page from "../../component/organism/Page/Page";
 
 import styles from "./Explore.module.css";
-import ExploreCardLoading from "./ExploreCardLoading";
-import ExploreCardLocked from "./ExploreCardLocked";
 import ExploreMenu from "./ExploreMenu";
-import ExploreHistoryCard from "./History/ExploreHistoryCard";
 import ExploreHistoryCards from "./History/ExploreHistoryCards";
-import ExplorePokedexCard from "./Pokedex/ExplorePokedexCard";
 import ExplorePokedexCards from "./Pokedex/ExplorePokedexCards";
-import ExploreRankingCard from "./Ranking/ExploreRankingCard";
 import ExploreRankingCards from "./Ranking/ExploreRankingCards";
-import ExploreReferenceCard from "./Reference/ExploreReferenceCard";
 import ExploreReferenceCards from "./Reference/ExploreReferenceCards";
-
-// TODO: add mode as query param
-// TODO: reduce menu size
 
 export const MODE_POKEDEX = "pokedex";
 export const MODE_HISTORY = "history";
@@ -91,109 +79,6 @@ export default function Explore() {
       default:
         return <ExplorePokedexCards filters={filters} />;
     }
-  }
-
-  function renderLoadingCard() {
-    return <ExploreCardLoading />;
-  }
-
-  function renderLockedCard() {
-    const fusionId = "dde76924-4eb2-4864-abd7-a05476e230f0";
-
-    return <ExploreCardLocked fusionId={fusionId} isLocked={true} />;
-  }
-
-  function renderPokedexCard() {
-    const fusionId = "dde76924-4eb2-4864-abd7-a05476e230f0";
-    const fusionPath = "296.243";
-    const fusionName = "Zynogre";
-    const fusionType1 = "flying";
-    const fusionType2 = "normal";
-    const fusionWeight = 10.2;
-    const fusionHeight = 100;
-
-    return (
-      <ExplorePokedexCard
-        fusionId={fusionId}
-        fusionPath={fusionPath}
-        fusionName={fusionName}
-        fusionType1={fusionType1}
-        fusionType2={fusionType2}
-        fusionWeight={fusionWeight}
-        fusionHeight={fusionHeight}
-      />
-    );
-  }
-
-  function renderHistoryCard() {
-    const fusionId = "dde76924-4eb2-4864-abd7-a05476e230f0";
-    const fusionPath = "296.243";
-    const fusionName = "Zynogre";
-    const fusionVoteType = 1;
-    const fusionVoteAt = now();
-
-    return (
-      <ExploreHistoryCard
-        fusionId={fusionId}
-        fusionPath={fusionPath}
-        fusionName={fusionName}
-        fusionVoteType={fusionVoteType}
-        fusionVoteAt={fusionVoteAt}
-      />
-    );
-  }
-
-  function renderReferenceCard() {
-    const fusionId = "dde76924-4eb2-4864-abd7-a05476e230f0";
-    const fusionPath = "296.243";
-    const fusionName = "Zynogre";
-    const fusionReferenceName = "Divine Beast Vah Naboris";
-    const fusionReferenceLink = "https://zelda.fandom.com/wiki/Divine_Beast_Vah_Naboris";
-    const fusionReferenceProposer = "Portuar";
-
-    return (
-      <ExploreReferenceCard
-        fusionId={fusionId}
-        fusionPath={fusionPath}
-        fusionName={fusionName}
-        fusionReferenceName={fusionReferenceName}
-        fusionReferenceLink={fusionReferenceLink}
-        fusionReferenceProposer={fusionReferenceProposer}
-      />
-    );
-  }
-
-  function renderRankingCard() {
-    const fusionId = "dde76924-4eb2-4864-abd7-a05476e230f0";
-    const fusionPath = "296.243";
-    const fusionName = "Zynogre";
-    const fusionRank = 1;
-    const fusionScore = 100;
-    const fusionVoteCount = 10;
-
-    return (
-      <ExploreRankingCard
-        fusionId={fusionId}
-        fusionPath={fusionPath}
-        fusionName={fusionName}
-        fusionRank={fusionRank}
-        fusionScore={fusionScore}
-        fusionVoteCount={fusionVoteCount}
-      />
-    );
-  }
-
-  function renderTestCards() {
-    return (
-      <div className={styles.container}>
-        {renderLoadingCard()}
-        {renderLockedCard()}
-        {renderPokedexCard()}
-        {renderHistoryCard()}
-        {renderReferenceCard()}
-        {renderRankingCard()}
-      </div>
-    );
   }
 
   return (
