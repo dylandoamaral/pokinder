@@ -323,8 +323,6 @@ export async function acceptReferenceProposalAndCreateReference(
     reference_proposal_id: referenceProposalId,
   };
 
-  console.log(body);
-
   const response = await http.post("/reference_proposal/accept_reference", body);
 
   return response.data;

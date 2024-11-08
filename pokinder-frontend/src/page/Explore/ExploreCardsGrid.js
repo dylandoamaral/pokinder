@@ -129,22 +129,17 @@ function List({ width, height, items, state, count, filters, loadItems, renderCa
     const offset = startIndex * cardsPerRow;
     const limit = (stopIndex - startIndex + 1) * cardsPerRow;
 
-    //console.log("Load more with start index", startIndex, "stop index", stopIndex);
-
     for (let index = 0; index < limit; index++) {
       items[index + offset] = "WAITING";
     }
 
     const delayQuery = new Promise((resolve) => {
-      //console.log(`Delayed the query for ${queryData["startDate"] - now} milliseconds`)
       return setTimeout(resolve, queryData["startDate"] - now);
     });
 
     const runQuery = () =>
       new Promise((resolve) => {
         loadItems(filters, limit, offset).then((data) => {
-          //console.log("Done for start index", startIndex, "stop index", stopIndex);
-
           for (let index = 0; index < limit; index++) {
             if (data[index]) items[index + offset] = data[index];
             else items[index + offset] = "UNAVAILABLE";
