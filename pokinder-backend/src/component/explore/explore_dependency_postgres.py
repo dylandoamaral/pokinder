@@ -387,7 +387,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             .outerjoin(Fusion.references)
             .outerjoin(Reference.family)
             .outerjoin(Vote, and_(Fusion.id == Vote.fusion_id, Vote.account_id == account_id))
-            .order_by(Head.pokedex_id, Body.pokedex_id)
+            .order_by(Head.pokedex_id, Body.pokedex_id, Fusion.path)
             .group_by(Fusion, Head, Body)
         )
 
@@ -547,10 +547,10 @@ class ExploreDependencyPostgres(ExploreDependency):
             .join(Fusion.creators)
             .join(Reference, FusionReference.c.reference_id == Reference.id)
             .join(Reference.family)
-            .join(ReferenceProposal, ReferenceProposal.fusion_id == Fusion.id)
+            .join(ReferenceProposal, ReferenceProposal.id == FusionReference.c.reference_proposal_id)
             .join(Account, Account.id == ReferenceProposal.proposer_id)
             .filter(Reference.family_id.in_(select(subquery)))
-            .order_by(ReferenceFamily.name, Reference.name)
+            .order_by(ReferenceFamily.name, Reference.name, Head.pokedex_id, Body.pokedex_id, Fusion.path)
         )
 
         if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
