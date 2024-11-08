@@ -250,14 +250,14 @@ class ExploreDependencyPostgres(ExploreDependency):
         Head = aliased(Pokemon)
         Body = aliased(Pokemon)
 
-        query = (
+        subquery = (
             select(
                 Fusion.id,
                 Fusion.path,
-                Head.name,
-                Head.name_separator_index,
-                Body.name,
-                Body.name_separator_index,
+                Fusion.head_id,
+                Fusion.body_id,
+                Fusion.vote_score,
+                Fusion.vote_count,
                 func.rank()
                 .over(
                     order_by=(
@@ -267,16 +267,38 @@ class ExploreDependencyPostgres(ExploreDependency):
                     )
                 )
                 .label("rank"),
-                Fusion.vote_score / 2,
-                Fusion.vote_count,
             )
-            .join(Head, Fusion.head_id == Head.id)
-            .join(Body, Fusion.body_id == Body.id)
+        ).subquery()
+
+        query = (
+            select(
+                subquery.columns.id,
+                subquery.columns.path,
+                Head.name,
+                Head.name_separator_index,
+                Body.name,
+                Body.name_separator_index,
+                subquery.columns.rank,
+                (subquery.columns.vote_score / 2).label("adjusted_score"),
+                subquery.columns.vote_count,
+            )
+            .select_from(subquery)
+            .join(Head, subquery.columns.head_id == Head.id)
+            .join(Body, subquery.columns.body_id == Body.id)
             .join(Fusion.creators)
             .outerjoin(Fusion.references)
             .outerjoin(Reference.family)
-            .order_by("rank")
-            .group_by(Fusion, Head, Body)
+            .order_by(subquery.columns.rank)
+            # Note: avoid an issue outputting less line than expected when duplicates due to multiple creators.
+            .group_by(
+                subquery.columns.id,
+                subquery.columns.path,
+                subquery.columns.rank,
+                subquery.columns.vote_score,
+                subquery.columns.vote_count,
+                Head,
+                Body,
+            )
         )
 
         if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
