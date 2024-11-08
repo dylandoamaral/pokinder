@@ -348,14 +348,14 @@ class ExploreDependencyPostgres(ExploreDependency):
                 Head.name_separator_index,
                 Head.type_1,
                 Head.type_2,
-                Head.pokedex_id,  # TODO
-                Head.pokedex_id,  # TODO
+                Head.weight,
+                Head.height,
                 Body.name,
                 Body.name_separator_index,
                 Body.type_1,
                 Body.type_2,
-                Body.pokedex_id,  # TODO
-                Body.pokedex_id,  # TODO
+                Body.weight,
+                Body.height,
                 func.count(Vote.fusion_id) > 0,
             )
             .join(Head, Fusion.head_id == Head.id)
@@ -498,7 +498,12 @@ class ExploreDependencyPostgres(ExploreDependency):
         Head = aliased(Pokemon)
         Body = aliased(Pokemon)
 
-        subquery = select(ReferenceFamily.id).order_by(ReferenceFamily.name).offset(offset).limit(limit).subquery()
+        subquery = select(ReferenceFamily.id).order_by(ReferenceFamily.name).offset(offset).limit(limit)
+
+        if reference_family_name is not None and reference_family_name != "All":
+            subquery = subquery.filter(ReferenceFamily.name == reference_family_name)
+
+        subquery = subquery.subquery()
 
         query = (
             select(

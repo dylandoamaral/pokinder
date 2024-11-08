@@ -1,14 +1,14 @@
 .container {
-  height: 32px;
-
   display: flex;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--spacing-L);
 }
 
 .filters {
+  height: 32px;
+
   display: flex;
-  gap: 4px;
+  gap: var(--spacing-S);
 
   overflow-x: auto;
   -ms-overflow-style: none;
@@ -64,6 +64,8 @@
 }
 
 .modes {
+  height: 32px;
+
   display: flex;
 }
 
@@ -97,4 +99,16 @@
 
 .mode[data-checked="false"]:hover {
   background-color: color-mix(in sRGB, var(--foreground-color) 80%, var(--background-color) 20%);
+}
+
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column-reverse;
+
+    gap: var(--spacing-M);
+  }
+
+  .mode {
+    width: 100%;
+  }
 }

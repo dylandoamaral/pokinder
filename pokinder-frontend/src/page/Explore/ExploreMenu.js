@@ -13,8 +13,8 @@ export default function ExploreMenu({
   filters,
   parameters,
   setParameters,
-  mode,
-  setMode,
+  currentMode,
+  setCurrentMode,
 }) {
   const { t } = useTranslation();
   const [showModal, toggleModal] = useToggle();
@@ -83,6 +83,22 @@ export default function ExploreMenu({
 
   const filtersData = generateFiltersData();
 
+  function renderMode(name, mode) {
+    return (
+      <button
+        className={styles.mode}
+        data-checked={mode === currentMode}
+        onClick={() => {
+          if (mode !== currentMode) {
+            setCurrentMode(mode);
+          }
+        }}
+      >
+        {t(name)}
+      </button>
+    );
+  }
+
   function renderFilter(key) {
     const category = translator[key].key || key;
     const value = translator[key].value || filtersData[key];
@@ -124,34 +140,10 @@ export default function ExploreMenu({
           </button>
         </div>
         <div className={styles.modes}>
-          <button
-            className={styles.mode}
-            data-checked={mode === MODE_POKEDEX}
-            onClick={() => setMode(MODE_POKEDEX)}
-          >
-            {t("Pokedex")}
-          </button>
-          <button
-            className={styles.mode}
-            data-checked={mode === MODE_HISTORY}
-            onClick={() => setMode(MODE_HISTORY)}
-          >
-            {t("History")}
-          </button>
-          <button
-            className={styles.mode}
-            data-checked={mode === MODE_REFERENCE}
-            onClick={() => setMode(MODE_REFERENCE)}
-          >
-            {t("Reference")}
-          </button>
-          <button
-            className={styles.mode}
-            data-checked={mode === MODE_RANKING}
-            onClick={() => setMode(MODE_RANKING)}
-          >
-            {t("Ranking")}
-          </button>
+          {renderMode("Pokedex", MODE_POKEDEX)}
+          {renderMode("History", MODE_HISTORY)}
+          {renderMode("Reference", MODE_REFERENCE)}
+          {renderMode("Ranking", MODE_RANKING)}
         </div>
       </div>
       <ExploreMenuFiltersModal

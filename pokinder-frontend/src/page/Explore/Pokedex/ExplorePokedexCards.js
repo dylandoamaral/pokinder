@@ -29,10 +29,12 @@ export default function ExplorePokedexCards({ filters }) {
     );
     const fusionType1 = fusionTypes[0];
     const fusionType2 = fusionTypes[1];
-    const fusionWeight =
-      (data.fusion_information.fusion_head_weight + data.fusion_information.fusion_body_weight) / 2;
-    const fusionHeight =
-      (data.fusion_information.fusion_head_height + data.fusion_information.fusion_body_height) / 2;
+    const fusionWeight = (
+      (data.fusion_information.fusion_head_weight + data.fusion_information.fusion_body_weight) /
+      2 /
+      10
+    ).toFixed(1);
+    const fusionHeight = data.fusion_information.fusion_body_height * 10;
 
     return (
       <ExplorePokedexCard

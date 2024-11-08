@@ -32,9 +32,9 @@ export default function Explore() {
   const { t } = useTranslation();
 
   const [parameters, setParameters] = useQueryParameters();
-  const mode = parameters.mode || MODE_POKEDEX;
+  const currentMode = parameters.mode || MODE_POKEDEX;
 
-  function setMode(mode) {
+  function setCurrentMode(mode) {
     setParameters({ ...parameters, mode: mode });
   }
 
@@ -47,7 +47,7 @@ export default function Explore() {
       creatorName: "All",
     };
 
-    switch (mode) {
+    switch (currentMode) {
       case MODE_HISTORY:
         const specificDefaultFilters = {
           downvoteEnabled: true,
@@ -79,7 +79,7 @@ export default function Explore() {
   const filters = getFilters(defaultFilters);
 
   function renderCards() {
-    switch (mode) {
+    switch (currentMode) {
       case MODE_POKEDEX:
         return <ExplorePokedexCards filters={filters} />;
       case MODE_HISTORY:
@@ -200,8 +200,8 @@ export default function Explore() {
     <Page name={t("Explore")} overflow={"scroll"}>
       <div className={styles.container}>
         <ExploreMenu
-          mode={mode}
-          setMode={setMode}
+          currentMode={currentMode}
+          setCurrentMode={setCurrentMode}
           defaultFilters={defaultFilters}
           filters={filters}
           parameters={parameters}

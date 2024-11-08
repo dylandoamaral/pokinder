@@ -1,4 +1,4 @@
-import BeatLoader from "react-spinners/BeatLoader";
+import GridLoader from "react-spinners/GridLoader";
 
 import { useTheme } from "../../../hook/useTheme";
 
@@ -10,7 +10,8 @@ function Loader({ loading = false }) {
   const isWhite = theme === "pokeball" || !isThemeLight(theme);
 
   return (
-    <BeatLoader
+    <GridLoader
+      size={12}
       cssOverride={{ alignSelf: "center" }}
       loading={loading}
       color={isWhite ? "#fff" : "#000"}

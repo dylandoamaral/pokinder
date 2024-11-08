@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import { getDaenaLink } from "../../utils/website";
 
 import Sprite from "../../component/atom/Sprite/Sprite";
@@ -5,7 +7,7 @@ import Sprite from "../../component/atom/Sprite/Sprite";
 import styles from "./ExploreCard.module.css";
 
 export const CARD_PADDING = 8;
-export const CARD_WIDTH = 160 + CARD_PADDING * 2;
+export const CARD_WIDTH = 164 + CARD_PADDING * 2;
 export const CARD_HEIGHT = 250 + CARD_PADDING * 2;
 export const CARD_GAP = 16;
 
@@ -19,7 +21,12 @@ export function calculateCardsPerRow(width, cardPlaced = 0) {
   }
 }
 
-export default function ExploreCard({ fusionId, fusionPath, fusionName, children }) {
+export const ExploreCard = memo(function ExploreCard({
+  fusionId,
+  fusionPath,
+  fusionName,
+  children,
+}) {
   return (
     <div
       className={styles.container}
@@ -46,4 +53,6 @@ export default function ExploreCard({ fusionId, fusionPath, fusionName, children
       {children}
     </div>
   );
-}
+});
+
+export default ExploreCard;
