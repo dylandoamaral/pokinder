@@ -7,7 +7,7 @@ import Sprite from "../../component/atom/Sprite/Sprite";
 import styles from "./ExploreCard.module.css";
 
 export const CARD_PADDING = 8;
-export const CARD_WIDTH = 164 + CARD_PADDING * 2;
+export const CARD_WIDTH = 160 + CARD_PADDING * 2;
 export const CARD_HEIGHT = 250 + CARD_PADDING * 2;
 export const CARD_GAP = 16;
 

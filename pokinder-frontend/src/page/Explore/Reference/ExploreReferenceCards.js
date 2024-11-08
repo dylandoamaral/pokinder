@@ -11,7 +11,7 @@ import { getExploreReference, getExploreReferenceCount } from "../../../api/poki
 
 import { getName } from "../../../utils/pokemon";
 
-import Loader from "../../component/atom/Loader/Loader";
+import Loader from "../../../component/atom/Loader/Loader";
 
 import { CARD_GAP, CARD_HEIGHT, CARD_WIDTH, calculateCardsPerRow } from "../ExploreCard";
 import ExploreCardLoading from "../ExploreCardLoading";
@@ -217,6 +217,7 @@ export default function ExploreReferenceCards({ filters }) {
         {({ onItemsRendered, ref }) => (
           <VariableSizeList
             height={height}
+            className={styles.loader}
             itemCount={itemCount}
             itemSize={getItemSize}
             onItemsRendered={onItemsRendered}
