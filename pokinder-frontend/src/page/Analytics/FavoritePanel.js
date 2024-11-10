@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 
+import { getScore } from "../../utils/pokemon";
 import { randomBetween } from "../../utils/random";
 
 import Sprite from "../../component/atom/Sprite/Sprite";
@@ -56,7 +57,7 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
               {t("Not enough data")}
             </span>
           </div>
-          <span className={styles.score}>{t("Average score")} : ???%</span>
+          <span className={styles.score}>{t("Average score")} : ???/100</span>
         </div>
       </div>
     );
@@ -71,7 +72,7 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
           </span>
         </div>
         <span className={styles.score}>
-          {t("Average score")} : {data.average_score}%
+          {t("Average score")} : {getScore(data.average_score)}/100
         </span>
       </div>
       <Sprite type={type} filename={data.filename} href={getSpriteHref()} size={144} />

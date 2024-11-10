@@ -488,3 +488,7 @@ export function getName(headName, headNameSeparatorIndex, bodyName, bodyNameSepa
     return headPart + bodyPart;
   }
 }
+
+export function getScore(score) {
+  return Math.ceil(score / 2);
+}
