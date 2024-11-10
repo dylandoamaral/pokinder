@@ -20,7 +20,7 @@ export default function Explore() {
   const { t } = useTranslation();
 
   const [parameters, setParameters] = useQueryParameters();
-  const currentMode = parameters.mode || MODE_POKEDEX;
+  const currentMode = parameters.mode || MODE_RANKING;
 
   function setCurrentMode(mode) {
     setParameters({ ...parameters, mode: mode });
