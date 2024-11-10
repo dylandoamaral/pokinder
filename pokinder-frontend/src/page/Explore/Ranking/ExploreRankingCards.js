@@ -1,6 +1,6 @@
 import { getExploreFusionCount, getExploreRanking } from "../../../api/pokinder";
 
-import { getName } from "../../../utils/pokemon";
+import { getName, getScore } from "../../../utils/pokemon";
 
 import ExploreCardsGrid from "../ExploreCardsGrid";
 import ExploreRankingCard from "./ExploreRankingCard";
@@ -16,7 +16,7 @@ export default function ExploreRankingCards({ filters }) {
       data.fusion_body_name_separator_index,
     );
     const fusionRank = data.fusion_rank;
-    const fusionScore = data.fusion_score;
+    const fusionScore = getScore(data.fusion_score);
     const fusionVoteCount = data.fusion_vote_count;
 
     return (

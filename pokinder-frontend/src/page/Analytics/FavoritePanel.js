@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 
+import { getScore } from "../../utils/pokemon";
 import { randomDeterministicBetween } from "../../utils/random";
 
 import Sprite from "../../component/atom/Sprite/Sprite";
@@ -10,10 +11,10 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
   const { t } = useTranslation();
 
   function getSpriteHref() {
-    const page = isUser ? "history" : "ranking";
-    if (type === "fusion") return `/${page}?creatorName=${encodeURIComponent(data.name)}`;
-    else if (isHead) return `/${page}?headNameOrCategory=${encodeURIComponent(data.name)}`;
-    else return `/${page}?bodyNameOrCategory=${encodeURIComponent(data.name)}`;
+    const mode = isUser ? "history" : "ranking";
+    if (type === "fusion") return `/explore?mode=${mode}&creatorName=${encodeURIComponent(data.name)}`;
+    else if (isHead) return `/explore?mode=${mode}&headNameOrCategory=${encodeURIComponent(data.name)}`;
+    else return `/explore?mode=${mode}&bodyNameOrCategory=${encodeURIComponent(data.name)}`;
   }
 
   function getFontSizeAndLineHeight(name) {
@@ -59,7 +60,7 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
               {t("Not enough data")}
             </span>
           </div>
-          <span className={styles.score}>{t("Average score")} : ???%</span>
+          <span className={styles.score}>{t("Average score")} : ???/100</span>
         </div>
       </div>
     );
@@ -74,7 +75,7 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
           </span>
         </div>
         <span className={styles.score}>
-          {t("Average score")} : {data.average_score}%
+          {t("Average score")} : {getScore(data.average_score)}/100
         </span>
       </div>
       <Sprite type={type} filename={data.filename} href={getSpriteHref()} size={144} />
