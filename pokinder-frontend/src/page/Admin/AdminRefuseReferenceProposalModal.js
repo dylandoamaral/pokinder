@@ -16,7 +16,11 @@ import Title from "../../component/atom/Title/Title";
 
 import styles from "./AdminRefuseReferenceProposalModal.module.css";
 
-const REASON_DEFAULT_LABELS = ["The reference is already linked."];
+const REASON_DEFAULT_LABELS = [
+  "The reference is already linked.",
+  "The reference doesn't exist.",
+  "The reference doesn't match the fusion."
+];
 
 function AdminRefuseReferenceProposalModal({
   isVisible,
