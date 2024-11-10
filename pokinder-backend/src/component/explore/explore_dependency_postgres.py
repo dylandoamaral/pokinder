@@ -283,7 +283,7 @@ class ExploreDependencyPostgres(ExploreDependency):
                 Body.name,
                 Body.name_separator_index,
                 subquery.columns.rank,
-                (subquery.columns.vote_score / 2).label("adjusted_score"),
+                subquery.columns.vote_score,
                 subquery.columns.vote_count,
             )
             .select_from(subquery)
@@ -346,7 +346,7 @@ class ExploreDependencyPostgres(ExploreDependency):
                     fusion_body_name=instance[4],
                     fusion_body_name_separator_index=instance[5],
                     fusion_rank=instance[6],
-                    fusion_score=int(instance[7]),
+                    fusion_score=instance[7],
                     fusion_vote_count=instance[8],
                 )
             )
