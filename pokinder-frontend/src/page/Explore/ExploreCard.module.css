@@ -28,11 +28,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--spacing-M);
 }
 
 .name {
   font-size: var(--font-size-XS);
   line-height: var(--line-height-XS);
+  font-weight: bold;
+}
+
+.nameMini {
+  font-size: var(--font-size-2XS);
+  line-height: var(--line-height-2XS);
   font-weight: bold;
 }
 
