@@ -47,7 +47,7 @@ export const ExploreCard = memo(function ExploreCard({
         />
       </div>
       <div className={styles.title}>
-        <div className={styles.name}>{fusionName}</div>
+        <div className={fusionName.length < 18 ? styles.name : styles.nameMini}>{fusionName}</div>
         <div className={styles.path}>{fusionPath}</div>
       </div>
       {children}

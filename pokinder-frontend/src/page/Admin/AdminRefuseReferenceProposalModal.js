@@ -19,7 +19,7 @@ import styles from "./AdminRefuseReferenceProposalModal.module.css";
 const REASON_DEFAULT_LABELS = [
   "The reference is already linked.",
   "The reference doesn't exist.",
-  "The reference doesn't match the fusion."
+  "The reference doesn't match the fusion.",
 ];
 
 function AdminRefuseReferenceProposalModal({
