@@ -12,8 +12,10 @@ function FavoritePanel({ title, data, type, isUser, isHead, isLoading }) {
 
   function getSpriteHref() {
     const mode = isUser ? "history" : "ranking";
-    if (type === "fusion") return `/explore?mode=${mode}&creatorName=${encodeURIComponent(data.name)}`;
-    else if (isHead) return `/explore?mode=${mode}&headNameOrCategory=${encodeURIComponent(data.name)}`;
+    if (type === "fusion")
+      return `/explore?mode=${mode}&creatorName=${encodeURIComponent(data.name)}`;
+    else if (isHead)
+      return `/explore?mode=${mode}&headNameOrCategory=${encodeURIComponent(data.name)}`;
     else return `/explore?mode=${mode}&bodyNameOrCategory=${encodeURIComponent(data.name)}`;
   }
 
