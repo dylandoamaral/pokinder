@@ -24,7 +24,7 @@ import styles from "./Admin.module.css";
 import AdminAcceptReferenceProposalModal from "./AdminAcceptReferenceProposalModal";
 import AdminRefuseReferenceProposalModal from "./AdminRefuseReferenceProposalModal";
 
-const REFERENCE_PROPOSAL_LIMIT = 20;
+const REFERENCE_PROPOSAL_LIMIT = 500;
 
 function Admin() {
   const { t } = useTranslation();
