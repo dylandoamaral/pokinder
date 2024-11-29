@@ -46,7 +46,7 @@ function Footer() {
           >
             <CgPokemon />
           </FooterButton>
-          <FooterButton name="Discord" link="https://discord.gg/mH2YkzR6">
+          <FooterButton name="Discord" link="https://discord.gg/35mSV8ukYR">
             <FaDiscord />
           </FooterButton>
         </div>
