@@ -1,7 +1,7 @@
 from math import ceil
 from uuid import UUID, uuid4
 
-from sqlalchemy import and_, distinct, func, select
+from sqlalchemy import and_, distinct, func, select, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased, joinedload, noload
 
@@ -86,7 +86,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             query = query.filter(ReferenceFamily.name == reference_family_name)
 
         if reference_name is not None and reference_name != "All":
-            query = query.filter(Reference.name == reference_name)
+            query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
 
         if creator_name is not None and creator_name != "All":
             query = query.filter(Creator.name == creator_name)
@@ -159,7 +159,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             query = query.filter(ReferenceFamily.name == reference_family_name)
 
         if reference_name is not None and reference_name != "All":
-            query = query.filter(Reference.name == reference_name)
+            query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
 
         if creator_name is not None and creator_name != "All":
             query = query.filter(Creator.name == creator_name)
@@ -228,7 +228,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             query = query.filter(ReferenceFamily.name == reference_family_name)
 
         if reference_name is not None and reference_name != "All":
-            query = query.filter(Reference.name == reference_name)
+            query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
 
         if creator_name is not None and creator_name != "All":
             query = query.filter(Creator.name == creator_name)
@@ -324,7 +324,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             query = query.filter(ReferenceFamily.name == reference_family_name)
 
         if reference_name is not None and reference_name != "All":
-            query = query.filter(Reference.name == reference_name)
+            query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
 
         if creator_name is not None and creator_name != "All":
             query = query.filter(Creator.name == creator_name)
@@ -414,7 +414,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             query = query.filter(ReferenceFamily.name == reference_family_name)
 
         if reference_name is not None and reference_name != "All":
-            query = query.filter(Reference.name == reference_name)
+            query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
 
         if creator_name is not None and creator_name != "All":
             query = query.filter(Creator.name == creator_name)
@@ -496,7 +496,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             query = query.filter(ReferenceFamily.name == reference_family_name)
 
         if reference_name is not None and reference_name != "All":
-            query = query.filter(Reference.name == reference_name)
+            query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
 
         if creator_name is not None and creator_name != "All":
             query = query.filter(Creator.name == creator_name)
