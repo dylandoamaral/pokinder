@@ -1,6 +1,6 @@
 {
   "name": "pokinder-frontend",
-  "version": "0.18.7",
+  "version": "0.18.8",
   "private": true,
   "dependencies": {
     "@react-spring/animated": "^9.7.3",
