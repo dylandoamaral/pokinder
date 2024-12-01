@@ -1,4 +1,4 @@
-from litestar import Controller, Response, get
+from litestar import Controller, get
 from litestar.config.response_cache import default_cache_key_builder
 
 from src.component.explore.explore_model import (
@@ -149,18 +149,13 @@ class ExploreController(Controller):
         reference_family_name: str | None = None,
         reference_name: str | None = None,
         creator_name: str | None = None,
-    ) -> Response[list[ExploreReferenceCount]]:
-        content = await explore_dependency.count_references(
+    ) -> list[ExploreReferenceCount]:
+        return await explore_dependency.count_references(
             head_name_or_category,
             body_name_or_category,
             reference_family_name,
             reference_name,
             creator_name,
-        )
-
-        return Response(
-            content=content,
-            headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0", "Pragma": "no-cache"},
         )
 
     # Note: used by pokinder website for reference mode in explore panel
@@ -175,8 +170,8 @@ class ExploreController(Controller):
         reference_family_name: str | None = None,
         reference_name: str | None = None,
         creator_name: str | None = None,
-    ) -> Response[list[ExploreReference]]:
-        content = await explore_dependency.list_references(
+    ) -> list[ExploreReference]:
+        return await explore_dependency.list_references(
             limit,
             offset,
             head_name_or_category,
@@ -184,9 +179,4 @@ class ExploreController(Controller):
             reference_family_name,
             reference_name,
             creator_name,
-        )
-
-        return Response(
-            content=content,
-            headers={"Cache-Control": "no-store, no-cache, must-revalidate, max-age=0", "Pragma": "no-cache"},
         )
