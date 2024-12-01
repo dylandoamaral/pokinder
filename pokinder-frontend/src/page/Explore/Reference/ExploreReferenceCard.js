@@ -18,6 +18,7 @@ export default function ExploreReferenceCard({
       <div className={styles.details}>
         <a
           className={styles.reference}
+          style={{ "--font-size-local": fusionReferenceName.length < 24 ? "1rem" : "0.75rem" }}
           href={fusionReferenceLink}
           target="_blank"
           rel="noopener noreferrer"

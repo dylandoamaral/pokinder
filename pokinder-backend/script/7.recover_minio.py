@@ -2,8 +2,8 @@
 
 # This script is used to recover Minio backup.
 # NOTE: You should run the following commands after:
-# - mc policy set public pokinder-local/pokemons
-# - mc policy set public pokinder-local/fusions
+# - mc anonymous set public pokinder-local/pokemons
+# - mc anonymous set public pokinder-local/fusions
 
 import os
 import zipfile

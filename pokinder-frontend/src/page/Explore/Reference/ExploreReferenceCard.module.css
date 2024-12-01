@@ -9,7 +9,7 @@
 .reference {
   width: 100%;
 
-  font-size: var(--font-size-M);
+  font-size: var(--font-size-local);
   color: var(--font-foreground-color);
   text-align: center;
 }
