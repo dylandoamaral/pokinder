@@ -467,10 +467,11 @@ class ExploreDependencyPostgres(ExploreDependency):
 
         query = (
             select(
-                Fusion,
+                Fusion.id.label("fusion_id"),
+                Reference.id.label("reference_id"),
                 ReferenceFamily.name.label("reference_family_name"),
-                func.count(Fusion.id).label("fusion_count"),
             )
+            .distinct(Fusion.id, Reference.id)
             .select_from(FusionReference)
             .join(Fusion, FusionReference.c.fusion_id == Fusion.id)
             .join(Head, Fusion.head_id == Head.id)
@@ -478,7 +479,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             .join(Fusion.creators)
             .join(Reference, FusionReference.c.reference_id == Reference.id)
             .join(Reference.family)
-            .group_by(Fusion, ReferenceFamily)
+            .group_by(Fusion, Reference, ReferenceFamily)
         )
 
         if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
@@ -508,7 +509,7 @@ class ExploreDependencyPostgres(ExploreDependency):
         query = query.subquery()
 
         count_query = (
-            select(query.c.reference_family_name, func.sum(query.c.fusion_count))
+            select(query.c.reference_family_name, func.count(query.c.fusion_id))
             .select_from(query)
             .group_by(query.c.reference_family_name)
             .order_by(query.c.reference_family_name)
