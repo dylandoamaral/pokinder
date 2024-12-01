@@ -1,7 +1,7 @@
 from math import ceil
 from uuid import UUID, uuid4
 
-from sqlalchemy import and_, distinct, func, select, or_
+from sqlalchemy import and_, distinct, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased, joinedload, noload
 
@@ -466,7 +466,11 @@ class ExploreDependencyPostgres(ExploreDependency):
         Body = aliased(Pokemon)
 
         query = (
-            select(Fusion, ReferenceFamily.name.label("reference_family_name"))
+            select(
+                Fusion,
+                ReferenceFamily.name.label("reference_family_name"),
+                func.count(Fusion.id).label("fusion_count"),
+            )
             .select_from(FusionReference)
             .join(Fusion, FusionReference.c.fusion_id == Fusion.id)
             .join(Head, Fusion.head_id == Head.id)
@@ -504,14 +508,14 @@ class ExploreDependencyPostgres(ExploreDependency):
         query = query.subquery()
 
         count_query = (
-            select(query.c.reference_family_name, func.count(query.c.id))
+            select(query.c.reference_family_name, func.sum(query.c.fusion_count))
             .select_from(query)
             .group_by(query.c.reference_family_name)
             .order_by(query.c.reference_family_name)
         )
 
         results = await self.session.execute(count_query)
-        return [ExploreReferenceCount(result[0], result[1]) for result in results]
+        return [ExploreReferenceCount(result[0], int(result[1])) for result in results]
 
     async def list_references(
         self,
@@ -578,7 +582,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             cte = cte.filter(ReferenceFamily.name == reference_family_name)
 
         if reference_name is not None and reference_name != "All":
-            cte = cte.filter(Reference.name == reference_name)
+            cte = cte.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
 
         if creator_name is not None and creator_name != "All":
             cte = cte.filter(Creator.name == creator_name)
