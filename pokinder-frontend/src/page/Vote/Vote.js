@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useMutation, useQuery } from "react-query";
+import { Navigate } from "react-router-dom";
 
 import { useAfterEffect } from "../../hook/useAfterEffect";
 import { useAuthentication } from "../../hook/useAuthentication";
@@ -202,6 +203,10 @@ function Vote() {
     }
 
     const focusedFusion = carouselFusions[absoluteIndex - relativeIndex];
+
+    if (carouselFusions.length === 0) {
+      return <Navigate to="explore?mode=ranking" relative="path"></Navigate>;
+    }
 
     return (
       <>
