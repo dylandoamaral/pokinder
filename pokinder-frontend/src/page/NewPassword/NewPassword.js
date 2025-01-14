@@ -10,10 +10,10 @@ import { useAuthentication } from "../../hook/useAuthentication";
 import { changePassword } from "../../api/pokinder";
 
 import Button, { VARIANT_FILLED_BACKGROUND } from "../../component/atom/Button/Button";
+import Heading from "../../component/atom/Heading/Heading";
 import Input from "../../component/atom/Input/Input";
 import { InputValidator } from "../../component/atom/Input/Input";
 import { InputType } from "../../component/atom/Input/Input";
-import Title from "../../component/atom/Title/Title";
 import Page from "../../component/organism/Page/Page";
 
 import styles from "../../shared/style/Identification.module.css";
@@ -51,7 +51,7 @@ function NewPassword() {
       {isUser && <Navigate to=".." relative="path"></Navigate>}
       <div className={styles.container}>
         <div className={styles.form}>
-          <Title title={t("Change your password")} />
+          <Heading>{t("Change your password")}</Heading>
           <Input
             title={t("Password")}
             type={InputType.Password}
