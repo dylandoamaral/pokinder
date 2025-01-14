@@ -7,7 +7,7 @@ import { useAuthentication } from "../../../hook/useAuthentication";
 
 import { authorizedNavlinks } from "../../../data/navlinks";
 
-import Button from "../../atom/Button/Button";
+import Button, { VARIANT_CALL_TO_ACTION, VARIANT_FILLED_HEADER } from "../../atom/Button/Button";
 import styles from "./Sidebar.module.css";
 
 function Sidebar({ isVisible, onClose }) {
@@ -40,11 +40,28 @@ function Sidebar({ isVisible, onClose }) {
       return (
         <div className={styles.profile}>
           <span>{t("Connected as", { username: username })}</span>
-          <Button title={t("Sign Out")} onClick={disconnectAndClose} foreground />
+          <Button
+            title={t("Sign Out")}
+            variant={VARIANT_FILLED_HEADER}
+            onClick={disconnectAndClose}
+          />
         </div>
       );
     } else {
-      return <Button title={t("Log In")} onClick={() => navigate("/login")} foreground />;
+      return (
+        <div className={styles.profile}>
+          <Button
+            title={t("Log In")}
+            variant={VARIANT_FILLED_HEADER}
+            onClick={() => navigate("/login")}
+          />
+          <Button
+            title={t("Sign Up")}
+            variant={VARIANT_CALL_TO_ACTION}
+            onClick={() => navigate("/signup")}
+          />
+        </div>
+      );
     }
   }
 

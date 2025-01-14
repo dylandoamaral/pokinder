@@ -13,7 +13,10 @@ import {
 
 import { getDaenaLink } from "../../utils/website";
 
-import Button from "../../component/atom/Button/Button";
+import Button, {
+  VARIANT_FILLED_FOREGROUND,
+  VARIANT_TEXT,
+} from "../../component/atom/Button/Button";
 import Input from "../../component/atom/Input/Input";
 import Modal from "../../component/atom/Modal/Modal";
 import Panel from "../../component/atom/Panel/Panel";
@@ -168,8 +171,7 @@ function AdminAcceptReferenceProposalModal({
       <div className={styles.buttons}>
         <Button
           title={t("Cancel")}
-          variant="text"
-          foreground
+          variant={VARIANT_TEXT}
           onClick={() => {
             setForm(defaultForm);
             onClose();
@@ -177,7 +179,7 @@ function AdminAcceptReferenceProposalModal({
         />
         <Button
           title={t("Reference validation action")}
-          foreground
+          variant={VARIANT_FILLED_FOREGROUND}
           disabled={proposeButtonDisabled}
           onClick={submit}
         />

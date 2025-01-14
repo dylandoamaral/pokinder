@@ -6,11 +6,10 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { useAuthentication } from "../../hook/useAuthentication";
-import { useTheme } from "../../hook/useTheme";
 
 import { changePassword } from "../../api/pokinder";
 
-import Button from "../../component/atom/Button/Button";
+import Button, { VARIANT_FILLED_BACKGROUND } from "../../component/atom/Button/Button";
 import Input from "../../component/atom/Input/Input";
 import { InputValidator } from "../../component/atom/Input/Input";
 import { InputType } from "../../component/atom/Input/Input";
@@ -20,7 +19,6 @@ import Page from "../../component/organism/Page/Page";
 import styles from "../../shared/style/Identification.module.css";
 
 function NewPassword() {
-  const { theme } = useTheme();
   const { t } = useTranslation();
   const { isUser } = useAuthentication();
   const navigate = useNavigate();
@@ -92,10 +90,9 @@ function NewPassword() {
           />
           <Button
             title={t("Change password")}
+            variant={VARIANT_FILLED_BACKGROUND}
             disabled={!isFormValid}
             onClick={submit}
-            foreground={theme !== "pokeball"}
-            variant="filled"
           />
           <span className={styles.footer}>
             {t("Don't need a new password ?")}{" "}

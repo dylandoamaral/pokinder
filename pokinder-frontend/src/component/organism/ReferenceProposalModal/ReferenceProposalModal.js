@@ -8,7 +8,7 @@ import { addReferenceProposal } from "../../../api/pokinder";
 import { levenshtein } from "../../../utils/string";
 import { getDaenaLink } from "../../../utils/website";
 
-import Button from "../../atom/Button/Button";
+import Button, { VARIANT_FILLED_FOREGROUND, VARIANT_TEXT } from "../../atom/Button/Button";
 import Input from "../../atom/Input/Input";
 import Modal from "../../atom/Modal/Modal";
 import Panel from "../../atom/Panel/Panel";
@@ -111,10 +111,10 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
       </Panel>
       {renderReferenceExists()}
       <div className={styles.buttons}>
-        <Button title={t("Cancel")} variant="text" foreground onClick={onClose} />
+        <Button title={t("Cancel")} variant={VARIANT_TEXT} foreground onClick={onClose} />
         <Button
           title={t("Reference proposal action")}
-          foreground
+          variant={VARIANT_FILLED_FOREGROUND}
           disabled={proposeButtonDisabled}
           onClick={submit}
         />

@@ -7,7 +7,10 @@ import { refuseReferenceProposal } from "../../api/pokinder";
 
 import { getDaenaLink } from "../../utils/website";
 
-import Button from "../../component/atom/Button/Button";
+import Button, {
+  VARIANT_FILLED_FOREGROUND,
+  VARIANT_TEXT,
+} from "../../component/atom/Button/Button";
 import Modal from "../../component/atom/Modal/Modal";
 import Panel from "../../component/atom/Panel/Panel";
 import CreatableSelect from "../../component/atom/Select/CreatableSelect";
@@ -91,10 +94,10 @@ function AdminRefuseReferenceProposalModal({
         />
       </Panel>
       <div className={styles.buttons}>
-        <Button title={t("Cancel")} variant="text" foreground onClick={onClose} />
+        <Button title={t("Cancel")} variant={VARIANT_TEXT} foreground onClick={onClose} />
         <Button
           title={t("Reference cancellation action")}
-          foreground
+          variant={VARIANT_FILLED_FOREGROUND}
           disabled={proposeButtonDisabled}
           onClick={submit}
         />

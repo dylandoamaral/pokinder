@@ -3,19 +3,17 @@ import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 import { useAuthentication } from "../../../hook/useAuthentication";
-import { useTheme } from "../../../hook/useTheme";
 import useToggle from "../../../hook/useToggle";
 
 import { authorizedNavlinks } from "../../../data/navlinks";
 
-import Button from "../../atom/Button/Button";
+import Button, { VARIANT_CALL_TO_ACTION, VARIANT_FILLED_HEADER } from "../../atom/Button/Button";
 import Logo from "../../atom/Logo/Logo";
 import NavLink from "../../atom/Navlink/NavLink";
 import Sidebar from "../../molecule/Sidebar/Sidebar";
 import styles from "./Header.module.css";
 
 function Header() {
-  const { theme } = useTheme();
   const { t } = useTranslation();
   const { isUser, isAdmin, username, disconnect } = useAuthentication();
   const navigate = useNavigate();
@@ -32,11 +30,18 @@ function Header() {
       );
     else
       return (
-        <Button
-          foreground={theme !== "pokeball"}
-          title={t("Log In")}
-          onClick={() => navigate("/login")}
-        />
+        <div className={styles.guest}>
+          <Button
+            title={t("Log In")}
+            variant={VARIANT_FILLED_HEADER}
+            onClick={() => navigate("/login")}
+          />
+          <Button
+            title={t("Sign Up")}
+            variant={VARIANT_CALL_TO_ACTION}
+            onClick={() => navigate("/signup")}
+          />
+        </div>
       );
   }
 
