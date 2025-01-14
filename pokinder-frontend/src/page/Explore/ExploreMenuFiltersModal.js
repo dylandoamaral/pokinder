@@ -5,7 +5,10 @@ import { listCreators, listReferenceFamilies, listReferences } from "../../api/p
 
 import { findOptionByValue, groupeOptions } from "../../data/options";
 
-import Button from "../../component/atom/Button/Button";
+import Button, {
+  VARIANT_FILLED_FOREGROUND,
+  VARIANT_TEXT,
+} from "../../component/atom/Button/Button";
 import CheckField from "../../component/atom/CheckField/CheckField";
 import Modal from "../../component/atom/Modal/Modal";
 import Panel from "../../component/atom/Panel/Panel";
@@ -186,19 +189,18 @@ function ExploreMenuFiltersModal({ defaultFilters, filters, setFilters, isVisibl
       <div className={styles.buttons}>
         <Button
           title={t("Reset all filters")}
-          variant="text"
-          foreground
-          nopadding
+          variant={VARIANT_TEXT}
+          noPadding={true}
           onClick={() => {
             setFilters(defaultFilters);
             onClose();
           }}
         />
         <div className={styles.right}>
-          <Button title={t("Cancel")} variant="text" foreground onClick={onClose} />
+          <Button title={t("Cancel")} variant={VARIANT_TEXT} onClick={onClose} />
           <Button
             title={t("Apply filters")}
-            foreground
+            variant={VARIANT_FILLED_FOREGROUND}
             onClick={() => {
               setFilters(updatedFilters);
               onClose();

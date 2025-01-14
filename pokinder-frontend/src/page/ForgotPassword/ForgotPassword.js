@@ -5,11 +5,10 @@ import { Link, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { useAuthentication } from "../../hook/useAuthentication";
-import { useTheme } from "../../hook/useTheme";
 
 import { resetPassword } from "../../api/pokinder";
 
-import Button from "../../component/atom/Button/Button";
+import Button, { VARIANT_FILLED_BACKGROUND } from "../../component/atom/Button/Button";
 import Input from "../../component/atom/Input/Input";
 import { InputValidator, validateEmail } from "../../component/atom/Input/Input";
 import Title from "../../component/atom/Title/Title";
@@ -18,7 +17,6 @@ import Page from "../../component/organism/Page/Page";
 import styles from "../../shared/style/Identification.module.css";
 
 function ForgotPassword() {
-  const { theme } = useTheme();
   const { t } = useTranslation();
   const { isUser } = useAuthentication();
 
@@ -60,10 +58,9 @@ function ForgotPassword() {
           </div>
           <Button
             title={t("Reset password")}
+            variant={VARIANT_FILLED_BACKGROUND}
             disabled={!isFormValid}
             onClick={submit}
-            foreground={theme !== "pokeball"}
-            variant="filled"
           />
           <span className={styles.footer}>
             {t("Remember your password ?")}{" "}

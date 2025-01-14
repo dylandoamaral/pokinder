@@ -31,6 +31,12 @@
   line-height: 0;
 }
 
+.guest {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .user {
   display: flex;
   align-items: center;
