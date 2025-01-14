@@ -11,11 +11,11 @@ import Button, {
   VARIANT_FILLED_FOREGROUND,
   VARIANT_TEXT,
 } from "../../component/atom/Button/Button";
+import Heading from "../../component/atom/Heading/Heading";
 import Modal from "../../component/atom/Modal/Modal";
 import Panel from "../../component/atom/Panel/Panel";
 import CreatableSelect from "../../component/atom/Select/CreatableSelect";
 import Sprite from "../../component/atom/Sprite/Sprite";
-import Title from "../../component/atom/Title/Title";
 
 import styles from "./AdminRefuseReferenceProposalModal.module.css";
 
@@ -69,7 +69,7 @@ function AdminRefuseReferenceProposalModal({
 
   return (
     <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
-      <Title title={t("Reference cancellation title")} textAlign="left" />
+      <Heading align="left">{t("Reference cancellation title")}</Heading>
       <Panel title={t("Fusion")}>
         <Sprite
           className={styles.sprite}

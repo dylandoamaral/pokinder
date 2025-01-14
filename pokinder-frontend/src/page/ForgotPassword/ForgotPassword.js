@@ -9,9 +9,9 @@ import { useAuthentication } from "../../hook/useAuthentication";
 import { resetPassword } from "../../api/pokinder";
 
 import Button, { VARIANT_FILLED_BACKGROUND } from "../../component/atom/Button/Button";
+import Heading from "../../component/atom/Heading/Heading";
 import Input from "../../component/atom/Input/Input";
 import { InputValidator, validateEmail } from "../../component/atom/Input/Input";
-import Title from "../../component/atom/Title/Title";
 import Page from "../../component/organism/Page/Page";
 
 import styles from "../../shared/style/Identification.module.css";
@@ -42,7 +42,7 @@ function ForgotPassword() {
       <div className={styles.container}>
         <div className={styles.form}>
           <div>
-            <Title title={t("Forgot password ?")} />
+            <Heading>{t("Forgot password ?")}</Heading>
             <div className={styles.header}>
               {t("No worries, we'll send you reset instructions.")}
             </div>

@@ -8,9 +8,9 @@ import { useAuthentication } from "../../hook/useAuthentication";
 import { login } from "../../api/pokinder";
 
 import Button, { VARIANT_FILLED_BACKGROUND } from "../../component/atom/Button/Button";
+import Heading from "../../component/atom/Heading/Heading";
 import Input from "../../component/atom/Input/Input";
 import { InputType } from "../../component/atom/Input/Input";
-import Title from "../../component/atom/Title/Title";
 import Page from "../../component/organism/Page/Page";
 
 import styles from "../../shared/style/Identification.module.css";
@@ -43,7 +43,7 @@ function LogIn() {
       {isUser && <Navigate to=".." relative="path"></Navigate>}
       <div className={styles.container}>
         <div className={styles.form}>
-          <Title title={t("Welcome back !")} />
+          <Heading>{t("Welcome back !")}</Heading>
           <div className={styles.inputs}>
             <Input
               title={t("Username") + " / " + t("Email")}
