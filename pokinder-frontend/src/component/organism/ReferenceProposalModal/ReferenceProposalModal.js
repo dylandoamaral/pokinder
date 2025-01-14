@@ -9,11 +9,11 @@ import { levenshtein } from "../../../utils/string";
 import { getDaenaLink } from "../../../utils/website";
 
 import Button, { VARIANT_FILLED_FOREGROUND, VARIANT_TEXT } from "../../atom/Button/Button";
+import Heading from "../../atom/Heading/Heading";
 import Input from "../../atom/Input/Input";
 import Modal from "../../atom/Modal/Modal";
 import Panel from "../../atom/Panel/Panel";
 import Sprite from "../../atom/Sprite/Sprite";
-import Title from "../../atom/Title/Title";
 import styles from "./ReferenceProposalModal.module.css";
 
 function ReferenceProposalModal({ isVisible, onClose, fusion }) {
@@ -89,7 +89,7 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
   return (
     <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
       <div>
-        <Title title={t("Reference proposal title")} textAlign="left" />
+        <Heading align="left">{t("Reference proposal title")}</Heading>
         <p>{t("Reference proposal description")}</p>
       </div>
       <Panel title={t("Fusion")}>

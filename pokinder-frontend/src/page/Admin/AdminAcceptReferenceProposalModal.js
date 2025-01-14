@@ -17,12 +17,12 @@ import Button, {
   VARIANT_FILLED_FOREGROUND,
   VARIANT_TEXT,
 } from "../../component/atom/Button/Button";
+import Heading from "../../component/atom/Heading/Heading";
 import Input from "../../component/atom/Input/Input";
 import Modal from "../../component/atom/Modal/Modal";
 import Panel from "../../component/atom/Panel/Panel";
 import FutureCreatableSelect from "../../component/atom/Select/FutureCreatableSelect";
 import Sprite from "../../component/atom/Sprite/Sprite";
-import Title from "../../component/atom/Title/Title";
 
 import styles from "./AdminAcceptReferenceProposalModal.module.css";
 
@@ -134,7 +134,7 @@ function AdminAcceptReferenceProposalModal({
 
   return (
     <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
-      <Title title={t("Reference validation title")} textAlign="left" />
+      <Heading align="left">{t("Reference validation title")}</Heading>
       <Panel title={t("Fusion")}>
         <Sprite
           className={styles.sprite}

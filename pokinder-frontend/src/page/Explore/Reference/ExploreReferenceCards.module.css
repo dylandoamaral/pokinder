@@ -22,10 +22,6 @@
   gap: 10px;
 }
 
-.headline {
-  font-size: 32px;
-}
-
 .cards {
   display: flex;
   justify-content: space-between;

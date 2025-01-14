@@ -11,6 +11,7 @@ import { getExploreReference, getExploreReferenceCount } from "../../../api/poki
 
 import { getName } from "../../../utils/pokemon";
 
+import Heading from "../../../component/atom/Heading/Heading";
 import Loader from "../../../component/atom/Loader/Loader";
 
 import { CARD_GAP, CARD_HEIGHT, CARD_WIDTH, calculateCardsPerRow } from "../ExploreCard";
@@ -95,7 +96,7 @@ function List({ width, height, items, state, counts, filters }) {
 
     return (
       <div className={styles.row} style={style}>
-        <div className={styles.headline}>{itemCount["reference_family_name"]}</div>
+        <Heading align="left">{itemCount["reference_family_name"]}</Heading>
         <div className={styles.cards}>
           {cardIndexes.map((index) => renderAllCard(index, items[index]))}
           {phantomIndexes.map((index) => (
