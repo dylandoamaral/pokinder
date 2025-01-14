@@ -15,7 +15,7 @@ import { listReferenceProposals } from "../../api/pokinder";
 
 import { getDaenaLink } from "../../utils/website";
 
-import Button from "../../component/atom/Button/Button";
+import Button, { VARIANT_FILLED_BACKGROUND } from "../../component/atom/Button/Button";
 import Sprite from "../../component/atom/Sprite/Sprite";
 import Page from "../../component/organism/Page/Page";
 
@@ -73,8 +73,7 @@ function Admin() {
           <div className={styles.rowButtons}>
             <Button
               title={t("Accept")}
-              foreground
-              variant="filled"
+              variant={VARIANT_FILLED_BACKGROUND}
               onClick={() => {
                 setFocusedProposal(props.row.original);
                 toggleAdminAcceptReferenceProposalModal();
@@ -82,8 +81,7 @@ function Admin() {
             />
             <Button
               title={t("Refuse")}
-              foreground
-              variant="filled"
+              variant={VARIANT_FILLED_BACKGROUND}
               onClick={() => {
                 setFocusedProposal(props.row.original);
                 toggleAdminRefuseReferenceProposalModal();

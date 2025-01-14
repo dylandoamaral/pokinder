@@ -63,6 +63,47 @@
 
   --card-color: var(--neutral-lower);
   --card-illustration-color: var(--neutral-low);
+
+  --button-font-color-filled-header: var(--neutral-higher);
+  --button-background-color-filled-header: var(--neutral-lower);
+  --button-border-color-filled-header: var(--neutral-lower);
+  --button-font-color-hover-filled-header: var(--neutral-lower);
+  --button-background-color-hover-filled-header: var(--primary-medium);
+  --button-border-color-hover-filled-header: var(--neutral-lower);
+
+  --button-font-color-filled-background: var(--neutral-higher);
+  --button-background-color-filled-background: var(--neutral-lower);
+  --button-border-color-filled-background: var(--neutral-lower);
+  --button-font-color-hover-filled-background: var(--neutral-lower);
+  --button-background-color-hover-filled-background: var(--primary-medium);
+  --button-border-color-hover-filled-background: var(--neutral-lower);
+  --button-font-color-disabled-filled-background: var(--neutral-high);
+  --button-background-color-disabled-filled-background: var(--neutral-low);
+  --button-border-color-disabled-filled-background: var(--neutral-low);
+
+  --button-font-color-filled-foreground: var(--neutral-lower);
+  --button-background-color-filled-foreground: var(--primary-medium);
+  --button-border-color-filled-foreground: var(--primary-medium);
+  --button-font-color-hover-filled-foreground: var(--neutral-lower);
+  --button-background-color-hover-filled-foreground: var(--primary-high);
+  --button-border-color-hover-filled-foreground: var(--primary-high);
+  --button-font-color-disabled-filled-foreground: var(--neutral-high);
+  --button-background-color-disabled-filled-foreground: var(--neutral-low);
+  --button-border-color-disabled-filled-foreground: var(--neutral-low);
+
+  --button-font-color-call-to-action: var(--neutral-lower);
+  --button-background-color-call-to-action: var(--neutral-higher);
+  --button-border-color-call-to-action: var(--neutral-lower);
+  --button-font-color-hover-call-to-action: var(--neutral-lower);
+  --button-background-color-hover-call-to-action: var(--primary-medium);
+  --button-border-color-hover-call-to-action: var(--neutral-lower);
+
+  --button-font-color-text: var(--neutral-higher);
+  --button-background-color-text: transparent;
+  --button-border-color-text: transparent;
+  --button-font-color-hover-text: var(--primary-medium);
+  --button-background-color-hover-text: transparent;
+  --button-border-color-hover-text: transparent;
 }
 
 :root[theme="superball"] {
@@ -96,6 +137,47 @@
 
   --card-color: var(--neutral-lower);
   --card-illustration-color: var(--neutral-low);
+
+  --button-font-color-filled-header: var(--neutral-higher);
+  --button-background-color-filled-header: var(--neutral-lower);
+  --button-border-color-filled-header: var(--neutral-lower);
+  --button-font-color-hover-filled-header: var(--primary-higher);
+  --button-background-color-hover-filled-header: var(--neutral-low);
+  --button-border-color-hover-filled-header: var(--neutral-higher);
+
+  --button-font-color-filled-background: var(--neutral-lower);
+  --button-background-color-filled-background: var(--primary-medium);
+  --button-border-color-filled-background: var(--primary-medium);
+  --button-font-color-hover-filled-background: var(--neutral-lower);
+  --button-background-color-hover-filled-background: var(--primary-high);
+  --button-border-color-hover-filled-background: var(--primary-high);
+  --button-font-color-disabled-filled-background: var(--neutral-low);
+  --button-background-color-disabled-filled-background: var(--neutral-medium);
+  --button-border-color-disabled-filled-background: var(--neutral-medium);
+
+  --button-font-color-filled-foreground: var(--neutral-lower);
+  --button-background-color-filled-foreground: var(--primary-medium);
+  --button-border-color-filled-foreground: var(--primary-medium);
+  --button-font-color-hover-filled-foreground: var(--neutral-lower);
+  --button-background-color-hover-filled-foreground: var(--primary-high);
+  --button-border-color-hover-filled-foreground: var(--primary-high);
+  --button-font-color-disabled-filled-foreground: var(--neutral-low);
+  --button-background-color-disabled-filled-foreground: var(--neutral-medium);
+  --button-border-color-disabled-filled-foreground: var(--neutral-medium);
+
+  --button-font-color-call-to-action: var(--neutral-lower);
+  --button-background-color-call-to-action: var(--primary-medium);
+  --button-border-color-call-to-action: var(--primary-medium);
+  --button-font-color-hover-call-to-action: var(--neutral-lower);
+  --button-background-color-hover-call-to-action: var(--primary-high);
+  --button-border-color-hover-call-to-action: var(--neutral-higher);
+
+  --button-font-color-text: var(--neutral-higher);
+  --button-background-color-text: transparent;
+  --button-border-color-text: transparent;
+  --button-font-color-hover-text: var(--primary-medium);
+  --button-background-color-hover-text: transparent;
+  --button-border-color-hover-text: transparent;
 }
 
 :root[theme="hyperball"] {
@@ -129,6 +211,47 @@
 
   --card-color: var(--neutral-lower);
   --card-illustration-color: var(--neutral-low);
+
+  --button-font-color-filled-header: var(--neutral-higher);
+  --button-background-color-filled-header: var(--neutral-lower);
+  --button-border-color-filled-header: var(--neutral-lower);
+  --button-font-color-hover-filled-header: var(--primary-higher);
+  --button-background-color-hover-filled-header: var(--neutral-low);
+  --button-border-color-hover-filled-header: var(--neutral-higher);
+
+  --button-font-color-filled-background: var(--neutral-lower);
+  --button-background-color-filled-background: var(--primary-medium);
+  --button-border-color-filled-background: var(--primary-medium);
+  --button-font-color-hover-filled-background: var(--neutral-lower);
+  --button-background-color-hover-filled-background: var(--primary-high);
+  --button-border-color-hover-filled-background: var(--primary-high);
+  --button-font-color-disabled-filled-background: var(--neutral-low);
+  --button-background-color-disabled-filled-background: var(--neutral-medium);
+  --button-border-color-disabled-filled-background: var(--neutral-medium);
+
+  --button-font-color-filled-foreground: var(--neutral-lower);
+  --button-background-color-filled-foreground: var(--primary-medium);
+  --button-border-color-filled-foreground: var(--primary-medium);
+  --button-font-color-hover-filled-foreground: var(--neutral-lower);
+  --button-background-color-hover-filled-foreground: var(--primary-high);
+  --button-border-color-hover-filled-foreground: var(--primary-high);
+  --button-font-color-disabled-filled-foreground: var(--neutral-low);
+  --button-background-color-disabled-filled-foreground: var(--neutral-medium);
+  --button-border-color-disabled-filled-foreground: var(--neutral-medium);
+
+  --button-font-color-call-to-action: var(--neutral-lower);
+  --button-background-color-call-to-action: var(--primary-medium);
+  --button-border-color-call-to-action: var(--primary-medium);
+  --button-font-color-hover-call-to-action: var(--neutral-lower);
+  --button-background-color-hover-call-to-action: var(--primary-high);
+  --button-border-color-hover-call-to-action: var(--neutral-higher);
+
+  --button-font-color-text: var(--neutral-higher);
+  --button-background-color-text: transparent;
+  --button-border-color-text: transparent;
+  --button-font-color-hover-text: var(--primary-medium);
+  --button-background-color-hover-text: transparent;
+  --button-border-color-hover-text: transparent;
 }
 
 * {

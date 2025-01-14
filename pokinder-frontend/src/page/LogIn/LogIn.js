@@ -4,11 +4,10 @@ import { useMutation } from "react-query";
 import { Link, Navigate } from "react-router-dom";
 
 import { useAuthentication } from "../../hook/useAuthentication";
-import { useTheme } from "../../hook/useTheme";
 
 import { login } from "../../api/pokinder";
 
-import Button from "../../component/atom/Button/Button";
+import Button, { VARIANT_FILLED_BACKGROUND } from "../../component/atom/Button/Button";
 import Input from "../../component/atom/Input/Input";
 import { InputType } from "../../component/atom/Input/Input";
 import Title from "../../component/atom/Title/Title";
@@ -17,7 +16,6 @@ import Page from "../../component/organism/Page/Page";
 import styles from "../../shared/style/Identification.module.css";
 
 function LogIn() {
-  const { theme } = useTheme();
   const { t } = useTranslation();
   const { isUser, setToken, setRefreshToken } = useAuthentication();
 
@@ -66,10 +64,9 @@ function LogIn() {
           </div>
           <Button
             title={t("Log In")}
+            variant={VARIANT_FILLED_BACKGROUND}
             disabled={!isFormValid}
             onClick={submit}
-            foreground={theme !== "pokeball"}
-            variant="filled"
           />
           <span className={styles.footer}>
             {t("New here ?")}{" "}

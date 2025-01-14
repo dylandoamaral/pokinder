@@ -4,11 +4,10 @@ import { useMutation } from "react-query";
 import { Link, Navigate } from "react-router-dom";
 
 import { useAuthentication } from "../../hook/useAuthentication";
-import { useTheme } from "../../hook/useTheme";
 
 import { signup } from "../../api/pokinder";
 
-import Button from "../../component/atom/Button/Button";
+import Button, { VARIANT_FILLED_BACKGROUND } from "../../component/atom/Button/Button";
 import Input from "../../component/atom/Input/Input";
 import { InputType } from "../../component/atom/Input/Input";
 import { InputValidator, validateEmail } from "../../component/atom/Input/Input";
@@ -18,7 +17,6 @@ import Page from "../../component/organism/Page/Page";
 import styles from "../../shared/style/Identification.module.css";
 
 function Signup() {
-  const { theme } = useTheme();
   const { t } = useTranslation();
   const { isUser, accountId, setToken, setRefreshToken, generateGuestToken } = useAuthentication();
 
@@ -130,8 +128,7 @@ function Signup() {
             title={t("Sign Up")}
             disabled={!isFormValid}
             onClick={submit}
-            foreground={theme !== "pokeball"}
-            variant="filled"
+            variant={VARIANT_FILLED_BACKGROUND}
           />
           <span className={styles.footer}>
             {t("Already trainer ?")}{" "}

@@ -1,15 +1,35 @@
 .container {
   display: inline-block;
+
+  border-width: 2px;
+  border-style: solid;
+  border-radius: var(--border-radius-M);
+
   font-size: var(--font-size-M);
-  line-height: var(--line-height-M);
   text-align: center;
   text-decoration: none;
-  border: none;
+
   height: 40px;
+
+  background-color: var(--button-background-color);
+  border-color: var(--button-border-color);
+  color: var(--button-font-color);
 }
 
 .container:hover {
   cursor: pointer;
+
+  background-color: var(--button-background-color-hover);
+  border-color: var(--button-border-color-hover);
+  color: var(--button-font-color-hover);
+}
+
+.container:disabled {
+  cursor: not-allowed;
+
+  background-color: var(--button-background-color-disabled);
+  border-color: var(--button-border-color-disabled);
+  color: var(--button-font-color-disabled);
 }
 
 .nopadding {
@@ -18,76 +38,4 @@
 
 .padding {
   padding: var(--spacing-M) var(--spacing-L);
-}
-
-.filled {
-  border-radius: var(--border-radius-M);
-}
-
-.filled.background {
-  background-color: var(--neutral-lower);
-  color: var(--neutral-higher);
-}
-
-.filled.background:hover {
-  -webkit-box-shadow: inset 0px 0px 0px 1px var(--neutral-lower);
-  -moz-box-shadow: inset 0px 0px 0px 1px var(--neutral-lower);
-  box-shadow: inset 0px 0px 0px 1px var(--neutral-lower);
-  background: none;
-  color: var(--neutral-lower);
-}
-
-.filled.background:disabled {
-  background-color: var(--neutral-low);
-  color: var(--neutral-lower);
-  cursor: not-allowed;
-}
-
-.outlined.background {
-  border: 1px solid var(--primary-high);
-  background-color: none;
-  color: var(--primary-high);
-}
-
-.outlined.background:hover {
-  background-color: var(--primary-lowest);
-}
-
-.text.background {
-  background: none;
-  color: var(--neutral-higher);
-}
-
-.filled.foreground {
-  background-color: var(--primary-medium);
-  color: var(--neutral-lower);
-}
-
-.filled.foreground:hover {
-  background-color: var(--primary-high);
-}
-
-.filled.foreground:disabled {
-  background-color: var(--neutral-medium);
-  color: var(--neutral-lower);
-  cursor: not-allowed;
-}
-
-.outlined.foreground {
-  border: 1px solid var(--primary-high);
-  background-color: none;
-  color: var(--primary-high);
-}
-
-.outlined.foreground:hover {
-  background-color: var(--primary-lowest);
-}
-
-.text.foreground {
-  background: none;
-  color: var(--font-foreground-color);
-}
-
-.text.foreground:hover {
-  color: var(--primary-medium);
 }
