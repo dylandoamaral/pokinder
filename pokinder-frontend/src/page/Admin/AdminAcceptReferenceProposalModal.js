@@ -76,13 +76,17 @@ function AdminAcceptReferenceProposalModal({
     },
     {
       onSuccess: () => {
-        setForm(defaultForm);
         toast.success(t("Reference validation success"));
         refreshProposals();
-        onClose();
+        close();
       },
     },
   );
+
+  function close() {
+    setForm(defaultForm);
+    onClose();
+  }
 
   function renderSource() {
     if (form.reference === undefined) return <></>;
@@ -133,7 +137,7 @@ function AdminAcceptReferenceProposalModal({
   if (referenceProposal === undefined) return <></>;
 
   return (
-    <Modal className={styles.container} isVisible={isVisible} onClose={onClose}>
+    <Modal className={styles.container} isVisible={isVisible} onClose={close}>
       <Heading align="left">{t("Reference validation title")}</Heading>
       <Panel title={t("Fusion")}>
         <Sprite
@@ -169,14 +173,7 @@ function AdminAcceptReferenceProposalModal({
       </Panel>
       {renderSource()}
       <div className={styles.buttons}>
-        <Button
-          title={t("Cancel")}
-          variant={VARIANT_TEXT}
-          onClick={() => {
-            setForm(defaultForm);
-            onClose();
-          }}
-        />
+        <Button title={t("Cancel")} variant={VARIANT_TEXT} onClick={close} />
         <Button
           title={t("Reference validation action")}
           variant={VARIANT_FILLED_FOREGROUND}
