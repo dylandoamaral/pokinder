@@ -58,8 +58,18 @@
   --foreground-color: var(--neutral-lower);
   --font-background-color: var(--neutral-lower);
   --font-foreground-color: var(--neutral-higher);
+
+  --input-color: var(--font-foreground-color);
   --input-background-color: var(--neutral-lower);
-  --border-color: var(--neutral-medium);
+  --input-border-color: var(--neutral-medium);
+  --input-border-color-selected: var(--neutral-higher);
+  --input-border-color-hovered: var(--neutral-high);
+
+  --select-item-background-color-selected: var(--primary-high);
+  --select-item-background-color-hovered: var(--primary-medium);
+  --select-item-color: var(--font-foreground-color);
+  --select-item-color-selected: var(--font-background-color);
+  --select-item-color-hovered: var(--font-background-color);
 
   --card-color: var(--neutral-lower);
   --card-illustration-color: var(--neutral-low);
@@ -132,8 +142,19 @@
   --foreground-color: var(--neutral-lower);
   --font-background-color: var(--neutral-higher);
   --font-foreground-color: var(--neutral-higher);
+
+  --input-color: var(--font-background-color);
+  --input-placeholder-color: var(--neutral-medium);
   --input-background-color: var(--neutral-lower);
-  --border-color: var(--neutral-medium);
+  --input-border-color: var(--neutral-medium);
+  --input-border-color-selected: var(--neutral-higher);
+  --input-border-color-hovered: var(--neutral-high);
+
+  --select-item-background-color-selected: var(--primary-high);
+  --select-item-background-color-hovered: var(--primary-medium);
+  --select-item-color: var(--font-foreground-color);
+  --select-item-color-selected: var(--neutral-lower);
+  --select-item-color-hovered: var(--neutral-lower);
 
   --card-color: var(--neutral-lower);
   --card-illustration-color: var(--neutral-low);
@@ -206,8 +227,18 @@
   --foreground-color: var(--neutral-lower);
   --font-background-color: var(--neutral-higher);
   --font-foreground-color: var(--neutral-higher);
-  --input-background-color: var(--neutral-low);
-  --border-color: var(--neutral-medium);
+
+  --input-color: var(--font-foreground-color);
+  --input-background-color: var(--neutral-lower);
+  --input-border-color: var(--neutral-medium);
+  --input-border-color-selected: var(--neutral-higher);
+  --input-border-color-hovered: var(--neutral-high);
+
+  --select-item-background-color-selected: var(--primary-high);
+  --select-item-background-color-hovered: var(--primary-medium);
+  --select-item-color: var(--font-foreground-color);
+  --select-item-color-selected: var(--font-background-color);
+  --select-item-color-hovered: var(--font-background-color);
 
   --card-color: var(--neutral-lower);
   --card-illustration-color: var(--neutral-low);
@@ -295,39 +326,44 @@ code {
 .select__control {
   cursor: pointer !important;
   background-color: var(--input-background-color) !important;
-  border-color: var(--border-color) !important;
+  border-color: var(--input-border-color) !important;
+}
+
+.select__control:hover {
+  border-color: var(--input-border-color-hovered) !important;
 }
 
 .select__control--is-focused {
-  border-color: var(--font-foreground-color) !important;
-  box-shadow: 0 0 0 1px var(--font-foreground-color) !important;
+  border-color: var(--input-border-color-selected) !important;
+  box-shadow: 0 0 0 1px var(--input-border-color-selected) !important;
 }
 
 .select__input {
-  color: var(--font-foreground-color) !important;
+  color: var(--input-color) !important;
 }
 
 .select__single-value {
-  color: var(--font-foreground-color) !important;
+  color: var(--input-color) !important;
 }
 
 .select__menu {
   background-color: var(--input-background-color) !important;
-  border-color: var(--border-color) !important;
+  border-color: var(--input-border-color) !important;
 }
 
 .select__option {
   cursor: pointer !important;
+  color: var(--select-item-color) !important;
 }
 
 .select__option--is-selected {
-  background-color: var(--primary-high) !important;
-  color: #fff !important;
+  background-color: var(--select-item-background-color-selected) !important;
+  color: var(--select-item-color-selected) !important;
 }
 
 .select__option--is-focused {
-  background-color: var(--primary-medium) !important;
-  color: #fff !important;
+  background-color: var(--select-item-background-color-hovered) !important;
+  color: var(--select-item-color-hovered) !important;
 }
 
 @media (max-width: 850px) {
