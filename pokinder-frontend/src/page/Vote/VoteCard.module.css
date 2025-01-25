@@ -147,13 +147,21 @@
   height: 16px;
   padding: 6px;
   border-radius: 18px;
-  border: 4px solid var(--foreground-color);
-  background-color: var(--neutral-higher);
-  cursor: pointer;
 
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.referenceButtonLocked {
+  border: 4px solid var(--foreground-color);
+  background-color: var(--neutral-medium);
+}
+
+.referenceButtonUnlocked {
+  border: 4px solid var(--foreground-color);
+  background-color: var(--neutral-higher);
+  cursor: pointer;
 }
 
 .referenceButtonIcon {
@@ -162,7 +170,7 @@
   color: var(--foreground-color);
 }
 
-.referenceButton:hover .referenceButtonIcon {
+.referenceButtonUnlocked:hover .referenceButtonIcon {
   width: 22px;
   height: 22px;
 }
