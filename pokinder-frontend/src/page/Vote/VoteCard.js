@@ -10,6 +10,7 @@ import { getName, getTypes } from "../../utils/pokemon";
 import { getDaenaLink } from "../../utils/website";
 
 import Sprite from "../../component/atom/Sprite/Sprite";
+import Tooltip from "../../component/atom/Tooltip/Tooltip";
 import Type from "../../component/atom/Type/Type";
 
 import styles from "./VoteCard.module.css";
@@ -98,13 +99,24 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
   }
 
   function renderReferenceButton() {
-    if (!isUser) return <></>;
-
-    return (
-      <div className={styles.referenceButton} onClick={() => onReferenceButtonClick()}>
-        <FaPlus className={styles.referenceButtonIcon} />
-      </div>
-    );
+    if (!isUser) {
+      return (
+        <Tooltip text={t("Connect to propose a reference")}>
+          <div className={`${styles.referenceButton} ${styles.referenceButtonLocked}`}>
+            <FaPlus className={styles.referenceButtonIcon} />
+          </div>
+        </Tooltip>
+      );
+    } else {
+      return (
+        <div
+          className={`${styles.referenceButton} ${styles.referenceButtonUnlocked}`}
+          onClick={() => onReferenceButtonClick()}
+        >
+          <FaPlus className={styles.referenceButtonIcon} />
+        </div>
+      );
+    }
   }
 
   function renderReferences(references) {

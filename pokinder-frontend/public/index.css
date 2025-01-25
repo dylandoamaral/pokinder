@@ -71,6 +71,9 @@
   --select-item-color-selected: var(--font-background-color);
   --select-item-color-hovered: var(--font-background-color);
 
+  --tooltip-background-color: var(--neutral-higher);
+  --tooltip-color: var(--neutral-lower);
+
   --card-color: var(--neutral-lower);
   --card-illustration-color: var(--neutral-low);
 
@@ -156,6 +159,9 @@
   --select-item-color-selected: var(--neutral-lower);
   --select-item-color-hovered: var(--neutral-lower);
 
+  --tooltip-background-color: var(--neutral-high);
+  --tooltip-color: var(--neutral-lower);
+
   --card-color: var(--neutral-lower);
   --card-illustration-color: var(--neutral-low);
 
@@ -239,6 +245,9 @@
   --select-item-color: var(--font-foreground-color);
   --select-item-color-selected: var(--font-background-color);
   --select-item-color-hovered: var(--font-background-color);
+
+  --tooltip-background-color: var(--neutral-medium);
+  --tooltip-color: var(--neutral-higher);
 
   --card-color: var(--neutral-lower);
   --card-illustration-color: var(--neutral-low);
