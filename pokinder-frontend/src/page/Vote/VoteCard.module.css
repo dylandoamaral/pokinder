@@ -156,6 +156,7 @@
 .referenceButtonLocked {
   border: 4px solid var(--foreground-color);
   background-color: var(--neutral-medium);
+  cursor: not-allowed;
 }
 
 .referenceButtonUnlocked {
