@@ -70,7 +70,7 @@
   "The password is changed": "The password is changed",
   "Don't need a new password ?": "Don't need a new password ?",
   "Sign Out": "Sign Out",
-  "Connected as": "Connected as {{username}}",
+  "Connected as": "Connected as",
   "Username": "Username",
   "Email": "Email",
   "Password": "Password",

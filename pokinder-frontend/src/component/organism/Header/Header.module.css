@@ -3,6 +3,8 @@
   grid-auto-flow: column;
   grid-auto-columns: 1fr 1fr 1fr;
   align-items: center;
+
+  z-index: 999;
 }
 
 .center {
@@ -29,6 +31,11 @@
 .title {
   font-size: var(--font-size-3XL);
   line-height: 0;
+}
+
+.avatar {
+  position: relative;
+  display: inline-block;
 }
 
 .guest {

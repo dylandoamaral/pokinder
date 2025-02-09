@@ -29,7 +29,11 @@
   --font-size-2XL: 1.5rem;
   --line-height-2XL: 2rem;
   --font-size-3XL: 1.875rem;
-  --flineont-height-3XL: 2.25rem;
+  --line-height-3XL: 2.25rem;
+
+  --avatar-radius: 32px;
+  --avatar-background-color: var(--neutral-higher);
+  --avatar-color: var(--neutral-lower);
 }
 
 :root[theme="pokeball"] {

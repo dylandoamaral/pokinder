@@ -1,33 +1,50 @@
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
 import { useAuthentication } from "../../../hook/useAuthentication";
-import useToggle from "../../../hook/useToggle";
 
 import { authorizedNavlinks } from "../../../data/navlinks";
 
+import Avatar from "../../atom/Avatar/Avatar";
 import Button, { VARIANT_CALL_TO_ACTION, VARIANT_FILLED_HEADER } from "../../atom/Button/Button";
 import Logo from "../../atom/Logo/Logo";
 import NavLink from "../../atom/Navlink/NavLink";
-import Sidebar from "../../molecule/Sidebar/Sidebar";
+import Menu from "../Menu/Menu";
 import styles from "./Header.module.css";
 
 function Header() {
   const { t } = useTranslation();
-  const { isUser, isAdmin, username, disconnect } = useAuthentication();
+  const { isUser, isAdmin } = useAuthentication();
   const navigate = useNavigate();
 
-  const [showSidebar, toggleSidebar] = useToggle();
+  const menuRef = useRef();
+  const [showMenu, setShowMenu] = useState(false);
+
+  // NOTE: close menu when clicking outside the menu
+  useEffect(() => {
+    let handler = (e) => {
+      if (showMenu && !menuRef.current?.contains(e.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return () => document.removeEventListener("mousedown", handler);
+  });
+
+  function renderAvatar() {
+    return (
+      <div className={styles.avatar}>
+        <Avatar onClick={() => setShowMenu(true)} />
+        {showMenu && <Menu ref={menuRef} onClose={() => setShowMenu(false)} />}
+      </div>
+    );
+  }
 
   function renderAccount() {
-    if (isUser)
-      return (
-        <div className={styles.user}>
-          <span className={styles.username}>{username}</span>
-          <FaArrowRightFromBracket className={styles.quit} onClick={disconnect} />
-        </div>
-      );
+    if (isUser) return <div className={styles.user}>{renderAvatar()}</div>;
     else
       return (
         <div className={styles.guest}>
@@ -41,6 +58,7 @@ function Header() {
             variant={VARIANT_CALL_TO_ACTION}
             onClick={() => navigate("/signup")}
           />
+          {renderAvatar()}
         </div>
       );
   }
@@ -61,18 +79,8 @@ function Header() {
             ))}
           </nav>
         </div>
-        <div className={styles.right}>
-          <div className="phone_only">
-            <div className={styles.hamburger} onClick={toggleSidebar}>
-              <div className={styles.ham} />
-              <div className={styles.ham} />
-              <div className={styles.ham} />
-            </div>
-          </div>
-          <div className="pc_only">{renderAccount()}</div>
-        </div>
+        <div className={styles.right}>{renderAccount()}</div>
       </header>
-      <Sidebar isVisible={showSidebar} onClose={toggleSidebar} toggleLoginModal={() => {}} />
     </>
   );
 }

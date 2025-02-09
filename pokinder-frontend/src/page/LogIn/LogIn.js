@@ -17,7 +17,7 @@ import styles from "../../shared/style/Identification.module.css";
 
 function LogIn() {
   const { t } = useTranslation();
-  const { isUser, setToken, setRefreshToken } = useAuthentication();
+  const { isUser, setTokens } = useAuthentication();
 
   const defaultForm = {
     usernameOrEmail: undefined,
@@ -34,8 +34,7 @@ function LogIn() {
 
   const { mutate: submit } = useMutation(async () => {
     const tokens = await login(form.usernameOrEmail, form.password);
-    setToken(tokens.token);
-    setRefreshToken(tokens.refresh);
+    setTokens({ token: tokens.token, refreshToken: tokens.token });
   });
 
   return (

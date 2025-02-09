@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  cursor: pointer;
+
+  opacity: 0.8;
+}
+
+.container:hover {
+  opacity: 1;
+}
+
+.label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+
+  font-size: var(--font-size-M);
+}
+
+.label > svg {
+  font-size: 20px;
+}
+
+.label > img {
+  height: 20px;
+}
+
+.chevron {
+  font-size: 12px;
+  font-weight: bold;
+}
