@@ -7,6 +7,7 @@
 
   "Game": "Jeux",
   "Theme": "Thème",
+  "Language": "Langue",
 
   "Filter": "Filtre",
   "Reset all filters": "Reinitialiser les filtres",
@@ -70,7 +71,7 @@
   "The password is changed": "Le mot de passe a été changé",
   "Don't need a new password ?": "Pas besoin d'un nouveau mot de passe ?",
   "Sign Out": "Se deconnecter",
-  "Connected as": "Connecté en tant que {{username}}",
+  "Connected as": "Connecté avec",
   "Username": "Nom d'utilisateur",
   "Email": "Adresse mail",
   "Password": "Mot de passe",

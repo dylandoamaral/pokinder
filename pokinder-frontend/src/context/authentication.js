@@ -67,18 +67,20 @@ export const AuthenticationProvider = ({ children }) => {
   const guestTokenKey = "pokinderGuestToken";
 
   // State to hold the authentication token
-  const [token, storeToken] = useState(retrieveToken());
-  const [refreshToken, storeRefreshToken] = useState(retrieveRefreshToken());
+  const [tokens, setTokens] = useState({
+    token: retrieveToken(),
+    refreshToken: retrieveRefreshToken(),
+  });
 
-  http.instance.defaults.headers.common["X-API-KEY"] = token;
-  localStorage.setItem(tokenKey, token);
-  localStorage.setItem(refreshTokenKey, refreshToken);
+  http.instance.defaults.headers.common["X-API-KEY"] = tokens.token;
+  localStorage.setItem(tokenKey, tokens.token);
+  localStorage.setItem(refreshTokenKey, tokens.refreshToken);
 
   useEffect(() => {
-    http.instance.defaults.headers.common["X-API-KEY"] = token;
-    localStorage.setItem(tokenKey, token);
-    localStorage.setItem(refreshTokenKey, refreshToken);
-  }, [token, refreshToken]);
+    http.instance.defaults.headers.common["X-API-KEY"] = tokens.token;
+    localStorage.setItem(tokenKey, tokens.token);
+    localStorage.setItem(refreshTokenKey, tokens.refreshToken);
+  }, [tokens]);
 
   // Memoized value of the authentication context
   const contextValue = useMemo(() => {
@@ -94,31 +96,25 @@ export const AuthenticationProvider = ({ children }) => {
     }
 
     function disconnect() {
-      if (!isUUIDv4(token)) {
-        setToken(retrieveGuestToken());
-        storeRefreshToken("none");
+      if (!isUUIDv4(tokens.token)) {
+        setTokens({ token: retrieveGuestToken(), refreshToken: "none" });
       }
     }
 
-    function setToken(token) {
-      storeToken(token);
-    }
-
-    const subject = retrieveSubject(token);
+    const subject = retrieveSubject(tokens.token);
 
     return {
-      token: token,
-      refreshToken: refreshToken,
+      token: tokens.token,
+      refreshToken: tokens.refreshToken,
       accountId: subject.account_id,
       username: subject.username,
       isUser: subject.username !== undefined,
       isAdmin: subject.role === "ADMIN",
-      setToken: setToken,
-      setRefreshToken: storeRefreshToken,
+      setTokens: setTokens,
       disconnect: disconnect,
       generateGuestToken: generateGuestToken,
     };
-  }, [token, refreshToken]);
+  }, [tokens]);
 
   // Provide the authentication context to the children components
   return (

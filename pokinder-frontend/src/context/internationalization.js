@@ -4,9 +4,10 @@ import { initReactI18next } from "react-i18next";
 import enTranslation from "../lang/en.json";
 import frTranslation from "../lang/fr.json";
 
+// NOTE: flag from https://hatscripts.github.io/circle-flags/
 export const languages = [
-  { iso: "en", lang: "English", translation: enTranslation },
-  { iso: "fr", lang: "Français", translation: frTranslation },
+  { flag: "gb", iso: "en", lang: "English", translation: enTranslation },
+  { flag: "fr", iso: "fr", lang: "Français", translation: frTranslation },
 ];
 
 const loadResources = () => {
