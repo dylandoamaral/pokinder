@@ -1,0 +1,10 @@
+.container {
+  width: var(--avatar-radius);
+  height: var(--avatar-radius);
+  border-radius: 100%;
+
+  background-color: var(--avatar-background-color);
+  color: var(--avatar-color);
+
+  cursor: pointer;
+}

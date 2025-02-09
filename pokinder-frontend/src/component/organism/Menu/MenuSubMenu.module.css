@@ -1,0 +1,48 @@
+.container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  overflow: hidden;
+
+  color: var(--font-foreground-color);
+  background-color: var(--foreground-color);
+  border-radius: var(--border-radius-M);
+  padding: inherit;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-M);
+
+  z-index: 1;
+}
+
+.header {
+  /* NOTE: set an arbitrary huge width to avoid bug on animate. */
+  width: 300px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-S);
+
+  overflow: hidden;
+
+  cursor: pointer;
+}
+
+.header > img {
+  height: 20px;
+}
+
+.chevron {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+@media (max-width: 700px) {
+  .container {
+    gap: var(--spacing-XL);
+  }
+}

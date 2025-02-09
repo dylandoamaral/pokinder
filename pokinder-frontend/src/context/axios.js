@@ -16,7 +16,7 @@ import { getCookie } from "../utils/cookie";
 function AxiosErrorHandler({ children }) {
   const { t } = useTranslation();
   const { theme } = useTheme();
-  const { refreshToken, setToken, setRefreshToken, disconnect } = useAuthentication();
+  const { refreshToken, setTokens, disconnect } = useAuthentication();
 
   useEffect(() => {
     function onSuccessRequest(config) {
@@ -37,8 +37,7 @@ function AxiosErrorHandler({ children }) {
         return refresh(refreshToken)
           .then((response) => {
             const tokens = response;
-            setToken(tokens.token);
-            setRefreshToken(tokens.refresh);
+            setTokens({ token: tokens.token, refreshToken: tokens.refresh });
             error.response.config.headers["X-API-KEY"] = tokens.token;
             return http.instance(error.response.config);
           })
@@ -86,7 +85,7 @@ function AxiosErrorHandler({ children }) {
       http.instance.interceptors.request.eject(requestInterceptor);
       http.instance.interceptors.response.eject(responseInterceptor);
     };
-  }, [refreshToken, setToken, setRefreshToken, disconnect, t, theme]);
+  }, [refreshToken, setTokens, disconnect, t, theme]);
 
   return children;
 }

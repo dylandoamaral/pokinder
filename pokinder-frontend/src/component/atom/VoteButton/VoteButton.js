@@ -1,4 +1,4 @@
-import { motion, useAnimate } from "framer-motion";
+import { motion, useAnimate } from "motion/react";
 import { useTranslation } from "react-i18next";
 import { FaCheck, FaTimes } from "react-icons/fa";
 import {
