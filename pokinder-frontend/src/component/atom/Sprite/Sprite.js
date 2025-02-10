@@ -30,7 +30,12 @@ function Sprite({ className, sizeClassName, href, filename, type, size, alt }) {
   return (
     <a
       className={className}
-      style={{ textDecoration: "none" }}
+      style={{
+        textDecoration: "none",
+        msUserSelect: "none",
+        userSelect: "none",
+        WebkitUserSelect: "none",
+      }}
       href={href}
       target="_blank"
       rel="noopener noreferrer"

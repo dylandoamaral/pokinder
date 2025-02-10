@@ -112,7 +112,11 @@ const Menu = forwardRef(function Menu({ onClose }, ref) {
   function renderUserMenu() {
     return (
       <MenuContainer>
-        <MenuItem name={t("Settings")} icon={<MdOutlineSettings />} />
+        <MenuItem
+          name={t("Settings")}
+          icon={<MdOutlineSettings />}
+          onClick={() => navigate("/settings")}
+        />
         <MenuItem name={t("Proposals")} icon={<MdOutlineHowToVote />} />
         <MenuSeparator />
         <MenuItemLanguage />

@@ -13,6 +13,7 @@ import ForgotPassword from "./page/ForgotPassword/ForgotPassword";
 import LogIn from "./page/LogIn/LogIn";
 import NewPassword from "./page/NewPassword/NewPassword";
 import NotFound from "./page/NotFound/NotFound";
+import Settings from "./page/Settings/Settings";
 import Signup from "./page/SignUp/SignUp";
 import Vote from "./page/Vote/Vote";
 
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
   { path: "/signup", element: <Signup /> },
   { path: "/forgotpassword", element: <ForgotPassword /> },
   { path: "/newpassword", element: <NewPassword /> },
+  { path: "/settings", element: <Settings /> },
   { path: "*", element: <NotFound /> },
 ]);
 
