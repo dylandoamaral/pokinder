@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-XL);
+
+  font-size: var(--font-size-S);
+  line-height: var(--line-height-S);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: var(--font-size-M);
+  line-height: var(--line-height-M);
+  font-weight: bold;
+}
+
+.action {
+  all: unset;
+  cursor: pointer;
+  opacity: 0.9;
+  text-decoration: underline;
+}
+
+.action:hover {
+  opacity: 1;
+}
