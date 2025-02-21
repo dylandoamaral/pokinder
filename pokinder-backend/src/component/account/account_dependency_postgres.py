@@ -1,7 +1,7 @@
 from typing import Optional
 from uuid import UUID
 
-from sqlalchemy import exists, func, or_, select, update
+from sqlalchemy import and_, exists, func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .account_dependency import AccountDependency
@@ -40,8 +40,13 @@ class AccountDependencyPostgres(AccountDependency):
 
         return maybe_instance
 
-    async def retrieve_account_by_email(self, email: str) -> Optional[Account]:
-        query = select(Account).where(func.lower(Account.email) == func.lower(email))
+    async def retrieve_account_by_email(self, email: str, account_id: Optional[UUID]) -> Optional[Account]:
+        if account_id is None:
+            filter = func.lower(Account.email) == func.lower(email)
+        else:
+            filter = and_(func.lower(Account.email) == func.lower(email), Account.id == account_id)
+
+        query = select(Account).where(filter)
         return await self.session.scalar(query)
 
     async def check_username_exists(self, username: str) -> bool:

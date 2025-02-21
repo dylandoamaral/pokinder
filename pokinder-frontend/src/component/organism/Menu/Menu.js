@@ -15,9 +15,9 @@ import { useAuthentication } from "../../../hook/useAuthentication";
 import useToggle from "../../../hook/useToggle";
 
 import Avatar from "../../atom/Avatar/Avatar";
+import Separator from "../../atom/Separator/Separator";
 import styles from "./Menu.module.css";
 import MenuItem from "./MenuItem";
-import MenuSeparator from "./MenuSeparator";
 import MenuSubMenuLanguage from "./MenuSubMenuLanguage";
 import MenuSubMenuTheme from "./MenuSubMenuTheme";
 
@@ -83,7 +83,7 @@ const Menu = forwardRef(function Menu({ onClose }, ref) {
         onAnimationComplete={() => setIsOpen(true)}
       >
         <MenuHeader />
-        <MenuSeparator />
+        <Separator transparent />
         {children}
         {/* NOTE: Animation on exit don't work for an obscure reason. */}
         <AnimatePresence>
@@ -103,7 +103,7 @@ const Menu = forwardRef(function Menu({ onClose }, ref) {
       <MenuContainer>
         <MenuItemLanguage />
         <MenuItemTheme />
-        <MenuSeparator />
+        <Separator transparent />
         <MenuItem name={t("Log In")} icon={<MdOutlineLogin />} onClick={() => navigate("/login")} />
       </MenuContainer>
     );
@@ -118,10 +118,10 @@ const Menu = forwardRef(function Menu({ onClose }, ref) {
           onClick={() => navigate("/settings")}
         />
         <MenuItem name={t("Proposals")} icon={<MdOutlineHowToVote />} />
-        <MenuSeparator />
+        <Separator transparent />
         <MenuItemLanguage />
         <MenuItemTheme />
-        <MenuSeparator />
+        <Separator transparent />
         <MenuItem
           name={t("Log Out")}
           icon={<MdOutlineLogout />}

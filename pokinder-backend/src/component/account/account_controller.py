@@ -12,6 +12,7 @@ from src.component.account.account_reset_password_table import (
     AccountResetPasswordStatus,
 )
 from src.component.account.account_table import AccountRole
+from src.security import Request
 from src.security.jwt import (
     DEFAULT_REFRESH_TIME_DELTA,
     EncodedTokens,
@@ -82,7 +83,7 @@ class AccountController(Controller):
             raise NotFoundException()
 
         if not checkpw(data.password.encode("utf-8"), account.password):
-            # We don't want the "hacker" to know if the name exists or not.
+            # NOTE: We don't want the "hacker" to know if the name exists or not.
             raise NotFoundException()
 
         return self.generateTokens(Subject(account_id=account.id, username=account.username, role=account.role))
@@ -105,15 +106,26 @@ class AccountController(Controller):
     @post(path="/reset_password", dto=None)
     async def reset_password(
         self,
+        request: Request,
         account_dependency: AccountDependency,
         email_dependency: EmailDependency,
         data: AccountResetPassword,
     ) -> None:
-        maybe_account = await account_dependency.retrieve_account_by_email(data.email)
+        is_guest = request.user.role == AccountRole.GUEST
 
-        if maybe_account is None:
-            # NOTE: don't raise exception because we don't want hacker to know if email exists.
-            return
+        if is_guest:
+            # NOTE: this is a reset password attempt we don't verify account id.
+            maybe_account = await account_dependency.retrieve_account_by_email(data.email, None)
+
+            if maybe_account is None:
+                # NOTE: don't raise exception because we don't want hacker to know if email exists.
+                return
+        else:
+            # NOTE: this is a change password attempt we do verify account id.
+            maybe_account = await account_dependency.retrieve_account_by_email(data.email, request.user.id)
+
+            if maybe_account is None:
+                raise NotFoundException()
 
         account_id = maybe_account.id
         username = maybe_account.username

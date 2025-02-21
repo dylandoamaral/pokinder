@@ -20,7 +20,7 @@ import styles from "../../shared/style/Identification.module.css";
 
 function NewPassword() {
   const { t } = useTranslation();
-  const { isUser } = useAuthentication();
+  const { isUser, disconnect } = useAuthentication();
   const navigate = useNavigate();
 
   const [searchParams] = useSearchParams();
@@ -45,10 +45,13 @@ function NewPassword() {
     },
   );
 
+  if (isUser) {
+    disconnect();
+  }
+
   return (
     <Page name={t("New Password")}>
       {token === null && <Navigate to=".." relative="path"></Navigate>}
-      {isUser && <Navigate to=".." relative="path"></Navigate>}
       <div className={styles.container}>
         <div className={styles.form}>
           <Heading>{t("Change your password")}</Heading>

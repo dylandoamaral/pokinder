@@ -121,6 +121,8 @@
   --button-font-color-hover-text: var(--primary-medium);
   --button-background-color-hover-text: transparent;
   --button-border-color-hover-text: transparent;
+
+  --separator-background-color: var(--neutral-higher);
 }
 
 :root[theme="superball"] {
@@ -209,6 +211,8 @@
   --button-font-color-hover-text: var(--primary-medium);
   --button-background-color-hover-text: transparent;
   --button-border-color-hover-text: transparent;
+
+  --separator-background-color: var(--neutral-higher);
 }
 
 :root[theme="hyperball"] {
@@ -296,6 +300,8 @@
   --button-font-color-hover-text: var(--primary-medium);
   --button-background-color-hover-text: transparent;
   --button-border-color-hover-text: transparent;
+
+  --separator-background-color: var(--neutral-higher);
 }
 
 * {

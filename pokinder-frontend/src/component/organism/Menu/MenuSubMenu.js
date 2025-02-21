@@ -1,6 +1,6 @@
 import { TiChevronLeft } from "react-icons/ti";
 
-import MenuSeparator from "./MenuSeparator";
+import Separator from "../../atom/Separator/Separator";
 import styles from "./MenuSubMenu.module.css";
 
 function MenuSubMenu({ title, icon, children, onClose }) {
@@ -11,7 +11,7 @@ function MenuSubMenu({ title, icon, children, onClose }) {
         {icon}
         {title}
       </div>
-      <MenuSeparator />
+      <Separator transparent />
       {children}
     </div>
   );

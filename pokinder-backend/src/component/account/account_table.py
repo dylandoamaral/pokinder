@@ -16,6 +16,7 @@ from src.utils.sqlalchemy import (
 class AccountRole(Enum):
     USER = 0
     ADMIN = 1
+    GUEST = 2
 
 
 class Account(BaseTable, UUIDPrimaryKey):
