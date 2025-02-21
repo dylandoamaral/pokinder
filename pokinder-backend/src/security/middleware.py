@@ -66,6 +66,6 @@ class JWTAuthenticationMiddleware(AbstractAuthenticationMiddleware):
             if account is not None:
                 raise NotAuthorizedException()
 
-            account = Account(id=account_id, username="Guest", email="", role=AccountRole.USER, password=b"")
+            account = Account(id=account_id, username="Guest", email="", role=AccountRole.GUEST, password=b"")
 
             return AuthenticationResult(user=account, auth=account_id)
