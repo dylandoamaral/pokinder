@@ -14,7 +14,7 @@ class AccountDependency(Protocol):
     async def retrieve_unsecured_account(self, account_login: AccountLogin) -> Optional[Account]:
         pass
 
-    async def retrieve_account_by_email(self, email: str) -> Optional[Account]:
+    async def retrieve_account_by_email(self, email: str, account_id: Optional[UUID]) -> Optional[Account]:
         pass
 
     async def check_username_exists(self, username: str) -> bool:
