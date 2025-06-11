@@ -4,9 +4,9 @@
     <meta charset="utf-8" />
 
     <script>
-      const prefereDark =
+      const preferDark =
         window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-      const defaultTheme = prefereDark ? "hyperball" : "pokeball";
+      const defaultTheme = preferDark ? "hyperball" : "pokeball";
       const theme = localStorage.getItem("pokinderTheme") || defaultTheme;
       document.documentElement.setAttribute("theme", theme);
     </script>

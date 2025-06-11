@@ -6,9 +6,9 @@ export const ThemeProvider = ({ children }) => {
   const tokenKey = "pokinderTheme";
 
   function retrieveTheme() {
-    const prefereDark =
+    const preferDark =
       window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const defaultTheme = prefereDark ? "hyperball" : "superball";
+    const defaultTheme = preferDark ? "hyperball" : "superball";
     const token = localStorage.getItem(tokenKey);
 
     return token || defaultTheme;
