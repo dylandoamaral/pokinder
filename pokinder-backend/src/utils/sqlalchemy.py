@@ -81,11 +81,11 @@ def create_registry() -> registry:
 
 
 def model_to_dict(model: BaseTable) -> dict:
-    dictionnary = model.__dict__
-    dictionnary.pop("_sa_instance_state", None)
-    for key, value in dictionnary.items():
+    dictionary = model.__dict__
+    dictionary.pop("_sa_instance_state", None)
+    for key, value in dictionary.items():
         if isinstance(value, BaseTable):
-            dictionnary[key] = model_to_dict(value)
+            dictionary[key] = model_to_dict(value)
         if isinstance(value, list):
             new_list = []
             for element in value:
@@ -93,8 +93,8 @@ def model_to_dict(model: BaseTable) -> dict:
                     new_list.append(model_to_dict(element))
                 else:
                     new_list.append(element)
-            dictionnary[key] = new_list
-    return dictionnary
+            dictionary[key] = new_list
+    return dictionary
 
 
 orm_registry = create_registry()

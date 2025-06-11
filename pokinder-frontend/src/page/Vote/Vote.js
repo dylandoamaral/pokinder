@@ -21,7 +21,7 @@ import VoteCard from "./VoteCard";
 function Vote() {
   // The number of fusions fetched from the API.
   const AMOUNT_FETCH_NEW_FUSIONS = 30;
-  // The number of fusions left before trigerring the API.
+  // The number of fusions left before triggering the API.
   const TRIGGER_FETCH_NEW_FUSIONS = 20;
   // The number of fusions rendered.
   const CACHED_FUSIONS = 6;
@@ -173,7 +173,7 @@ function Vote() {
 
   // Animated offset to move cards.
   const absoluteOffset = (absoluteIndex - CACHED_FUSIONS + 1) * CARD_SPACE;
-  // Non animated offest to move cards back during unstacking.
+  // Non animated offset to move cards back during unstacking.
   const relativeOffset = -1 * relativeIndex * CARD_SPACE;
 
   function renderContent() {

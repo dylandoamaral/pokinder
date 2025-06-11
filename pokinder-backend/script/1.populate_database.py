@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# This script was used first to fullfill the postgres SQL database with data.
+# This script was used first to fulfill the postgres SQL database with data.
 # It is now supersed by update_database script that should be adapted to populate from scratch the database.
 
 import asyncio

@@ -80,7 +80,7 @@ function ExploreMenuFiltersModal({ defaultFilters, filters, setFilters, isVisibl
       return await listReferences(undefined, updatedFilters.referenceFamilyName);
     }
 
-    const referencFamilyDefaultValue = {
+    const referenceFamilyDefaultValue = {
       value: updatedFilters.referenceFamilyName,
       label: t(updatedFilters.referenceFamilyName),
     };
@@ -102,7 +102,7 @@ function ExploreMenuFiltersModal({ defaultFilters, filters, setFilters, isVisibl
                 referenceFamilyName: option.value,
               });
             }}
-            defaultValue={referencFamilyDefaultValue}
+            defaultValue={referenceFamilyDefaultValue}
             allOption
           />
         </Panel>
@@ -112,7 +112,7 @@ function ExploreMenuFiltersModal({ defaultFilters, filters, setFilters, isVisibl
             valueToOption={valueToOption}
             onChange={setReference}
             defaultValue={referenceDefaultValue}
-            updateKey={referencFamilyDefaultValue} // NOTE: trick to force rerendering when family change.
+            updateKey={referenceFamilyDefaultValue} // NOTE: trick to force rerendering when family change.
             allOption
           />
         </Panel>
