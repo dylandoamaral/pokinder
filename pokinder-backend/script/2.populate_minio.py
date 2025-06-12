@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # This script was used first to fulfill the minio object system with data.
-# It is now supersed by update_database script that should be adapted to populate from scratch the object system.
+# It is now supersede by update_database script that should be adapted to populate from scratch the object system.
 
 import os
 import time
