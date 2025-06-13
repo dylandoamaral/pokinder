@@ -6,11 +6,11 @@ Pokinder is a website based on the game [Pokemon Infinite Fusion](https://infini
 
 This website was specifically designed to empower users to vote for their preferred sprites. It offers a seamless platform not only to cast votes but also to curate and save a personal collection of favorite sprites. Additionally, users can easily discover the sprites that have garnered the highest favor among the community members to help them build the ultimate team.
 
-If you are intested, you can check the result [here](https://pokinder.com/).
+If you are interested, you can check the result [here](https://pokinder.com/).
 
 ## How to
 
-First you need to undestand how to [contribute to a community project](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project).
+First you need to understand how to [contribute to a community project](https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project).
 
 ### add a new language
 

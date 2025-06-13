@@ -12,7 +12,7 @@ const pokemonOptions = allPokemonNames().map((name) => ({
   label: name,
 }));
 
-export const groupeOptions = [
+export const groupOptions = [
   {
     label: "Specials",
     options: specialOptions,
@@ -24,7 +24,7 @@ export const groupeOptions = [
 ];
 
 export const findOptionByValue = (value) => {
-  for (const group of groupeOptions) {
+  for (const group of groupOptions) {
     const foundOption = group.options.find((option) => option.value === value);
     if (foundOption) {
       return foundOption;

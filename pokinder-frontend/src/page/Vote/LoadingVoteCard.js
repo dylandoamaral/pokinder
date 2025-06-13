@@ -19,11 +19,11 @@ function LoadingVoteCard({ hasFocus = false, hidden = false }) {
     ? defaultBackgroundWidthMobile
     : defaultBackgroundWidthDesktop;
 
-  const defaultBackroundHeightDesktop = hasFocus ? 490 : 370;
-  const defaultBackroundHeightMobile = defaultBackroundHeightDesktop * MOBILE_RATIO;
-  const defaultBackroundHeight = isMobile
-    ? defaultBackroundHeightMobile
-    : defaultBackroundHeightDesktop;
+  const defaultBackgroundHeightDesktop = hasFocus ? 490 : 370;
+  const defaultBackgroundHeightMobile = defaultBackgroundHeightDesktop * MOBILE_RATIO;
+  const defaultBackgroundHeight = isMobile
+    ? defaultBackgroundHeightMobile
+    : defaultBackgroundHeightDesktop;
 
   const defaultFusionSizeDesktop = hasFocus ? 288 : 216;
   const defaultFusionSizeMobile = defaultFusionSizeDesktop * MOBILE_RATIO;
@@ -36,7 +36,7 @@ function LoadingVoteCard({ hasFocus = false, hidden = false }) {
   const [opacity, setOpacity] = useState(defaultOpacity);
   const [backgroundWidth, setBackgroundWidth] = useState(defaultBackgroundWidth);
   const [width, setWidth] = useState(defaultBackgroundWidthDesktop);
-  const [backgroundHeight, setBackgroundHeight] = useState(defaultBackroundHeight);
+  const [backgroundHeight, setBackgroundHeight] = useState(defaultBackgroundHeight);
   const [height, setHeight] = useState(defaultHeight);
   const [fusionSize, setFusionSize] = useState(defaultFusionSize);
   const [pokemonSize, setPokemonSize] = useState(defaultPokemonSize);
@@ -46,7 +46,7 @@ function LoadingVoteCard({ hasFocus = false, hidden = false }) {
     setHeight(defaultHeight);
     setBackgroundWidth(defaultBackgroundWidth);
     setWidth(defaultBackgroundWidthDesktop);
-    setBackgroundHeight(defaultBackroundHeight);
+    setBackgroundHeight(defaultBackgroundHeight);
     setFusionSize(defaultFusionSize);
     setPokemonSize(defaultPokemonSize);
     setPokemonSize(defaultPokemonSize);
@@ -56,7 +56,7 @@ function LoadingVoteCard({ hasFocus = false, hidden = false }) {
     defaultHeight,
     defaultBackgroundWidth,
     defaultBackgroundWidthDesktop,
-    defaultBackroundHeight,
+    defaultBackgroundHeight,
     defaultFusionSize,
     defaultPokemonSize,
   ]);
