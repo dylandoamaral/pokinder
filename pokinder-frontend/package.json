@@ -38,7 +38,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "source ../configuration/.env && source ../configuration/.env.shared && REACT_APP_VERSION=$VERSION REACT_APP_BACKEND_PORT=$BACKEND_PORT REACT_APP_BACKEND_HOST=$BACKEND_HOST REACT_APP_MINIO_HOST=$MINIO_HOST REACT_APP_MINIO_PORT=$MINIO_PORT react-scripts start",
+    "start": "dotenv -e ../configuration/.env -e ../configuration/.env.shared -- cross-env REACT_APP_VERSION=$VERSION REACT_APP_BACKEND_PORT=$BACKEND_PORT REACT_APP_BACKEND_HOST=$BACKEND_HOST REACT_APP_MINIO_HOST=$MINIO_HOST REACT_APP_MINIO_PORT=$MINIO_PORT react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject",
@@ -67,6 +67,8 @@
     "@babel/preset-env": "^7.23.2",
     "@tanstack/react-query-devtools": "^5.59.0",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "cross-env": "^10.0.0",
+    "dotenv-cli": "^10.0.0",
     "jest": "^29.7.0",
     "prettier": "3.1.1"
   }
