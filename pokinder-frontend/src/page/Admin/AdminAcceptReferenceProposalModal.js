@@ -161,6 +161,7 @@ function AdminAcceptReferenceProposalModal({
           futureValues={listReferenceFamilies}
           valueToOption={optionify}
           onChange={setFamily}
+          defaultLabel={referenceProposal.reference_family_name}
         />
       </Panel>
       <Panel title={t("Matching reference")}>
@@ -169,6 +170,7 @@ function AdminAcceptReferenceProposalModal({
           valueToOption={optionify}
           onChange={setReference}
           updateKey={form.family} // NOTE: trick to force rerendering when family change.
+          defaultLabel={referenceProposal.reference_name}
         />
       </Panel>
       {renderSource()}

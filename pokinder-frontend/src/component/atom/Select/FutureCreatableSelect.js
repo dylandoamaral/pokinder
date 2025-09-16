@@ -8,41 +8,64 @@ function FutureCreatableSelect({
   onChange,
   futureValues,
   valueToOption,
-  defaultValue,
+  defaultLabel,
   updateKey,
   allOption = false,
 }) {
   const { t } = useTranslation();
 
-  const [options, setOptions] = useState([]);
-  const [oldUpdateKey, setOldUpdateKey] = useState(updateKey);
+  const [state, setState] = useState({
+    options: [],
+    oldUpdateKey: updateKey,
+    currentValue: null,
+  });
 
   function filterOptions(inputValue, options) {
     return options.filter((i) => i.label.toLowerCase().includes(inputValue.toLowerCase()));
   }
 
   function loadOptions(inputValue, callback) {
-    if (options.length === 0 || oldUpdateKey !== updateKey) {
+    if (state.options.length === 0 || state.oldUpdateKey !== updateKey) {
       futureValues().then((newValues) => {
         const newOptions = newValues.map((value) => valueToOption(value));
+
         if (allOption) newOptions.unshift({ value: "All", label: t("All") });
 
-        setOptions(newOptions);
-        setOldUpdateKey(updateKey);
+        let defaultValue = state.currentValue;
+
+        if (defaultLabel && !defaultValue) {
+          const match = newOptions.find((opt) => opt.label === defaultLabel);
+          if (match) {
+            defaultValue = match;
+            onChange(match)
+          }
+        }
+
+        setState({
+          options: newOptions,
+          oldUpdateKey: updateKey,
+          currentValue: defaultValue,
+        });
+
         callback(filterOptions(inputValue, newOptions));
       });
     } else {
-      return callback(filterOptions(inputValue, options));
+      return callback(filterOptions(inputValue, state.options));
     }
+  }
+
+  function handleItemSelectChange(option) {
+    onChange(option)
+    setState({...state, currentValue: option});
   }
 
   return (
     <AsyncCreatableSelect
       className={styles.container}
-      onChange={onChange}
       loadOptions={loadOptions}
       defaultOptions={true}
-      defaultValue={defaultValue}
+      onChange={handleItemSelectChange}
+      value={state.currentValue}
       classNamePrefix="select"
       // NOTE: allow the select to overflow from modal.
       menuPortalTarget={document.body}
