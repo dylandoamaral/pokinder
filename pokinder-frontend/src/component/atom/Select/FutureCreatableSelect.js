@@ -37,7 +37,7 @@ function FutureCreatableSelect({
           const match = newOptions.find((opt) => opt.label === defaultLabel);
           if (match) {
             defaultValue = match;
-            onChange(match)
+            onChange(match);
           }
         }
 
@@ -55,8 +55,8 @@ function FutureCreatableSelect({
   }
 
   function handleItemSelectChange(option) {
-    onChange(option)
-    setState({...state, currentValue: option});
+    onChange(option);
+    setState({ ...state, currentValue: option });
   }
 
   return (
