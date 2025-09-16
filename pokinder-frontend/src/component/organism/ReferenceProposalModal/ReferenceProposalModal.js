@@ -11,8 +11,8 @@ import { getDaenaLink } from "../../../utils/website";
 import Button, { VARIANT_FILLED_FOREGROUND, VARIANT_TEXT } from "../../atom/Button/Button";
 import Heading from "../../atom/Heading/Heading";
 import Modal from "../../atom/Modal/Modal";
-import FutureCreatableSelect from "../../atom/Select/FutureCreatableSelect";
 import Panel from "../../atom/Panel/Panel";
+import FutureCreatableSelect from "../../atom/Select/FutureCreatableSelect";
 import Sprite from "../../atom/Sprite/Sprite";
 import styles from "./ReferenceProposalModal.module.css";
 
@@ -114,7 +114,7 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
         />
       </Panel>
       {renderExistingReferences()}
-       <Panel title={t("Family")}>
+      <Panel title={t("Family")}>
         <FutureCreatableSelect
           futureValues={listReferenceFamilies}
           valueToOption={optionify}
