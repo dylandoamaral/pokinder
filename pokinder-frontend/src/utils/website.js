@@ -1,6 +1,9 @@
 export function getDaenaLink(path) {
-  if (/[a-zA-Z]$/.test(path)) {
-    path = path.slice(0, -1);
+  const isInteger = /^[+-]?\d+$/.test(path);
+
+  if (isInteger) {
+    return `https://www.fusiondex.org/${path}/`;
   }
-  return `https://if.daena.me/${path}/`;
+
+  return `https://www.fusiondex.org/sprite/pif/${path}/`;
 }

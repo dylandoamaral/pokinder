@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { MdOpenInNew } from "react-icons/md";
 
 import ExploreCard from "../ExploreCard";
 import styles from "./ExploreReferenceCard.module.css";
@@ -13,18 +14,21 @@ export default function ExploreReferenceCard({
 }) {
   const { t } = useTranslation();
 
+  function onClick(e) {
+    e.stopPropagation();
+    window.open(fusionReferenceLink, "_blank", "noopener,noreferrer");
+  }
+
   return (
     <ExploreCard fusionId={fusionId} fusionPath={fusionPath} fusionName={fusionName}>
       <div className={styles.details}>
-        <a
+        <span
           className={styles.reference}
           style={{ "--font-size-local": fusionReferenceName.length < 24 ? "1rem" : "0.75rem" }}
-          href={fusionReferenceLink}
-          target="_blank"
-          rel="noopener noreferrer"
+          onClick={onClick}
         >
-          {fusionReferenceName}
-        </a>
+          {fusionReferenceName} <MdOpenInNew className={styles.icon} />
+        </span>
       </div>
       <div className={styles.credit}>
         {t("Discovered by", { proposer: fusionReferenceProposer })}

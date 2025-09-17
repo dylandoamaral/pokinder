@@ -16,7 +16,13 @@ import FutureCreatableSelect from "../../atom/Select/FutureCreatableSelect";
 import Sprite from "../../atom/Sprite/Sprite";
 import styles from "./ReferenceProposalModal.module.css";
 
-function ReferenceProposalModal({ isVisible, onClose, fusion }) {
+function ReferenceProposalModal({
+  isVisible,
+  onClose,
+  fusionId,
+  fusionPath,
+  fusionReferences = [],
+}) {
   const { t } = useTranslation();
 
   const defaultForm = {
@@ -31,7 +37,7 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
 
   const { mutate: submit } = useMutation(
     async () => {
-      await addReferenceProposal(fusion.id, form.name.label, form.family.label);
+      await addReferenceProposal(fusionId, form.name.label, form.family.label);
     },
     {
       onSuccess: () => {
@@ -50,7 +56,7 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
     if (form.family === undefined) return false;
     if (form.name === undefined) return false;
 
-    for (const reference of fusion.references) {
+    for (const reference of fusionReferences) {
       const isSameFamily = levenshtein(reference.family.name, form.family) < 3;
       const isSameName = levenshtein(reference.name, form.name) < 3;
       if (isSameFamily && isSameName) {
@@ -76,12 +82,12 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
   }
 
   function renderExistingReferences() {
-    if (fusion.references.length === 0) return <></>;
+    if (fusionReferences.length === 0) return <></>;
 
     return (
       <Panel title={t("Existing references")}>
         <ul>
-          {fusion.references.map((reference, key) => (
+          {fusionReferences.map((reference, key) => (
             <li key={key}>{`${reference.family.name} - ${reference.name}`}</li>
           ))}
         </ul>
@@ -106,11 +112,11 @@ function ReferenceProposalModal({ isVisible, onClose, fusion }) {
       <Panel title={t("Fusion")}>
         <Sprite
           className={styles.sprite}
-          filename={fusion.id}
-          href={getDaenaLink(fusion.path)}
+          filename={fusionId}
+          href={getDaenaLink(fusionPath)}
           size={144}
           type="fusion"
-          alt={`Fusion sprite ${fusion.body.name} and ${fusion.head.name}`}
+          alt={`Fusion sprite ${fusionPath}`}
         />
       </Panel>
       {renderExistingReferences()}

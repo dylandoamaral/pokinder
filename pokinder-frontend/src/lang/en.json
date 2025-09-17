@@ -26,6 +26,9 @@
   "History empty one": "Ah, my dear young Trainer, it appears you've delved into the Pokédex history page without yet casting your votes.",
   "History empty two": "Can you assist me in my ongoing research by <2>voting for your favorite sprites</2>? There, you'll actively aid in completing your Pokédex. Your contributions would be invaluable to our collective knowledge!",
 
+  "More information": "More information",
+  "Propose reference": "Propose reference",
+
   "Reference proposal title": "What inspired this fusion ?",
   "Reference proposal description": "Enhance our reference system by suggesting a reference for this fusion, enriching the community's knowledge base.",
   "Reference proposal warning": "The reference is already linked.",

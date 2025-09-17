@@ -30,7 +30,8 @@ export default function ExploreHistoryCard({
     mutate();
   }, [currentVoteType, mutate]);
 
-  function storeVote(newVoteType) {
+  function storeVote(e, newVoteType) {
+    e.stopPropagation();
     if (currentVoteType === newVoteType) return;
     setCurrentVoteType(newVoteType);
   }
@@ -41,17 +42,17 @@ export default function ExploreHistoryCard({
         <ExploreHistoryCardButton
           variant="downvote"
           filled={currentVoteType === 1}
-          onClick={() => storeVote(1)}
+          onClick={(e) => storeVote(e, 1)}
         />
         <ExploreHistoryCardButton
           variant="favorite"
           filled={currentVoteType === 2}
-          onClick={() => storeVote(2)}
+          onClick={(e) => storeVote(e, 2)}
         />
         <ExploreHistoryCardButton
           variant="upvote"
           filled={currentVoteType === 0}
-          onClick={() => storeVote(0)}
+          onClick={(e) => storeVote(e, 0)}
         />
       </div>
       <div className={styles.credit}>

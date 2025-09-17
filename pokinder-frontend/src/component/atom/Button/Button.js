@@ -12,13 +12,23 @@ function Button({
   variant = VARIANT_FILLED_FOREGROUND,
   disabled = false,
   noPadding = false,
+  fullWidth = false,
 }) {
   const noPaddingClassName = noPadding ? styles.nopadding : styles.padding;
+  const fullWidthClassName = fullWidth ? styles.fullWidth : "";
+
+  function handleClick(e) {
+    e.stopPropagation();
+
+    if (onClick) {
+      onClick(e);
+    }
+  }
 
   return (
     <button
-      className={`${styles.container} ${noPaddingClassName}`}
-      onClick={onClick}
+      className={`${styles.container} ${noPaddingClassName} ${fullWidthClassName}`}
+      onClick={handleClick}
       disabled={disabled}
       style={{
         "--button-font-color": `var(--button-font-color-${variant}`,
