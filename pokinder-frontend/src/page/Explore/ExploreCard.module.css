@@ -1,16 +1,68 @@
+.card-wrapper {
+  perspective: 1000px;
+}
+
 .container {
-  width: calc((var(--card-width) - var(--card-padding) * 2) * 1px);
-  height: calc((var(--card-height) - var(--card-padding) * 2) * 1px);
-  padding: calc(var(--card-padding) * 1px);
+  width: calc(var(--card-width) - var(--card-border-width) * 2);
+  height: calc(var(--card-height) - var(--card-border-width) * 2);
+
   background-color: var(--card-color);
+
+  border: var(--card-border-width) solid var(--card-color);
   border-radius: var(--border-radius-M);
   box-shadow: 0px 4px 5px 2px #00000033;
+
+  color: var(--font-foreground-color);
+
+  transition: transform 0.2s ease;
+  transform-origin: center;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  position: relative;
+
+  overflow: visible;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.container:hover[style*="--card-clickable: 1"] {
+  border: var(--card-border-width) solid var(--card-border-color-hovered);
+  cursor: pointer;
+}
+
+.container.flipped {
+  transform: rotateY(180deg);
+}
+
+.front,
+.back {
+  width: calc(var(--card-width) - var(--card-padding-width) * 2 - var(--card-border-width) * 2);
+  height: calc(var(--card-height) - var(--card-padding-height) * 2 - var(--card-border-width) * 2);
+
+  padding-left: var(--card-padding-width);
+  padding-right: var(--card-padding-width);
+  padding-top: var(--card-padding-height);
+  padding-bottom: var(--card-padding-height);
+
+  background-color: var(--card-color);
+
+  border-radius: var(--border-radius-M);
 
   display: flex;
   flex-direction: column;
   gap: 8px;
 
-  color: var(--font-foreground-color);
+  position: absolute;
+
+  backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.back {
+  transform: rotateY(180deg);
 }
 
 .illustration {
@@ -47,6 +99,13 @@
   font-size: var(--font-size-XS);
   line-height: var(--line-height-XS);
   color: var(--neutral-high);
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .lockSprite {

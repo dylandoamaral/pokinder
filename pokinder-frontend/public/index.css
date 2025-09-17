@@ -79,6 +79,7 @@
   --tooltip-color: var(--neutral-lower);
 
   --card-color: var(--neutral-lower);
+  --card-border-color-hovered: var(--neutral-higher);
   --card-illustration-color: var(--neutral-low);
 
   --button-font-color-filled-header: var(--neutral-higher);
@@ -169,6 +170,7 @@
   --tooltip-color: var(--neutral-lower);
 
   --card-color: var(--neutral-lower);
+  --card-border-color-hovered: var(--neutral-higher);
   --card-illustration-color: var(--neutral-low);
 
   --button-font-color-filled-header: var(--neutral-higher);
@@ -258,6 +260,7 @@
   --tooltip-color: var(--neutral-higher);
 
   --card-color: var(--neutral-lower);
+  --card-border-color-hovered: var(--neutral-higher);
   --card-illustration-color: var(--neutral-low);
 
   --button-font-color-filled-header: var(--neutral-higher);

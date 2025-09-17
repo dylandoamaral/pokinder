@@ -251,7 +251,9 @@ function Vote() {
         <ReferenceProposalModal
           isVisible={showReferenceProposalModal}
           onClose={toggleReferenceProposalModal}
-          fusion={focusedFusion}
+          fusionId={focusedFusion.id}
+          fusionPath={focusedFusion.path}
+          fusionReferences={focusedFusion.references}
         />
       </>
     );

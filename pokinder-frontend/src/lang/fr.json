@@ -27,6 +27,9 @@
   "History empty one": "Ah, mon cher jeune Dresseur, il semble que tu te sois plongé dans la page d'historique du Pokédex sans encore avoir voté.",
   "History empty two": "Pourrais-je te convaincre de m'aider dans mes recherches en allant <2>voter pour tes sprites préférés</2>? Tu contribueras activement à compléter ton Pokédex. Tes contributions seraient d'une valeur inestimable pour notre connaissance collective !",
 
+  "More information": "Plus d'informations",
+  "Propose reference": "Proposer une référence",
+
   "Reference proposal title": "Inspiration de cette fusion ?",
   "Reference proposal description": "Améliorez notre système de références en suggérant une pour cette fusion.",
   "Reference proposal warning": "La référence est déjà liée.",

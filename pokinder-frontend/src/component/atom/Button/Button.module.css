@@ -1,15 +1,13 @@
 .container {
   display: inline-block;
 
-  border-width: 2px;
+  border-width: 3px;
   border-style: solid;
   border-radius: var(--border-radius-M);
 
   font-size: var(--font-size-M);
   text-align: center;
   text-decoration: none;
-
-  height: 40px;
 
   background-color: var(--button-background-color);
   border-color: var(--button-border-color);
@@ -38,4 +36,8 @@
 
 .padding {
   padding: var(--spacing-M) var(--spacing-L);
+}
+
+.fullWidth {
+  width: 100%;
 }

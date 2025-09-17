@@ -1,11 +1,12 @@
 import { motion } from "motion/react";
+import { createPortal } from "react-dom";
 
 import styles from "./Modal.module.css";
 
 function Modal({ children, isVisible, onClose, className }) {
   if (!isVisible) return;
 
-  return (
+  return createPortal(
     <div className={styles.container} onClick={onClose}>
       <motion.div
         initial={{ y: -200, opacity: 0 }}
@@ -16,7 +17,8 @@ function Modal({ children, isVisible, onClose, className }) {
       >
         {children}
       </motion.div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

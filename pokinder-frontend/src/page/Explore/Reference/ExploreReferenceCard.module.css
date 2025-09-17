@@ -1,17 +1,22 @@
 .details {
   height: 100%;
 
-  display: flex;
+  display: inline-flex;
+  justify-content: center;
   align-items: center;
   gap: var(--spacing-S);
 }
 
 .reference {
-  width: 100%;
+  display: inline-block;
 
   font-size: var(--font-size-local);
   color: var(--font-foreground-color);
   text-align: center;
+}
+
+.reference:hover {
+  text-decoration: underline;
 }
 
 .credit {
@@ -19,4 +24,9 @@
   line-height: var(--line-height-2XS);
   color: var(--neutral-high);
   text-align: center;
+}
+
+.icon {
+  cursor: pointer;
+  vertical-align: middle;
 }
