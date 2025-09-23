@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { forwardRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  MdOutlineHowToVote,
+  // MdOutlineHowToVote,
   MdOutlineLanguage,
   MdOutlineLogin,
   MdOutlineLogout,
@@ -109,6 +109,9 @@ const Menu = forwardRef(function Menu({ onClose }, ref) {
     );
   }
 
+  // TODO: Implement proposals menu.
+  // <MenuItem name={t("Proposals")} icon={<MdOutlineHowToVote />} />
+
   function renderUserMenu() {
     return (
       <MenuContainer>
@@ -117,7 +120,6 @@ const Menu = forwardRef(function Menu({ onClose }, ref) {
           icon={<MdOutlineSettings />}
           onClick={() => navigate("/settings")}
         />
-        <MenuItem name={t("Proposals")} icon={<MdOutlineHowToVote />} />
         <Separator transparent />
         <MenuItemLanguage />
         <MenuItemTheme />

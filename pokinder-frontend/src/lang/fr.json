@@ -30,6 +30,8 @@
   "More information": "Plus d'informations",
   "Propose reference": "Proposer une référence",
 
+  "Settings in progress": "Travaux en cours, de nouveaux réglages comme la mise à jour de votre avatar, le changement d’adresse e-mail ou la suppression du compte seront disponibles dans la prochaine mise à jour.",
+
   "Reference proposal title": "Inspiration de cette fusion ?",
   "Reference proposal description": "Améliorez notre système de références en suggérant une pour cette fusion.",
   "Reference proposal warning": "La référence est déjà liée.",
@@ -98,6 +100,10 @@
   "Both passwords are different": "Les deux mots de passe sont différents",
   "Ash": "Sacha",
   "ash@pokemon.com": "sacha@pokemon.com",
+
+  "Edit": "Modifié",
+  "Reset your password.": "Réinitialisez votre mot de passe.",
+  "Receive by email the instruction to reset your password.": "Recevez par e-mail les instructions pour réinitialiser votre mot de passe.",
 
   "The session is invalid, reconnect": "La session est invalide, veuillez vous reconnecter",
   "The session is expired, reconnect": "La session a expiré, veuillez vous reconnecter",
