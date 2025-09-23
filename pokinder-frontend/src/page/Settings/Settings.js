@@ -22,6 +22,7 @@ function Settings() {
         <div className={styles.panels}>
           <SettingsPanelPassword />
           <Separator />
+          {t("Settings in progress")}
         </div>
       </div>
     </Page>

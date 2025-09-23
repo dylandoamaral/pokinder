@@ -29,6 +29,8 @@
   "More information": "More information",
   "Propose reference": "Propose reference",
 
+  "Settings in progress": "Work in progress, more settings like updating your avatar, changing your email, or deleting your account will be available in the next update.",
+
   "Reference proposal title": "What inspired this fusion ?",
   "Reference proposal description": "Enhance our reference system by suggesting a reference for this fusion, enriching the community's knowledge base.",
   "Reference proposal warning": "The reference is already linked.",
@@ -97,6 +99,10 @@
   "Both passwords are different": "Both passwords are different",
   "Ash": "Ash",
   "ash@pokemon.com": "ash@pokemon.com",
+
+  "Edit": "Edit",
+  "Reset your password.": "Reset your password.",
+  "Receive by email the instruction to reset your password.": "Receive by email the instruction to reset your password.",
 
   "The session is invalid, reconnect": "The session is invalid, reconnect",
   "The session is expired, reconnect": "The session is expired, reconnect",

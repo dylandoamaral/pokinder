@@ -10,6 +10,8 @@ import Input, { InputValidator, validateEmail } from "../../component/atom/Input
 
 import SettingsPanel from "./SettingsPanel";
 
+// TODO: subtitleClose should be something like "Last updated 10 years ago".
+
 function SettingsPanelPassword() {
   const { t } = useTranslation();
 
@@ -30,7 +32,7 @@ function SettingsPanelPassword() {
   return (
     <SettingsPanel
       title={t("Password")}
-      subtitleClose={t("Last updated 10 years ago")}
+      subtitleClose={t("Reset your password.")}
       subtitleOpen={t("Receive by email the instruction to reset your password.")}
       action={t("Edit")}
     >
