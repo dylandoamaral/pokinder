@@ -449,6 +449,7 @@ export function allPokemonNames() {
     "Regirock",
     "Regice",
     "Registeel",
+    "Necrozma",
     "Stufful",
     "Bewear",
     "Dhelmise",
@@ -461,6 +462,13 @@ export function allPokemonNames() {
     "Palossand",
     "Amaura",
     "Aurorus",
+    "Rockruff",
+    "Lycanroc Midday Form",
+    "Lycanroc Midnight Form",
+    "Meloetta Aria Form",
+    "Meloetta Pirouette Form",
+    "Cresselia",
+    "Bruxish",
   ];
 }
 
