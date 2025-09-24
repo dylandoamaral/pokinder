@@ -19,7 +19,7 @@ class ExploreController(Controller):
     include_in_schema = False
 
     # Note: used by pokinder website for history mode in explore panel
-    @get(path="/history/count", cache=120)
+    @get(path="/history/count", cache=False)
     async def retrieve_history_count(
         self,
         request: Request,
@@ -44,7 +44,7 @@ class ExploreController(Controller):
         )
 
     # Note: used by pokinder website for history mode in explore panel
-    @get(path="/history", cache=120)
+    @get(path="/history", cache=False)
     async def retrieve_history(
         self,
         request: Request,
