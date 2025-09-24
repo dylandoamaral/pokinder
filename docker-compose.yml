@@ -10,12 +10,14 @@ services:
       - "5432:5432"
     volumes:
       - pokinder-postgres:/var/lib/postgresql/data
+      - ./configuration/postgres/postgresql.conf:/etc/postgresql/postgresql.conf
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U postgres"]
       interval: 10s
       timeout: 5s
       retries: 10
       start_period: 3s
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
 
   minio:
     container_name: pokinder-minio

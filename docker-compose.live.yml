@@ -10,6 +10,7 @@ services:
       - "5432:5432"
     volumes:
       - pokinder-postgres:/var/lib/postgresql/data
+      - ./configuration/postgres/postgresql.conf:/etc/postgresql/postgresql.conf
     networks:
       - pokinder-network
     healthcheck:
@@ -18,6 +19,7 @@ services:
       timeout: 5s
       retries: 10
       start_period: 3s
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
 
   minio:
     image: "minio/minio:latest"
