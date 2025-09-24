@@ -61,8 +61,21 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         counts = {str(vote_type.value): count for vote_type, count in result}
         return counts
 
-    def __calculate_average_score(self, vote_score_column, vote_count_column):
+    async def __calculate_average_score(self, vote_score_column, vote_count_column):
+        result = await self.session.execute(
+            select((func.sum(vote_score_column * vote_count_column) / func.sum(vote_count_column)))
+        )
+        return result.scalar_one()
+
+    def __select_average_score(self, vote_score_column, vote_count_column):
         return func.round(func.sum(vote_score_column * vote_count_column) / func.sum(vote_count_column))
+
+    def __select_bayesian_average_score(
+        self, vote_score_column, vote_count_column, global_mean_score, smoothing_factor
+    ):
+        numerator = global_mean_score * smoothing_factor + func.sum(vote_score_column * vote_count_column)
+        denominator = smoothing_factor + func.sum(vote_count_column)
+        return numerator / denominator
 
     async def __favorite_account_pokemon(self, is_head, account_id=None) -> Optional[PokemonAnalytics]:
         fusion_attribute = "head_id" if is_head else "body_id"
@@ -85,19 +98,31 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
             .group_by(Vote.fusion_id)
         )
         scores = scores.subquery()
+
+        global_mean_score = await self.__calculate_average_score(
+            vote_score_column=scores.c.score,
+            vote_count_column=scores.c.count,
+        )
+
         query = (
             select(
                 Pokemon.name,
                 Pokemon.pokedex_id,
-                self.__calculate_average_score(
+                self.__select_average_score(
                     vote_score_column=scores.c.score,
                     vote_count_column=scores.c.count,
+                ),
+                self.__select_bayesian_average_score(
+                    vote_score_column=scores.c.score,
+                    vote_count_column=scores.c.count,
+                    global_mean_score=global_mean_score,
+                    smoothing_factor=20,
                 ).label("scores"),
             )
             .join(Fusion, Pokemon.id == getattr(Fusion, fusion_attribute))
             .join(scores, Fusion.id == scores.c.fusion_id)
             .group_by(Pokemon.name, Pokemon.pokedex_id)
-            .order_by(desc("scores"), func.sum(scores.c.count).desc())
+            .order_by(desc("scores"))
             .limit(1)
         )
         result = await self.session.execute(query)
@@ -112,18 +137,30 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
 
     async def __favorite_community_pokemon(self, is_head) -> Optional[PokemonAnalytics]:
         fusion_attribute = "head_id" if is_head else "body_id"
+
+        global_mean_score = await self.__calculate_average_score(
+            vote_score_column=Fusion.vote_score,
+            vote_count_column=Fusion.vote_count,
+        )
+
         query = (
             select(
                 Pokemon.name,
                 Pokemon.pokedex_id,
-                self.__calculate_average_score(
+                self.__select_average_score(
                     vote_score_column=Fusion.vote_score,
                     vote_count_column=Fusion.vote_count,
+                ),
+                self.__select_bayesian_average_score(
+                    vote_score_column=Fusion.vote_score,
+                    vote_count_column=Fusion.vote_count,
+                    global_mean_score=global_mean_score,
+                    smoothing_factor=100,
                 ).label("scores"),
             )
             .join(Fusion, Pokemon.id == getattr(Fusion, fusion_attribute))
             .group_by(Pokemon.name, Pokemon.pokedex_id)
-            .order_by(desc("scores"), func.sum(Fusion.vote_count).desc())
+            .order_by(desc("scores"))
             .filter(Fusion.vote_count > 0)
             .limit(1)
         )
@@ -157,20 +194,31 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
             .group_by(Vote.fusion_id)
         )
         scores = scores.subquery()
+
+        global_mean_score = await self.__calculate_average_score(
+            vote_score_column=scores.c.score,
+            vote_count_column=scores.c.count,
+        )
+
         query = (
             select(
                 Creator.id,
                 Creator.name,
-                self.__calculate_average_score(
+                self.__select_average_score(
                     vote_score_column=scores.c.score,
                     vote_count_column=scores.c.count,
+                ),
+                self.__select_bayesian_average_score(
+                    vote_score_column=scores.c.score,
+                    vote_count_column=scores.c.count,
+                    global_mean_score=global_mean_score,
+                    smoothing_factor=20,
                 ).label("scores"),
             )
             .join(Fusion.creators)
             .join(scores, Fusion.id == scores.c.fusion_id)
             .group_by(Creator.id, Creator.name)
-            .having(func.sum(scores.c.count) >= 5)
-            .order_by(desc("scores"), func.sum(scores.c.count).desc())
+            .order_by(desc("scores"))
             .limit(1)
         )
         result = await self.session.execute(query)
@@ -196,19 +244,29 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         )
 
     async def __favorite_community_creator(self) -> Optional[CreatorAnalytics]:
+        global_mean_score = await self.__calculate_average_score(
+            vote_score_column=Fusion.vote_score,
+            vote_count_column=Fusion.vote_count,
+        )
+
         query = (
             select(
                 Creator.id,
                 Creator.name,
-                self.__calculate_average_score(
+                self.__select_average_score(
                     vote_score_column=Fusion.vote_score,
                     vote_count_column=Fusion.vote_count,
+                ),
+                self.__select_bayesian_average_score(
+                    vote_score_column=Fusion.vote_score,
+                    vote_count_column=Fusion.vote_count,
+                    global_mean_score=global_mean_score,
+                    smoothing_factor=100,
                 ).label("scores"),
             )
             .join(Fusion.creators)
             .group_by(Creator.id, Creator.name)
-            .having(func.sum(Fusion.vote_count) >= 25)
-            .order_by(desc("scores"), func.sum(Fusion.vote_count).desc())
+            .order_by(desc("scores"))
             .limit(1)
         )
         result = await self.session.execute(query)
