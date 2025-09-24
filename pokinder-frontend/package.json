@@ -39,6 +39,7 @@
   },
   "scripts": {
     "start": "dotenv -e ../configuration/.env -e ../configuration/.env.shared -- cross-env REACT_APP_VERSION=$VERSION REACT_APP_BACKEND_PORT=$BACKEND_PORT REACT_APP_BACKEND_HOST=$BACKEND_HOST REACT_APP_MINIO_HOST=$MINIO_HOST REACT_APP_MINIO_PORT=$MINIO_PORT react-scripts start",
+    "start_mac": "source ../configuration/.env && source ../configuration/.env.shared && REACT_APP_VERSION=$VERSION REACT_APP_BACKEND_PORT=$BACKEND_PORT REACT_APP_BACKEND_HOST=$BACKEND_HOST REACT_APP_MINIO_HOST=$MINIO_HOST REACT_APP_MINIO_PORT=$MINIO_PORT react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject",

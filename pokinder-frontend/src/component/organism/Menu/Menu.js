@@ -2,12 +2,16 @@ import { AnimatePresence, motion } from "motion/react";
 import { forwardRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  MdOutlineAdminPanelSettings,
+  MdOutlineAnalytics,
   // MdOutlineHowToVote,
   MdOutlineLanguage,
   MdOutlineLogin,
   MdOutlineLogout,
   MdOutlinePalette,
   MdOutlineSettings,
+  MdOutlineStyle,
+  MdOutlineViewCarousel,
 } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +27,7 @@ import MenuSubMenuTheme from "./MenuSubMenuTheme";
 
 const Menu = forwardRef(function Menu({ onClose }, ref) {
   const { t } = useTranslation();
-  const { isUser, username, disconnect } = useAuthentication();
+  const { isUser, isAdmin, username, disconnect } = useAuthentication();
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -98,9 +102,35 @@ const Menu = forwardRef(function Menu({ onClose }, ref) {
     );
   }
 
+  function renderNavigationItems() {
+    return (
+      <>
+        <MenuItem name={t("Vote")} icon={<MdOutlineViewCarousel />} onClick={() => navigate("/")} />
+        <MenuItem
+          name={t("Explore")}
+          icon={<MdOutlineStyle />}
+          onClick={() => navigate("/explore")}
+        />
+        <MenuItem
+          name={t("Analytics")}
+          icon={<MdOutlineAnalytics />}
+          onClick={() => navigate("/analytics")}
+        />
+        <MenuItem
+          name={t("Admin")}
+          icon={<MdOutlineAdminPanelSettings />}
+          onClick={() => navigate("/admin")}
+          show={isAdmin}
+        />
+        <Separator transparent />
+      </>
+    );
+  }
+
   function renderGuestMenu() {
     return (
       <MenuContainer>
+        {renderNavigationItems()}
         <MenuItemLanguage />
         <MenuItemTheme />
         <Separator transparent />
@@ -115,6 +145,7 @@ const Menu = forwardRef(function Menu({ onClose }, ref) {
   function renderUserMenu() {
     return (
       <MenuContainer>
+        {renderNavigationItems()}
         <MenuItem
           name={t("Settings")}
           icon={<MdOutlineSettings />}
