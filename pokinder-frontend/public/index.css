@@ -32,6 +32,7 @@
   --line-height-3XL: 2.25rem;
 
   --avatar-radius: 32px;
+  --avatar-radius-mobile: 24px;
   --avatar-background-color: var(--neutral-higher);
   --avatar-color: var(--neutral-lower);
 }
