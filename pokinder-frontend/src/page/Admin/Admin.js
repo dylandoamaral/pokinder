@@ -97,7 +97,7 @@ function Admin() {
     queryKey: ["reference_proposals"],
     queryFn: ({ pageParam }) => {
       const offset = pageParam || 0;
-      return listReferenceProposals(REFERENCE_PROPOSAL_LIMIT, offset);
+      return listReferenceProposals(REFERENCE_PROPOSAL_LIMIT, offset, undefined, [0], false);
     },
     getNextPageParam: (lastPage) => {
       return lastPage.previousOffset + REFERENCE_PROPOSAL_LIMIT;
@@ -140,7 +140,7 @@ function Admin() {
             </thead>
             <tbody>
               {table.getRowModel().rows.map((row) => (
-                <tr key={row.id}>
+                <tr key={row.id} className={styles.tr}>
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id} className={styles.td}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}

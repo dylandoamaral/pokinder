@@ -6,7 +6,7 @@ from .reference_proposal_model import (
     ReferenceProposalAdd,
     ReferenceProposalRefuse,
 )
-from .reference_proposal_table import ReferenceProposal
+from .reference_proposal_table import ReferenceProposal, ReferenceProposalStatus
 
 
 @runtime_checkable
@@ -15,6 +15,9 @@ class ReferenceProposalDependency(Protocol):
         self,
         limit: int,
         offset: int = 0,
+        proposer_id: UUID | None = None,
+        statuses: list[ReferenceProposalStatus] | None = None,
+        is_desc: bool = False,
     ) -> list[ReferenceProposal]:
         pass
 

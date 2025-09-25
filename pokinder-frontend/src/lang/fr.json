@@ -105,6 +105,18 @@
   "Reset your password.": "Réinitialisez votre mot de passe.",
   "Receive by email the instruction to reset your password.": "Recevez par e-mail les instructions pour réinitialiser votre mot de passe.",
 
+  "Fusion": "Fusion",
+  "Proposed family name": "Nom de famille proposé",
+  "Proposed name": "Nom proposé",
+  "Status": "Statut",
+  "Refused reason": "Raison du refus",
+  "Actions": "Actions",
+  "Contest": "Contester",
+
+  "refused": "refusée",
+  "pending": "en attente",
+  "validated": "validée",
+
   "The session is invalid, reconnect": "La session est invalide, veuillez vous reconnecter",
   "The session is expired, reconnect": "La session a expiré, veuillez vous reconnecter",
   "An unexpected error happened": "Une erreur innattendue est arrivé",

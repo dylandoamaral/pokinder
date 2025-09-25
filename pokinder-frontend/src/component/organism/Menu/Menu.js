@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import {
   MdOutlineAdminPanelSettings,
   MdOutlineAnalytics,
-  // MdOutlineHowToVote,
+  MdOutlineHowToVote,
   MdOutlineLanguage,
   MdOutlineLogin,
   MdOutlineLogout,
@@ -139,9 +139,6 @@ const Menu = forwardRef(function Menu({ onClose }, ref) {
     );
   }
 
-  // TODO: Implement proposals menu.
-  // <MenuItem name={t("Proposals")} icon={<MdOutlineHowToVote />} />
-
   function renderUserMenu() {
     return (
       <MenuContainer>
@@ -150,6 +147,11 @@ const Menu = forwardRef(function Menu({ onClose }, ref) {
           name={t("Settings")}
           icon={<MdOutlineSettings />}
           onClick={() => navigate("/settings")}
+        />
+        <MenuItem
+          name={t("Proposals")}
+          icon={<MdOutlineHowToVote />}
+          onClick={() => navigate("/proposals")}
         />
         <Separator transparent />
         <MenuItemLanguage />

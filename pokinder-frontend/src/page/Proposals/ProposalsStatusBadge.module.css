@@ -1,0 +1,28 @@
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25rem;
+  text-align: center;
+  border: 1px solid;
+}
+
+.pending {
+  background-color: color-mix(in srgb, var(--badge-pending-background-color) 50%, transparent);
+  color: var(--badge-pending-text-color);
+  border-color: var(--badge-pending-border-color);
+}
+
+.refused {
+  background-color: color-mix(in srgb, var(--badge-refused-background-color) 50%, transparent);
+  color: var(--badge-refused-text-color);
+  border-color: var(--badge-refused-border-color);
+}
+
+.validated {
+  background-color: color-mix(in srgb, var(--badge-validated-background-color) 50%, transparent);
+  color: var(--badge-validated-text-color);
+  border-color: var(--badge-validated-border-color);
+}
