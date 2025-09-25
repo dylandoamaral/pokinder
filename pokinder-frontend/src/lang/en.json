@@ -104,6 +104,18 @@
   "Reset your password.": "Reset your password.",
   "Receive by email the instruction to reset your password.": "Receive by email the instruction to reset your password.",
 
+  "Fusion": "Fusion",
+  "Proposed family name": "Proposed family name",
+  "Proposed name": "Proposed name",
+  "Status": "Status",
+  "Refused reason": "Refused reason",
+  "Actions": "Actions",
+  "Contest": "Contest",
+
+  "refused": "refused",
+  "pending": "pending",
+  "validated": "validated",
+
   "The session is invalid, reconnect": "The session is invalid, reconnect",
   "The session is expired, reconnect": "The session is expired, reconnect",
   "An unexpected error happened": "An unexpected error happened",

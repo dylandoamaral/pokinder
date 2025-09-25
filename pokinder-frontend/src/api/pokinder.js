@@ -254,11 +254,21 @@ export async function listReferences(referenceFamilyId, referenceFamilyName) {
   return response.data.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-export async function listReferenceProposals(limit, offset) {
+export async function listReferenceProposals(
+  limit,
+  offset,
+  proposerId = undefined,
+  statuses = undefined,
+  isDesc = false,
+) {
   const params = new URLSearchParams();
 
   params.set("limit", limit);
   params.set("offset", offset);
+  params.set("is_desc", isDesc);
+
+  if (proposerId !== undefined) params.set("proposer_id", proposerId);
+  if (statuses !== undefined) params.set("statuses", statuses);
 
   const response = await http.get("/reference_proposal?" + params.toString());
 

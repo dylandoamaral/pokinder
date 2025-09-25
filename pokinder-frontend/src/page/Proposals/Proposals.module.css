@@ -1,3 +1,9 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .tableContainer {
   width: 100%;
   overflow-x: auto;
@@ -43,8 +49,12 @@
   background-color: var(--table-tr-hover-background-color);
 }
 
-.table th:nth-child(5),
-.table td:nth-child(5) {
+.table th:nth-child(1),
+.table td:nth-child(1),
+.table th:nth-child(4),
+.table td:nth-child(4),
+.table th:nth-child(6),
+.table td:nth-child(6) {
   width: 1%;
   white-space: nowrap;
 }
@@ -57,7 +67,7 @@
 
 .rowButtons {
   display: flex;
-  justify-content: left;
+  justify-content: center;
   align-items: center;
   gap: 12px;
 }
@@ -66,6 +76,7 @@
   max-width: none;
   white-space: normal;
   line-height: 1.4;
+  min-width: 200px;
 }
 
 .rowText {
@@ -76,10 +87,6 @@
 }
 
 @media (max-width: 900px) {
-  .table th:nth-child(3),
-  .table td:nth-child(3) {
-    width: 50%;
-  }
   .table th,
   .table td {
     width: auto;
@@ -87,12 +94,8 @@
 }
 
 @media (max-width: 768px) {
-  .td:nth-child(2),
-  .th:nth-child(2) {
+  .td:nth-child(5),
+  .th:nth-child(5) {
     display: none;
-  }
-
-  .rowButtons {
-    flex-direction: column;
   }
 }

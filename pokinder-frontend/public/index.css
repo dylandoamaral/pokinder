@@ -124,6 +124,25 @@
   --button-border-color-hover-text: transparent;
 
   --separator-background-color: var(--neutral-higher);
+
+  --table-font-color: var(--neutral-higher);
+  --table-border-color: var(--neutral-lower);
+  --table-th-background-color: var(--neutral-lower);
+  --table-tr-even-background-color: var(--neutral-lower);
+  --table-tr-odd-background-color: var(--neutral-low);
+  --table-tr-hover-background-color: var(--neutral-medium);
+
+  --badge-pending-background-color: #fceabb;
+  --badge-pending-text-color: #d4a520;
+  --badge-pending-border-color: #d4a520;
+
+  --badge-refused-background-color: #f8d7da;
+  --badge-refused-text-color: #c82333;
+  --badge-refused-border-color: #c82333;
+
+  --badge-validated-background-color: #d4edda;
+  --badge-validated-text-color: #155724;
+  --badge-validated-border-color: #155724;
 }
 
 :root[theme="superball"] {
@@ -215,6 +234,25 @@
   --button-border-color-hover-text: transparent;
 
   --separator-background-color: var(--neutral-higher);
+
+  --table-font-color: var(--neutral-higher);
+  --table-border-color: var(--neutral-medium);
+  --table-th-background-color: var(--neutral-low);
+  --table-tr-even-background-color: var(--neutral-low);
+  --table-tr-odd-background-color: var(--neutral-lower);
+  --table-tr-hover-background-color: var(--neutral-medium);
+
+  --badge-pending-background-color: #fceabb;
+  --badge-pending-text-color: #d4a520;
+  --badge-pending-border-color: #d4a520;
+
+  --badge-refused-background-color: #f8d7da;
+  --badge-refused-text-color: #c82333;
+  --badge-refused-border-color: #c82333;
+
+  --badge-validated-background-color: #d4edda;
+  --badge-validated-text-color: #155724;
+  --badge-validated-border-color: #155724;
 }
 
 :root[theme="hyperball"] {
@@ -305,6 +343,25 @@
   --button-border-color-hover-text: transparent;
 
   --separator-background-color: var(--neutral-higher);
+
+  --table-font-color: var(--neutral-higher);
+  --table-border-color: var(--neutral-lower);
+  --table-th-background-color: var(--neutral-lower);
+  --table-tr-even-background-color: var(--neutral-lower);
+  --table-tr-odd-background-color: var(--neutral-low);
+  --table-tr-hover-background-color: var(--neutral-medium);
+
+  --badge-pending-background-color: #5a4e1a;
+  --badge-pending-text-color: #fceabb;
+  --badge-pending-border-color: #fceabb;
+
+  --badge-refused-background-color: #6c1b25;
+  --badge-refused-text-color: #f8d7da;
+  --badge-refused-border-color: #f8d7da;
+
+  --badge-validated-background-color: #1b4522;
+  --badge-validated-text-color: #d4edda;
+  --badge-validated-border-color: #d4edda;
 }
 
 * {

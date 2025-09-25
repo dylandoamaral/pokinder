@@ -24,7 +24,7 @@ from .reference_proposal_model import (
     ReferenceProposalAdd,
     ReferenceProposalRefuse,
 )
-from .reference_proposal_table import ReferenceProposal
+from .reference_proposal_table import ReferenceProposal, ReferenceProposalStatus
 
 
 class ReferenceProposalController(Controller):
@@ -38,10 +38,16 @@ class ReferenceProposalController(Controller):
         reference_proposal_dependency: ReferenceProposalDependency,
         limit: int,
         offset: int = 0,
+        proposer_id: UUID | None = None,
+        statuses: list[ReferenceProposalStatus] | None = None,
+        is_desc: bool = False,
     ) -> list[ReferenceProposal]:
         return await reference_proposal_dependency.list(
             limit,
             offset,
+            proposer_id,
+            statuses,
+            is_desc,
         )
 
     @post(path="/", dto=None, include_in_schema=False)

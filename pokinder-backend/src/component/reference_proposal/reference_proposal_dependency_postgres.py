@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from uuid import UUID
 
 from litestar.exceptions import NotFoundException
-from sqlalchemy import insert, select, update
+from sqlalchemy import desc, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload
 
@@ -32,15 +32,25 @@ class ReferenceProposalDependencyPostgres(ReferenceProposalDependency):
         self,
         limit: int,
         offset: int = 0,
+        proposer_id: UUID | None = None,
+        statuses: list[ReferenceProposalStatus] | None = None,
+        is_desc: bool = False,
     ) -> list[ReferenceProposal]:
+        order_by_column = desc(ReferenceProposal.created_at) if is_desc else ReferenceProposal.created_at
+
         query = (
             select(ReferenceProposal)
             .options(joinedload(ReferenceProposal.fusion).joinedload(Fusion.references).joinedload(Reference.family))
-            .filter(ReferenceProposal.status == ReferenceProposalStatus.PENDING)
-            .order_by(ReferenceProposal.created_at)
+            .order_by(order_by_column)
             .offset(offset)
             .limit(limit)
         )
+
+        if proposer_id is not None:
+            query = query.filter(ReferenceProposal.proposer_id == proposer_id)
+
+        if statuses is not None:
+            query = query.filter(ReferenceProposal.status.in_(statuses))
 
         result = await self.session.scalars(query)
         instances = result.unique().all()
