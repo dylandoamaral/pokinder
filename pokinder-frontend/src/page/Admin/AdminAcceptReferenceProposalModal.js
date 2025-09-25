@@ -24,7 +24,7 @@ import Panel from "../../component/atom/Panel/Panel";
 import FutureCreatableSelect from "../../component/atom/Select/FutureCreatableSelect";
 import Sprite from "../../component/atom/Sprite/Sprite";
 
-import styles from "./AdminAcceptReferenceProposalModal.module.css";
+import styles from "./AdminReferenceProposalModal.module.css";
 
 function AdminAcceptReferenceProposalModal({
   isVisible,

@@ -17,7 +17,7 @@ import Panel from "../../component/atom/Panel/Panel";
 import CreatableSelect from "../../component/atom/Select/CreatableSelect";
 import Sprite from "../../component/atom/Sprite/Sprite";
 
-import styles from "./AdminRefuseReferenceProposalModal.module.css";
+import styles from "./AdminReferenceProposalModal.module.css";
 
 const REASON_DEFAULT_LABELS = [
   "The reference is already linked.",
@@ -81,10 +81,10 @@ function AdminRefuseReferenceProposalModal({
         />
       </Panel>
       <Panel title={t("Proposed reference family")}>
-        <span>{referenceProposal.reference_family_name}</span>
+        <span className={styles.text}>{referenceProposal.reference_family_name}</span>
       </Panel>
       <Panel title={t("Proposed reference")}>
-        <span>{referenceProposal.reference_name}</span>
+        <span className={styles.text}>{referenceProposal.reference_name}</span>
       </Panel>
       {renderExistingReferences()}
       <Panel title={t("Reason")}>
