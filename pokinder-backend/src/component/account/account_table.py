@@ -28,7 +28,10 @@ class Account(BaseTable, UUIDPrimaryKey):
     role: Mapped[AccountRole] = mapped_column(nullable=False, default=AccountRole.USER)
     created_at: Mapped[datetime] = build_created_at_column()
 
-    __table_args__ = (Index("index_account_email_case_insensitive", func.lower(email), unique=True),)
+    __table_args__ = (
+        Index("index_account_email_case_insensitive", func.lower(email), unique=True),
+        Index("index_account_id", "id"),
+    )
 
 
 class AccountRepository(SQLAlchemyAsyncRepository[Account]):

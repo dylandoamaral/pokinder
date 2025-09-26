@@ -11,7 +11,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.component.account.account_table import Account
 from src.component.creator.creator_table import Creator
 from src.component.fusion.fusion_table import Fusion
-from src.component.fusion_reference.fusion_reference_table import FusionReference
 from src.component.pokemon.pokemon_table import Pokemon
 from src.component.reference.reference_table import Reference
 from src.component.reference_family.reference_family_table import ReferenceFamily
@@ -48,7 +47,7 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         return count
 
     async def __user_count(self) -> int:
-        query = select(func.count(distinct(Vote.account_id))).select_from(Vote)
+        query = select(func.count()).select_from(select(distinct(Vote.account_id)))
         result = await self.session.execute(query)
         count = result.scalar()
         return count
@@ -315,8 +314,8 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         return rank[0]
 
     async def __reference_proposer_count(self) -> int:
-        query = (
-            select(func.count(distinct(ReferenceProposal.proposer_id)))
+        query = select(func.count()).select_from(
+            select(distinct(ReferenceProposal.proposer_id))
             .select_from(ReferenceProposal)
             .where(ReferenceProposal.status == ReferenceProposalStatus.VALIDATED)
         )

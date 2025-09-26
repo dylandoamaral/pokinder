@@ -18,7 +18,6 @@ class FusionDependencyPostgres(FusionDependency):
     async def draw(self, account_id: UUID, limit: int) -> list[Fusion]:
         subquery = (
             select(Fusion)
-            .filter(Fusion.is_removed == False)
             .outerjoin(Vote, and_(Fusion.id == Vote.fusion_id, Vote.account_id == account_id))
             .filter(Vote.account_id.is_(None))
             .order_by(Fusion.vote_count, func.random())

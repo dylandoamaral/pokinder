@@ -1,21 +1,13 @@
 from uuid import UUID
 
-from sqlalchemy import distinct, func, insert, select, update
+from sqlalchemy import insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import aliased, joinedload, noload
 
-from src.component.creator.creator_table import Creator
-from src.component.family.family_table import Family
 from src.component.fusion.fusion_table import Fusion
-from src.component.pokemon.pokemon_table import Pokemon
-from src.component.reference.reference_table import Reference
-from src.component.reference_family.reference_family_table import ReferenceFamily
 from src.component.vote.vote_model import VoteAdd
-from src.component.vote.vote_table import VoteType
-from src.data.pokemon_families import pokemon_families
 
 from .vote_dependency import VoteDependency
-from .vote_table import Vote, VoteType
+from .vote_table import Vote
 
 
 class VoteDependencyPostgres(VoteDependency):

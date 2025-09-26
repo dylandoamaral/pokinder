@@ -48,7 +48,7 @@ class ExploreDependencyPostgres(ExploreDependency):
         Body = aliased(Pokemon)
 
         query = (
-            select(func.count(distinct(Vote.fusion_id)))
+            select(distinct(Vote.fusion_id))
             .join(Fusion, Vote.fusion_id == Fusion.id)
             .join(Head, Fusion.head_id == Head.id)
             .join(Body, Fusion.body_id == Body.id)
@@ -91,7 +91,9 @@ class ExploreDependencyPostgres(ExploreDependency):
         if creator_name is not None and creator_name != "All":
             query = query.filter(Creator.name == creator_name)
 
-        result = await self.session.scalar(query)
+        count = select(func.count()).select_from(query)
+
+        result = await self.session.scalar(count)
 
         return result
 
@@ -201,7 +203,7 @@ class ExploreDependencyPostgres(ExploreDependency):
         Body = aliased(Pokemon)
 
         query = (
-            select(func.count(distinct(Fusion.id)))
+            select(distinct(Fusion.id))
             .join(Head, Fusion.head_id == Head.id)
             .join(Body, Fusion.body_id == Body.id)
             .join(Fusion.creators)
@@ -233,7 +235,9 @@ class ExploreDependencyPostgres(ExploreDependency):
         if creator_name is not None and creator_name != "All":
             query = query.filter(Creator.name == creator_name)
 
-        result = await self.session.scalar(query)
+        count = select(func.count()).select_from(query)
+
+        result = await self.session.scalar(count)
 
         return result
 

@@ -3,7 +3,7 @@ from typing import List
 from uuid import UUID
 
 from litestar.contrib.sqlalchemy.repository import SQLAlchemyAsyncRepository
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, Index
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.component.creator.creator_table import Creator
@@ -22,6 +22,14 @@ from src.utils.sqlalchemy import (
 
 class Fusion(BaseTable, UUIDPrimaryKey):
     __tablename__ = "fusion"  #  type: ignore[assignment]
+
+    __table_args__ = (
+        Index("index_fusion_path", "path"),
+        Index("index_fusion_head_id", "head_id"),
+        Index("index_fusion_body_id", "body_id"),
+        # NOTE: Used for fusion_dependency_postgres.draw_fusions.
+        Index("index_fusion_vote_count", "vote_count"),
+    )
 
     path: Mapped[str] = mapped_column(nullable=False)
     head_id: Mapped[UUID] = mapped_column(ForeignKey("pokemon.id"), info=write_only)
