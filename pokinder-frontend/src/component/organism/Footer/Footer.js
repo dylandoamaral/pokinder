@@ -5,6 +5,7 @@ import { FaDiscord, FaPalette } from "react-icons/fa";
 import { IoLanguageOutline } from "react-icons/io5";
 import { LiaGithub } from "react-icons/lia";
 
+import useIsMobile from "../../../hook/useIsMobile";
 import { useTheme } from "../../../hook/useTheme";
 
 import { themes } from "../../../data/themes";
@@ -21,6 +22,7 @@ import FooterChoiceButton from "./FooterChoiceButton";
 function Footer() {
   const { t, i18n } = useTranslation();
   const { theme, setTheme } = useTheme();
+  const [isMobile] = useIsMobile();
 
   function changeLanguage(lang) {
     const iso = findLanguageIso(lang);
@@ -43,6 +45,7 @@ function Footer() {
           <FooterButton
             name={t("Game")}
             link="https://infinitefusion.fandom.com/wiki/Pok%C3%A9mon_Infinite_Fusion_Wiki"
+            show={!isMobile}
           >
             <CgPokemon />
           </FooterButton>
@@ -56,6 +59,7 @@ function Footer() {
             choices={themes}
             current={theme}
             onClick={changeTheme}
+            show={!isMobile}
           >
             <FaPalette />
           </FooterChoiceButton>
@@ -64,6 +68,7 @@ function Footer() {
             choices={languages.map((language) => language.lang)}
             current={findLanguageName(i18n.language)}
             onClick={changeLanguage}
+            show={!isMobile}
           >
             <IoLanguageOutline />
           </FooterChoiceButton>

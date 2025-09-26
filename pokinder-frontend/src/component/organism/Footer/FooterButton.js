@@ -4,9 +4,11 @@ import { IconContext } from "react-icons";
 import styles from "./FooterButton.module.css";
 
 const FooterButton = React.forwardRef(function FooterButton(
-  { children, name, link, ...props },
+  { children, name, link, show, ...props },
   ref,
 ) {
+  if (show == false) return <></>;
+
   const content = (
     <>
       <IconContext.Provider value={{ size: 16 }}>{children}</IconContext.Provider>

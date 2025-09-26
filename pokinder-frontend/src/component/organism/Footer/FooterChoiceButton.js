@@ -3,10 +3,14 @@ import Popup from "reactjs-popup";
 import FooterButton from "./FooterButton";
 import styles from "./FooterChoiceButton.module.css";
 
-function FooterChoiceButton({ children, name, choices, current, onClick }) {
+function FooterChoiceButton({ children, name, choices, current, onClick, show = true }) {
   return (
     <Popup
-      trigger={<FooterButton name={name}>{children}</FooterButton>}
+      trigger={
+        <FooterButton name={name} show={show}>
+          {children}
+        </FooterButton>
+      }
       closeOnDocumentClick
       position="top right"
     >
