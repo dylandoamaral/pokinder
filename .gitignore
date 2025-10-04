@@ -1,5 +1,6 @@
 # specific
 database
+tmp
 
 # dependencies
 node_modules/
