@@ -282,12 +282,13 @@ def compute_shape_similarity(img1_path: Path, img2_path: Path) -> bool:
     if alpha1.shape != alpha2.shape:
         try:
             width1, height1 = bbox1[2] - bbox1[0], bbox1[3] - bbox1[1]
+
         except Exception:
             width1, height1 = 0, 0
         try:
             width2, height2 = bbox2[2] - bbox2[0], bbox2[3] - bbox2[1]
         except Exception:
-            width1, height1 = 0, 0
+            width2, height2 = 0, 0
 
         # NOTE: Some fusions change slightly in shape between versions and we should be able to detect them.
         if abs(width1 - width2) < 10 and abs(height1 - height2) < 10:
@@ -308,8 +309,8 @@ def generate_fusion_actions() -> None:
     before_paths_dictionary = build_sprite_dictionary(before_sprites_path)
     after_paths_dictionary = build_sprite_dictionary(after_sprites_path)
 
-    for head_id in range(1, POKEMON_SIZE + 1):
-        for body_id in range(1, POKEMON_SIZE + 1):
+    for head_id in range(0, POKEMON_SIZE + 1):
+        for body_id in range(0, POKEMON_SIZE + 1):
             path = f"{head_id}.{body_id}"
             before_paths = sorted(before_paths_dictionary.get(path, []))
             after_paths = sorted(after_paths_dictionary.get(path, []))
@@ -318,53 +319,49 @@ def generate_fusion_actions() -> None:
 
             if len(before_paths) == 0 and len(after_paths) == 0:
                 continue
-
-            if len(before_paths) == 0 and len(after_paths) > 0:
+            elif len(before_paths) == 0 and len(after_paths) > 0:
                 for after_path in after_paths:
-                    actions["ADD"].append(after_path.removesuffix(".png"))
-                continue
-
-            if len(before_paths) > 0 and len(after_paths) == 0:
+                    actions["ADD"].append(f"{after_path.removesuffix(".png")} {uuid4()}")
+            elif len(before_paths) > 0 and len(after_paths) == 0:
                 for before_path in before_paths:
-                    actions["REMOVE"].append(after_path.removesuffix(".png"))
-                continue
+                    actions["REMOVE"].append(before_path.removesuffix(".png"))
+            else:
+                for after_path in after_paths:
+                    after_file = after_sprites_path / after_path
+                    before_path_matched = None
+                    best_image_similarity = 0
 
-            for after_path in after_paths:
-                after_file = after_sprites_path / after_path
-                before_path_matched = None
-                best_image_similarity = 0
+                    for before_path in before_paths:
+                        before_file = before_sprites_path / before_path
+
+                        is_shape_similar = compute_shape_similarity(after_file, before_file)
+
+                        if is_shape_similar:
+                            image_similarity = compute_image_similarity(after_file, before_file)
+
+                            if image_similarity < 75:
+                                continue
+
+                            if before_path_matched is None or image_similarity > best_image_similarity:
+                                before_path_matched = before_path
+                                best_image_similarity = image_similarity
+
+                    if after_path == before_path_matched:
+                        before_paths.remove(before_path_matched)
+                        continue
+
+                    if before_path_matched is not None and after_path != before_path_matched:
+                        before_paths.remove(before_path_matched)
+                        actions["MOVE"].append(
+                            f"{before_path_matched.removesuffix('.png')} {after_path.removesuffix('.png')}"
+                        )
+                        continue
+
+                    if before_path_matched is None:
+                        actions["ADD"].append(f"{after_path.removesuffix(".png")} {uuid4()}")
 
                 for before_path in before_paths:
-                    before_file = before_sprites_path / before_path
-
-                    is_shape_similar = compute_shape_similarity(after_file, before_file)
-
-                    if is_shape_similar:
-                        image_similarity = compute_image_similarity(after_file, before_file)
-
-                        if image_similarity < 75:
-                            continue
-
-                        if before_path_matched is None or image_similarity > best_image_similarity:
-                            before_path_matched = before_path
-                            best_image_similarity = image_similarity
-
-                if after_path == before_path_matched:
-                    before_paths.remove(before_path_matched)
-                    continue
-
-                if before_path_matched is not None and after_path != before_path_matched:
-                    before_paths.remove(before_path_matched)
-                    actions["MOVE"].append(
-                        f"{before_path_matched.removesuffix('.png')} {after_path.removesuffix('.png')}"
-                    )
-                    continue
-
-                if before_path_matched is None:
-                    actions["ADD"].append(after_path.removesuffix(".png"))
-
-            for before_path in before_paths:
-                actions["REMOVE"].append(before_path.removesuffix(".png"))
+                    actions["REMOVE"].append(before_path.removesuffix(".png"))
 
             actions = {k: v for k, v in actions.items() if v}
 
@@ -379,10 +376,10 @@ def generate_fusion_actions() -> None:
 
 
 async def main():
-    await generate_pokemon_actions()
-    await generate_creator_actions()
+    # await generate_pokemon_actions()
+    # await generate_creator_actions()
     generate_fusion_actions()
-    # print(compute_shape_similarity(before_sprites_path / "57.150.png", after_sprites_path / "57.150.png"))
+    # print(compute_shape_similarity(before_sprites_path / "235.354a.png", after_sprites_path / "235.354a.png"))
 
 
 asyncio.run(main())

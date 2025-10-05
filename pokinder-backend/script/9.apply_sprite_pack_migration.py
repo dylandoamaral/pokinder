@@ -317,8 +317,12 @@ async def move_fusions(session: AsyncSession, moves: list[str]) -> None:
 
 
 # NOTE: We should use add new fusions after remove and move old ones.
-async def add_fusion(session: AsyncSession, pokemon_pokedex_id_to_id: dict[int, UUID], path: str) -> None:
-    fusion_id = uuid4()
+async def add_fusion(
+    session: AsyncSession,
+    pokemon_pokedex_id_to_id: dict[int, UUID],
+    fusion_id: UUID,
+    path: str,
+) -> None:
     head_pokedex_id, body_pokedex_id = extract_pokemon_pokedex_ids(path)
 
     sprite_path = FUSION_PATH / f"{path}.png"
@@ -349,8 +353,10 @@ async def update_fusion(
         await move_fusions(session, actions["MOVE"])
 
     if actions.get("ADD"):
-        for path in actions["ADD"]:
-            await add_fusion(session, pokemon_pokedex_id_to_id, path)
+        for move in actions["ADD"]:
+            path, uuid = move.split()
+            fusion_id = UUID(uuid)
+            await add_fusion(session, pokemon_pokedex_id_to_id, fusion_id, path)
 
     await session.commit()
 
