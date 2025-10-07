@@ -7,6 +7,7 @@ import styles from "./ExploreReferenceCard.module.css";
 export default function ExploreReferenceCard({
   fusionId,
   fusionPath,
+  fusionIsRemoved,
   fusionName,
   fusionReferenceName,
   fusionReferenceLink,

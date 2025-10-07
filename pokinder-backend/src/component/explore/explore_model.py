@@ -10,6 +10,7 @@ from src.component.vote import VoteType
 class ExploreHistory:
     fusion_id: UUID
     fusion_path: str
+    fusion_is_removed: bool
     fusion_head_name: str
     fusion_head_name_separator_index: str
     fusion_body_name: str
@@ -22,6 +23,7 @@ class ExploreHistory:
 class ExploreRanking:
     fusion_id: UUID
     fusion_path: str
+    fusion_is_removed: bool
     fusion_head_name: str
     fusion_head_name_separator_index: str
     fusion_body_name: str
@@ -34,6 +36,7 @@ class ExploreRanking:
 @dataclass
 class ExplorePokedexFusion:
     fusion_path: str
+    fusion_is_removed: bool
     fusion_head_name: str
     fusion_head_name_separator_index: str
     fusion_head_type_1: str
@@ -65,6 +68,7 @@ class ExploreReferenceCount:
 class ExploreReference:
     fusion_id: UUID
     fusion_path: str
+    fusion_is_removed: bool
     fusion_head_name: str
     fusion_head_name_separator_index: str
     fusion_body_name: str

@@ -31,12 +31,22 @@ export function calculateCardsPerRow(width, cardPlaced = 0) {
 export const ExploreCard = memo(function ExploreCard({
   fusionId,
   fusionPath,
+  fusionIsRemoved,
   fusionName,
   children,
 }) {
   const { t } = useTranslation();
   const [flipped, toggleFlipped] = useToggle(false);
   const [showReferenceProposalModal, toggleReferenceProposalModal] = useToggle(false);
+
+  const formattedFusionPath = fusionIsRemoved ? `${fusionPath.slice(0, -1)} (${t("Old")})` : fusionPath
+  const useMini = fusionName.length >= 18
+
+  function getDaenaSpriteLink(fusionPath, fusionIsRemoved) {
+    if (fusionIsRemoved) return getDaenaLink(fusionPath.slice(0, -1))
+    return getDaenaLink(fusionPath)
+  }
+
 
   return (
     <>
@@ -64,10 +74,11 @@ export const ExploreCard = memo(function ExploreCard({
               />
             </div>
             <div className={styles.title}>
-              <div className={fusionName.length < 18 ? styles.name : styles.nameMini}>
+              <div className={useMini ? styles.nameMini : styles.name}>
                 {fusionName}
               </div>
-              <div className={styles.path}>{fusionPath}</div>
+                            <div className={useMini ? styles.pathMini : styles.path}>
+{formattedFusionPath}</div>
             </div>
             {children}
           </div>
@@ -78,7 +89,7 @@ export const ExploreCard = memo(function ExploreCard({
                 title={t("More information")}
                 variant={VARIANT_FILLED_FOREGROUND}
                 onClick={() =>
-                  window.open(getDaenaLink(fusionPath), "_blank", "noopener,noreferrer")
+                  window.open(getDaenaSpriteLink(fusionPath, fusionIsRemoved), "_blank", "noopener,noreferrer")
                 }
                 noPadding
                 fullWidth

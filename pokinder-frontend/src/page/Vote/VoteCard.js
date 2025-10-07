@@ -140,8 +140,8 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
   }
 
   function renderTitle(fusion) {
-    const LITTLE_LENGTH = 17;
-    const MEDIUM_LENGTH = 10;
+    const LITTLE_LENGTH = 22;
+    const MEDIUM_LENGTH = 15;
 
     const name = getName(
       fusion.head.name,
@@ -150,13 +150,15 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
       fusion.body.name_separator_index,
     );
 
+    const path = fusion.is_removed ? `${fusion.path.slice(0, -1)} (${t("Old")})` : fusion.path
+
     return (
       <div className={styles.title}>
         <span
           className={
-            name.length > LITTLE_LENGTH
+            (name.length + path.length) > LITTLE_LENGTH
               ? styles.littlename
-              : name.length > MEDIUM_LENGTH
+              : (name.length + path.length) > MEDIUM_LENGTH
                 ? styles.mediumname
                 : styles.name
           }
@@ -165,17 +167,23 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
         </span>
         <span
           className={
-            name.length > LITTLE_LENGTH
+            (name.length + path.length) > LITTLE_LENGTH
               ? styles.littlepath
-              : name.length > MEDIUM_LENGTH
+              : (name.length + path.length) > MEDIUM_LENGTH
                 ? styles.mediumpath
                 : styles.path
           }
         >
-          #{fusion.path}
+          #{t(path)}
         </span>
       </div>
     );
+  }
+
+  function getDaenaSpriteLink(fusion) {
+    if (!hasFocus)  return null
+    if (fusion.is_removed) return getDaenaLink(fusion.path.slice(0, -1))
+    return getDaenaLink(fusion.path)
   }
 
   return (
@@ -195,7 +203,7 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
             <Sprite
               type="fusion"
               filename={fusion.id}
-              href={hasFocus ? getDaenaLink(fusion.path) : null}
+              href={getDaenaSpriteLink(fusion)}
               alt={`Fusion sprite from ${fusion.body.name} and ${fusion.head.name}`}
             />
           </motion.div>

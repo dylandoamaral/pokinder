@@ -132,6 +132,8 @@
   "Body": "Body",
   "Head": "Head",
 
+  "Old": "Old",
+
   "Art by": "Art by {{creator}}",
 
   "Discovered by": "Discovered by {{proposer}}",

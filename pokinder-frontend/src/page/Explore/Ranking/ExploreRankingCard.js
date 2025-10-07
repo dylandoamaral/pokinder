@@ -6,6 +6,7 @@ import styles from "./ExploreRankingCard.module.css";
 export default function ExploreRankingCard({
   fusionId,
   fusionPath,
+  fusionIsRemoved,
   fusionName,
   fusionRank,
   fusionScore,
@@ -50,7 +51,7 @@ export default function ExploreRankingCard({
   }
 
   return (
-    <ExploreCard fusionId={fusionId} fusionPath={fusionPath} fusionName={fusionName}>
+    <ExploreCard fusionId={fusionId} fusionPath={fusionPath} fusionIsRemoved={fusionIsRemoved} fusionName={fusionName}>
       <div className={styles.container}>
         <div className={styles.details}>
           <div className={styles.rank} style={getRankFontSize(fusionRank)}>
