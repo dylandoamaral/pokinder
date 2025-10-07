@@ -39,14 +39,15 @@ export const ExploreCard = memo(function ExploreCard({
   const [flipped, toggleFlipped] = useToggle(false);
   const [showReferenceProposalModal, toggleReferenceProposalModal] = useToggle(false);
 
-  const formattedFusionPath = fusionIsRemoved ? `${fusionPath.slice(0, -1)} (${t("Old")})` : fusionPath
-  const useMini = fusionName.length >= 18
+  const formattedFusionPath = fusionIsRemoved
+    ? `${fusionPath.slice(0, -1)} (${t("Old")})`
+    : fusionPath;
+  const useMini = fusionName.length >= 18;
 
   function getDaenaSpriteLink(fusionPath, fusionIsRemoved) {
-    if (fusionIsRemoved) return getDaenaLink(fusionPath.slice(0, -1))
-    return getDaenaLink(fusionPath)
+    if (fusionIsRemoved) return getDaenaLink(fusionPath.slice(0, -1));
+    return getDaenaLink(fusionPath);
   }
-
 
   return (
     <>
@@ -74,11 +75,8 @@ export const ExploreCard = memo(function ExploreCard({
               />
             </div>
             <div className={styles.title}>
-              <div className={useMini ? styles.nameMini : styles.name}>
-                {fusionName}
-              </div>
-                            <div className={useMini ? styles.pathMini : styles.path}>
-{formattedFusionPath}</div>
+              <div className={useMini ? styles.nameMini : styles.name}>{fusionName}</div>
+              <div className={useMini ? styles.pathMini : styles.path}>{formattedFusionPath}</div>
             </div>
             {children}
           </div>
@@ -89,7 +87,11 @@ export const ExploreCard = memo(function ExploreCard({
                 title={t("More information")}
                 variant={VARIANT_FILLED_FOREGROUND}
                 onClick={() =>
-                  window.open(getDaenaSpriteLink(fusionPath, fusionIsRemoved), "_blank", "noopener,noreferrer")
+                  window.open(
+                    getDaenaSpriteLink(fusionPath, fusionIsRemoved),
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
                 }
                 noPadding
                 fullWidth

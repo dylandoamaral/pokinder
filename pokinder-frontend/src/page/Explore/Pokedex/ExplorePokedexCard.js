@@ -32,7 +32,12 @@ export default function ExplorePokedexCard({
   }
 
   return (
-    <ExploreCard fusionId={fusionId} fusionPath={fusionPath} fusionIsRemoved={fusionIsRemoved} fusionName={fusionName}>
+    <ExploreCard
+      fusionId={fusionId}
+      fusionPath={fusionPath}
+      fusionIsRemoved={fusionIsRemoved}
+      fusionName={fusionName}
+    >
       <div className={styles.details}>
         <div className={styles.detail}>
           <div className={styles.key}>{t("Types")}</div>

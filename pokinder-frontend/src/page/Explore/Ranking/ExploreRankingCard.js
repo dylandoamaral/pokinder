@@ -51,7 +51,12 @@ export default function ExploreRankingCard({
   }
 
   return (
-    <ExploreCard fusionId={fusionId} fusionPath={fusionPath} fusionIsRemoved={fusionIsRemoved} fusionName={fusionName}>
+    <ExploreCard
+      fusionId={fusionId}
+      fusionPath={fusionPath}
+      fusionIsRemoved={fusionIsRemoved}
+      fusionName={fusionName}
+    >
       <div className={styles.container}>
         <div className={styles.details}>
           <div className={styles.rank} style={getRankFontSize(fusionRank)}>
