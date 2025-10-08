@@ -61,13 +61,19 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         return counts
 
     async def __calculate_average_score(self, vote_score_column, vote_count_column):
-        result = await self.session.execute(
-            select((func.sum(vote_score_column * vote_count_column) / func.sum(vote_count_column)))
-        )
+        total_score = func.sum(vote_score_column * vote_count_column)
+        total_votes = func.sum(vote_count_column)
+
+        average_expr = case((total_votes != 0, total_score / total_votes), else_=0)
+
+        result = await self.session.execute(select(average_expr))
         return result.scalar_one()
 
     def __select_average_score(self, vote_score_column, vote_count_column):
-        return func.round(func.sum(vote_score_column * vote_count_column) / func.sum(vote_count_column))
+        total_score = func.sum(vote_score_column * vote_count_column)
+        total_votes = func.sum(vote_count_column)
+
+        return func.round(case((total_votes != 0, total_score / total_votes), else_=0))
 
     def __select_bayesian_average_score(
         self, vote_score_column, vote_count_column, global_mean_score, smoothing_factor
