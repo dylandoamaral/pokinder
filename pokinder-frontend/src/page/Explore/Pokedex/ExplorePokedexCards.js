@@ -13,6 +13,7 @@ export default function ExplorePokedexCards({ filters }) {
     if (data.has_voted === false) return <ExploreCardLocked key={fusionId} fusionId={fusionId} />;
 
     const fusionPath = data.fusion_information.fusion_path;
+    const fusionIsRemoved = data.fusion_is_removed;
 
     const fusionName = getName(
       data.fusion_information.fusion_head_name,
@@ -41,6 +42,7 @@ export default function ExplorePokedexCards({ filters }) {
         key={fusionId}
         fusionId={fusionId}
         fusionPath={fusionPath}
+        fusionIsRemoved={fusionIsRemoved}
         fusionName={fusionName}
         fusionType1={fusionType1}
         fusionType2={fusionType2}

@@ -117,6 +117,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             select(
                 Fusion.id,
                 Fusion.path,
+                Fusion.is_removed,
                 Head.name,
                 Head.name_separator_index,
                 Body.name,
@@ -180,12 +181,13 @@ class ExploreDependencyPostgres(ExploreDependency):
                 ExploreHistory(
                     fusion_id=instance[0],
                     fusion_path=instance[1],
-                    fusion_head_name=instance[2],
-                    fusion_head_name_separator_index=instance[3],
-                    fusion_body_name=instance[4],
-                    fusion_body_name_separator_index=instance[5],
-                    vote_type=instance[6],
-                    vote_created_at=instance[7],
+                    fusion_is_removed=instance[2],
+                    fusion_head_name=instance[3],
+                    fusion_head_name_separator_index=instance[4],
+                    fusion_body_name=instance[5],
+                    fusion_body_name_separator_index=instance[6],
+                    vote_type=instance[7],
+                    vote_created_at=instance[8],
                 )
             )
 
@@ -258,6 +260,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             select(
                 Fusion.id,
                 Fusion.path,
+                Fusion.is_removed,
                 Fusion.head_id,
                 Fusion.body_id,
                 Fusion.vote_score,
@@ -270,6 +273,7 @@ class ExploreDependencyPostgres(ExploreDependency):
                         Head.pokedex_id,
                         Body.pokedex_id,
                         Fusion.path,
+                        Fusion.id,
                     )
                 )
                 .label("rank"),
@@ -282,6 +286,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             select(
                 subquery.columns.id,
                 subquery.columns.path,
+                subquery.columns.is_removed,
                 Head.name,
                 Head.name_separator_index,
                 Body.name,
@@ -301,6 +306,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             .group_by(
                 subquery.columns.id,
                 subquery.columns.path,
+                subquery.columns.is_removed,
                 subquery.columns.rank,
                 subquery.columns.vote_score,
                 subquery.columns.vote_count,
@@ -345,13 +351,14 @@ class ExploreDependencyPostgres(ExploreDependency):
                 ExploreRanking(
                     fusion_id=instance[0],
                     fusion_path=instance[1],
-                    fusion_head_name=instance[2],
-                    fusion_head_name_separator_index=instance[3],
-                    fusion_body_name=instance[4],
-                    fusion_body_name_separator_index=instance[5],
-                    fusion_rank=instance[6],
-                    fusion_score=instance[7],
-                    fusion_vote_count=instance[8],
+                    fusion_is_removed=instance[2],
+                    fusion_head_name=instance[3],
+                    fusion_head_name_separator_index=instance[4],
+                    fusion_body_name=instance[5],
+                    fusion_body_name_separator_index=instance[6],
+                    fusion_rank=instance[7],
+                    fusion_score=instance[8],
+                    fusion_vote_count=instance[9],
                 )
             )
 
@@ -375,6 +382,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             select(
                 Fusion.id,
                 Fusion.path,
+                Fusion.is_removed,
                 Head.name,
                 Head.name_separator_index,
                 Head.type_1,
@@ -395,7 +403,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             .outerjoin(Fusion.references)
             .outerjoin(Reference.family)
             .outerjoin(Vote, and_(Fusion.id == Vote.fusion_id, Vote.account_id == account_id))
-            .order_by(Head.pokedex_id, Body.pokedex_id, Fusion.path)
+            .order_by(Head.pokedex_id, Body.pokedex_id, Fusion.path, Fusion.id)
             .group_by(Fusion, Head, Body)
         )
 
@@ -431,21 +439,22 @@ class ExploreDependencyPostgres(ExploreDependency):
         objects = []
 
         for instance in instances:
-            has_voted = instance[14]
+            has_voted = instance[15]
             fusion_information = ExplorePokedexFusion(
                 fusion_path=instance[1],
-                fusion_head_name=instance[2],
-                fusion_head_name_separator_index=instance[3],
-                fusion_head_type_1=instance[4],
-                fusion_head_type_2=instance[5],
-                fusion_head_weight=instance[6],
-                fusion_head_height=instance[7],
-                fusion_body_name=instance[8],
-                fusion_body_name_separator_index=instance[9],
-                fusion_body_type_1=instance[10],
-                fusion_body_type_2=instance[11],
-                fusion_body_weight=instance[12],
-                fusion_body_height=instance[13],
+                fusion_is_removed=instance[2],
+                fusion_head_name=instance[3],
+                fusion_head_name_separator_index=instance[4],
+                fusion_head_type_1=instance[5],
+                fusion_head_type_2=instance[6],
+                fusion_head_weight=instance[7],
+                fusion_head_height=instance[8],
+                fusion_body_name=instance[9],
+                fusion_body_name_separator_index=instance[10],
+                fusion_body_type_1=instance[11],
+                fusion_body_type_2=instance[12],
+                fusion_body_weight=instance[13],
+                fusion_body_height=instance[14],
             )
 
             objects.append(
@@ -546,6 +555,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             select(
                 Fusion.id,
                 Fusion.path,
+                Fusion.is_removed,
                 Head.name,
                 Head.name_separator_index,
                 Body.name,
@@ -565,7 +575,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             .join(ReferenceProposal, ReferenceProposal.id == FusionReference.c.reference_proposal_id)
             .join(Account, Account.id == ReferenceProposal.proposer_id)
             # .filter(Reference.family_id.in_(select(subquery)))
-            .order_by(ReferenceFamily.name, Reference.name, Head.pokedex_id, Body.pokedex_id, Fusion.path)
+            .order_by(ReferenceFamily.name, Reference.name, Head.pokedex_id, Body.pokedex_id, Fusion.path, Fusion.id)
         )
 
         if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
@@ -614,13 +624,14 @@ class ExploreDependencyPostgres(ExploreDependency):
                 ExploreReference(
                     fusion_id=instance[0],
                     fusion_path=instance[1],
-                    fusion_head_name=instance[2],
-                    fusion_head_name_separator_index=instance[3],
-                    fusion_body_name=instance[4],
-                    fusion_body_name_separator_index=instance[5],
-                    reference_name=instance[6],
-                    reference_link=instance[7],
-                    reference_proposer_name=instance[8],
+                    fusion_is_removed=instance[2],
+                    fusion_head_name=instance[3],
+                    fusion_head_name_separator_index=instance[4],
+                    fusion_body_name=instance[5],
+                    fusion_body_name_separator_index=instance[6],
+                    reference_name=instance[7],
+                    reference_link=instance[8],
+                    reference_proposer_name=instance[9],
                 )
             )
 

@@ -133,6 +133,8 @@
   "Body": "Corp",
   "Head": "Tête",
 
+  "Old": "Ancien",
+
   "Art by": "Art par {{creator}}",
 
   "Discovered by": "Découvert par {{proposer}}",
@@ -553,6 +555,9 @@
   "Feebas": "Barpau",
   "Milotic": "Milobellus",
   "Castform": "Morphéo",
+  "Castform Sunny": "Morphéo (Ensoleillé)",
+  "Castform Rainy": "Morphéo (Pluvieux)",
+  "Castform Snowy": "Morphéo (Neigeux)",
   "Kecleon": "Kecleon",
   "Shuppet": "Polichombr",
   "Banette": "Branette",

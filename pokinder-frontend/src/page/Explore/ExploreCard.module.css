@@ -82,9 +82,10 @@
 
 .title {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: space-between;
   gap: var(--spacing-M);
+  min-height: 24px;
 }
 
 .name {
@@ -103,6 +104,14 @@
   font-size: var(--font-size-XS);
   line-height: var(--line-height-XS);
   color: var(--neutral-high);
+  text-align: right;
+}
+
+.pathMini {
+  font-size: var(--font-size-2XS);
+  line-height: var(--line-height-2XS);
+  color: var(--neutral-high);
+  text-align: right;
 }
 
 .buttons {

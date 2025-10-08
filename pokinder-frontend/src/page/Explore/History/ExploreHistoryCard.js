@@ -14,6 +14,7 @@ import ExploreHistoryCardButton from "./ExploreHistoryCardButton";
 export default function ExploreHistoryCard({
   fusionId,
   fusionPath,
+  fusionIsRemoved,
   fusionName,
   fusionVoteType,
   fusionVoteAt,
@@ -37,7 +38,12 @@ export default function ExploreHistoryCard({
   }
 
   return (
-    <ExploreCard fusionId={fusionId} fusionPath={fusionPath} fusionName={fusionName}>
+    <ExploreCard
+      fusionId={fusionId}
+      fusionPath={fusionPath}
+      fusionIsRemoved={fusionIsRemoved}
+      fusionName={fusionName}
+    >
       <div className={styles.details}>
         <ExploreHistoryCardButton
           variant="downvote"

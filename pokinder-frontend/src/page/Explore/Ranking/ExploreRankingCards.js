@@ -9,6 +9,7 @@ export default function ExploreRankingCards({ filters }) {
   function renderCard(data) {
     const fusionId = data.fusion_id;
     const fusionPath = data.fusion_path;
+    const fusionIsRemoved = data.fusion_is_removed;
     const fusionName = getName(
       data.fusion_head_name,
       data.fusion_head_name_separator_index,
@@ -24,6 +25,7 @@ export default function ExploreRankingCards({ filters }) {
         key={fusionId}
         fusionId={fusionId}
         fusionPath={fusionPath}
+        fusionIsRemoved={fusionIsRemoved}
         fusionName={fusionName}
         fusionRank={fusionRank}
         fusionScore={fusionScore}

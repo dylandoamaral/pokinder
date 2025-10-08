@@ -42,7 +42,7 @@ class Fusion(BaseTable, UUIDPrimaryKey):
         server_default="7f63a8312d59302d8c7e765526d7c18b4857c426",
         info=private,
     )
-    is_removed: Mapped[bool] = mapped_column(nullable=False, info=private)
+    is_removed: Mapped[bool] = mapped_column(nullable=False)
 
     creators: Mapped[List[Creator]] = relationship(secondary=FusionCreator, info=read_only)
     references: Mapped[List[Reference]] = relationship(secondary=FusionReference, info=read_only)

@@ -8,6 +8,7 @@ import styles from "./ExplorePokedexCard.module.css";
 export default function ExplorePokedexCard({
   fusionId,
   fusionPath,
+  fusionIsRemoved,
   fusionName,
   fusionType1,
   fusionType2,
@@ -31,7 +32,12 @@ export default function ExplorePokedexCard({
   }
 
   return (
-    <ExploreCard fusionId={fusionId} fusionPath={fusionPath} fusionName={fusionName}>
+    <ExploreCard
+      fusionId={fusionId}
+      fusionPath={fusionPath}
+      fusionIsRemoved={fusionIsRemoved}
+      fusionName={fusionName}
+    >
       <div className={styles.details}>
         <div className={styles.detail}>
           <div className={styles.key}>{t("Types")}</div>

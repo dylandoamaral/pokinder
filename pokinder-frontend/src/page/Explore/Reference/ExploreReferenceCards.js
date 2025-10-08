@@ -59,6 +59,7 @@ function List({ width, height, items, state, counts, filters }) {
 
     const fusionId = data.fusion_id;
     const fusionPath = data.fusion_path;
+    const fusionIsRemoved = data.fusion_is_removed;
     const fusionName = getName(
       data.fusion_head_name,
       data.fusion_head_name_separator_index,
@@ -74,6 +75,7 @@ function List({ width, height, items, state, counts, filters }) {
         key={index}
         fusionId={fusionId}
         fusionPath={fusionPath}
+        fusionIsRemoved={fusionIsRemoved}
         fusionName={fusionName}
         fusionReferenceName={fusionReferenceName}
         fusionReferenceLink={fusionReferenceLink}
