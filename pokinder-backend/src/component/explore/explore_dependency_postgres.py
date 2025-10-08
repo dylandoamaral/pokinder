@@ -439,7 +439,7 @@ class ExploreDependencyPostgres(ExploreDependency):
         objects = []
 
         for instance in instances:
-            has_voted = instance[14]
+            has_voted = instance[15]
             fusion_information = ExplorePokedexFusion(
                 fusion_path=instance[1],
                 fusion_is_removed=instance[2],

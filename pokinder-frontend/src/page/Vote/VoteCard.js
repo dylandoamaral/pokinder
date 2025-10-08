@@ -119,6 +119,18 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
     }
   }
 
+  function renderCreators(creators) {
+    if (!Array.isArray(creators) || creators.length === 0) {
+      return <p className={styles.credit}></p>;
+    }
+
+    return (
+      <p className={styles.credit}>
+        {t("Art by", { creator: creators.map((creator) => creator.name).join(" & ") })}
+      </p>
+    );
+  }
+
   function renderReferences(references) {
     if (!hasFocus) return <></>;
 
@@ -258,9 +270,7 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
               </motion.div>
             </div>
           </div>
-          <p className={styles.credit}>
-            {t("Art by", { creator: fusion.creators.map((creator) => creator.name).join(" & ") })}
-          </p>
+          {renderCreators(fusion.creators)}
           {renderReferences(fusion.references)}
         </div>
         <motion.div
