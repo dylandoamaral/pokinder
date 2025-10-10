@@ -98,8 +98,14 @@
 
 .credit {
   font-size: var(--font-size-S);
-  line-height: 0;
+  line-height: 1;
   color: var(--neutral-high);
+
+  height: 24px;
+  max-width: 250px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .references {

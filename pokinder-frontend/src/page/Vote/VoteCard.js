@@ -121,13 +121,13 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
 
   function renderCreators(creators) {
     if (!Array.isArray(creators) || creators.length === 0) {
-      return <p className={styles.credit}></p>;
+      return <div className={styles.credit}></div>;
     }
 
     return (
-      <p className={styles.credit}>
+      <div className={styles.credit}>
         {t("Art by", { creator: creators.map((creator) => creator.name).join(" & ") })}
-      </p>
+      </div>
     );
   }
 

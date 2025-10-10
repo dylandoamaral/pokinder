@@ -25,7 +25,7 @@ export default function ExploreReferenceCard({
       <div className={styles.details}>
         <span
           className={styles.reference}
-          style={{ "--font-size-local": fusionReferenceName.length < 24 ? "1rem" : "0.75rem" }}
+          style={{ "--font-size-local": fusionReferenceName.length < 20 ? "1rem" : "0.75rem" }}
           onClick={onClick}
         >
           {fusionReferenceName} <MdOpenInNew className={styles.icon} />
