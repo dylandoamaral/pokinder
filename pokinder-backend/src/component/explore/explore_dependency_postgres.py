@@ -1,7 +1,7 @@
 from math import ceil
 from uuid import UUID, uuid4
 
-from sqlalchemy import and_, distinct, func, or_, select
+from sqlalchemy import and_, case, distinct, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import aliased, joinedload, noload
 
@@ -256,6 +256,12 @@ class ExploreDependencyPostgres(ExploreDependency):
         Head = aliased(Pokemon)
         Body = aliased(Pokemon)
 
+        # NOTE: When there is not enough vote, we prefere to nerf the fusion to make the ranking fair.
+        capped_vote_score = case(
+            (Fusion.vote_count < 5, Fusion.vote_score / 2),
+            else_=Fusion.vote_score,
+        )
+
         subquery = (
             select(
                 Fusion.id,
@@ -263,12 +269,12 @@ class ExploreDependencyPostgres(ExploreDependency):
                 Fusion.is_removed,
                 Fusion.head_id,
                 Fusion.body_id,
-                Fusion.vote_score,
+                capped_vote_score.label("vote_score"),
                 Fusion.vote_count,
                 func.rank()
                 .over(
                     order_by=(
-                        Fusion.vote_score.desc(),
+                        capped_vote_score.desc(),
                         Fusion.vote_count.desc(),
                         Head.pokedex_id,
                         Body.pokedex_id,
