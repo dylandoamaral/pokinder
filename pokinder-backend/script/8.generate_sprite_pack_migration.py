@@ -25,10 +25,10 @@ import asyncio
 
 before_sprites_path = Path(r"C:\Users\Dylan\Temporaire\Fusion\before")
 after_sprites_path = Path(r"C:\Users\Dylan\Temporaire\Fusion\after")
-credits_path = Path(r"C:\Users\Dylan\Temporaire\Fusion\Sprite Credits.csv")
+credits_path = Path(r"C:\Users\Dylan\Temporaire\Fusion\Sprite_Credits.csv")
 
-POKEMON_SIZE = 559
-MIGRATION_PATH = "./migration/1-0_1-112"
+POKEMON_SIZE = 565
+MIGRATION_PATH = "./migration/112_117"
 
 
 # CREATOR FUNCTIONS
@@ -85,6 +85,14 @@ async def generate_creator_actions() -> None:
 # POKEMON FUNCTIONS
 
 
+def generate_pokemon_families_mapping() -> None:
+    output_file = Path(f"{MIGRATION_PATH}/pokemon_families.json")
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(output_file, "w") as f:
+        json.dump(dict(), f, indent=4)
+
+
 async def generate_pokemon_actions() -> None:
     engine = create_async_engine(retrieve_postgres_connection_string(local=True))
 
@@ -124,7 +132,7 @@ async def generate_pokemon_actions() -> None:
                 pokemon_pokedex_id = int(columns[0].text.strip().split(" ")[0])
 
                 # NOTE: Pokemon above this number don't have fusions yet.
-                if pokemon_pokedex_id > 559:
+                if pokemon_pokedex_id > POKEMON_SIZE:
                     break
 
                 maybe_pokemon_id = existing_pokemons.get(pokemon_pokedex_id)
@@ -376,8 +384,9 @@ def generate_fusion_actions() -> None:
 
 
 async def main():
-    # await generate_pokemon_actions()
-    # await generate_creator_actions()
+    generate_pokemon_families_mapping()
+    await generate_pokemon_actions()
+    await generate_creator_actions()
     generate_fusion_actions()
     # print(compute_shape_similarity(before_sprites_path / "235.354a.png", after_sprites_path / "235.354a.png"))
 

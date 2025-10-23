@@ -60,13 +60,13 @@ def load_state() -> dict:
 
 TEMP_DIR = tempfile.mkdtemp()
 
-POKEMON_SIZE = 559
+POKEMON_SIZE = 565
 
-MIGRATION_PATH = Path(r"./migration/1-0_1-112")
+MIGRATION_PATH = Path(r"./migration/112_117")
 STATE_PATH = Path(r"./tmp/state.json")
 POKEMON_PATH = Path(r"C:\Users\Dylan\Temporaire\Fusion\pokemon")
 FUSION_PATH = Path(r"C:\Users\Dylan\Temporaire\Fusion\after")
-CREDITS_PATH = Path(r"C:\Users\Dylan\Temporaire\Fusion\Sprite Credits.csv")
+CREDITS_PATH = Path(r"C:\Users\Dylan\Temporaire\Fusion\Sprite_Credits.csv")
 
 MINIO_CLIENT = get_minio_client()
 

@@ -1,0 +1,62 @@
+[
+    {
+        "id": "da54f4d5-44d8-4cee-9659-41d87b52c299",
+        "pokedex_id": 560,
+        "name": "Sealeo",
+        "type_1": "Ice",
+        "type_2": "Water",
+        "name_separator_index": "3",
+        "weight": 876,
+        "height": 11
+    },
+    {
+        "id": "152956d4-1ce8-4309-b557-cd225a938cc5",
+        "pokedex_id": 561,
+        "name": "Walrein",
+        "type_1": "Ice",
+        "type_2": "Water",
+        "name_separator_index": "3",
+        "weight": 1506,
+        "height": 14
+    },
+    {
+        "id": "3f7e45f4-9ab4-4f1f-82f5-2065b1333119",
+        "pokedex_id": 562,
+        "name": "Clamperl",
+        "type_1": "Water",
+        "type_2": null,
+        "name_separator_index": "4",
+        "weight": 525,
+        "height": 4
+    },
+    {
+        "id": "994152ae-1ca4-47b4-9ab6-c30aff6accff",
+        "pokedex_id": 563,
+        "name": "Huntail",
+        "type_1": "Water",
+        "type_2": null,
+        "name_separator_index": "3",
+        "weight": 270,
+        "height": 17
+    },
+    {
+        "id": "d4ba8b36-59a0-4bbd-9adb-850fa0a36493",
+        "pokedex_id": 564,
+        "name": "Gorebyss",
+        "type_1": "Water",
+        "type_2": null,
+        "name_separator_index": "4",
+        "weight": 226,
+        "height": 18
+    },
+    {
+        "id": "4f5bf7c6-e7ab-4bda-9d22-11477d50c8df",
+        "pokedex_id": 565,
+        "name": "Relicanth",
+        "type_1": "Water",
+        "type_2": "Rock",
+        "name_separator_index": "4",
+        "weight": 234,
+        "height": 10
+    }
+]

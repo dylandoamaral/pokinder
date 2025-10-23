@@ -559,6 +559,12 @@ export function allPokemonNames() {
     "Chingling",
     "Chimecho",
     "Spheal",
+    "Sealeo",
+    "Walrein",
+    "Clamperl",
+    "Huntail",
+    "Gorebyss",
+    "Relicanth"
   ];
 }
 
