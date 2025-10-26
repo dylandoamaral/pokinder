@@ -1,11 +1,10 @@
 from litestar import Controller, get
-from litestar.config.response_cache import default_cache_key_builder
 
 from src.security import Request
 
 from .fusion_dependency import FusionDependency
 from .fusion_dto import DTO, ReturnDTO, ReturnDTODraw
-from .fusion_table import Fusion
+from .fusion_model import FusionDraw
 
 
 class FusionController(Controller):
@@ -14,5 +13,5 @@ class FusionController(Controller):
     path = "/fusion"
 
     @get(path="/draw", return_dto=ReturnDTODraw)
-    async def draw_fusions(self, request: Request, fusion_dependency: FusionDependency, limit: int) -> list[Fusion]:
+    async def draw_fusions(self, request: Request, fusion_dependency: FusionDependency, limit: int) -> list[FusionDraw]:
         return await fusion_dependency.draw(request.user.id, limit)

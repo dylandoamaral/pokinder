@@ -253,7 +253,10 @@ function Vote() {
           onClose={toggleReferenceProposalModal}
           fusionId={focusedFusion.id}
           fusionPath={focusedFusion.path}
-          fusionReferences={focusedFusion.references}
+          fusionReferences={focusedFusion.references.map((refeference) => {
+            const { family_name, ...rest } = refeference;
+            return { ...rest, family: { name: family_name } };
+          })}
         />
       </>
     );

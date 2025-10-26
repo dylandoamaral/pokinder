@@ -2,43 +2,71 @@ from uuid import UUID
 
 from sqlalchemy import and_, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import aliased, joinedload, noload
 
 from src.component.reference import Reference
 from src.component.vote import Vote
 
+from .fusion_denormalized_table import FusionDenormalized
 from .fusion_dependency import FusionDependency
-from .fusion_table import Fusion
+from .fusion_model import FusionDraw
 
 
 class FusionDependencyPostgres(FusionDependency):
     def __init__(self, session: AsyncSession):
         self.session = session
 
-    async def draw(self, account_id: UUID, limit: int) -> list[Fusion]:
-        subquery = (
-            select(Fusion)
-            .outerjoin(Vote, and_(Fusion.id == Vote.fusion_id, Vote.account_id == account_id))
+    async def draw(self, account_id: UUID, limit: int) -> list[FusionDraw]:
+        query = (
+            select(
+                FusionDenormalized.id,
+                FusionDenormalized.path,
+                FusionDenormalized.is_removed,
+                FusionDenormalized.head_name,
+                FusionDenormalized.head_name_separator_index,
+                FusionDenormalized.head_type_1,
+                FusionDenormalized.head_type_2,
+                FusionDenormalized.head_pokedex_id,
+                FusionDenormalized.body_name,
+                FusionDenormalized.body_name_separator_index,
+                FusionDenormalized.body_type_1,
+                FusionDenormalized.body_type_2,
+                FusionDenormalized.body_pokedex_id,
+                FusionDenormalized.creators,
+                FusionDenormalized.references,
+            )
+            .outerjoin(Vote, and_(FusionDenormalized.id == Vote.fusion_id, Vote.account_id == account_id))
             .filter(Vote.account_id.is_(None))
-            .order_by(Fusion.vote_count, func.random())
+            .order_by(FusionDenormalized.vote_count, func.random())
             .limit(limit)
-            .subquery()
         )
 
-        subquery_fusion = aliased(Fusion, subquery)
+        result = await self.session.execute(query)
+        instances = result.all()
 
-        query = select(subquery_fusion).options(
-            joinedload(subquery_fusion.head, innerjoin=True),
-            joinedload(subquery_fusion.body, innerjoin=True),
-            joinedload(subquery_fusion.creators, innerjoin=True),
-            joinedload(subquery_fusion.references, innerjoin=False).joinedload(Reference.family),
-            noload("*"),
-        )
+        objects = []
 
-        result = await self.session.scalars(query)
-        instances = result.unique().all()
+        for instance in instances:
+            objects.append(
+                FusionDraw(
+                    id=instance[0],
+                    path=instance[1],
+                    is_removed=instance[2],
+                    head_name=instance[3],
+                    head_name_separator_index=instance[4],
+                    head_type_1=instance[5],
+                    head_type_2=instance[6],
+                    head_pokedex_id=instance[7],
+                    body_name=instance[8],
+                    body_name_separator_index=instance[9],
+                    body_type_1=instance[10],
+                    body_type_2=instance[11],
+                    body_pokedex_id=instance[12],
+                    creators=instance[13],
+                    references=instance[14],
+                )
+            )
 
-        return instances
+        return objects
 
 
 def use_fusion_dependency_postgres(db_session: AsyncSession) -> FusionDependency:
