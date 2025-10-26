@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from sqlalchemy import and_, case, distinct, func, or_, select
+from sqlalchemy import and_, distinct, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.component.account.account_table import Account
@@ -218,12 +218,6 @@ class ExploreDependencyPostgres(ExploreDependency):
         reference_name: str | None = None,
         creator_name: str | None = None,
     ) -> list[ExploreRanking]:
-        # NOTE: When there is not enough vote, we prefere to nerf the fusion to make the ranking fair.
-        capped_vote_score = case(
-            (FusionDenormalized.vote_count < 5, FusionDenormalized.vote_score / 2),
-            else_=FusionDenormalized.vote_score,
-        )
-
         query = select(
             FusionDenormalized.id,
             FusionDenormalized.path,
@@ -232,21 +226,10 @@ class ExploreDependencyPostgres(ExploreDependency):
             FusionDenormalized.head_name_separator_index,
             FusionDenormalized.body_name,
             FusionDenormalized.body_name_separator_index,
-            func.rank()
-            .over(
-                order_by=(
-                    capped_vote_score.desc(),
-                    FusionDenormalized.vote_count.desc(),
-                    FusionDenormalized.head_pokedex_id,
-                    FusionDenormalized.head_pokedex_id,
-                    FusionDenormalized.path,
-                    FusionDenormalized.id,
-                )
-            )
-            .label("rank"),
-            capped_vote_score.label("vote_score"),
+            FusionDenormalized.vote_rank,
+            FusionDenormalized.vote_score,
             FusionDenormalized.vote_count,
-        ).order_by("rank")
+        ).order_by(FusionDenormalized.vote_rank)
 
         if head_name_or_category is not None and head_name_or_category != "All":
             if head_name_or_category in pokemon_families.keys():

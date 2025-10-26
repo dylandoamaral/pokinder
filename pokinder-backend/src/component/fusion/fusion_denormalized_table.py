@@ -13,7 +13,7 @@ class FusionDenormalized(BaseTable, UUIDPrimaryKey):
 
     __table_args__ = (
         Index("index_fusion_denormalized_path", "path"),
-        Index("index_fusion_denormalized_vote_count", "vote_count"),
+        Index("index_fusion_denormalized_vote_rank", "vote_rank"),
         Index("index_fusion_denormalized_creators_gin", "creators", postgresql_using="gin"),
         Index("index_fusion_denormalized_references_gin", "references", postgresql_using="gin"),
         Index("index_fusion_denormalized_head_families_gin", "head_families", postgresql_using="gin"),
@@ -22,7 +22,8 @@ class FusionDenormalized(BaseTable, UUIDPrimaryKey):
 
     path: Mapped[str] = mapped_column(String(15), nullable=False)
     vote_count: Mapped[int] = mapped_column(Integer, nullable=False)
-    vote_score: Mapped[Numeric] = mapped_column(Numeric, nullable=False)
+    vote_score: Mapped[int] = mapped_column(Integer, nullable=False)
+    vote_rank: Mapped[int] = mapped_column(Integer, nullable=False)
     is_removed: Mapped[bool] = mapped_column(Boolean, nullable=False)
 
     head_name: Mapped[str] = mapped_column(String(100), nullable=False)
