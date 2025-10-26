@@ -195,8 +195,12 @@ def upgrade() -> None:
 
     op.execute("SELECT refresh_fusion_denormalized()")
 
+    op.execute("CREATE EXTENSION IF NOT EXISTS pg_cron;")
+    op.execute("SELECT cron.schedule('refresh_fusion_hourly','0 * * * *',$$SELECT refresh_fusion_denormalized();$$);")
+
 
 def downgrade() -> None:
+    op.execute("DELETE FROM cron.job WHERE jobname = 'refresh_fusion_hourly';")
     op.execute("DROP TRIGGER IF EXISTS trigger_update_fusion_denormalized_on_fusion_change ON fusion")
     op.execute("DROP FUNCTION IF EXISTS update_fusion_denormalized_on_fusion_change()")
     op.execute("DROP FUNCTION IF EXISTS refresh_fusion_denormalized()")
