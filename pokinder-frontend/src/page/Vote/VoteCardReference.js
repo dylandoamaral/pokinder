@@ -15,7 +15,7 @@ function VoteCardReference({ reference }) {
       {...events}
     >
       <span className={styles.referenceOtherLetters}>
-        {isHover ? `${reference.family.name} - ${reference.name}` : reference.family.name[0]}
+        {isHover ? `${reference.family_name} - ${reference.name}` : reference.family_name[0]}
       </span>
     </a>
   );

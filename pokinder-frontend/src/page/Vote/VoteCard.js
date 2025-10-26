@@ -156,10 +156,10 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
     const MEDIUM_LENGTH = 15;
 
     const name = getName(
-      fusion.head.name,
-      fusion.head.name_separator_index,
-      fusion.body.name,
-      fusion.body.name_separator_index,
+      fusion.head_name,
+      fusion.head_name_separator_index,
+      fusion.body_name,
+      fusion.body_name_separator_index,
     );
 
     const path = fusion.is_removed ? `${fusion.path.slice(0, -1)} (${t("Old")})` : fusion.path;
@@ -216,17 +216,17 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
               type="fusion"
               filename={fusion.id}
               href={getDaenaSpriteLink(fusion)}
-              alt={`Fusion sprite from ${fusion.body.name} and ${fusion.head.name}`}
+              alt={`Fusion sprite from ${fusion.body_name} and ${fusion.head_name}`}
             />
           </motion.div>
           <div className={styles.header}>
             {renderTitle(fusion)}
             <div className={styles.types}>
               {getTypes(
-                fusion.head.type_1,
-                fusion.head.type_2,
-                fusion.body.type_1,
-                fusion.body.type_2,
+                fusion.head_type_1,
+                fusion.head_type_2,
+                fusion.body_type_1,
+                fusion.body_type_2,
               ).map((type, index) => (
                 <Type type={type} key={index} />
               ))}
@@ -245,9 +245,9 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
               >
                 <Sprite
                   type="pokemon"
-                  filename={fusion.head.pokedex_id}
-                  href={hasFocus ? getDaenaLink(fusion.head.pokedex_id) : null}
-                  alt={`Pokemon sprite of ${fusion.head.name}`}
+                  filename={fusion.head_pokedex_id}
+                  href={hasFocus ? getDaenaLink(fusion.head_pokedex_id) : null}
+                  alt={`Pokemon sprite of ${fusion.head_name}`}
                 />
               </motion.div>
             </div>
@@ -263,9 +263,9 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
               >
                 <Sprite
                   type="pokemon"
-                  filename={fusion.body.pokedex_id}
-                  href={hasFocus ? getDaenaLink(fusion.body.pokedex_id) : null}
-                  alt={`Pokemon sprite of ${fusion.body.name}`}
+                  filename={fusion.body_pokedex_id}
+                  href={hasFocus ? getDaenaLink(fusion.body_pokedex_id) : null}
+                  alt={`Pokemon sprite of ${fusion.body_name}`}
                 />
               </motion.div>
             </div>

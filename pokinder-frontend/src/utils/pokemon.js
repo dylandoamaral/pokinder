@@ -564,7 +564,7 @@ export function allPokemonNames() {
     "Clamperl",
     "Huntail",
     "Gorebyss",
-    "Relicanth"
+    "Relicanth",
   ];
 }
 
