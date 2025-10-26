@@ -1,12 +1,9 @@
-from math import ceil
-from uuid import UUID, uuid4
+from uuid import UUID
 
 from sqlalchemy import and_, case, distinct, func, or_, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import aliased, joinedload, noload
 
 from src.component.account.account_table import Account
-from src.component.creator import Creator
 from src.component.explore.explore_model import (
     ExploreHistory,
     ExplorePokedex,
@@ -16,15 +13,13 @@ from src.component.explore.explore_model import (
     ExploreReferenceCount,
 )
 from src.component.family.family_table import Family
-from src.component.fusion import Fusion
+from src.component.fusion import FusionDenormalized
 from src.component.fusion_reference import FusionReference
-from src.component.pokemon import Pokemon
 from src.component.reference import Reference
 from src.component.reference_family.reference_family_table import ReferenceFamily
 from src.component.reference_proposal import ReferenceProposal
 from src.component.vote import Vote, VoteType
 from src.data.pokemon_families import pokemon_families
-from src.utils.sqlalchemy import model_to_dict
 
 from .explore_dependency import ExploreDependency
 
@@ -44,27 +39,12 @@ class ExploreDependencyPostgres(ExploreDependency):
         reference_name: str | None = None,
         creator_name: str | None = None,
     ) -> int:
-        Head = aliased(Pokemon)
-        Body = aliased(Pokemon)
-
-        query = (
-            select(distinct(Vote.fusion_id))
-            .join(Fusion, Vote.fusion_id == Fusion.id)
-            .join(Head, Fusion.head_id == Head.id)
-            .join(Body, Fusion.body_id == Body.id)
-            .join(Fusion.creators)
-            .outerjoin(Fusion.references)
-            .outerjoin(Reference.family)
-        )
+        query = select(distinct(Vote.fusion_id)).join(FusionDenormalized, Vote.fusion_id == FusionDenormalized.id)
 
         if vote_types is not None:
             query = query.filter(Vote.vote_type.in_(vote_types))
         else:
             return 0
-
-        if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
-            families_result = await self.session.scalars(select(Family))
-            families = {family.name: family.id for family in families_result.all()}
 
         query = query.filter(Vote.account_id == account_id)
 
@@ -73,23 +53,25 @@ class ExploreDependencyPostgres(ExploreDependency):
 
         if head_name_or_category is not None and head_name_or_category != "All":
             if head_name_or_category in pokemon_families.keys():
-                query = query.filter(Head.families.any(Family.id == families[head_name_or_category]))
+                query = query.filter(FusionDenormalized.head_families.contains([{"name": head_name_or_category}]))
             else:
-                query = query.filter(Head.name == head_name_or_category)
+                query = query.filter(FusionDenormalized.head_name == head_name_or_category)
         if body_name_or_category is not None and body_name_or_category != "All":
             if body_name_or_category in pokemon_families.keys():
-                query = query.filter(Body.families.any(Family.id == families[body_name_or_category]))
+                query = query.filter(FusionDenormalized.body_families.contains([{"name": body_name_or_category}]))
             else:
-                query = query.filter(Body.name == body_name_or_category)
+                query = query.filter(FusionDenormalized.body_name == body_name_or_category)
 
         if reference_family_name is not None and reference_family_name != "All":
-            query = query.filter(ReferenceFamily.name == reference_family_name)
+            query = query.filter(FusionDenormalized.references.contains([{"family_name": reference_family_name}]))
 
         if reference_name is not None and reference_name != "All":
-            query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
+            # TODO: find a way to reproduce the following behaviour using denormalized table.
+            # query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
+            query = query.filter(FusionDenormalized.references.contains([{"name": reference_name}]))
 
         if creator_name is not None and creator_name != "All":
-            query = query.filter(Creator.name == creator_name)
+            query = query.filter(FusionDenormalized.creators.contains([{"name": creator_name}]))
 
         count = select(func.count()).select_from(query)
 
@@ -110,28 +92,17 @@ class ExploreDependencyPostgres(ExploreDependency):
         reference_name: str | None = None,
         creator_name: str | None = None,
     ) -> list[ExploreHistory]:
-        Head = aliased(Pokemon)
-        Body = aliased(Pokemon)
-
-        query = (
-            select(
-                Fusion.id,
-                Fusion.path,
-                Fusion.is_removed,
-                Head.name,
-                Head.name_separator_index,
-                Body.name,
-                Body.name_separator_index,
-                Vote.vote_type,
-                Vote.created_at,
-            )
-            .join(Fusion, Vote.fusion_id == Fusion.id)
-            .join(Head, Fusion.head_id == Head.id)
-            .join(Body, Fusion.body_id == Body.id)
-            .join(Fusion.creators)
-            .outerjoin(Fusion.references)
-            .outerjoin(Reference.family)
-        )
+        query = select(
+            FusionDenormalized.id,
+            FusionDenormalized.path,
+            FusionDenormalized.is_removed,
+            FusionDenormalized.head_name,
+            FusionDenormalized.head_name_separator_index,
+            FusionDenormalized.head_name,
+            FusionDenormalized.body_name_separator_index,
+            Vote.vote_type,
+            Vote.created_at,
+        ).join(FusionDenormalized, Vote.fusion_id == FusionDenormalized.id)
 
         if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
             families_result = await self.session.scalars(select(Family))
@@ -149,26 +120,34 @@ class ExploreDependencyPostgres(ExploreDependency):
 
         if head_name_or_category is not None and head_name_or_category != "All":
             if head_name_or_category in pokemon_families.keys():
-                query = query.filter(Head.families.any(Family.id == families[head_name_or_category]))
+                query = query.filter(FusionDenormalized.head_families.contains([{"name": head_name_or_category}]))
             else:
-                query = query.filter(Head.name == head_name_or_category)
+                query = query.filter(FusionDenormalized.head_name == head_name_or_category)
         if body_name_or_category is not None and body_name_or_category != "All":
             if body_name_or_category in pokemon_families.keys():
-                query = query.filter(Body.families.any(Family.id == families[body_name_or_category]))
+                query = query.filter(FusionDenormalized.body_families.contains([{"name": body_name_or_category}]))
             else:
-                query = query.filter(Body.name == body_name_or_category)
+                query = query.filter(FusionDenormalized.body_name == body_name_or_category)
 
         if reference_family_name is not None and reference_family_name != "All":
-            query = query.filter(ReferenceFamily.name == reference_family_name)
+            query = query.filter(FusionDenormalized.references.contains([{"family_name": reference_family_name}]))
 
         if reference_name is not None and reference_name != "All":
-            query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
+            # TODO: find a way to reproduce the following behaviour using denormalized table.
+            # query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
+            query = query.filter(FusionDenormalized.references.contains([{"name": reference_name}]))
 
         if creator_name is not None and creator_name != "All":
-            query = query.filter(Creator.name == creator_name)
+            query = query.filter(FusionDenormalized.creators.contains([{"name": creator_name}]))
 
         query = (
-            query.order_by(Vote.created_at.desc()).offset(offset).limit(limit).distinct(Vote.created_at, Vote.fusion_id)
+            query.order_by(Vote.created_at.desc())
+            .offset(offset)
+            .limit(limit)
+            .distinct(
+                Vote.created_at,
+                Vote.fusion_id,
+            )
         )
 
         result = await self.session.execute(query)
@@ -201,45 +180,31 @@ class ExploreDependencyPostgres(ExploreDependency):
         reference_name: str | None = None,
         creator_name: str | None = None,
     ) -> int:
-        Head = aliased(Pokemon)
-        Body = aliased(Pokemon)
-
-        query = (
-            select(distinct(Fusion.id))
-            .join(Head, Fusion.head_id == Head.id)
-            .join(Body, Fusion.body_id == Body.id)
-            .join(Fusion.creators)
-            .outerjoin(Fusion.references)
-            .outerjoin(Reference.family)
-        )
-
-        if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
-            families_result = await self.session.scalars(select(Family))
-            families = {family.name: family.id for family in families_result.all()}
+        query = select(func.count()).select_from(FusionDenormalized)
 
         if head_name_or_category is not None and head_name_or_category != "All":
             if head_name_or_category in pokemon_families.keys():
-                query = query.filter(Head.families.any(Family.id == families[head_name_or_category]))
+                query = query.filter(FusionDenormalized.head_families.contains([{"name": head_name_or_category}]))
             else:
-                query = query.filter(Head.name == head_name_or_category)
+                query = query.filter(FusionDenormalized.head_name == head_name_or_category)
         if body_name_or_category is not None and body_name_or_category != "All":
             if body_name_or_category in pokemon_families.keys():
-                query = query.filter(Body.families.any(Family.id == families[body_name_or_category]))
+                query = query.filter(FusionDenormalized.body_families.contains([{"name": body_name_or_category}]))
             else:
-                query = query.filter(Body.name == body_name_or_category)
+                query = query.filter(FusionDenormalized.body_name == body_name_or_category)
 
         if reference_family_name is not None and reference_family_name != "All":
-            query = query.filter(ReferenceFamily.name == reference_family_name)
+            query = query.filter(FusionDenormalized.references.contains([{"family_name": reference_family_name}]))
 
         if reference_name is not None and reference_name != "All":
-            query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
+            # TODO: find a way to reproduce the following behaviour using denormalized table.
+            # query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
+            query = query.filter(FusionDenormalized.references.contains([{"name": reference_name}]))
 
         if creator_name is not None and creator_name != "All":
-            query = query.filter(Creator.name == creator_name)
+            query = query.filter(FusionDenormalized.creators.contains([{"name": creator_name}]))
 
-        count = select(func.count()).select_from(query)
-
-        result = await self.session.scalar(count)
+        result = await self.session.scalar(query)
 
         return result
 
@@ -253,97 +218,57 @@ class ExploreDependencyPostgres(ExploreDependency):
         reference_name: str | None = None,
         creator_name: str | None = None,
     ) -> list[ExploreRanking]:
-        Head = aliased(Pokemon)
-        Body = aliased(Pokemon)
-
         # NOTE: When there is not enough vote, we prefere to nerf the fusion to make the ranking fair.
         capped_vote_score = case(
-            (Fusion.vote_count < 5, Fusion.vote_score / 2),
-            else_=Fusion.vote_score,
+            (FusionDenormalized.vote_count < 5, FusionDenormalized.vote_score / 2),
+            else_=FusionDenormalized.vote_score,
         )
 
-        subquery = (
-            select(
-                Fusion.id,
-                Fusion.path,
-                Fusion.is_removed,
-                Fusion.head_id,
-                Fusion.body_id,
-                capped_vote_score.label("vote_score"),
-                Fusion.vote_count,
-                func.rank()
-                .over(
-                    order_by=(
-                        capped_vote_score.desc(),
-                        Fusion.vote_count.desc(),
-                        Head.pokedex_id,
-                        Body.pokedex_id,
-                        Fusion.path,
-                        Fusion.id,
-                    )
+        query = select(
+            FusionDenormalized.id,
+            FusionDenormalized.path,
+            FusionDenormalized.is_removed,
+            FusionDenormalized.head_name,
+            FusionDenormalized.head_name_separator_index,
+            FusionDenormalized.body_name,
+            FusionDenormalized.body_name_separator_index,
+            func.rank()
+            .over(
+                order_by=(
+                    capped_vote_score.desc(),
+                    FusionDenormalized.vote_count.desc(),
+                    FusionDenormalized.head_pokedex_id,
+                    FusionDenormalized.head_pokedex_id,
+                    FusionDenormalized.path,
+                    FusionDenormalized.id,
                 )
-                .label("rank"),
             )
-            .join(Head, Fusion.head_id == Head.id)
-            .join(Body, Fusion.body_id == Body.id)
-        ).subquery()
-
-        query = (
-            select(
-                subquery.columns.id,
-                subquery.columns.path,
-                subquery.columns.is_removed,
-                Head.name,
-                Head.name_separator_index,
-                Body.name,
-                Body.name_separator_index,
-                subquery.columns.rank,
-                subquery.columns.vote_score,
-                subquery.columns.vote_count,
-            )
-            .select_from(subquery)
-            .join(Head, subquery.columns.head_id == Head.id)
-            .join(Body, subquery.columns.body_id == Body.id)
-            .join(Fusion.creators)
-            .outerjoin(Fusion.references)
-            .outerjoin(Reference.family)
-            .order_by(subquery.columns.rank)
-            # Note: avoid an issue outputting less line than expected when duplicates due to multiple creators.
-            .group_by(
-                subquery.columns.id,
-                subquery.columns.path,
-                subquery.columns.is_removed,
-                subquery.columns.rank,
-                subquery.columns.vote_score,
-                subquery.columns.vote_count,
-                Head,
-                Body,
-            )
-        )
-
-        if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
-            families_result = await self.session.scalars(select(Family))
-            families = {family.name: family.id for family in families_result.all()}
+            .label("rank"),
+            capped_vote_score.label("vote_score"),
+            FusionDenormalized.vote_count,
+        ).order_by("rank")
 
         if head_name_or_category is not None and head_name_or_category != "All":
             if head_name_or_category in pokemon_families.keys():
-                query = query.filter(Head.families.any(Family.id == families[head_name_or_category]))
+                query = query.filter(FusionDenormalized.head_families.contains([{"name": head_name_or_category}]))
             else:
-                query = query.filter(Head.name == head_name_or_category)
+                query = query.filter(FusionDenormalized.head_name == head_name_or_category)
         if body_name_or_category is not None and body_name_or_category != "All":
             if body_name_or_category in pokemon_families.keys():
-                query = query.filter(Body.families.any(Family.id == families[body_name_or_category]))
+                query = query.filter(FusionDenormalized.body_families.contains([{"name": body_name_or_category}]))
             else:
-                query = query.filter(Body.name == body_name_or_category)
+                query = query.filter(FusionDenormalized.body_name == body_name_or_category)
 
         if reference_family_name is not None and reference_family_name != "All":
-            query = query.filter(ReferenceFamily.name == reference_family_name)
+            query = query.filter(FusionDenormalized.references.contains([{"family_name": reference_family_name}]))
 
         if reference_name is not None and reference_name != "All":
-            query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
+            # TODO: find a way to reproduce the following behaviour using denormalized table.
+            # query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
+            query = query.filter(FusionDenormalized.references.contains([{"name": reference_name}]))
 
         if creator_name is not None and creator_name != "All":
-            query = query.filter(Creator.name == creator_name)
+            query = query.filter(FusionDenormalized.creators.contains([{"name": creator_name}]))
 
         query = query.offset(offset).limit(limit)
 
@@ -381,61 +306,56 @@ class ExploreDependencyPostgres(ExploreDependency):
         reference_name: str | None = None,
         creator_name: str | None = None,
     ) -> list[ExplorePokedex]:
-        Head = aliased(Pokemon)
-        Body = aliased(Pokemon)
-
         query = (
             select(
-                Fusion.id,
-                Fusion.path,
-                Fusion.is_removed,
-                Head.name,
-                Head.name_separator_index,
-                Head.type_1,
-                Head.type_2,
-                Head.weight,
-                Head.height,
-                Body.name,
-                Body.name_separator_index,
-                Body.type_1,
-                Body.type_2,
-                Body.weight,
-                Body.height,
+                FusionDenormalized.id,
+                FusionDenormalized.path,
+                FusionDenormalized.is_removed,
+                FusionDenormalized.head_name,
+                FusionDenormalized.head_name_separator_index,
+                FusionDenormalized.head_type_1,
+                FusionDenormalized.head_type_2,
+                FusionDenormalized.head_weight,
+                FusionDenormalized.head_height,
+                FusionDenormalized.body_name,
+                FusionDenormalized.body_name_separator_index,
+                FusionDenormalized.body_type_1,
+                FusionDenormalized.body_type_2,
+                FusionDenormalized.body_weight,
+                FusionDenormalized.body_height,
                 func.count(Vote.fusion_id) > 0,
             )
-            .join(Head, Fusion.head_id == Head.id)
-            .join(Body, Fusion.body_id == Body.id)
-            .join(Fusion.creators)
-            .outerjoin(Fusion.references)
-            .outerjoin(Reference.family)
-            .outerjoin(Vote, and_(Fusion.id == Vote.fusion_id, Vote.account_id == account_id))
-            .order_by(Head.pokedex_id, Body.pokedex_id, Fusion.path, Fusion.id)
-            .group_by(Fusion, Head, Body)
+            .outerjoin(Vote, and_(FusionDenormalized.id == Vote.fusion_id, Vote.account_id == account_id))
+            .order_by(
+                FusionDenormalized.head_pokedex_id,
+                FusionDenormalized.body_pokedex_id,
+                FusionDenormalized.path,
+                FusionDenormalized.id,
+            )
+            .group_by(FusionDenormalized)
         )
-
-        if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
-            families_result = await self.session.scalars(select(Family))
-            families = {family.name: family.id for family in families_result.all()}
 
         if head_name_or_category is not None and head_name_or_category != "All":
             if head_name_or_category in pokemon_families.keys():
-                query = query.filter(Head.families.any(Family.id == families[head_name_or_category]))
+                query = query.filter(FusionDenormalized.head_families.contains([{"name": head_name_or_category}]))
             else:
-                query = query.filter(Head.name == head_name_or_category)
+                query = query.filter(FusionDenormalized.head_name == head_name_or_category)
         if body_name_or_category is not None and body_name_or_category != "All":
             if body_name_or_category in pokemon_families.keys():
-                query = query.filter(Body.families.any(Family.id == families[body_name_or_category]))
+                query = query.filter(FusionDenormalized.body_families.contains([{"name": body_name_or_category}]))
             else:
-                query = query.filter(Body.name == body_name_or_category)
+                query = query.filter(FusionDenormalized.body_name == body_name_or_category)
 
         if reference_family_name is not None and reference_family_name != "All":
-            query = query.filter(ReferenceFamily.name == reference_family_name)
+            query = query.filter(FusionDenormalized.references.contains([{"family_name": reference_family_name}]))
 
         if reference_name is not None and reference_name != "All":
-            query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
+            # TODO: find a way to reproduce the following behaviour using denormalized table.
+            # query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
+            query = query.filter(FusionDenormalized.references.contains([{"name": reference_name}]))
 
         if creator_name is not None and creator_name != "All":
-            query = query.filter(Creator.name == creator_name)
+            query = query.filter(FusionDenormalized.creators.contains([{"name": creator_name}]))
 
         query = query.offset(offset).limit(limit)
 
@@ -481,40 +401,30 @@ class ExploreDependencyPostgres(ExploreDependency):
         reference_name: str | None = None,
         creator_name: str | None = None,
     ) -> list[ExploreReferenceCount]:
-        Head = aliased(Pokemon)
-        Body = aliased(Pokemon)
-
         query = (
             select(
-                Fusion.id.label("fusion_id"),
+                FusionDenormalized.id.label("fusion_id"),
                 Reference.id.label("reference_id"),
                 ReferenceFamily.name.label("reference_family_name"),
             )
-            .distinct(Fusion.id, Reference.id)
+            .distinct(FusionDenormalized.id, Reference.id)
             .select_from(FusionReference)
-            .join(Fusion, FusionReference.c.fusion_id == Fusion.id)
-            .join(Head, Fusion.head_id == Head.id)
-            .join(Body, Fusion.body_id == Body.id)
-            .join(Fusion.creators)
+            .join(FusionDenormalized, FusionReference.c.fusion_id == FusionDenormalized.id)
             .join(Reference, FusionReference.c.reference_id == Reference.id)
             .join(Reference.family)
-            .group_by(Fusion, Reference, ReferenceFamily)
+            .group_by(FusionDenormalized, Reference, ReferenceFamily)
         )
-
-        if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
-            families_result = await self.session.scalars(select(Family))
-            families = {family.name: family.id for family in families_result.all()}
 
         if head_name_or_category is not None and head_name_or_category != "All":
             if head_name_or_category in pokemon_families.keys():
-                query = query.filter(Head.families.any(Family.id == families[head_name_or_category]))
+                query = query.filter(FusionDenormalized.head_families.contains([{"name": head_name_or_category}]))
             else:
-                query = query.filter(Head.name == head_name_or_category)
+                query = query.filter(FusionDenormalized.head_name == head_name_or_category)
         if body_name_or_category is not None and body_name_or_category != "All":
             if body_name_or_category in pokemon_families.keys():
-                query = query.filter(Body.families.any(Family.id == families[body_name_or_category]))
+                query = query.filter(FusionDenormalized.body_families.contains([{"name": body_name_or_category}]))
             else:
-                query = query.filter(Body.name == body_name_or_category)
+                query = query.filter(FusionDenormalized.body_name == body_name_or_category)
 
         if reference_family_name is not None and reference_family_name != "All":
             query = query.filter(ReferenceFamily.name == reference_family_name)
@@ -523,7 +433,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             query = query.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
 
         if creator_name is not None and creator_name != "All":
-            query = query.filter(Creator.name == creator_name)
+            query = query.filter(FusionDenormalized.creators.contains([{"name": creator_name}]))
 
         query = query.subquery()
 
@@ -547,57 +457,46 @@ class ExploreDependencyPostgres(ExploreDependency):
         reference_name: str | None = None,
         creator_name: str | None = None,
     ) -> list[ExploreReference]:
-        Head = aliased(Pokemon)
-        Body = aliased(Pokemon)
-
-        # subquery = select(ReferenceFamily.id).order_by(ReferenceFamily.name).offset(offset).limit(limit)
-
-        # if reference_family_name is not None and reference_family_name != "All":
-        #    subquery = subquery.filter(ReferenceFamily.name == reference_family_name)
-
-        # subquery = subquery.subquery()
-
         cte = (
             select(
-                Fusion.id,
-                Fusion.path,
-                Fusion.is_removed,
-                Head.name,
-                Head.name_separator_index,
-                Body.name,
-                Body.name_separator_index,
+                FusionDenormalized.id,
+                FusionDenormalized.path,
+                FusionDenormalized.is_removed,
+                FusionDenormalized.head_name,
+                FusionDenormalized.head_name_separator_index,
+                FusionDenormalized.body_name,
+                FusionDenormalized.body_name_separator_index,
                 Reference.name,
                 Reference.source,
                 Account.username,
                 ReferenceFamily.name.label("reference_family_name"),
             )
             .select_from(FusionReference)
-            .join(Fusion, FusionReference.c.fusion_id == Fusion.id)
-            .join(Head, Fusion.head_id == Head.id)
-            .join(Body, Fusion.body_id == Body.id)
-            .join(Fusion.creators)
+            .join(FusionDenormalized, FusionReference.c.fusion_id == FusionDenormalized.id)
             .join(Reference, FusionReference.c.reference_id == Reference.id)
             .join(Reference.family)
             .join(ReferenceProposal, ReferenceProposal.id == FusionReference.c.reference_proposal_id)
             .join(Account, Account.id == ReferenceProposal.proposer_id)
-            # .filter(Reference.family_id.in_(select(subquery)))
-            .order_by(ReferenceFamily.name, Reference.name, Head.pokedex_id, Body.pokedex_id, Fusion.path, Fusion.id)
+            .order_by(
+                ReferenceFamily.name,
+                Reference.name,
+                FusionDenormalized.head_pokedex_id,
+                FusionDenormalized.body_pokedex_id,
+                FusionDenormalized.path,
+                FusionDenormalized.id,
+            )
         )
-
-        if head_name_or_category in pokemon_families.keys() or body_name_or_category in pokemon_families.keys():
-            families_result = await self.session.scalars(select(Family))
-            families = {family.name: family.id for family in families_result.all()}
 
         if head_name_or_category is not None and head_name_or_category != "All":
             if head_name_or_category in pokemon_families.keys():
-                cte = cte.filter(Head.families.any(Family.id == families[head_name_or_category]))
+                cte = cte.filter(FusionDenormalized.head_families.contains([{"name": head_name_or_category}]))
             else:
-                cte = cte.filter(Head.name == head_name_or_category)
+                cte = cte.filter(FusionDenormalized.head_name == head_name_or_category)
         if body_name_or_category is not None and body_name_or_category != "All":
             if body_name_or_category in pokemon_families.keys():
-                cte = cte.filter(Body.families.any(Family.id == families[body_name_or_category]))
+                cte = cte.filter(FusionDenormalized.body_families.contains([{"name": body_name_or_category}]))
             else:
-                cte = cte.filter(Body.name == body_name_or_category)
+                cte = cte.filter(FusionDenormalized.body_name == body_name_or_category)
 
         if reference_family_name is not None and reference_family_name != "All":
             cte = cte.filter(ReferenceFamily.name == reference_family_name)
@@ -606,7 +505,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             cte = cte.filter(or_(Reference.name == reference_name, Reference.name.startswith(f"{reference_name} ")))
 
         if creator_name is not None and creator_name != "All":
-            cte = cte.filter(Creator.name == creator_name)
+            cte = cte.filter(FusionDenormalized.creators.contains([{"name": creator_name}]))
 
         cte = cte.cte()
 
