@@ -30,6 +30,9 @@ from src.component.vote import Vote  # noqa
 from src.utils.env import retrieve_postgres_connection_string
 from src.utils.sqlalchemy import BaseTable
 
+# NOTE: fusion_denormalized is ignored because it is a materialized view not a table.
+IGNORE_TABLES = {"fusion_denormalized"}
+
 target_metadata = [BaseTable.metadata]
 
 # other values from the config, defined by the needs of env.py,
@@ -38,6 +41,12 @@ config.set_main_option(
     "sqlalchemy.url",
     retrieve_postgres_connection_string(local=False),
 )
+
+
+def include_object(object, name, type_, reflected, compare_to):
+    if type_ == "table" and name in IGNORE_TABLES:
+        return False
+    return True
 
 
 def run_migrations_offline() -> None:
@@ -55,6 +64,7 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        include_object=include_object,
     )
 
     with context.begin_transaction():
@@ -62,7 +72,11 @@ def run_migrations_offline() -> None:
 
 
 def do_run_migrations(connection: Connection) -> None:
-    context.configure(connection=connection, target_metadata=target_metadata)
+    context.configure(
+        connection=connection,
+        target_metadata=target_metadata,
+        include_object=include_object,
+    )
 
     with context.begin_transaction():
         context.run_migrations()
