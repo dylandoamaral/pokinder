@@ -57,7 +57,7 @@ function ReferenceProposalModal({
     if (form.name === undefined) return false;
 
     for (const reference of fusionReferences) {
-      const isSameFamily = levenshtein(reference.family.name, form.family) < 3;
+      const isSameFamily = levenshtein(reference.family_name, form.family) < 3;
       const isSameName = levenshtein(reference.name, form.name) < 3;
       if (isSameFamily && isSameName) {
         return true;
@@ -88,7 +88,7 @@ function ReferenceProposalModal({
       <Panel title={t("Existing references")}>
         <ul>
           {fusionReferences.map((reference, key) => (
-            <li key={key}>{`${reference.family.name} - ${reference.name}`}</li>
+            <li key={key}>{`${reference.family_name} - ${reference.name}`}</li>
           ))}
         </ul>
       </Panel>

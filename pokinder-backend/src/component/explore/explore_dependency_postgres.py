@@ -100,6 +100,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             FusionDenormalized.head_name_separator_index,
             FusionDenormalized.head_name,
             FusionDenormalized.body_name_separator_index,
+            FusionDenormalized.references,
             Vote.vote_type,
             Vote.created_at,
         ).join(FusionDenormalized, Vote.fusion_id == FusionDenormalized.id)
@@ -165,8 +166,9 @@ class ExploreDependencyPostgres(ExploreDependency):
                     fusion_head_name_separator_index=instance[4],
                     fusion_body_name=instance[5],
                     fusion_body_name_separator_index=instance[6],
-                    vote_type=instance[7],
-                    vote_created_at=instance[8],
+                    fusion_references=instance[7],
+                    vote_type=instance[8],
+                    vote_created_at=instance[9],
                 )
             )
 
@@ -226,6 +228,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             FusionDenormalized.head_name_separator_index,
             FusionDenormalized.body_name,
             FusionDenormalized.body_name_separator_index,
+            FusionDenormalized.references,
             FusionDenormalized.vote_rank,
             FusionDenormalized.vote_score,
             FusionDenormalized.vote_count,
@@ -256,7 +259,7 @@ class ExploreDependencyPostgres(ExploreDependency):
         query = query.offset(offset).limit(limit)
 
         result = await self.session.execute(query)
-        instances = result.unique().all()
+        instances = result.all()
 
         objects = []
 
@@ -270,9 +273,10 @@ class ExploreDependencyPostgres(ExploreDependency):
                     fusion_head_name_separator_index=instance[4],
                     fusion_body_name=instance[5],
                     fusion_body_name_separator_index=instance[6],
-                    fusion_rank=instance[7],
-                    fusion_score=instance[8],
-                    fusion_vote_count=instance[9],
+                    fusion_references=instance[7],
+                    fusion_rank=instance[8],
+                    fusion_score=instance[9],
+                    fusion_vote_count=instance[10],
                 )
             )
 
@@ -306,6 +310,7 @@ class ExploreDependencyPostgres(ExploreDependency):
                 FusionDenormalized.body_type_2,
                 FusionDenormalized.body_weight,
                 FusionDenormalized.body_height,
+                FusionDenormalized.references,
                 func.count(Vote.fusion_id) > 0,
             )
             .outerjoin(Vote, and_(FusionDenormalized.id == Vote.fusion_id, Vote.account_id == account_id))
@@ -343,12 +348,12 @@ class ExploreDependencyPostgres(ExploreDependency):
         query = query.offset(offset).limit(limit)
 
         result = await self.session.execute(query)
-        instances = result.unique().all()
+        instances = result.all()
 
         objects = []
 
         for instance in instances:
-            has_voted = instance[15]
+            has_voted = instance[16]
             fusion_information = ExplorePokedexFusion(
                 fusion_path=instance[1],
                 fusion_is_removed=instance[2],
@@ -364,6 +369,7 @@ class ExploreDependencyPostgres(ExploreDependency):
                 fusion_body_type_2=instance[12],
                 fusion_body_weight=instance[13],
                 fusion_body_height=instance[14],
+                fusion_references=instance[15],
             )
 
             objects.append(
@@ -449,6 +455,7 @@ class ExploreDependencyPostgres(ExploreDependency):
                 FusionDenormalized.head_name_separator_index,
                 FusionDenormalized.body_name,
                 FusionDenormalized.body_name_separator_index,
+                FusionDenormalized.references,
                 Reference.name,
                 Reference.source,
                 Account.username,
@@ -503,7 +510,7 @@ class ExploreDependencyPostgres(ExploreDependency):
         query = select(cte).filter(cte.c.reference_family_name.in_(select(subquery)))
 
         result = await self.session.execute(query)
-        instances = result.unique().all()
+        instances = result.all()
 
         objects = []
 
@@ -517,9 +524,10 @@ class ExploreDependencyPostgres(ExploreDependency):
                     fusion_head_name_separator_index=instance[4],
                     fusion_body_name=instance[5],
                     fusion_body_name_separator_index=instance[6],
-                    reference_name=instance[7],
-                    reference_link=instance[8],
-                    reference_proposer_name=instance[9],
+                    fusion_references=instance[7],
+                    reference_name=instance[8],
+                    reference_link=instance[9],
+                    reference_proposer_name=instance[10],
                 )
             )
 

@@ -9,6 +9,7 @@ export default function ExploreReferenceCard({
   fusionPath,
   fusionIsRemoved,
   fusionName,
+  fusionReferences,
   fusionReferenceName,
   fusionReferenceLink,
   fusionReferenceProposer,
@@ -33,7 +34,13 @@ export default function ExploreReferenceCard({
   }
 
   return (
-    <ExploreCard fusionId={fusionId} fusionPath={fusionPath} fusionName={fusionName}>
+    <ExploreCard
+      fusionId={fusionId}
+      fusionPath={fusionPath}
+      fusionIsRemoved={fusionIsRemoved}
+      fusionName={fusionName}
+      fusionReferences={fusionReferences}
+    >
       <div className={styles.details}>
         <span
           className={styles.reference}

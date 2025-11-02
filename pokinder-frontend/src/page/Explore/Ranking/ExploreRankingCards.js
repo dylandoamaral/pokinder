@@ -16,6 +16,8 @@ export default function ExploreRankingCards({ filters }) {
       data.fusion_body_name,
       data.fusion_body_name_separator_index,
     );
+    const fusionReferences = data.fusion_references;
+
     const fusionRank = data.fusion_rank;
     const fusionScore = getScore(data.fusion_score);
     const fusionVoteCount = data.fusion_vote_count;
@@ -27,6 +29,7 @@ export default function ExploreRankingCards({ filters }) {
         fusionPath={fusionPath}
         fusionIsRemoved={fusionIsRemoved}
         fusionName={fusionName}
+        fusionReferences={fusionReferences}
         fusionRank={fusionRank}
         fusionScore={fusionScore}
         fusionVoteCount={fusionVoteCount}

@@ -15,6 +15,7 @@ class ExploreHistory:
     fusion_head_name_separator_index: str
     fusion_body_name: str
     fusion_body_name_separator_index: str
+    fusion_references: list
     vote_type: VoteType
     vote_created_at: datetime
 
@@ -28,6 +29,7 @@ class ExploreRanking:
     fusion_head_name_separator_index: str
     fusion_body_name: str
     fusion_body_name_separator_index: str
+    fusion_references: list
     fusion_rank: int
     fusion_score: int
     fusion_vote_count: int
@@ -49,6 +51,7 @@ class ExplorePokedexFusion:
     fusion_body_type_2: str
     fusion_body_weight: float
     fusion_body_height: float
+    fusion_references: list
 
 
 @dataclass
@@ -73,6 +76,7 @@ class ExploreReference:
     fusion_head_name_separator_index: str
     fusion_body_name: str
     fusion_body_name_separator_index: str
+    fusion_references: list
     reference_name: str
     reference_link: str
     reference_proposer_name: str
