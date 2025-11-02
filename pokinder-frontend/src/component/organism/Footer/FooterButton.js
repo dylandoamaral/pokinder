@@ -7,7 +7,7 @@ const FooterButton = React.forwardRef(function FooterButton(
   { children, name, link, show, ...props },
   ref,
 ) {
-  if (show == false) return <></>;
+  if (show === false) return <></>;
 
   const content = (
     <>
