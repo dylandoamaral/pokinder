@@ -21,6 +21,7 @@ export default function ExplorePokedexCards({ filters }) {
       data.fusion_information.fusion_body_name,
       data.fusion_information.fusion_body_name_separator_index,
     );
+    const fusionReferences = data.fusion_references;
 
     const fusionTypes = getTypes(
       data.fusion_information.fusion_head_type_1,
@@ -44,6 +45,7 @@ export default function ExplorePokedexCards({ filters }) {
         fusionPath={fusionPath}
         fusionIsRemoved={fusionIsRemoved}
         fusionName={fusionName}
+        fusionReferences={fusionReferences}
         fusionType1={fusionType1}
         fusionType2={fusionType2}
         fusionWeight={fusionWeight}

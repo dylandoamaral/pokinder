@@ -66,6 +66,8 @@ function List({ width, height, items, state, counts, filters }) {
       data.fusion_body_name,
       data.fusion_body_name_separator_index,
     );
+    const fusionReferences = data.fusion_references;
+
     const fusionReferenceName = data.reference_name;
     const fusionReferenceLink = data.reference_link;
     const fusionReferenceProposer = data.reference_proposer_name;
@@ -77,6 +79,7 @@ function List({ width, height, items, state, counts, filters }) {
         fusionPath={fusionPath}
         fusionIsRemoved={fusionIsRemoved}
         fusionName={fusionName}
+        fusionReferences={fusionReferences}
         fusionReferenceName={fusionReferenceName}
         fusionReferenceLink={fusionReferenceLink}
         fusionReferenceProposer={fusionReferenceProposer}

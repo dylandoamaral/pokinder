@@ -16,6 +16,8 @@ export default function ExploreHistoryCards({ filters }) {
       data.fusion_body_name,
       data.fusion_body_name_separator_index,
     );
+    const fusionReferences = data.fusion_references;
+
     const fusionVoteType = data.vote_type;
     const fusionVoteAt = data.vote_created_at;
 
@@ -26,6 +28,7 @@ export default function ExploreHistoryCards({ filters }) {
         fusionPath={fusionPath}
         fusionIsRemoved={fusionIsRemoved}
         fusionName={fusionName}
+        fusionReferences={fusionReferences}
         fusionVoteType={fusionVoteType}
         fusionVoteAt={fusionVoteAt}
       />

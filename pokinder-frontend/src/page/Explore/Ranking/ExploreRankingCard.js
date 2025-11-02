@@ -8,6 +8,7 @@ export default function ExploreRankingCard({
   fusionPath,
   fusionIsRemoved,
   fusionName,
+  fusionReferences,
   fusionRank,
   fusionScore,
   fusionVoteCount,
@@ -56,6 +57,7 @@ export default function ExploreRankingCard({
       fusionPath={fusionPath}
       fusionIsRemoved={fusionIsRemoved}
       fusionName={fusionName}
+      fusionReferences={fusionReferences}
     >
       <div className={styles.container}>
         <div className={styles.details}>

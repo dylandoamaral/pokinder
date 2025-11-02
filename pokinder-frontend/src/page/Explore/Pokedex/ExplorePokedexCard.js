@@ -10,6 +10,7 @@ export default function ExplorePokedexCard({
   fusionPath,
   fusionIsRemoved,
   fusionName,
+  fusionReferences,
   fusionType1,
   fusionType2,
   fusionWeight,
@@ -37,6 +38,7 @@ export default function ExplorePokedexCard({
       fusionPath={fusionPath}
       fusionIsRemoved={fusionIsRemoved}
       fusionName={fusionName}
+      fusionReferences={fusionReferences}
     >
       <div className={styles.details}>
         <div className={styles.detail}>

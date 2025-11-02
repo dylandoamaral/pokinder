@@ -33,6 +33,7 @@ export const ExploreCard = memo(function ExploreCard({
   fusionPath,
   fusionIsRemoved,
   fusionName,
+  fusionReferences,
   children,
 }) {
   const { t } = useTranslation();
@@ -112,6 +113,7 @@ export const ExploreCard = memo(function ExploreCard({
         onClose={toggleReferenceProposalModal}
         fusionId={fusionId}
         fusionPath={fusionPath}
+        fusionReferences={fusionReferences}
       />
     </>
   );
