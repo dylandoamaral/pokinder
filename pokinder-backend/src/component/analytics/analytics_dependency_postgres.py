@@ -5,11 +5,12 @@ from uuid import UUID
 
 from litestar import Request
 from litestar.stores.base import Store
-from sqlalchemy import case, desc, distinct, func, select
+from sqlalchemy import and_, case, desc, distinct, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.component.account.account_table import Account
 from src.component.creator.creator_table import Creator
+from src.component.fusion.fusion_denormalized_table import FusionDenormalized
 from src.component.fusion.fusion_table import Fusion
 from src.component.pokemon.pokemon_table import Pokemon
 from src.component.reference.reference_table import Reference
@@ -83,7 +84,6 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         return numerator / denominator
 
     async def __favorite_account_pokemon(self, is_head, account_id=None) -> Optional[PokemonAnalytics]:
-        fusion_attribute = "head_id" if is_head else "body_id"
         scores = (
             select(
                 Vote.fusion_id,
@@ -109,10 +109,13 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
             vote_count_column=scores.c.count,
         )
 
+        pokemon_name = FusionDenormalized.head_name if is_head else FusionDenormalized.body_name
+        pokemon_pokedex_id = FusionDenormalized.head_pokedex_id if is_head else FusionDenormalized.body_pokedex_id
+
         query = (
             select(
-                Pokemon.name,
-                Pokemon.pokedex_id,
+                pokemon_name,
+                pokemon_pokedex_id,
                 self.__select_average_score(
                     vote_score_column=scores.c.score,
                     vote_count_column=scores.c.count,
@@ -124,9 +127,8 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
                     smoothing_factor=20,
                 ).label("scores"),
             )
-            .join(Fusion, Pokemon.id == getattr(Fusion, fusion_attribute))
-            .join(scores, Fusion.id == scores.c.fusion_id)
-            .group_by(Pokemon.name, Pokemon.pokedex_id)
+            .join(scores, FusionDenormalized.id == scores.c.fusion_id)
+            .group_by(pokemon_name, pokemon_pokedex_id)
             .order_by(desc("scores"))
             .limit(1)
         )
@@ -141,32 +143,32 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         )
 
     async def __favorite_community_pokemon(self, is_head) -> Optional[PokemonAnalytics]:
-        fusion_attribute = "head_id" if is_head else "body_id"
-
         global_mean_score = await self.__calculate_average_score(
-            vote_score_column=Fusion.vote_score,
-            vote_count_column=Fusion.vote_count,
+            vote_score_column=FusionDenormalized.vote_score,
+            vote_count_column=FusionDenormalized.vote_count,
         )
+
+        pokemon_name = FusionDenormalized.head_name if is_head else FusionDenormalized.body_name
+        pokemon_pokedex_id = FusionDenormalized.head_pokedex_id if is_head else FusionDenormalized.body_pokedex_id
 
         query = (
             select(
-                Pokemon.name,
-                Pokemon.pokedex_id,
+                pokemon_name,
+                pokemon_pokedex_id,
                 self.__select_average_score(
-                    vote_score_column=Fusion.vote_score,
-                    vote_count_column=Fusion.vote_count,
+                    vote_score_column=FusionDenormalized.vote_score,
+                    vote_count_column=FusionDenormalized.vote_count,
                 ),
                 self.__select_bayesian_average_score(
-                    vote_score_column=Fusion.vote_score,
-                    vote_count_column=Fusion.vote_count,
+                    vote_score_column=FusionDenormalized.vote_score,
+                    vote_count_column=FusionDenormalized.vote_count,
                     global_mean_score=global_mean_score,
                     smoothing_factor=100,
                 ).label("scores"),
             )
-            .join(Fusion, Pokemon.id == getattr(Fusion, fusion_attribute))
-            .group_by(Pokemon.name, Pokemon.pokedex_id)
+            .group_by(pokemon_name, pokemon_pokedex_id)
             .order_by(desc("scores"))
-            .filter(Fusion.vote_count > 0)
+            .filter(FusionDenormalized.vote_count > 0)
             .limit(1)
         )
         result = await self.session.execute(query)
@@ -222,6 +224,7 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
             )
             .join(Fusion.creators)
             .join(scores, Fusion.id == scores.c.fusion_id)
+            .where(Fusion.is_hidden.is_(False))
             .group_by(Creator.id, Creator.name)
             .order_by(desc("scores"))
             .limit(1)
@@ -236,7 +239,7 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         query = (
             select(Fusion.id)
             .join(scores, Fusion.id == scores.c.fusion_id)
-            .where(Fusion.creators.any(Creator.id == id))
+            .where(and_(Fusion.creators.any(Creator.id == id), Fusion.is_hidden.is_(False)))
             .order_by(scores.c.score.desc(), scores.c.count)
             .limit(1)
         )
@@ -270,6 +273,7 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
                 ).label("scores"),
             )
             .join(Fusion.creators)
+            .where(Fusion.is_hidden.is_(False))
             .group_by(Creator.id, Creator.name)
             .order_by(desc("scores"))
             .limit(1)
@@ -283,7 +287,7 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         average_score = information[2]
         query = (
             select(Fusion.id)
-            .where(Fusion.creators.any(Creator.id == id))
+            .where(and_(Fusion.creators.any(Creator.id == id), Fusion.is_hidden.is_(False)))
             .order_by(Fusion.vote_score.desc(), Fusion.vote_count.desc())
             .limit(1)
         )
@@ -361,7 +365,7 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         )
         fusion_count_query = self.cache.get_or_set_int(
             key="fusion_count",
-            awaitable=self.__count(Fusion),
+            awaitable=self.__count(FusionDenormalized),
             expires_in=ten_minutes,
         )
         creator_count_query = self.cache.get_or_set_int(
