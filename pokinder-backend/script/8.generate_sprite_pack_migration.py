@@ -27,8 +27,8 @@ before_sprites_path = Path(r"C:\Users\Dylan\Temporaire\Fusion\before")
 after_sprites_path = Path(r"C:\Users\Dylan\Temporaire\Fusion\after")
 credits_path = Path(r"C:\Users\Dylan\Temporaire\Fusion\Sprite_Credits.csv")
 
-POKEMON_SIZE = 565
-MIGRATION_PATH = "./migration/112_117"
+POKEMON_SIZE = 567
+MIGRATION_PATH = "./migration/117_118"
 
 
 # CREATOR FUNCTIONS
