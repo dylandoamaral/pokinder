@@ -34,33 +34,31 @@ function List({ width, height, items, state, count, filters, loadItems, renderCa
 
   // NOTE: Used to scroll to the aproximativelly same row on card row change.
   useEffect(() => {
-    if (scrollInformation.current === null) {
-      scrollInformation.current = { cardsPerRow: cardsPerRow, firstVisibleColumn: 0 };
-      return;
-    }
-
     const listRef = infiniteLoaderRef.current?._listRef;
 
     if (listRef === undefined) {
       return;
     }
 
-    const firstVisibleColumn = Math.floor(listRef.state.scrollOffset / CARD_HEIGHT);
-    const firstVisibleCard = firstVisibleColumn * cardsPerRow;
-
-    if (scrollInformation.current.cardsPerRow === cardsPerRow) {
+    if (
+      scrollInformation.current === null ||
+      scrollInformation.current.cardsPerRow === cardsPerRow
+    ) {
+      const firstVisibleColumn = Math.round(listRef.state.scrollOffset / CARD_HEIGHT);
+      const firstVisibleCard = firstVisibleColumn * cardsPerRow;
       scrollInformation.current = { cardsPerRow: cardsPerRow, firstVisibleCard: firstVisibleCard };
-    } else {
-      const oldFirstVisibleCard = scrollInformation.current.firstVisibleCard;
-      const fixedFirstVisibleColumn = Math.floor(oldFirstVisibleCard / cardsPerRow) - 1;
-      const fixedFirstVisibleCard = fixedFirstVisibleColumn * cardsPerRow;
-
-      listRef.scrollToItem(fixedFirstVisibleColumn);
-      scrollInformation.current = {
-        cardsPerRow: cardsPerRow,
-        firstVisibleCard: fixedFirstVisibleCard,
-      };
+      return;
     }
+
+    const firstVisibleCard = scrollInformation.current.firstVisibleCard;
+    const fixedFirstVisibleColumn = Math.round(firstVisibleCard / cardsPerRow);
+
+    listRef.scrollToItem(fixedFirstVisibleColumn);
+
+    scrollInformation.current = {
+      cardsPerRow: cardsPerRow,
+      firstVisibleCard: firstVisibleCard,
+    };
   }, [height, width, cardsPerRow]);
 
   function renderAllCard(index, data) {
