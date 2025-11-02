@@ -20,12 +20,24 @@ export default function ExploreReferenceCard({
     window.open(fusionReferenceLink, "_blank", "noopener,noreferrer");
   }
 
+  function getReferenceFontSize(name) {
+    const wordCount = name.trim().split(/\s+/).length;
+    const nameLength = name.length;
+
+    const maxCharacterPerWords = 15;
+
+    if (nameLength > 30) return "0.75rem";
+
+    if (nameLength > wordCount * maxCharacterPerWords) return "0.75rem";
+    else return "1rem";
+  }
+
   return (
     <ExploreCard fusionId={fusionId} fusionPath={fusionPath} fusionName={fusionName}>
       <div className={styles.details}>
         <span
           className={styles.reference}
-          style={{ "--font-size-local": fusionReferenceName.length < 20 ? "1rem" : "0.75rem" }}
+          style={{ "--font-size-local": getReferenceFontSize(fusionReferenceName) }}
           onClick={onClick}
         >
           {fusionReferenceName} <MdOpenInNew className={styles.icon} />
