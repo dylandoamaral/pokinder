@@ -1,0 +1,22 @@
+[
+    {
+        "id": "d2623cdc-d3cf-460b-8c59-108c9a036786",
+        "pokedex_id": 566,
+        "name": "Woobat",
+        "type_1": "Psychic",
+        "type_2": "Flying",
+        "name_separator_index": "-1",
+        "weight": 21,
+        "height": 4
+    },
+    {
+        "id": "b0e7e103-6e5b-4791-8d7c-45866df73901",
+        "pokedex_id": 567,
+        "name": "Swoobat",
+        "type_1": "Psychic",
+        "type_2": "Flying",
+        "name_separator_index": "-1",
+        "weight": 105,
+        "height": 9
+    }
+]

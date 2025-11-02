@@ -60,9 +60,9 @@ def load_state() -> dict:
 
 TEMP_DIR = tempfile.mkdtemp()
 
-POKEMON_SIZE = 565
+POKEMON_SIZE = 567
 
-MIGRATION_PATH = Path(r"./migration/112_117")
+MIGRATION_PATH = Path(r"./migration/117_118")
 STATE_PATH = Path(r"./tmp/state.json")
 POKEMON_PATH = Path(r"C:\Users\Dylan\Temporaire\Fusion\pokemon")
 FUSION_PATH = Path(r"C:\Users\Dylan\Temporaire\Fusion\after")
@@ -449,7 +449,7 @@ async def add_new_fusion_creators(
 
 
 async def main():
-    engine = create_async_engine(retrieve_postgres_connection_string(local=True))
+    engine = create_async_engine(retrieve_postgres_connection_string())
 
     async with AsyncSession(engine) as session:
         # NOTE: Retrieve existing pokemons
