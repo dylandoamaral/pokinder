@@ -6,6 +6,7 @@ import InfiniteLoader from "react-window-infinite-loader";
 import { v4 as uuidv4 } from "uuid";
 
 import { useAfterEffect } from "../../../hook/useAfterEffect";
+import useIsMobile from "../../../hook/useIsMobile";
 
 import { getExploreReference, getExploreReferenceCount } from "../../../api/pokinder";
 
@@ -14,21 +15,30 @@ import { getName } from "../../../utils/pokemon";
 import Heading from "../../../component/atom/Heading/Heading";
 import Loader from "../../../component/atom/Loader/Loader";
 
-import { CARD_GAP, CARD_HEIGHT, CARD_WIDTH, calculateCardsPerRow } from "../ExploreCard";
+import {
+  CARD_GAP,
+  CARD_GAP_MOBILE,
+  CARD_HEIGHT,
+  CARD_WIDTH,
+  calculateCardsPerRow,
+} from "../ExploreCard";
 import ExploreCardLoading from "../ExploreCardLoading";
 import ExploreReferenceCard from "./ExploreReferenceCard";
 import styles from "./ExploreReferenceCards.module.css";
 
 function List({ width, height, items, state, counts, filters }) {
+  const [isMobile] = useIsMobile();
+
   const infiniteLoaderRef = useRef(null);
   const queries = useRef({});
 
   const itemCount = counts.length;
-  const cardsPerRow = calculateCardsPerRow(width);
+  const cardsPerRow = calculateCardsPerRow(width, 0, isMobile);
 
   const requestsPerSecond = 4;
 
   const refreshId = state.id + cardsPerRow;
+  const cardGap = isMobile ? CARD_GAP_MOBILE : CARD_GAP;
 
   useEffect(() => {
     if (!infiniteLoaderRef.current) return;
@@ -100,7 +110,7 @@ function List({ width, height, items, state, counts, filters }) {
     );
 
     return (
-      <div className={styles.row} style={style}>
+      <div className={styles.row} style={{ ...style, "--card-gap": `${cardGap}px` }}>
         <Heading align="left">{itemCount["reference_family_name"]}</Heading>
         <div className={styles.cards}>
           {cardIndexes.map((index) => renderAllCard(index, items[index]))}
@@ -117,7 +127,7 @@ function List({ width, height, items, state, counts, filters }) {
     const rowAmount = Math.ceil(itemsAmount / cardsPerRow);
     const titleSize = 80;
 
-    return CARD_HEIGHT * rowAmount + CARD_GAP * (rowAmount - 1) + titleSize;
+    return CARD_HEIGHT * rowAmount + cardGap * (rowAmount - 1) + titleSize;
   }
 
   // NOTE: The goal is to delay query when we reach more than {requestsPerSecond} per secondes.

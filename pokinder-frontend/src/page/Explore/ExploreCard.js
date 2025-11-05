@@ -1,6 +1,7 @@
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
+import useIsMobile from "../../hook/useIsMobile";
 import useToggle from "../../hook/useToggle";
 
 import { getDaenaLink } from "../../utils/website";
@@ -17,14 +18,17 @@ export const CARD_BORDER_WIDTH = 6;
 export const CARD_WIDTH = 160 + CARD_PADDING_WIDTH * 2 + CARD_BORDER_WIDTH * 2;
 export const CARD_HEIGHT = 250 + CARD_PADDING_HEIGHT * 2 + CARD_BORDER_WIDTH * 2;
 export const CARD_GAP = 16;
+export const CARD_GAP_MOBILE = 4;
 
-export function calculateCardsPerRow(width, cardPlaced = 0) {
+export function calculateCardsPerRow(width, cardPlaced = 0, isMobile) {
+  const cardGap = isMobile ? CARD_GAP_MOBILE : CARD_GAP;
+
   if (cardPlaced === 0) {
     if (width < CARD_WIDTH) return 0;
-    else return calculateCardsPerRow(width - CARD_WIDTH, 1);
+    else return calculateCardsPerRow(width - CARD_WIDTH, 1, isMobile);
   } else {
-    if (width < CARD_WIDTH + CARD_GAP) return cardPlaced;
-    else return calculateCardsPerRow(width - CARD_WIDTH - CARD_GAP, cardPlaced + 1);
+    if (width < CARD_WIDTH + cardGap) return cardPlaced;
+    else return calculateCardsPerRow(width - CARD_WIDTH - cardGap, cardPlaced + 1, isMobile);
   }
 }
 
@@ -39,6 +43,7 @@ export const ExploreCard = memo(function ExploreCard({
   const { t } = useTranslation();
   const [flipped, toggleFlipped] = useToggle(false);
   const [showReferenceProposalModal, toggleReferenceProposalModal] = useToggle(false);
+  const [isMobile] = useIsMobile();
 
   const formattedFusionPath = fusionIsRemoved
     ? `${fusionPath.slice(0, -1)} (${t("Old")})`
@@ -61,8 +66,8 @@ export const ExploreCard = memo(function ExploreCard({
             "--card-border-width": CARD_BORDER_WIDTH + "px",
             "--card-width": CARD_WIDTH + "px",
             "--card-height": CARD_HEIGHT + "px",
-            "--card-gap": CARD_GAP + "px",
             "--card-clickable": 1,
+            boxShadow: isMobile ? "none" : "0px 4px 5px 2px #00000033",
           }}
           onClick={toggleFlipped}
         >

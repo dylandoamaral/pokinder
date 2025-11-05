@@ -1,6 +1,5 @@
 import {
   CARD_BORDER_WIDTH,
-  CARD_GAP,
   CARD_HEIGHT,
   CARD_PADDING_HEIGHT,
   CARD_PADDING_WIDTH,
@@ -18,7 +17,6 @@ export default function ExploreCardLoading() {
         "--card-border-width": CARD_BORDER_WIDTH + "px",
         "--card-width": CARD_WIDTH + "px",
         "--card-height": CARD_HEIGHT + "px",
-        "--card-gap": CARD_GAP + "px",
         "--card-clickable": 0,
       }}
     >

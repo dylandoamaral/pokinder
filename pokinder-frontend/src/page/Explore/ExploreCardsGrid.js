@@ -6,23 +6,34 @@ import InfiniteLoader from "react-window-infinite-loader";
 import { v4 as uuidv4 } from "uuid";
 
 import { useAfterEffect } from "../../hook/useAfterEffect";
+import useIsMobile from "../../hook/useIsMobile";
 
 import Loader from "../../component/atom/Loader/Loader";
 
-import { CARD_GAP, CARD_HEIGHT, CARD_WIDTH, calculateCardsPerRow } from "./ExploreCard";
+import {
+  CARD_GAP,
+  CARD_GAP_MOBILE,
+  CARD_HEIGHT,
+  CARD_WIDTH,
+  calculateCardsPerRow,
+} from "./ExploreCard";
 import ExploreCardLoading from "./ExploreCardLoading";
 import styles from "./ExploreCardsGrid.module.css";
 
 function List({ width, height, items, state, count, filters, loadItems, renderCard }) {
+  const [isMobile] = useIsMobile();
+
   const infiniteLoaderRef = useRef(null);
 
   const queries = useRef({});
   const scrollInformation = useRef(null);
 
-  const cardsPerRow = calculateCardsPerRow(width);
+  const cardsPerRow = calculateCardsPerRow(width, 0, isMobile);
+
+  const cardGap = isMobile ? CARD_GAP_MOBILE : CARD_GAP;
 
   const itemCount = Math.ceil(count / cardsPerRow) || Math.ceil(height / CARD_HEIGHT);
-  const itemSize = CARD_HEIGHT + CARD_GAP;
+  const itemSize = CARD_HEIGHT + cardGap;
 
   const requestsPerSecond = 4;
 
@@ -91,7 +102,7 @@ function List({ width, height, items, state, count, filters, loadItems, renderCa
     );
 
     return (
-      <div className={styles.row} style={style}>
+      <div className={styles.row} style={{ ...style, "--card-gap": `${cardGap}px` }}>
         {cardIndexes.map((index) => renderAllCard(index, items[index]))}
         {phantomIndexes.map((index) => (
           <div key={index} style={{ width: `${CARD_WIDTH}px` }} />
