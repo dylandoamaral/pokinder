@@ -1,9 +1,8 @@
 from uuid import UUID
 
-from sqlalchemy import and_, func, select
+from sqlalchemy import and_, func, select, tablesample
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.component.reference import Reference
 from src.component.vote import Vote
 
 from .fusion_denormalized_table import FusionDenormalized
@@ -16,27 +15,29 @@ class FusionDependencyPostgres(FusionDependency):
         self.session = session
 
     async def draw(self, account_id: UUID, limit: int) -> list[FusionDraw]:
+        FusionDenormalizedSampled = tablesample(FusionDenormalized, 5)
+
         query = (
             select(
-                FusionDenormalized.id,
-                FusionDenormalized.path,
-                FusionDenormalized.is_removed,
-                FusionDenormalized.head_name,
-                FusionDenormalized.head_name_separator_index,
-                FusionDenormalized.head_type_1,
-                FusionDenormalized.head_type_2,
-                FusionDenormalized.head_pokedex_id,
-                FusionDenormalized.body_name,
-                FusionDenormalized.body_name_separator_index,
-                FusionDenormalized.body_type_1,
-                FusionDenormalized.body_type_2,
-                FusionDenormalized.body_pokedex_id,
-                FusionDenormalized.creators,
-                FusionDenormalized.references,
+                FusionDenormalizedSampled.c.id,
+                FusionDenormalizedSampled.c.path,
+                FusionDenormalizedSampled.c.is_removed,
+                FusionDenormalizedSampled.c.head_name,
+                FusionDenormalizedSampled.c.head_name_separator_index,
+                FusionDenormalizedSampled.c.head_type_1,
+                FusionDenormalizedSampled.c.head_type_2,
+                FusionDenormalizedSampled.c.head_pokedex_id,
+                FusionDenormalizedSampled.c.body_name,
+                FusionDenormalizedSampled.c.body_name_separator_index,
+                FusionDenormalizedSampled.c.body_type_1,
+                FusionDenormalizedSampled.c.body_type_2,
+                FusionDenormalizedSampled.c.body_pokedex_id,
+                FusionDenormalizedSampled.c.creators,
+                FusionDenormalizedSampled.c.references,
             )
-            .outerjoin(Vote, and_(FusionDenormalized.id == Vote.fusion_id, Vote.account_id == account_id))
+            .outerjoin(Vote, and_(FusionDenormalizedSampled.c.id == Vote.fusion_id, Vote.account_id == account_id))
             .filter(Vote.account_id.is_(None))
-            .order_by(FusionDenormalized.vote_count, func.random())
+            .order_by(FusionDenormalizedSampled.c.vote_count, func.random())
             .limit(limit)
         )
 

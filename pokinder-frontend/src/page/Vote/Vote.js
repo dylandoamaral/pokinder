@@ -80,10 +80,10 @@ function Vote() {
 
     if (maybeRefreshDate === null) return false;
 
-    var oneHourInMilliseconds = 1 * 60 * 60 * 1000;
+    var tenMinutesInMilliseconds = 1 * 10 * 60 * 1000;
     var currentTimestamp = Date.now();
 
-    const dataIsOutdated = currentTimestamp - maybeRefreshDate > oneHourInMilliseconds;
+    const dataIsOutdated = currentTimestamp - maybeRefreshDate > tenMinutesInMilliseconds;
     const persistedFusionsExists = localStorage.getItem(persistKeyFusions) !== null;
     const persistedCarousselFusionsExists =
       localStorage.getItem(persistKeyCarouselFusions) !== null;
