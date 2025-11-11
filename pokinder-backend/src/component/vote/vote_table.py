@@ -34,6 +34,10 @@ class Vote(BaseTable):
 
     __table_args__ = (
         PrimaryKeyConstraint("account_id", "fusion_id", name="pk_account_fusion"),
+        # NOTE: Used for analytics.
+        Index("index_vote_account_id", "account_id"),
+        # NOTE: Used for analytics.
+        Index("index_vote_vote_type", "vote_type"),
         # NOTE: Used for many joins between vote and fusion tables.
         Index("index_vote_account_id_fusion_id", "account_id", "fusion_id"),
     )

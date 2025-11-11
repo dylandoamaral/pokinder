@@ -31,7 +31,7 @@ from src.utils.env import retrieve_postgres_connection_string
 from src.utils.sqlalchemy import BaseTable
 
 # NOTE: fusion_denormalized is ignored because it is a materialized view not a table.
-IGNORE_TABLES = {"fusion_denormalized"}
+IGNORE_TABLES = {"account_ranking", "fusion_denormalized"}
 
 target_metadata = [BaseTable.metadata]
 
