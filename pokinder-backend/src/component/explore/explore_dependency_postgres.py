@@ -98,7 +98,7 @@ class ExploreDependencyPostgres(ExploreDependency):
             FusionDenormalized.is_removed,
             FusionDenormalized.head_name,
             FusionDenormalized.head_name_separator_index,
-            FusionDenormalized.head_name,
+            FusionDenormalized.body_name,
             FusionDenormalized.body_name_separator_index,
             FusionDenormalized.references,
             Vote.vote_type,
