@@ -8,6 +8,7 @@ from litestar.stores.base import Store
 from sqlalchemy import and_, case, desc, distinct, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.component.account.account_ranking_table import AccountRanking
 from src.component.account.account_table import Account
 from src.component.creator.creator_table import Creator
 from src.component.fusion.fusion_denormalized_table import FusionDenormalized
@@ -308,15 +309,7 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         return created_at[0]
 
     async def __rank(self, account_id) -> Optional[int]:
-        subquery = (
-            select(
-                Vote.account_id,
-                func.rank().over(order_by=func.count().desc()).label("rank"),
-            )
-            .group_by(Vote.account_id)
-            .order_by("rank")
-        ).subquery()
-        query = select(subquery.c.rank).where(subquery.c.account_id == account_id)
+        query = select(AccountRanking.rank).where(AccountRanking.id == account_id)
         result = await self.session.execute(query)
         rank = result.one_or_none()
         if rank is None:

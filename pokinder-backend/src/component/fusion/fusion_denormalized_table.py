@@ -14,6 +14,8 @@ class FusionDenormalized(BaseTable, UUIDPrimaryKey):
     __table_args__ = (
         Index("index_fusion_denormalized_path", "path"),
         Index("index_fusion_denormalized_vote_rank", "vote_rank"),
+        # NOTE: Used for draw fusions.
+        Index("index_fusion_denormalized_vote_count", "vote_count"),
         Index("index_fusion_denormalized_creators_gin", "creators", postgresql_using="gin"),
         Index("index_fusion_denormalized_references_gin", "references", postgresql_using="gin"),
         Index("index_fusion_denormalized_head_families_gin", "head_families", postgresql_using="gin"),
