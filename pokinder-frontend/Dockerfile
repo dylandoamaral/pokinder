@@ -1,11 +1,23 @@
-# build environment
+# syntax=docker/dockerfile:1.4
+
+FROM node:20.9.0-alpine3.18 AS deps
+
+COPY package.json /tmp
+
+# NOTE: We remove version number from package.json to enable caching.
+RUN awk -v new_version="0.0.1" '/"version": "[^"]*"/ && !found {sub(/"version": "[^"]*"/, "\"version\": \"" new_version "\""); found=1} 1' /tmp/package.json > tmpfile && mv tmpfile /tmp/package.json
+
 FROM node:20.9.0-alpine3.18 as build
 
 WORKDIR /app
 
 ENV PATH /app/node_modules/.bin:$PATH
-COPY package.json yarn.lock ./
-RUN yarn add react-scripts@5.0.1 -g --silent
+
+COPY --from=deps /tmp/package.json .
+COPY yarn.lock .
+
+RUN yarn install --frozen-lockfile
+
 COPY . ./
 
 ARG REACT_APP_BACKEND_HOST
@@ -21,7 +33,6 @@ ENV REACT_APP_MINIO_PORT $REACT_APP_MINIO_PORT
 
 RUN yarn build
 
-# production environment
 FROM nginx:stable-alpine
 
 COPY --from=build /app/build /usr/share/nginx/html
