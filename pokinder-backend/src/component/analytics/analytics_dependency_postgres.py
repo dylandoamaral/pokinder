@@ -48,12 +48,6 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
         count = result.scalar()
         return count
 
-    async def __user_count(self) -> int:
-        query = select(func.count()).select_from(select(distinct(Vote.account_id)))
-        result = await self.session.execute(query)
-        count = result.scalar()
-        return count
-
     async def __vote_type_count(self, maybe_account_id=None) -> dict:
         query = select(Vote.vote_type, func.count().label("count")).group_by(Vote.vote_type)
         if maybe_account_id:
@@ -353,7 +347,7 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
 
         user_count_query = self.cache.get_or_set_int(
             key="user_count",
-            awaitable=self.__user_count(),
+            awaitable=self.__count(AccountRanking),
             expires_in=ten_minutes,
         )
         fusion_count_query = self.cache.get_or_set_int(
