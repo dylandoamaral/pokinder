@@ -16,20 +16,15 @@ export default function ExploreRankingCard({
   const { t } = useTranslation();
 
   function addSuffix(rank) {
-    switch (rank) {
-      case 1:
-        return "1st";
-      case 2:
-        return "2nd";
-      case 3:
-        return "3rd";
-      default:
-        if (rank < 1000) {
-          return `${rank}th`;
-        } else {
-          return rank;
-        }
-    }
+    const j = rank % 10;
+    const k = rank % 100;
+
+    if (rank >= 1000) return `${rank}`;
+    if (k >= 11 && k <= 13) return `${rank}th`;
+    if (j === 1) return `${rank}st`;
+    if (j === 2) return `${rank}nd`;
+    if (j === 3) return `${rank}rd`;
+    return `${rank}th`;
   }
 
   function getRankFontSize(rank) {
