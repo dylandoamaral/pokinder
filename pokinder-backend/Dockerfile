@@ -1,55 +1,39 @@
-#syntax=docker/dockerfile:1.4
+# syntax=docker/dockerfile:1.4
 
-ARG INSTALL_DEPENDENCIES=prod
+FROM python:3.11-slim AS deps
 
-FROM python:3.11-slim AS base
+COPY pyproject.toml /tmp
 
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && apt-get install -y --no-install-recommends curl git build-essential python3-setuptools \
-    && apt-get autoremove -y \
-    && apt-get clean \
-    && rm -rf /var/apt/lists/* \
-    && rm -rf /var/cache/apt/*
+# NOTE: We remove version number from package.json to enable caching.
+RUN awk -v new_version="0.0.1" '/version = "[^"]*"/ && !found {sub(/version = "[^"]*"/, "version = \"" new_version "\""); found=1} 1' /tmp/pyproject.toml > tmpfile && mv tmpfile /tmp/pyproject.toml
 
+FROM python:3.11-slim
 
 ENV POETRY_HOME="/opt/poetry"
-ENV PATH="$POETRY_HOME/bin:$PATH" \
-    POETRY_VERSION=1.4.0
+ENV PATH="$POETRY_HOME/bin:$PATH"
+ENV POETRY_VERSION=1.4.0
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl git build-essential python3-setuptools \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN curl -sSL https://install.python-poetry.org | python3 - \
     && poetry config virtualenvs.create false \
-    && mkdir -p /cache/poetry \
-    && poetry config cache-dir /cache/poetry
-
-FROM base AS base-prod
+    && poetry config cache-dir /root/.cache/pypoetry
 
 WORKDIR /app
 
-COPY pyproject.toml poetry.lock ./
+COPY --from=deps /tmp/pyproject.toml .
+COPY poetry.lock .
 
-# install only production dependencies
-RUN --mount=type=cache,target=/cache/poetry \
-    poetry install --no-root --only main
+RUN --mount=type=cache,target=/root/.cache/pypoetry poetry install --no-root --only main
 
+COPY . .
 
-FROM base-prod AS base-dev
+RUN --mount=type=cache,target=/root/.cache/pypoetry poetry install --only-root
 
-# install the rest of the dependencies
-RUN --mount=type=cache,target=/cache/poetry \
-    poetry install --no-root
-
-# hadolint ignore=DL3006
-FROM base-${INSTALL_DEPENDENCIES} AS final
-
-# copy all the application code and install our project
-COPY . ./
-
-RUN poetry install --only-root
-
-# create a non-root user and switch to it, for security.
-RUN addgroup --system --gid 1001 "pokinder"
-RUN adduser --system --uid 1001 "pokinder"
-USER "pokinder"
+RUN addgroup --system pokinder && adduser --system pokinder
+USER pokinder
 
 ENTRYPOINT ["/bin/sh", "-c"]
 CMD ["./script/entry"]
