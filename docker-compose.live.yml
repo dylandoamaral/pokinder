@@ -1,5 +1,5 @@
 services:
-  db:
+  postgres:
     build:
       context: .
       dockerfile: Dockerfile.postgres
@@ -22,6 +22,21 @@ services:
       retries: 10
       start_period: 3s
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
+
+  postgres-prometheus:
+    container_name: pokinder-postgres-prometheus
+    image: quay.io/prometheuscommunity/postgres-exporter:v0.18.1
+    restart: always
+    environment:
+      DATA_SOURCE_NAME: "postgresql://postgres:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
+      PG_EXPORTER_EXTEND_QUERY_PATH: "/etc/postgres_exporter/queries.yaml"
+    ports:
+      - "9187:9187"
+    volumes:
+      - ./configuration/postgres/prometheus.yaml:/etc/postgres_exporter/queries.yaml
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   minio:
     image: "minio/minio:latest"
@@ -76,6 +91,36 @@ services:
       retries: 5
       start_period: 10s
 
+  grafana:
+    container_name: pokinder-grafana
+    image: grafana/grafana:12.3
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: "${GRAFANA_PASSWORD}"
+    volumes:
+      - pokinder-grafana:/var/lib/grafana
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=heart"
+      - "traefik.http.routers.pokinder-backend.rule=Host(`grafana.pokinder.com`)"
+      - "traefik.http.routers.pokinder-backend.entrypoints=websecure"
+      - "traefik.http.routers.pokinder-backend.tls.certresolver=myresolver"
+      - "traefik.http.services.pokinder-backend.loadbalancer.server.port=3000"
+
+  prometheus:
+    container_name: pokinder-prometheus
+    image: prom/prometheus:v3.7.1
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    command:
+      - '--storage.tsdb.retention.time=365d'
+    volumes:
+      - ./configuration/prometheus/prometheus.yaml:/etc/prometheus/prometheus.yml
+      - pokinder-prometheus:/prometheus
+
   backend:
     container_name: pokinder-backend
     restart: unless-stopped
@@ -107,7 +152,7 @@ services:
       - default
       - pokinder-network
     depends_on:
-      db:
+      postgres:
         condition: service_healthy
     labels:
       - "traefik.enable=true"
@@ -153,6 +198,10 @@ volumes:
     name: pokinder-postgres
   pokinder-redis:
     name: pokinder-redis
+  pokinder-grafana:
+    name: pokinder-grafana
+  pokinder-prometheus:
+    name: pokinder-prometheus
 
 networks:
   pokinder-network:

@@ -20,6 +20,7 @@ from litestar.middleware.base import DefineMiddleware
 from litestar.middleware.logging import LoggingMiddlewareConfig
 from litestar.middleware.rate_limit import RateLimitConfig
 from litestar.openapi import OpenAPIConfig
+from litestar.plugins.prometheus import PrometheusConfig, PrometheusController
 from litestar.stores.redis import RedisStore
 
 from src.component.account import AccountController, use_account_dependency_postgres
@@ -82,6 +83,12 @@ logging_config = LoggingConfig(
     log_exceptions="always",
 )
 
+prometheus_config = PrometheusConfig(
+    app_name="pokinder",
+    prefix="litestar",
+    group_path=True,
+)
+
 jwt_middleware = DefineMiddleware(
     JWTAuthenticationMiddleware,
     exclude=[
@@ -90,6 +97,7 @@ jwt_middleware = DefineMiddleware(
         "account/signup",
         "account/refresh",
         "creator",
+        "metrics",
     ],
 )
 
@@ -106,6 +114,7 @@ app = Litestar(
         ReferenceProposalController,
         ReferenceFamilyController,
         ExploreController,
+        PrometheusController,
     ],
     dependencies={
         "vote_dependency": Provide(use_vote_dependency_postgres, sync_to_thread=False),
