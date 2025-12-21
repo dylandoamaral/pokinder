@@ -1,0 +1,44 @@
+pokinder_vote:
+  master: true
+  cache_seconds: 3600
+  query: "SELECT COUNT(*) FROM vote"
+  metrics:
+    - count:
+        usage: COUNTER
+        description: Number of votes in Pokinder
+
+pokinder_fusion:
+  master: true
+  cache_seconds: 3600
+  query: "SELECT COUNT(*) FROM fusion"
+  metrics:
+    - count:
+        usage: COUNTER
+        description: Number of fusions in Pokinder
+
+pokinder_account:
+  master: true
+  cache_seconds: 3600
+  query: "SELECT COUNT(*) FROM account"
+  metrics:
+    - count:
+        usage: COUNTER
+        description: Number of accounts in Pokinder
+
+pokinder_reference:
+  master: true
+  cache_seconds: 3600
+  query: "SELECT COUNT(*) FROM reference"
+  metrics:
+    - count:
+        usage: COUNTER
+        description: Number of references in Pokinder
+
+pokinder_creator:
+  master: true
+  cache_seconds: 3600
+  query: "SELECT COUNT(*) FROM creator"
+  metrics:
+    - count:
+        usage: COUNTER
+        description: Number of creators in Pokinder
