@@ -27,6 +27,12 @@ db-upgrade-all:
 	alembic upgrade head
 
 db-fill:
-	@poetry run script/populate_database.py
+	@poetry run python script/1.populate_database.py
 
 db-reset: db-downgrade db-upgrade db-fill
+
+migration-generate VERSION_FROM VERSION_TO:
+	@poetry run python script/8.generate_sprite_pack_migration.py {{VERSION_FROM}} {{VERSION_TO}}
+
+migration-apply VERSION_FROM VERSION_TO:
+	@poetry run python script/9.apply_sprite_pack_migration.py {{VERSION_FROM}} {{VERSION_TO}}
