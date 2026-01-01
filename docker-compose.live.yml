@@ -44,6 +44,8 @@ services:
     image: "minio/minio:latest"
     container_name: pokinder-minio
     restart: unless-stopped
+    ports:
+      - '9000:9000'
     networks:
       - default
       - pokinder-network
