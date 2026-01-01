@@ -1,6 +1,6 @@
 pokinder_vote:
   master: true
-  cache_seconds: 3600
+  cache_seconds: 30
   query: "SELECT COUNT(*) FROM vote"
   metrics:
     - count:
@@ -9,7 +9,7 @@ pokinder_vote:
 
 pokinder_fusion:
   master: true
-  cache_seconds: 3600
+  cache_seconds: 30
   query: "SELECT COUNT(*) FROM fusion"
   metrics:
     - count:
@@ -18,7 +18,7 @@ pokinder_fusion:
 
 pokinder_account:
   master: true
-  cache_seconds: 3600
+  cache_seconds: 30
   query: "SELECT COUNT(*) FROM account"
   metrics:
     - count:
@@ -27,7 +27,7 @@ pokinder_account:
 
 pokinder_reference:
   master: true
-  cache_seconds: 3600
+  cache_seconds: 30
   query: "SELECT COUNT(*) FROM reference"
   metrics:
     - count:
@@ -36,7 +36,7 @@ pokinder_reference:
 
 pokinder_creator:
   master: true
-  cache_seconds: 3600
+  cache_seconds: 30
   query: "SELECT COUNT(*) FROM creator"
   metrics:
     - count:
