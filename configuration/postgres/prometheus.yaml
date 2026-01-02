@@ -42,3 +42,18 @@ pokinder_creator:
     - count:
         usage: COUNTER
         description: Number of creators in Pokinder
+
+pokinder_daily_user:
+  master: true
+  cache_seconds: 30
+  query: |
+    SELECT
+      COUNT(DISTINCT vote.account_id)
+    FROM
+      vote
+    WHERE
+      DATE(vote.created_at) = CURRENT_DATE
+  metrics:
+    - count:
+        usage: COUNTER
+        description: Number of daily user
