@@ -145,5 +145,10 @@ app = Litestar(
     plugins=[SQLAlchemyInitPlugin(config=sqlalchemy_config)],
     compression_config=CompressionConfig(backend="gzip", gzip_compress_level=9),
     allowed_hosts=AllowedHostsConfig(allowed_hosts=[retrieve_backend_host()]),
-    middleware=[jwt_middleware, rate_limit_middleware, logging_middleware],
+    middleware=[
+        jwt_middleware, 
+        rate_limit_middleware, 
+        logging_middleware, 
+        prometheus_config.middleware,
+    ],
 )

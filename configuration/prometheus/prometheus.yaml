@@ -7,5 +7,6 @@ scrape_configs:
       - targets: ['postgres-prometheus:9187']
 
   - job_name: 'litestar'
+    scheme: https
     static_configs:
-      - targets: ['backend:8000']
+      - targets: ['api.pokinder.com']

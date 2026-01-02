@@ -153,6 +153,8 @@ services:
       MILESTONE_VOTE: ${MILESTONE_VOTE}
       MILESTONE_ACCOUNT: ${MILESTONE_ACCOUNT}
       MILESTONE_REFERENCE: ${MILESTONE_REFERENCE}
+    ports:
+      - '8000:8000'
     build:
       context: ./pokinder-backend
       args:
