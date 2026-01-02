@@ -57,3 +57,19 @@ pokinder_daily_user:
     - count:
         usage: COUNTER
         description: Number of daily user
+
+# NOTE: 5 minutes is the scrape interval in prometheus
+pokinder_current_vote:
+  master: true
+  cache_seconds: 300
+  query: |
+    SELECT
+      COUNT(*)
+    FROM
+      vote
+    WHERE
+      vote.created_at >= NOW() - INTERVAL '5 minutes'
+  metrics:
+    - count:
+        usage: COUNTER
+        description: Number of votes in Pokinder within 5 minutes
