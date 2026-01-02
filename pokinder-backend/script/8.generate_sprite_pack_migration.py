@@ -10,6 +10,7 @@ from pathlib import Path
 from PIL import Image, ImageFile
 import numpy as np
 import re
+import sys
 from collections import defaultdict
 import json
 from uuid import uuid4
@@ -23,12 +24,20 @@ from bs4 import BeautifulSoup
 from src.data.pokemon_name_separator_indexes import pokemon_name_separator_indexes
 import asyncio
 
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
+version_from = int(sys.argv[1])
+version_to = int(sys.argv[2])
+
+VERSION = f"{version_from}_{version_to}"
+
 before_sprites_path = Path(r"C:\Users\Dylan\Temporaire\Fusion\before")
 after_sprites_path = Path(r"C:\Users\Dylan\Temporaire\Fusion\after")
 credits_path = Path(r"C:\Users\Dylan\Temporaire\Fusion\Sprite_Credits.csv")
 
 POKEMON_SIZE = 567
-MIGRATION_PATH = "./migration/117_118"
+MIGRATION_PATH = f"./migration/{VERSION}"
 
 
 # CREATOR FUNCTIONS
@@ -317,8 +326,13 @@ def generate_fusion_actions() -> None:
     before_paths_dictionary = build_sprite_dictionary(before_sprites_path)
     after_paths_dictionary = build_sprite_dictionary(after_sprites_path)
 
+    total = (POKEMON_SIZE + 1) ** 2
+    current = 0
+
     for head_id in range(0, POKEMON_SIZE + 1):
         for body_id in range(0, POKEMON_SIZE + 1):
+            current += 1
+
             path = f"{head_id}.{body_id}"
             before_paths = sorted(before_paths_dictionary.get(path, []))
             after_paths = sorted(after_paths_dictionary.get(path, []))
@@ -376,6 +390,15 @@ def generate_fusion_actions() -> None:
             if actions:
                 fusion_actions[path] = actions
 
+            progress = current / total
+            bar_length = 40
+            filled = int(bar_length * progress)
+            bar = "#" * filled + "-" * (bar_length - filled)
+
+            if current % 1000 == 0:
+                sys.stdout.write(f"\r[{bar}] {int(progress * 100)}%")
+                sys.stdout.flush()
+
     output_file = Path(f"{MIGRATION_PATH}/fusions.json")
     output_file.parent.mkdir(parents=True, exist_ok=True)
 
@@ -384,9 +407,16 @@ def generate_fusion_actions() -> None:
 
 
 async def main():
+    print("Generating pokemon families mapping...")
     generate_pokemon_families_mapping()
+
+    print("Generating pokemon actions...")
     await generate_pokemon_actions()
+
+    print("Generating creator actions...")
     await generate_creator_actions()
+
+    print("Generating fusion actions...")
     generate_fusion_actions()
     # print(compute_shape_similarity(before_sprites_path / "235.354a.png", after_sprites_path / "235.354a.png"))
 

@@ -9,6 +9,7 @@ import asyncio
 import tempfile
 from pathlib import Path
 from uuid import UUID, uuid4
+import sys
 
 from PIL import Image, ImageFile
 from minio import Minio
@@ -25,6 +26,11 @@ from src.component.creator.creator_table import Creator
 from src.component.fusion_creator import FusionCreator
 
 # SETUP FUNCTIONS
+
+version_from = int(sys.argv[1])
+version_to = int(sys.argv[2])
+
+VERSION = f"{version_from}_{version_to}"
 
 
 def get_minio_client():
@@ -45,12 +51,24 @@ def save_state(state: dict) -> None:
 
 
 def load_state() -> dict:
-    default_state = {"pokemon": 0, "pokemon_family": False, "creator": False, "fusion": "1.0", "fusion_creator": False}
+    default_state = {
+        "pokemon": 0,
+        "pokemon_family": False,
+        "creator": False,
+        "fusion": "1.0",
+        "fusion_creator": False,
+        "version": VERSION,
+    }
 
     if STATE_PATH.exists():
         try:
             with STATE_PATH.open("r", encoding="utf-8") as f:
-                return json.load(f)
+                state = json.load(f)
+
+                if state.get("version", "") != VERSION:
+                    return default_state
+
+                return state
         except (json.JSONDecodeError, OSError):
             return default_state
     return default_state
@@ -62,7 +80,7 @@ TEMP_DIR = tempfile.mkdtemp()
 
 POKEMON_SIZE = 567
 
-MIGRATION_PATH = Path(r"./migration/117_118")
+MIGRATION_PATH = Path(f"./migration/{VERSION}")
 STATE_PATH = Path(r"./tmp/state.json")
 POKEMON_PATH = Path(r"C:\Users\Dylan\Temporaire\Fusion\pokemon")
 FUSION_PATH = Path(r"C:\Users\Dylan\Temporaire\Fusion\after")
