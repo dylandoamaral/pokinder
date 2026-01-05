@@ -144,7 +144,7 @@ app = Litestar(
     cors_config=CORSConfig(allow_origins=[retrieve_frontend_endpoint()], allow_credentials=True),
     plugins=[SQLAlchemyInitPlugin(config=sqlalchemy_config)],
     compression_config=CompressionConfig(backend="gzip", gzip_compress_level=9),
-    allowed_hosts=AllowedHostsConfig(allowed_hosts=[retrieve_backend_host()]),
+    allowed_hosts=AllowedHostsConfig(allowed_hosts=[retrieve_backend_host(), "backend"]),
     middleware=[
         jwt_middleware, 
         rate_limit_middleware, 

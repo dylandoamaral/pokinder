@@ -26,7 +26,7 @@ services:
   postgres-prometheus:
     container_name: pokinder-postgres-prometheus
     image: quay.io/prometheuscommunity/postgres-exporter:v0.18.1
-    restart: always
+    restart: unless-stopped
     environment:
       DATA_SOURCE_NAME: "postgresql://postgres:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB}?sslmode=disable"
       PG_EXPORTER_EXTEND_QUERY_PATH: "/etc/postgres_exporter/queries.yaml"
