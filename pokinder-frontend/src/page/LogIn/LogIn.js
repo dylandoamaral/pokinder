@@ -34,7 +34,7 @@ function LogIn() {
 
   const { mutate: submit } = useMutation(async () => {
     const tokens = await login(form.usernameOrEmail, form.password);
-    setTokens({ token: tokens.token, refreshToken: tokens.token });
+    setTokens({ token: tokens.token, refreshToken: tokens.refresh });
   });
 
   return (
