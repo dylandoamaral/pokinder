@@ -8,7 +8,7 @@ import { useAfterEffect } from "../../hook/useAfterEffect";
 import { useAuthentication } from "../../hook/useAuthentication";
 import useToggle from "../../hook/useToggle";
 
-import { addVote, drawFusions } from "../../api/pokinder";
+import { addVote, check, drawFusions } from "../../api/pokinder";
 
 import VoteButton from "../../component/atom/VoteButton/VoteButton";
 import Page from "../../component/organism/Page/Page";
@@ -46,18 +46,42 @@ function Vote() {
   const [voteType, setVoteType] = useState(0);
   const [absoluteIndex, setAbsoluteIndex] = useState(CACHED_FUSIONS - 1);
   const [relativeIndex, setRelativeIndex] = useState(0);
-  const [carouselFusions, setCarouselFusions] = useState(
-    getPersistedValue(persistKeyCarouselFusions),
-  );
-  const fusions = useRef(getPersistedValue(persistKeyFusions));
 
-  // When we change account, reload the page to avoid caching wrong data.
+  function computeShouldUsePersistedFusions() {
+    const maybeRefreshDate = localStorage.getItem(persistKeyDate);
+
+    if (maybeRefreshDate === null) return false;
+
+    var tenMinutesInMilliseconds = 1 * 10 * 60 * 1000;
+    var currentTimestamp = Date.now();
+
+    const dataIsOutdated = currentTimestamp - maybeRefreshDate > tenMinutesInMilliseconds;
+    const persistedFusionsExists = localStorage.getItem(persistKeyFusions) !== null;
+    const persistedCarousselFusionsExists =
+      localStorage.getItem(persistKeyCarouselFusions) !== null;
+
+    return !dataIsOutdated && persistedFusionsExists && persistedCarousselFusionsExists;
+  }
+
+  const shouldUsePersistedFusions = computeShouldUsePersistedFusions();
+
+  const [carouselFusions, setCarouselFusions] = useState(
+    getPersistedValue({ key: persistKeyCarouselFusions, enabled: shouldUsePersistedFusions }),
+  );
+  const fusions = useRef(
+    getPersistedValue({ key: persistKeyFusions, enabled: shouldUsePersistedFusions }),
+  );
+
+  // NOTE: Ensure when using caching that the user is still connected.
+  useQuery(["check"], check, { enabled: shouldUsePersistedFusions });
+
+  // NOTE: When we change account, reload the page to avoid caching wrong data.
   useAfterEffect(() => {
     window.location.reload();
   }, [accountId]);
 
-  function getPersistedValue(key) {
-    if (shouldUsePersistedFusions()) {
+  function getPersistedValue({ key, enabled }) {
+    if (enabled) {
       return JSON.parse(localStorage.getItem(key)) || [];
     } else {
       return [];
@@ -73,22 +97,6 @@ function Vote() {
   function setAndPersistCarouselFusions(newCarouselFusions) {
     setCarouselFusions(newCarouselFusions);
     localStorage.setItem(persistKeyCarouselFusions, JSON.stringify(newCarouselFusions));
-  }
-
-  function shouldUsePersistedFusions() {
-    const maybeRefreshDate = localStorage.getItem(persistKeyDate);
-
-    if (maybeRefreshDate === null) return false;
-
-    var tenMinutesInMilliseconds = 1 * 10 * 60 * 1000;
-    var currentTimestamp = Date.now();
-
-    const dataIsOutdated = currentTimestamp - maybeRefreshDate > tenMinutesInMilliseconds;
-    const persistedFusionsExists = localStorage.getItem(persistKeyFusions) !== null;
-    const persistedCarousselFusionsExists =
-      localStorage.getItem(persistKeyCarouselFusions) !== null;
-
-    return !dataIsOutdated && persistedFusionsExists && persistedCarousselFusionsExists;
   }
 
   // Init the carousel when the component is first rendered.
@@ -159,7 +167,7 @@ function Vote() {
   } = useQuery(["fusions"], drawNewFusions, {
     staleTime: 60 * 60 * 1000,
     cacheTime: 0,
-    enabled: !shouldUsePersistedFusions(),
+    enabled: !shouldUsePersistedFusions,
   });
 
   const { mutate: storeVote } = useMutation(async ({ fusionId, voteType }) => {

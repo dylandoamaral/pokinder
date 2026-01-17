@@ -4,7 +4,7 @@ import string
 from datetime import datetime, timedelta, timezone
 
 from bcrypt import checkpw, gensalt, hashpw
-from litestar import Controller, post
+from litestar import Controller, get, post
 from litestar.exceptions import NotFoundException
 
 from src.component.account.account_dependency import AccountDependency
@@ -87,6 +87,11 @@ class AccountController(Controller):
             raise NotFoundException()
 
         return self.generateTokens(Subject(account_id=account.id, username=account.username, role=account.role))
+
+    # NOTE: Check if the current user is expirated.
+    @get(path="/check", dto=None)
+    async def check(self) -> None:
+        return None
 
     @post(path="/refresh", dto=None)
     async def refresh(self, refresh_token: str) -> EncodedTokens:
