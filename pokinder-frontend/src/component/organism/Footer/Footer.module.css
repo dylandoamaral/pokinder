@@ -1,22 +1,16 @@
 .container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
-.left {
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-M);
   align-items: flex-start;
-  justify-content: left;
-  text-align: left;
 }
 
-.right {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-M);
-  align-items: flex-start;
-  justify-content: right;
-  text-align: right;
+.spacer {
+  flex-grow: 1;
+}
+
+@media (max-width: 560px) {
+  .container {
+    display: none;
+  }
 }

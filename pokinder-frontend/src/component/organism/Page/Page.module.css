@@ -29,9 +29,11 @@
 
 @media (max-width: 560px) {
   .content {
+    grid-template-rows: auto 1fr;
     gap: var(--spacing-M);
-    margin: var(--spacing-M);
-    min-height: calc(100dvh - var(--spacing-M) * 2);
-    width: calc(100vw - var(--spacing-M) * 2);
+    margin: var(--spacing-L);
+    margin-bottom: 0;
+    min-height: calc(100dvh - var(--spacing-L));
+    width: calc(100vw - var(--spacing-L) * 2);
   }
 }
