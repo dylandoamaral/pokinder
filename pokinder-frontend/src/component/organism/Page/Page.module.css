@@ -31,9 +31,9 @@
   .content {
     grid-template-rows: auto 1fr;
     gap: var(--spacing-M);
-    margin: var(--spacing-L);
+    margin: var(--spacing-M);
     margin-bottom: 0;
-    min-height: calc(100dvh - var(--spacing-L));
-    width: calc(100vw - var(--spacing-L) * 2);
+    min-height: calc(100dvh - var(--spacing-M));
+    width: calc(100vw - var(--spacing-M) * 2);
   }
 }
