@@ -41,7 +41,7 @@ function Signup() {
 
   const { mutate: submit } = useMutation(async () => {
     const tokens = await signup(accountId, form.username, form.email, form.password);
-    setTokens({ token: tokens.token, refreshToken: tokens.token });
+    setTokens({ token: tokens.token, refreshToken: tokens.refresh });
     generateGuestToken();
   });
 
