@@ -146,9 +146,9 @@ app = Litestar(
     compression_config=CompressionConfig(backend="gzip", gzip_compress_level=9),
     allowed_hosts=AllowedHostsConfig(allowed_hosts=[retrieve_backend_host(), "backend"]),
     middleware=[
-        jwt_middleware, 
-        rate_limit_middleware, 
-        logging_middleware, 
+        jwt_middleware,
+        rate_limit_middleware,
+        logging_middleware,
         prometheus_config.middleware,
     ],
 )

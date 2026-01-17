@@ -24,6 +24,10 @@ export async function login(username_or_email, password) {
   return response.data;
 }
 
+export async function check() {
+  await http.get("/account/check/");
+}
+
 export async function refresh(refreshToken) {
   const params = new URLSearchParams();
 
