@@ -36,3 +36,8 @@ migration-generate VERSION_FROM VERSION_TO:
 
 migration-apply VERSION_FROM VERSION_TO:
 	@poetry run python script/9.apply_sprite_pack_migration.py {{VERSION_FROM}} {{VERSION_TO}}
+
+migration-commit VERSION:
+	git add .
+	git commit -m "chore: add sprites pack {{VERSION}}"
+	git push
