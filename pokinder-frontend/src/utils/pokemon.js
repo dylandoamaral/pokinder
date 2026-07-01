@@ -565,6 +565,17 @@ export function allPokemonNames() {
     "Huntail",
     "Gorebyss",
     "Relicanth",
+    "Woobat",
+    "Swoobat",
+    "Tynamo",
+    "Eelektrik",
+    "Eelektross",
+    "Skrelp",
+    "Dragalge",
+    "Shellos East Sea",
+    "Gastrodon East Sea",
+    "Shellos West Sea",
+    "Gastrodon West Sea",
   ];
 }
 
