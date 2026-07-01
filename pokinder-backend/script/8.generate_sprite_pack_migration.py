@@ -20,12 +20,10 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from src.utils.env import retrieve_postgres_connection_string
 import requests
+from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
 from src.data.pokemon_name_separator_indexes import pokemon_name_separator_indexes
 import asyncio
-
-if sys.platform == "win32":
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 version_from = int(sys.argv[1])
 version_to = int(sys.argv[2])
@@ -36,7 +34,7 @@ before_sprites_path = Path(r"C:\Users\Dylan\Temporaire\Fusion\before")
 after_sprites_path = Path(r"C:\Users\Dylan\Temporaire\Fusion\after")
 credits_path = Path(r"C:\Users\Dylan\Temporaire\Fusion\Sprite_Credits.csv")
 
-POKEMON_SIZE = 567
+POKEMON_SIZE = 576
 MIGRATION_PATH = f"./migration/{VERSION}"
 
 
@@ -111,8 +109,25 @@ async def generate_pokemon_actions() -> None:
 
         pokemon_actions = []
 
-        html = requests.get("https://infinitefusion.fandom.com/wiki/Pok%C3%A9dex")
-        soup = BeautifulSoup(html.content, "html.parser")
+        async with async_playwright() as playwright:
+            browser = await playwright.chromium.launch(headless=True)
+            context = await browser.new_context(
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
+                locale="en-US"
+            )
+            page = await context.new_page()
+            await page.goto(
+                "https://infinitefusion.fandom.com/wiki/Pok%C3%A9dex/Hoenn/Classic",
+                wait_until="domc" \
+                "ontentloaded"
+            )
+            content = await page.content()
+
+            await page.close()
+            await context.close()
+            await browser.close()
+
+        soup = BeautifulSoup(content, "html.parser")
 
         pokemon_types = [
             "Normal",

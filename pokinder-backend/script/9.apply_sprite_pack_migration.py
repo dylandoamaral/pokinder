@@ -78,7 +78,7 @@ def load_state() -> dict:
 
 TEMP_DIR = tempfile.mkdtemp()
 
-POKEMON_SIZE = 567
+POKEMON_SIZE = 576
 
 MIGRATION_PATH = Path(f"./migration/{VERSION}")
 STATE_PATH = Path(r"./tmp/state.json")

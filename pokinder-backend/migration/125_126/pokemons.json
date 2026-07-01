@@ -1,0 +1,63 @@
+[
+    {
+        "id": "0167a885-03e8-4c50-bdc8-8473f1ffa85b",
+        "pokedex_id": 571,
+        "name": "Skrelp",
+        "type_1": "Poison",
+        "type_2": "Water",
+        "name_separator_index": "4,2",
+        "weight": 73,
+        "height": 5
+    },
+    {
+        "id": "37e8236c-f373-4a25-b6e3-1152880ae2a8",
+        "pokedex_id": 572,
+        "name": "Dragalge",
+        "type_1": "Poison",
+        "type_2": "Dragon",
+        "name_separator_index": "6,4",
+        "weight": 815,
+        "height": 18
+    },
+    {
+        "id": "a2c1f2a4-9c3d-4a11-8c2d-1f6b9d8e3a10",
+        "pokedex_id": 573,
+        "name": "Shellos East Sea",
+        "type_1": "Water",
+        "type_2": null,
+        "name_separator_index": "4,3",
+        "weight": 63,
+        "height": 3
+    },
+    {
+        "id": "b7d4c9e1-2f6a-4d33-9c11-5a8e3d7f2b90",
+        "pokedex_id": 574,
+        "name": "Gastrodon East Sea",
+        "type_1": "Water",
+        "type_2": "Ground",
+        
+        "name_separator_index": "6,4",
+        "weight": 63,
+        "height": 3
+    },
+    {
+        "id": "c3e8a1d0-7b2f-4c55-91a3-6d9f2c8e4b21",
+        "pokedex_id": 575,
+        "name": "Shellos West Sea",
+        "type_1": "Water",
+        "type_2": null,
+        "name_separator_index": "4,3",
+        "weight": 299,
+        "height": 9
+    },
+    {
+        "id": "d9f1b6c2-3a7e-4f88-9d10-2c5e8a1b7f44",
+        "pokedex_id": 576,
+        "name": "Gastrodon West Sea",
+        "type_1": "Water",
+        "type_2": "Ground",
+        "name_separator_index": "6,4",
+        "weight": 299,
+        "height": 9
+    }
+]
