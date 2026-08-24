@@ -46,8 +46,8 @@ services:
     restart: unless-stopped
     ports:
       - '9000:9000'
+      - '8900:8900'
     networks:
-      - default
       - pokinder-network
     environment:
       MINIO_ROOT_USER: ${MINIO_USER}
@@ -56,19 +56,6 @@ services:
     volumes:
       - "/mnt/minio:/data/minio"
     command: 'minio server /data/minio --console-address ":8900"'
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=heart"
-      - "traefik.http.routers.pokinder-minio-api.rule=Host(`api.minio.pokinder.com`)"
-      - "traefik.http.routers.pokinder-minio-api.entrypoints=websecure"
-      - "traefik.http.routers.pokinder-minio-api.tls.certresolver=myresolver"
-      - "traefik.http.routers.pokinder-minio-api.service=pokinder-minio-api"
-      - "traefik.http.services.pokinder-minio-api.loadbalancer.server.port=9000"
-      - "traefik.http.routers.pokinder-minio.rule=Host(`minio.pokinder.com`)"
-      - "traefik.http.routers.pokinder-minio.entrypoints=websecure"
-      - "traefik.http.routers.pokinder-minio.tls.certresolver=myresolver"
-      - "traefik.http.routers.pokinder-minio.service=pokinder-minio"
-      - "traefik.http.services.pokinder-minio.loadbalancer.server.port=8900"
 
   redis:
     container_name: pokinder-redis
@@ -107,16 +94,8 @@ services:
     volumes:
       - pokinder-grafana:/var/lib/grafana
     networks:
-      - default
       - pokinder-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=heart"
-      - "traefik.http.routers.pokinder-grafana.rule=Host(`grafana.pokinder.com`)"
-      - "traefik.http.routers.pokinder-grafana.entrypoints=websecure"
-      - "traefik.http.routers.pokinder-grafana.tls.certresolver=myresolver"
-      - "traefik.http.services.pokinder-grafana.loadbalancer.server.port=3000"
-
+  
   prometheus:
     container_name: pokinder-prometheus
     image: prom/prometheus:v3.7.1
@@ -162,22 +141,16 @@ services:
         INSTALL_DEPENDENCIES: ${ENVIRONMENT}
     image: pokinder-backend:${VERSION}
     networks:
-      - default
       - pokinder-network
     depends_on:
       postgres:
         condition: service_healthy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=heart"
-      - "traefik.http.routers.pokinder-backend.rule=Host(`api.pokinder.com`)"
-      - "traefik.http.routers.pokinder-backend.entrypoints=websecure"
-      - "traefik.http.routers.pokinder-backend.tls.certresolver=myresolver"
-      - "traefik.http.services.pokinder-backend.loadbalancer.server.port=8000"
 
   frontend:
     container_name: pokinder-frontend
     restart: unless-stopped
+    ports:
+      - '3000:3000'
     build:
       context: ./pokinder-frontend
       args:
@@ -188,23 +161,7 @@ services:
         REACT_APP_MINIO_PORT: ${MINIO_PORT}
     image: pokinder-frontend:${VERSION}
     networks:
-      - default
       - pokinder-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=heart"
-      - "traefik.http.routers.pokinder-frontend.rule=Host(`pokinder.com`) || Host(`www.pokinder.com`)"
-      - "traefik.http.routers.pokinder-frontend.entrypoints=websecure"
-      - "traefik.http.routers.pokinder-frontend.tls.certresolver=myresolver"
-      - "traefik.http.services.pokinder-frontend.loadbalancer.server.port=3000"
-      # Middleware to compress server files
-      - "traefik.http.middlewares.pokinder-frontend-compression.compress=true"
-      # Middleware to redirect www.pokinder.com to pokinder.com
-      - "traefik.http.middlewares.pokinder-frontend-redirection.redirectregex.regex=^https?://www.pokinder.com/?(.*)"
-      - "traefik.http.middlewares.pokinder-frontend-redirection.redirectregex.replacement=https://pokinder.com/$${1}"
-      - "traefik.http.middlewares.pokinder-frontend-redirection.redirectregex.permanent=true"
-      # Register middleware
-      - "traefik.http.routers.pokinder-frontend.middlewares=pokinder-frontend-redirection,pokinder-frontend-compression"
 
 volumes:
   pokinder-postgres:
@@ -219,6 +176,3 @@ volumes:
 networks:
   pokinder-network:
     name: pokinder-network
-  default:
-    name: heart
-    external: true
