@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { useAuthentication } from "../../../hook/useAuthentication";
 
@@ -67,10 +67,10 @@ function Header() {
     <>
       <header className={styles.container}>
         <div className={styles.left}>
-          <a href="/" className={styles.logo}>
+          <Link to="/" className={styles.logo}>
             <Logo />
             <h1 className={styles.title}>Pokinder</h1>
-          </a>
+          </Link>
         </div>
         <div className={`${styles.center} pc_only`}>
           <nav className={styles.nav}>
