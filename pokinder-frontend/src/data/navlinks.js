@@ -1,4 +1,4 @@
-import { MODE_RANKING } from "../page/Explore/Explore";
+import { MODE_RANKING } from "../page/Explore/modes";
 
 export const navlinks = (t) => [
   {

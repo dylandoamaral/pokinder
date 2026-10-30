@@ -1,4 +1,3 @@
-import moment from "moment";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useMutation } from "react-query";
@@ -6,6 +5,8 @@ import { useMutation } from "react-query";
 import { useAfterEffect } from "../../../hook/useAfterEffect";
 
 import { addVote } from "../../../api/pokinder";
+
+import { formatRelativeTime } from "../../../utils/date";
 
 import ExploreCard from "../ExploreCard";
 import styles from "./ExploreHistoryCard.module.css";
@@ -64,7 +65,7 @@ export default function ExploreHistoryCard({
         />
       </div>
       <div className={styles.credit}>
-        {t("Voted")} {moment(fusionVoteAt).locale(i18n.language).fromNow()}
+        {t("Voted")} {formatRelativeTime(fusionVoteAt, i18n.language)}
       </div>
     </ExploreCard>
   );

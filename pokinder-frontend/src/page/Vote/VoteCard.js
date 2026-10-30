@@ -217,6 +217,7 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
               filename={fusion.id}
               href={getDaenaSpriteLink(fusion)}
               alt={`Fusion sprite from ${fusion.body_name} and ${fusion.head_name}`}
+              eager
             />
           </motion.div>
           <div className={styles.header}>
@@ -248,6 +249,7 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
                   filename={fusion.head_pokedex_id}
                   href={hasFocus ? getDaenaLink(fusion.head_pokedex_id) : null}
                   alt={`Pokemon sprite of ${fusion.head_name}`}
+                  eager
                 />
               </motion.div>
             </div>
@@ -266,6 +268,7 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
                   filename={fusion.body_pokedex_id}
                   href={hasFocus ? getDaenaLink(fusion.body_pokedex_id) : null}
                   alt={`Pokemon sprite of ${fusion.body_name}`}
+                  eager
                 />
               </motion.div>
             </div>

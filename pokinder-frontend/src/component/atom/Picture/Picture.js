@@ -1,6 +1,6 @@
 import styles from "./Picture.module.css";
 
-function Picture({ className, src, width, height, alt }) {
+function Picture({ className, src, width, height, alt, eager = false }) {
   const getContainerStyle = () => {
     var style = {};
 
@@ -12,7 +12,14 @@ function Picture({ className, src, width, height, alt }) {
 
   return (
     <div className={className} style={getContainerStyle()}>
-      <img className={styles.image} src={src} draggable="false" alt={alt}></img>
+      <img
+        className={styles.image}
+        src={src}
+        draggable="false"
+        alt={alt}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+      ></img>
     </div>
   );
 }

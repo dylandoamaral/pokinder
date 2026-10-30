@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -6,16 +6,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Admin from "./page/Admin/Admin";
-import Analytics from "./page/Analytics/Analytics";
-import Explore from "./page/Explore/Explore";
-import ForgotPassword from "./page/ForgotPassword/ForgotPassword";
-import LogIn from "./page/LogIn/LogIn";
-import NewPassword from "./page/NewPassword/NewPassword";
-import NotFound from "./page/NotFound/NotFound";
-import Proposals from "./page/Proposals/Proposals";
-import Settings from "./page/Settings/Settings";
-import Signup from "./page/SignUp/SignUp";
 import Vote from "./page/Vote/Vote";
 
 import { AuthenticationProvider } from "./context/authentication";
@@ -23,24 +13,43 @@ import AxiosErrorHandler from "./context/axios";
 import { initInternationalization } from "./context/internationalization";
 import { ThemeProvider } from "./context/theme";
 
+const Admin = lazy(() => import("./page/Admin/Admin"));
+const Analytics = lazy(() => import("./page/Analytics/Analytics"));
+const Explore = lazy(() => import("./page/Explore/Explore"));
+const ForgotPassword = lazy(() => import("./page/ForgotPassword/ForgotPassword"));
+const LogIn = lazy(() => import("./page/LogIn/LogIn"));
+const NewPassword = lazy(() => import("./page/NewPassword/NewPassword"));
+const NotFound = lazy(() => import("./page/NotFound/NotFound"));
+const Proposals = lazy(() => import("./page/Proposals/Proposals"));
+const Settings = lazy(() => import("./page/Settings/Settings"));
+const Signup = lazy(() => import("./page/SignUp/SignUp"));
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 initInternationalization();
 
 export const queryClient = new QueryClient();
 
+function lazyPage(Page) {
+  return (
+    <Suspense fallback={null}>
+      <Page />
+    </Suspense>
+  );
+}
+
 const router = createBrowserRouter([
   { path: "/", element: <Vote /> },
-  { path: "/explore", element: <Explore /> },
-  { path: "/analytics", element: <Analytics /> },
-  { path: "/admin", element: <Admin /> },
-  { path: "/login", element: <LogIn /> },
-  { path: "/signup", element: <Signup /> },
-  { path: "/forgotpassword", element: <ForgotPassword /> },
-  { path: "/newpassword", element: <NewPassword /> },
-  { path: "/settings", element: <Settings /> },
-  { path: "/proposals", element: <Proposals /> },
-  { path: "*", element: <NotFound /> },
+  { path: "/explore", element: lazyPage(Explore) },
+  { path: "/analytics", element: lazyPage(Analytics) },
+  { path: "/admin", element: lazyPage(Admin) },
+  { path: "/login", element: lazyPage(LogIn) },
+  { path: "/signup", element: lazyPage(Signup) },
+  { path: "/forgotpassword", element: lazyPage(ForgotPassword) },
+  { path: "/newpassword", element: lazyPage(NewPassword) },
+  { path: "/settings", element: lazyPage(Settings) },
+  { path: "/proposals", element: lazyPage(Proposals) },
+  { path: "*", element: lazyPage(NotFound) },
 ]);
 
 root.render(
@@ -61,7 +70,7 @@ root.render(
             pauseOnHover
             theme="light"
           />
-          <ReactQueryDevtools initialIsOpen={false} />
+          {process.env.NODE_ENV === "development" && <ReactQueryDevtools initialIsOpen={false} />}
         </QueryClientProvider>
       </AxiosErrorHandler>
     </ThemeProvider>
