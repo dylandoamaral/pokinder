@@ -1,7 +1,5 @@
 import { Helmet } from "react-helmet";
 
-import Footer from "../Footer/Footer";
-import Header from "../Header/Header";
 import styles from "./Page.module.css";
 
 function Page({
@@ -35,20 +33,14 @@ function Page({
           }
         />
       </Helmet>
-      <div className={styles.container}>
-        <div className={styles.content}>
-          <Header />
-          <main
-            style={{ overflow: overflow, display: overflow === "none" ? "grid" : "block" }}
-            className={styles.main}
-            onScroll={onScroll}
-            ref={scrollRef}
-          >
-            {children}
-          </main>
-          <Footer />
-        </div>
-      </div>
+      <main
+        style={{ overflow: overflow, display: overflow === "none" ? "grid" : "block" }}
+        className={styles.main}
+        onScroll={onScroll}
+        ref={scrollRef}
+      >
+        {children}
+      </main>
     </>
   );
 }

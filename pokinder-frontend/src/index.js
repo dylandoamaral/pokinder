@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { lazy } from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import Layout from "./component/organism/Layout/Layout";
 import Vote from "./page/Vote/Vote";
 
 import { AuthenticationProvider } from "./context/authentication";
@@ -30,26 +31,23 @@ initInternationalization();
 
 export const queryClient = new QueryClient();
 
-function lazyPage(Page) {
-  return (
-    <Suspense fallback={null}>
-      <Page />
-    </Suspense>
-  );
-}
-
 const router = createBrowserRouter([
-  { path: "/", element: <Vote /> },
-  { path: "/explore", element: lazyPage(Explore) },
-  { path: "/analytics", element: lazyPage(Analytics) },
-  { path: "/admin", element: lazyPage(Admin) },
-  { path: "/login", element: lazyPage(LogIn) },
-  { path: "/signup", element: lazyPage(Signup) },
-  { path: "/forgotpassword", element: lazyPage(ForgotPassword) },
-  { path: "/newpassword", element: lazyPage(NewPassword) },
-  { path: "/settings", element: lazyPage(Settings) },
-  { path: "/proposals", element: lazyPage(Proposals) },
-  { path: "*", element: lazyPage(NotFound) },
+  {
+    element: <Layout />,
+    children: [
+      { path: "/", element: <Vote /> },
+      { path: "/explore", element: <Explore /> },
+      { path: "/analytics", element: <Analytics /> },
+      { path: "/admin", element: <Admin /> },
+      { path: "/login", element: <LogIn /> },
+      { path: "/signup", element: <Signup /> },
+      { path: "/forgotpassword", element: <ForgotPassword /> },
+      { path: "/newpassword", element: <NewPassword /> },
+      { path: "/settings", element: <Settings /> },
+      { path: "/proposals", element: <Proposals /> },
+      { path: "*", element: <NotFound /> },
+    ],
+  },
 ]);
 
 root.render(
