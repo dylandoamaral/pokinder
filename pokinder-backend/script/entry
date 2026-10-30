@@ -10,5 +10,13 @@ set -o nounset
 echo Running migrations...
 alembic upgrade head
 
+
+# NOTE: Must be exported before any worker imports prometheus_client. PrometheusController then aggregates all worker
+# files through MultiProcessCollector. Stale files from a previous run would otherwise be merged into the metrics.
+export PROMETHEUS_MULTIPROC_DIR="${PROMETHEUS_MULTIPROC_DIR:-/tmp/prometheus_multiproc}"
+mkdir -p "$PROMETHEUS_MULTIPROC_DIR"
+find "$PROMETHEUS_MULTIPROC_DIR" -mindepth 1 -delete
+
+# NOTE: WEB_CONCURRENCY = number of uvicorn workers (default 2). Keep workers x (pool_size + max_overflow) < PostgreSQL max_connections.
 echo Starting Litestar App...
-uvicorn src.app:app --host 0.0.0.0
+uvicorn src.app:app --host 0.0.0.0 --workers "${WEB_CONCURRENCY:-2}"

@@ -14,6 +14,7 @@ from litestar.contrib.sqlalchemy.plugins import (
     SQLAlchemyAsyncConfig,
     SQLAlchemyInitPlugin,
 )
+from litestar.contrib.sqlalchemy.plugins.init.config import EngineConfig
 from litestar.di import Provide
 from litestar.logging import LoggingConfig
 from litestar.middleware.base import DefineMiddleware
@@ -62,7 +63,11 @@ from src.utils.env import (
 )
 from src.utils.exceptions import repository_exception_to_http_response
 
-sqlalchemy_config = SQLAlchemyAsyncConfig(connection_string=retrieve_postgres_connection_string())
+# Per worker; workers x (pool_size + max_overflow) must stay below PostgreSQL max_connections (default 100).
+sqlalchemy_config = SQLAlchemyAsyncConfig(
+    connection_string=retrieve_postgres_connection_string(),
+    engine_config=EngineConfig(pool_size=10, max_overflow=10, pool_pre_ping=True, pool_recycle=1800),
+)
 sqlalchemy_plugin = SQLAlchemyInitPlugin(config=sqlalchemy_config)
 
 redis_store = RedisStore.with_client(url=retrieve_redis_endpoint(), port=6379, db=0)
@@ -142,8 +147,8 @@ app = Litestar(
     # csrf_config=CSRFConfig(secret=retrieve_csrf_secret(), cookie_name="XSRF-TOKEN", header_name="X-XSRF-TOKEN"),
     openapi_config=OpenAPIConfig(title="Pokinder", version=retrieve_version()),
     cors_config=CORSConfig(allow_origins=[retrieve_frontend_endpoint()], allow_credentials=True),
-    plugins=[SQLAlchemyInitPlugin(config=sqlalchemy_config)],
-    compression_config=CompressionConfig(backend="gzip", gzip_compress_level=9),
+    plugins=[sqlalchemy_plugin],
+    compression_config=CompressionConfig(backend="gzip", gzip_compress_level=5, minimum_size=1000),
     allowed_hosts=AllowedHostsConfig(allowed_hosts=[retrieve_backend_host(), "backend"]),
     middleware=[
         rate_limit_middleware,
