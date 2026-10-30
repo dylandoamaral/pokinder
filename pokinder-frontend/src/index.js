@@ -6,8 +6,9 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Layout from "./component/organism/Layout/Layout";
 import Vote from "./page/Vote/Vote";
+
+import Layout from "./component/organism/Layout/Layout";
 
 import { AuthenticationProvider } from "./context/authentication";
 import AxiosErrorHandler from "./context/axios";
@@ -68,7 +69,7 @@ root.render(
             pauseOnHover
             theme="light"
           />
-          {process.env.NODE_ENV === "development" && <ReactQueryDevtools initialIsOpen={false} />}
+          {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
         </QueryClientProvider>
       </AxiosErrorHandler>
     </ThemeProvider>

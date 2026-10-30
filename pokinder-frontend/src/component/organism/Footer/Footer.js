@@ -73,8 +73,8 @@ function Footer() {
           <IoLanguageOutline />
         </FooterChoiceButton>
         <FooterButton
-          name={`v${process.env.REACT_APP_VERSION}`}
-          link={`https://github.com/dylandoamaral/pokinder/releases/tag/v${process.env.REACT_APP_VERSION}`}
+          name={`v${import.meta.env.VITE_VERSION}`}
+          link={`https://github.com/dylandoamaral/pokinder/releases/tag/v${import.meta.env.VITE_VERSION}`}
         >
           <DiGitBranch />
         </FooterButton>

@@ -2,5 +2,7 @@
 !nginx
 !src
 !public
+!index.html
+!vite.config.js
 !package.json
 !yarn.lock

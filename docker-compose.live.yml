@@ -154,11 +154,11 @@ services:
     build:
       context: ./pokinder-frontend
       args:
-        REACT_APP_BACKEND_PORT: ${BACKEND_PORT}
-        REACT_APP_BACKEND_HOST: ${BACKEND_HOST}
-        REACT_APP_VERSION: ${VERSION}
-        REACT_APP_MINIO_HOST: ${MINIO_HOST}
-        REACT_APP_MINIO_PORT: ${MINIO_PORT}
+        VITE_BACKEND_PORT: ${BACKEND_PORT}
+        VITE_BACKEND_HOST: ${BACKEND_HOST}
+        VITE_VERSION: ${VERSION}
+        VITE_MINIO_HOST: ${MINIO_HOST}
+        VITE_MINIO_PORT: ${MINIO_PORT}
     image: pokinder-frontend:${VERSION}
     networks:
       - pokinder-network

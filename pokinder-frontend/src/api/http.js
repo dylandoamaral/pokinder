@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const is_localhost = process.env.REACT_APP_BACKEND_HOST === "localhost";
+const is_localhost = import.meta.env.VITE_BACKEND_HOST === "localhost";
 const https = is_localhost ? "http" : "https";
 
 const instance = axios.create({
-  baseURL: `${https}://${process.env.REACT_APP_BACKEND_HOST}:${process.env.REACT_APP_BACKEND_PORT}`,
+  baseURL: `${https}://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`,
   timeout: 50000,
   withCredentials: true,
   headers: {
