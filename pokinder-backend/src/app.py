@@ -11,10 +11,10 @@ from litestar.contrib.repository.exceptions import (
     RepositoryError as RepositoryException,
 )
 from litestar.contrib.sqlalchemy.plugins import (
-    EngineConfig,
     SQLAlchemyAsyncConfig,
     SQLAlchemyInitPlugin,
 )
+from litestar.contrib.sqlalchemy.plugins.init.config import EngineConfig
 from litestar.di import Provide
 from litestar.logging import LoggingConfig
 from litestar.middleware.base import DefineMiddleware
