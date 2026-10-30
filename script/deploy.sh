@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# the latest git tag is the version, it overrides the placeholder in configuration/.env.shared
+VERSION="$(git describe --tags --abbrev=0)"
+export VERSION="${VERSION#v}"
+
 # build new images for pokinder applications
 sudo docker compose -f docker-compose.live.yml --env-file configuration/.env.shared --env-file configuration/.env build
 
