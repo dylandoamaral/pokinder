@@ -1,4 +1,3 @@
-import asyncio
 from datetime import datetime
 from typing import Optional
 from uuid import UUID
@@ -384,7 +383,7 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
             expires_in=ten_minutes,
         )
 
-        results = await asyncio.gather(
+        awaitables = (
             user_count_query,
             fusion_count_query,
             creator_count_query,
@@ -405,6 +404,8 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
             self.__validated_reference_proposal_count(account_id=account_id),
             self.__reference_proposal_count(account_id=account_id),
         )
+
+        results = [await awaitable for awaitable in awaitables]
 
         dislike_count = results[3].get(str(VoteType.DISLIKED.value), 0)
         favorite_count = results[3].get(str(VoteType.FAVORITE.value), 0)
