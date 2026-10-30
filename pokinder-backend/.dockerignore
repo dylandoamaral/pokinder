@@ -3,6 +3,6 @@
 !src
 !script
 !pyproject.toml
-!poetry.lock
+!uv.lock
 !alembic.ini
 !README.md

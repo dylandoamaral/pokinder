@@ -1,41 +1,40 @@
 init:
-	poetry config virtualenvs.in-project true
-	poetry install
+	uv sync
 
 local:
-	cd src; litestar run --debug
+	cd src; uv run litestar run --debug
 
 format:
-	@poetry run black alembic src test
-	@poetry run isort alembic src test
+	@uv run black alembic src test
+	@uv run isort alembic src test
 
 check:
-	@poetry run black alembic src test --check
-	@poetry run isort alembic src test --check
-	@poetry run ruff check src test
+	@uv run black alembic src test --check
+	@uv run isort alembic src test --check
+	@uv run ruff check src test
 
 db-generate COMMENT:
-	alembic revision --autogenerate -m "{{COMMENT}}" 
+	uv run alembic revision --autogenerate -m "{{COMMENT}}" 
 
 db-downgrade:
-	alembic downgrade -1
+	uv run alembic downgrade -1
 
 db-upgrade:
-	alembic upgrade +1
+	uv run alembic upgrade +1
 
 db-upgrade-all:
-	alembic upgrade head
+	uv run alembic upgrade head
 
 db-fill:
-	@poetry run python script/1.populate_database.py
+	@uv run python script/1.populate_database.py
 
 db-reset: db-downgrade db-upgrade db-fill
 
 migration-generate VERSION_FROM VERSION_TO:
-	@poetry run python script/8.generate_sprite_pack_migration.py {{VERSION_FROM}} {{VERSION_TO}}
+	@uv run python script/8.generate_sprite_pack_migration.py {{VERSION_FROM}} {{VERSION_TO}}
 
 migration-apply VERSION_FROM VERSION_TO:
-	@poetry run python script/9.apply_sprite_pack_migration.py {{VERSION_FROM}} {{VERSION_TO}}
+	@uv run python script/9.apply_sprite_pack_migration.py {{VERSION_FROM}} {{VERSION_TO}}
 
 migration-commit VERSION:
 	git add .
