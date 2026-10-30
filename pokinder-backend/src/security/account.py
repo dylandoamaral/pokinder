@@ -20,6 +20,12 @@ def _build_account(account_id: UUID, username: str, role: AccountRole) -> Accoun
     return Account(id=account_id, username=username, email="", role=role, password=b"")
 
 
+async def _fetch_row(engine: AsyncEngine, account_id: UUID):
+    async with AsyncSession(engine) as session:
+        result = await session.execute(select(Account.username, Account.role).where(Account.id == account_id))
+        return result.one_or_none()
+
+
 async def load_account(engine: AsyncEngine, store: Store, account_id: UUID) -> Account | None:
     key = _key(account_id)
 
@@ -32,12 +38,15 @@ async def load_account(engine: AsyncEngine, store: Store, account_id: UUID) -> A
         data = json.loads(cached)
         return _build_account(account_id, data["username"], AccountRole[data["role"]])
 
-    async with AsyncSession(engine) as session:
-        result = await session.execute(select(Account.username, Account.role).where(Account.id == account_id))
-        row = result.one_or_none()
+    row = await _fetch_row(engine, account_id)
 
     if row is None:
         await store.set(key, NOT_FOUND, expires_in=ACCOUNT_CACHE_TTL_SECONDS)
+
+        # Signup may have committed and invalidated before our write: re-check and drop the stale negative entry.
+        if await _fetch_row(engine, account_id) is not None:
+            await store.delete(key)
+
         return None
 
     await store.set(
