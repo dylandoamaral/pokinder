@@ -1,14 +1,12 @@
-from ctypes import cast
 from uuid import UUID
 
 from litestar.connection import ASGIConnection
 from litestar.exceptions import NotAuthorizedException
 from litestar.middleware import AbstractAuthenticationMiddleware, AuthenticationResult
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.component.account import Account
 from src.component.account.account_table import AccountRole
+from src.security.account import load_account
 from src.security.jwt import decode_jwt_token
 from src.utils.uuid import is_uuid
 
@@ -40,32 +38,24 @@ class JWTAuthenticationMiddleware(AbstractAuthenticationMiddleware):
     async def authenticate_as_user(self, connection: ASGIConnection, jwt_token: str) -> AuthenticationResult:
         token = decode_jwt_token(encoded_token=jwt_token)
 
-        engine = connection.app.state.db_engine
+        db_engine = connection.app.state.db_engine
+        store = connection.app.stores.get("cache")
 
-        async with AsyncSession(engine) as async_session:
-            async with async_session.begin():
-                result = await async_session.execute(select(Account).where(Account.id == token.sub.account_id))
-                account = result.scalar_one_or_none()
+        account = await load_account(db_engine, store, token.sub.account_id)
 
-                async_session.expunge(account)
+        if account is None:
+            raise NotAuthorizedException()
 
-            if not account:
-                raise NotAuthorizedException()
-
-            return AuthenticationResult(user=account, auth=token)
+        return AuthenticationResult(user=account, auth=token)
 
     # Handle authentication for guest having a random account_id but not logged.
     async def authenticate_as_guest(self, connection: ASGIConnection, account_id: UUID) -> AuthenticationResult:
-        engine = connection.app.state.db_engine
+        db_engine = connection.app.state.db_engine
+        store = connection.app.stores.get("cache")
 
-        async with AsyncSession(engine) as async_session:
-            async with async_session.begin():
-                result = await async_session.execute(select(Account).where(Account.id == account_id))
-                account = result.scalar_one_or_none()
+        if await load_account(db_engine, store, account_id) is not None:
+            raise NotAuthorizedException()
 
-            if account is not None:
-                raise NotAuthorizedException()
+        account = Account(id=account_id, username="Guest", email="", role=AccountRole.GUEST, password=b"")
 
-            account = Account(id=account_id, username="Guest", email="", role=AccountRole.GUEST, password=b"")
-
-            return AuthenticationResult(user=account, auth=account_id)
+        return AuthenticationResult(user=account, auth=account_id)
