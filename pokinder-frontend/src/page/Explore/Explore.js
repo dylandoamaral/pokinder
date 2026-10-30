@@ -10,11 +10,7 @@ import ExploreHistoryCards from "./History/ExploreHistoryCards";
 import ExplorePokedexCards from "./Pokedex/ExplorePokedexCards";
 import ExploreRankingCards from "./Ranking/ExploreRankingCards";
 import ExploreReferenceCards from "./Reference/ExploreReferenceCards";
-
-export const MODE_POKEDEX = "pokedex";
-export const MODE_HISTORY = "history";
-export const MODE_REFERENCE = "reference";
-export const MODE_RANKING = "ranking";
+import { MODE_HISTORY, MODE_POKEDEX, MODE_RANKING, MODE_REFERENCE } from "./modes";
 
 export default function Explore() {
   const { t } = useTranslation();

@@ -4,7 +4,7 @@ import { FaPlus, FaTimes } from "react-icons/fa";
 
 import useToggle from "../../hook/useToggle";
 
-import { MODE_HISTORY, MODE_POKEDEX, MODE_RANKING, MODE_REFERENCE } from "./Explore";
+import { MODE_HISTORY, MODE_POKEDEX, MODE_RANKING, MODE_REFERENCE } from "./modes";
 import styles from "./ExploreMenu.module.css";
 import ExploreMenuFiltersModal from "./ExploreMenuFiltersModal";
 
