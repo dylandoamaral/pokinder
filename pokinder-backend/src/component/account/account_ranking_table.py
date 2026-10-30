@@ -9,8 +9,12 @@ from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey
 
 
 class AccountRanking(BaseTable, UUIDPrimaryKey):
-    __tablename__ = "account_ranking"  #  type: ignore[assignment]
+    __tablename__ = "account_ranking"  # type: ignore[assignment]
 
-    __table_args__ = (Index("index_account_ranking_rank", "rank"),)
+    __table_args__ = (
+        # NOTE: Required by REFRESH MATERIALIZED VIEW CONCURRENTLY.
+        Index("index_account_ranking_id", "id", unique=True),
+        Index("index_account_ranking_rank", "rank"),
+    )
 
     rank: Mapped[int] = mapped_column(Integer, nullable=False)

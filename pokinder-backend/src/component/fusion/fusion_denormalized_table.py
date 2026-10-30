@@ -9,9 +9,11 @@ from src.utils.sqlalchemy import BaseTable, UUIDPrimaryKey
 
 
 class FusionDenormalized(BaseTable, UUIDPrimaryKey):
-    __tablename__ = "fusion_denormalized"  #  type: ignore[assignment]
+    __tablename__ = "fusion_denormalized"  # type: ignore[assignment]
 
     __table_args__ = (
+        # NOTE: Required by REFRESH MATERIALIZED VIEW CONCURRENTLY.
+        Index("index_fusion_denormalized_id", "id", unique=True),
         Index("index_fusion_denormalized_path", "path"),
         Index("index_fusion_denormalized_vote_rank", "vote_rank"),
         # NOTE: Used for draw fusions.
