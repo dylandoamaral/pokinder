@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useAuthentication } from "../../../hook/useAuthentication";
 
@@ -17,9 +17,14 @@ function Header() {
   const { t } = useTranslation();
   const { isUser, isAdmin } = useAuthentication();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const menuRef = useRef();
   const [showMenu, setShowMenu] = useState(false);
+
+  useEffect(() => {
+    setShowMenu(false);
+  }, [pathname]);
 
   // NOTE: close menu when clicking outside the menu
   useEffect(() => {
