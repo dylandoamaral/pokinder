@@ -1,6 +1,6 @@
 {
   "name": "pokinder-frontend",
-  "version": "0.27.2",
+  "version": "0.0.0",
   "private": true,
   "dependencies": {
     "@tanstack/react-table": "^8.21.3",

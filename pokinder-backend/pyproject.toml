@@ -1,6 +1,6 @@
 [project]
 name = "pokinder-backend"
-version = "0.27.2"
+version = "0.0.0"
 description = "The backend system of Pokinder."
 authors = [{ name = "dylandoamaral", email = "do.amaral.dylan@gmail.com" }]
 readme = "README.md"
