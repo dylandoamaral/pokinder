@@ -13,6 +13,7 @@ from src.component.account.account_reset_password_table import (
 )
 from src.component.account.account_table import AccountRole
 from src.security import Request
+from src.security.account import invalidate_account
 from src.security.jwt import (
     DEFAULT_REFRESH_TIME_DELTA,
     EncodedTokens,
@@ -46,6 +47,7 @@ class AccountController(Controller):
     @post(path="/signup", dto=None)
     async def signup(
         self,
+        request: Request,
         account_dependency: AccountDependency,
         statistics_dependency: StatisticsDependency,
         notification_dependency: NotificationDependency,
@@ -68,6 +70,9 @@ class AccountController(Controller):
 
         hashed_password = hashpw(data.password.encode("utf-8"), gensalt())
         await account_dependency.signup(data, hashed_password)
+
+        # NOTE: the guest uuid may be cached as "not an account".
+        await invalidate_account(request.app.stores.get("cache"), data.account_id)
 
         total_account = await statistics_dependency.add_total_account()
         if total_account % retrieve_milestone_account() == 0:
