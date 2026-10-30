@@ -1,6 +1,6 @@
 import Picture from "../Picture/Picture";
 
-function Sprite({ className, sizeClassName, href, filename, type, size, alt }) {
+function Sprite({ className, sizeClassName, href, filename, type, size, alt, eager }) {
   function getSrc() {
     const http = parseInt(process.env.REACT_APP_MINIO_PORT) === 443 ? "https" : "http";
     const category = type === "fusion" ? "fusions" : "pokemons";
@@ -19,6 +19,7 @@ function Sprite({ className, sizeClassName, href, filename, type, size, alt }) {
         width={size}
         height={size}
         alt={alt || defaultAlt}
+        eager={eager}
       />
     );
   }

@@ -6,7 +6,14 @@ function Logo({ className }) {
   const { theme } = useTheme();
 
   return (
-    <Picture className={className} src={`./ball/${theme}.svg`} height={24} width={24} alt="logo" />
+    <Picture
+      className={className}
+      src={`./ball/${theme}.svg`}
+      height={24}
+      width={24}
+      alt="logo"
+      eager
+    />
   );
 }
 
