@@ -7,7 +7,7 @@ from litestar.middleware import AbstractAuthenticationMiddleware, Authentication
 from src.component.account import Account
 from src.component.account.account_table import AccountRole
 from src.security.account import load_account
-from src.security.jwt import decode_jwt_token
+from src.security.jwt import TokenType, decode_jwt_token
 from src.utils.uuid import is_uuid
 
 API_KEY_HEADER = "X-API-KEY"
@@ -37,6 +37,9 @@ class JWTAuthenticationMiddleware(AbstractAuthenticationMiddleware):
     # Handle authentication for user logged.
     async def authenticate_as_user(self, connection: ASGIConnection, jwt_token: str) -> AuthenticationResult:
         token = decode_jwt_token(encoded_token=jwt_token)
+
+        if token.typ is not TokenType.ACCESS:
+            raise NotAuthorizedException()
 
         db_engine = connection.app.state.db_engine
         store = connection.app.stores.get("cache")
