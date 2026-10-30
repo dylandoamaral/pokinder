@@ -73,7 +73,7 @@ class ExploreDependencyPostgres(ExploreDependency):
         if creator_name is not None and creator_name != "All":
             query = query.filter(FusionDenormalized.creators.contains([{"name": creator_name}]))
 
-        count = select(func.count()).select_from(query)
+        count = select(func.count()).select_from(query.subquery())
 
         result = await self.session.scalar(count)
 

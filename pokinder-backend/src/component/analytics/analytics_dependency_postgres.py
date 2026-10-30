@@ -314,6 +314,7 @@ class AnalyticsDependencyPostgres(AnalyticsDependency):
             select(distinct(ReferenceProposal.proposer_id))
             .select_from(ReferenceProposal)
             .where(ReferenceProposal.status == ReferenceProposalStatus.VALIDATED)
+            .subquery()
         )
         result = await self.session.execute(query)
         count = result.scalar()
