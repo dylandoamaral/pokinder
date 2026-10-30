@@ -8,7 +8,6 @@ from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession
 from src.component.account.account_table import Account, AccountRole
 
 ACCOUNT_CACHE_TTL_SECONDS = 60
-NOT_FOUND = b"-"
 
 
 def _key(account_id: UUID) -> str:
@@ -32,21 +31,12 @@ async def load_account(engine: AsyncEngine, store: Store, account_id: UUID) -> A
     cached = await store.get(key)
 
     if cached is not None:
-        if cached == NOT_FOUND:
-            return None
-
         data = json.loads(cached)
         return _build_account(account_id, data["username"], AccountRole[data["role"]])
 
     row = await _fetch_row(engine, account_id)
 
     if row is None:
-        await store.set(key, NOT_FOUND, expires_in=ACCOUNT_CACHE_TTL_SECONDS)
-
-        # Signup may have committed and invalidated before our write: re-check and drop the stale negative entry.
-        if await _fetch_row(engine, account_id) is not None:
-            await store.delete(key)
-
         return None
 
     await store.set(

@@ -71,7 +71,7 @@ class AccountController(Controller):
         hashed_password = hashpw(data.password.encode("utf-8"), gensalt())
         await account_dependency.signup(data, hashed_password)
 
-        # NOTE: the guest uuid may be cached as "not an account".
+        # NOTE: drop any cached entry for this account id.
         await invalidate_account(request.app.stores.get("cache"), data.account_id)
 
         total_account = await statistics_dependency.add_total_account()
