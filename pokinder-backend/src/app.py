@@ -106,7 +106,11 @@ jwt_middleware = DefineMiddleware(
     ],
 )
 
-logging_middleware = LoggingMiddlewareConfig().middleware
+# NOTE: Litestar logs request/response bodies, query and cookies by default, which leaks passwords, reset tokens and JWTs.
+logging_middleware = LoggingMiddlewareConfig(
+    request_log_fields=("path", "method", "content_type"),
+    response_log_fields=("status_code",),
+).middleware
 
 app = Litestar(
     route_handlers=[
