@@ -1,3 +1,4 @@
+import asyncio
 import hashlib
 import random
 import string
@@ -66,7 +67,7 @@ class AccountController(Controller):
         if is_account_id_exists:
             raise ConflictException(detail="ACCOUNT_ID_EXISTS")
 
-        hashed_password = hashpw(data.password.encode("utf-8"), gensalt())
+        hashed_password = await asyncio.to_thread(hashpw, data.password.encode("utf-8"), gensalt())
         await account_dependency.signup(data, hashed_password)
 
         total_account = await statistics_dependency.add_total_account()
@@ -82,7 +83,7 @@ class AccountController(Controller):
         if not account:
             raise NotFoundException()
 
-        if not checkpw(data.password.encode("utf-8"), account.password):
+        if not await asyncio.to_thread(checkpw, data.password.encode("utf-8"), account.password):
             # NOTE: We don't want the "hacker" to know if the name exists or not.
             raise NotFoundException()
 
@@ -199,7 +200,7 @@ class AccountController(Controller):
 
         id = maybe_account_reset_password.id
         account_id = maybe_account_reset_password.account_id
-        hashed_password = hashpw(data.password.encode("utf-8"), gensalt())
+        hashed_password = await asyncio.to_thread(hashpw, data.password.encode("utf-8"), gensalt())
 
         await account_dependency.validate_account_reset_password(id)
         await account_dependency.update_password(account_id, hashed_password)
