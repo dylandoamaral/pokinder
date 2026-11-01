@@ -3,6 +3,6 @@
 !src
 !public
 !index.html
-!vite.config.js
+!vite.config.mjs
 !package.json
 !yarn.lock
