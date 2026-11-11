@@ -38,7 +38,11 @@ function LogIn() {
   });
 
   return (
-    <Page name={t("Log In")}>
+    <Page
+      name={t("Log In")}
+      description="Log in to your Pokinder account to manage your votes and preferences."
+      noindex
+    >
       {isUser && <Navigate to=".." relative="path"></Navigate>}
       <div className={styles.container}>
         <div className={styles.form}>

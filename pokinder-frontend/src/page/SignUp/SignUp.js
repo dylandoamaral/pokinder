@@ -46,7 +46,11 @@ function Signup() {
   });
 
   return (
-    <Page name={t("Sign Up")}>
+    <Page
+      name={t("Sign Up")}
+      description="Create a Pokinder account to vote on Pokémon Infinite Fusion sprites."
+      noindex
+    >
       {isUser && <Navigate to=".." relative="path"></Navigate>}
       <div className={styles.container}>
         <div className={styles.form}>

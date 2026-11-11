@@ -146,7 +146,8 @@ function Proposals() {
   return (
     <Page
       name={t("Proposals")}
-      description="Manage your proposals."
+      description="Review your submitted Pokémon fusion reference proposals."
+      noindex
       overflow={"scroll"}
       onScrollFinish={onScrollFinish}
     >

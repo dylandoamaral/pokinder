@@ -267,7 +267,15 @@ function Vote() {
     );
   }
 
-  return <Page>{renderContent()}</Page>;
+  return (
+    <Page
+      name="Pokémon Fusion Voting"
+      description="Vote on Pokémon Infinite Fusion sprites and help shape community rankings."
+      noindex={false}
+    >
+      {renderContent()}
+    </Page>
+  );
 }
 
 export default Vote;
