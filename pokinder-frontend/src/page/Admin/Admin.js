@@ -122,7 +122,12 @@ function Admin() {
 
   return (
     <>
-      <Page name={t("Admin")} overflow={"scroll"}>
+      <Page
+        name={t("Admin")}
+        description="Review and manage community Pokémon fusion proposals."
+        noindex
+        overflow={"scroll"}
+      >
         <div className={styles.tableContainer}>
           <table className={styles.table}>
             <thead>

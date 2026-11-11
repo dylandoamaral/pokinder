@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useLocation } from "react-router-dom";
 
 import useQueryParameters from "../../hook/useQueryParameters";
 
@@ -14,9 +15,14 @@ import { MODE_HISTORY, MODE_POKEDEX, MODE_RANKING, MODE_REFERENCE } from "./mode
 
 export default function Explore() {
   const { t } = useTranslation();
+  const location = useLocation();
 
   const [parameters, setParameters] = useQueryParameters();
   const currentMode = parameters.mode || MODE_RANKING;
+  const canonical =
+    currentMode === MODE_RANKING || currentMode === MODE_REFERENCE
+      ? `https://pokinder.com${location.pathname}${location.search}`
+      : undefined;
 
   function setCurrentMode(mode) {
     setParameters({ ...parameters, mode: mode });
@@ -78,7 +84,13 @@ export default function Explore() {
   }
 
   return (
-    <Page name={t("Explore")} overflow={"scroll"}>
+    <Page
+      name={t("Explore")}
+      description="Browse Pokémon Infinite Fusion sprites, rankings, Pokédex entries, and community favorites."
+      canonical={canonical}
+      noindex={false}
+      overflow={"scroll"}
+    >
       <div className={styles.container}>
         <ExploreMenu
           currentMode={currentMode}

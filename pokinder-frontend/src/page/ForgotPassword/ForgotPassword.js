@@ -37,7 +37,11 @@ function ForgotPassword() {
   );
 
   return (
-    <Page name={t("Forgot Password")}>
+    <Page
+      name={t("Forgot Password")}
+      description="Request a password reset for your Pokinder account."
+      noindex
+    >
       {isUser && <Navigate to=".." relative="path"></Navigate>}
       <div className={styles.container}>
         <div className={styles.form}>

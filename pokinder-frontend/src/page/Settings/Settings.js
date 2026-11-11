@@ -15,7 +15,12 @@ function Settings() {
   const { isUser } = useAuthentication();
 
   return (
-    <Page name={t("Settings")} description="Manage your account." overflow={"scroll"}>
+    <Page
+      name={t("Settings")}
+      description="Update password and account preferences for your Pokinder account."
+      noindex
+      overflow={"scroll"}
+    >
       {!isUser && <Navigate to=".." relative="path"></Navigate>}
       <div className={styles.container}>
         <Heading>{t("Settings")}</Heading>

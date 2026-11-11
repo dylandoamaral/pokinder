@@ -10,7 +10,11 @@ function NotFound() {
   const { t } = useTranslation();
 
   return (
-    <Page name={t("Page not found")}>
+    <Page
+      name={t("Page not found")}
+      description="The requested Pokinder page could not be found."
+      noindex
+    >
       <Oak>
         <p>
           <Trans t={t} i18nKey="Not found message one">

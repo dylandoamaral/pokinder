@@ -50,7 +50,11 @@ function NewPassword() {
   }
 
   return (
-    <Page name={t("New Password")}>
+    <Page
+      name={t("New Password")}
+      description="Choose a new password for your Pokinder account."
+      noindex
+    >
       {token === null && <Navigate to=".." relative="path"></Navigate>}
       <div className={styles.container}>
         <div className={styles.form}>
