@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 
@@ -7,11 +8,12 @@ import Page from "../../component/organism/Page/Page";
 
 import styles from "./Explore.module.css";
 import ExploreMenu from "./ExploreMenu";
-import ExploreHistoryCards from "./History/ExploreHistoryCards";
-import ExplorePokedexCards from "./Pokedex/ExplorePokedexCards";
-import ExploreRankingCards from "./Ranking/ExploreRankingCards";
-import ExploreReferenceCards from "./Reference/ExploreReferenceCards";
 import { MODE_HISTORY, MODE_POKEDEX, MODE_RANKING, MODE_REFERENCE } from "./modes";
+
+const ExploreHistoryCards = lazy(() => import("./History/ExploreHistoryCards"));
+const ExplorePokedexCards = lazy(() => import("./Pokedex/ExplorePokedexCards"));
+const ExploreRankingCards = lazy(() => import("./Ranking/ExploreRankingCards"));
+const ExploreReferenceCards = lazy(() => import("./Reference/ExploreReferenceCards"));
 
 export default function Explore() {
   const { t } = useTranslation();
@@ -100,7 +102,9 @@ export default function Explore() {
           parameters={parameters}
           setParameters={setParameters}
         />
-        {renderCards()}
+        <Suspense fallback={<div role="status">{t("Loading more...")}</div>}>
+          {renderCards()}
+        </Suspense>
       </div>
     </Page>
   );
