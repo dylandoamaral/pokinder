@@ -102,7 +102,7 @@ export default function Explore() {
           parameters={parameters}
           setParameters={setParameters}
         />
-        <Suspense fallback={<div role="status">{t("Loading more...")}</div>}>
+        <Suspense>
           {renderCards()}
         </Suspense>
       </div>
