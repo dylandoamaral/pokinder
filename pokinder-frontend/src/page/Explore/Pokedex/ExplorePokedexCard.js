@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 
+import { types } from "../../../asset";
 import { capitalize } from "../../../utils/string";
 
 import ExploreCard from "../ExploreCard";
@@ -24,7 +25,7 @@ export default function ExplorePokedexCard({
 
     return (
       <img
-        src={`/type/${type.toLowerCase()}.png`}
+        src={types[type.toLowerCase()]}
         alt={`Type ${capitalize(type)}`}
         width={16}
         height={16}

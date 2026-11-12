@@ -1,5 +1,7 @@
 import { createContext, useEffect, useMemo, useState } from "react";
 
+import { icons } from "../asset";
+
 export const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
@@ -26,7 +28,7 @@ export const ThemeProvider = ({ children }) => {
       link.rel = "icon";
       document.getElementsByTagName("head")[0].appendChild(link);
     }
-    link.href = `./icon/${theme}.ico`;
+    link.href = icons[theme];
   }, [theme]);
 
   const value = useMemo(() => {
