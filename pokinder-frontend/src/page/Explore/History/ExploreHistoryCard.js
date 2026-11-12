@@ -20,6 +20,7 @@ export default function ExploreHistoryCard({
   fusionReferences,
   fusionVoteType,
   fusionVoteAt,
+  rowIndex,
 }) {
   const { t, i18n } = useTranslation();
 
@@ -46,6 +47,7 @@ export default function ExploreHistoryCard({
       fusionIsRemoved={fusionIsRemoved}
       fusionName={fusionName}
       fusionReferences={fusionReferences}
+      rowIndex={rowIndex}
     >
       <div className={styles.details}>
         <ExploreHistoryCardButton

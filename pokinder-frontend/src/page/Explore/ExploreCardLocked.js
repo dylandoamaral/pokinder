@@ -11,7 +11,7 @@ import {
 } from "./ExploreCard";
 import styles from "./ExploreCard.module.css";
 
-export default function ExploreCardLocked({ fusionId }) {
+export default function ExploreCardLocked({ fusionId, rowIndex }) {
   return (
     <div
       className={styles.container}
@@ -32,6 +32,7 @@ export default function ExploreCardLocked({ fusionId }) {
             size={144}
             type="fusion"
             alt={`Fusion sprite locked`}
+            fetchPriority={rowIndex === 0 ? "high" : "auto"}
           />
         </div>
         <div className={styles.lockContainer}>

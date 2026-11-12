@@ -15,6 +15,7 @@ export default function ExplorePokedexCard({
   fusionType2,
   fusionWeight,
   fusionHeight,
+  rowIndex,
 }) {
   const { t } = useTranslation();
 
@@ -39,6 +40,7 @@ export default function ExplorePokedexCard({
       fusionIsRemoved={fusionIsRemoved}
       fusionName={fusionName}
       fusionReferences={fusionReferences}
+      rowIndex={rowIndex}
     >
       <div className={styles.details}>
         <div className={styles.detail}>

@@ -6,7 +6,7 @@ import ExploreCardsGrid from "../ExploreCardsGrid";
 import ExploreRankingCard from "./ExploreRankingCard";
 
 export default function ExploreRankingCards({ filters }) {
-  function renderCard(data) {
+  function renderCard(data, rowIndex) {
     const fusionId = data.fusion_id;
     const fusionPath = data.fusion_path;
     const fusionIsRemoved = data.fusion_is_removed;
@@ -33,6 +33,7 @@ export default function ExploreRankingCards({ filters }) {
         fusionRank={fusionRank}
         fusionScore={fusionScore}
         fusionVoteCount={fusionVoteCount}
+        rowIndex={rowIndex}
       />
     );
   }

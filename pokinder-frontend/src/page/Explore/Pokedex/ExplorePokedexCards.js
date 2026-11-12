@@ -7,10 +7,12 @@ import ExploreCardsGrid from "../ExploreCardsGrid";
 import ExplorePokedexCard from "./ExplorePokedexCard";
 
 export default function ExplorePokedexCards({ filters }) {
-  function renderCard(data) {
+  function renderCard(data, rowIndex) {
     const fusionId = data.fusion_id;
 
-    if (data.has_voted === false) return <ExploreCardLocked key={fusionId} fusionId={fusionId} />;
+    if (data.has_voted === false) {
+      return <ExploreCardLocked key={fusionId} fusionId={fusionId} rowIndex={rowIndex} />;
+    }
 
     const fusionPath = data.fusion_information.fusion_path;
     const fusionIsRemoved = data.fusion_is_removed;
@@ -50,6 +52,7 @@ export default function ExplorePokedexCards({ filters }) {
         fusionType2={fusionType2}
         fusionWeight={fusionWeight}
         fusionHeight={fusionHeight}
+        rowIndex={rowIndex}
       />
     );
   }

@@ -12,6 +12,7 @@ export default function ExploreRankingCard({
   fusionRank,
   fusionScore,
   fusionVoteCount,
+  rowIndex,
 }) {
   const { t } = useTranslation();
 
@@ -53,6 +54,7 @@ export default function ExploreRankingCard({
       fusionIsRemoved={fusionIsRemoved}
       fusionName={fusionName}
       fusionReferences={fusionReferences}
+      rowIndex={rowIndex}
     >
       <div className={styles.container}>
         <div className={styles.details}>
