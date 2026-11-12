@@ -6,8 +6,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Vote from "./page/Vote/Vote";
-
 import Layout from "./component/organism/Layout/Layout";
 
 import { AuthenticationProvider } from "./context/authentication";
@@ -25,6 +23,7 @@ const NotFound = lazy(() => import("./page/NotFound/NotFound"));
 const Proposals = lazy(() => import("./page/Proposals/Proposals"));
 const Settings = lazy(() => import("./page/Settings/Settings"));
 const Signup = lazy(() => import("./page/SignUp/SignUp"));
+const Vote = lazy(() => import("./page/Vote/Vote"));
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
