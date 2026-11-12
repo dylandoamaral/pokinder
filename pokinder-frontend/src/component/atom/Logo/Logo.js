@@ -1,3 +1,4 @@
+import { balls } from "../../../asset";
 import { useTheme } from "../../../hook/useTheme";
 
 import Picture from "../Picture/Picture";
@@ -8,7 +9,7 @@ function Logo({ className }) {
   return (
     <Picture
       className={className}
-      src={`./ball/${theme}.svg`}
+      src={balls[theme]}
       height={24}
       width={24}
       alt="logo"

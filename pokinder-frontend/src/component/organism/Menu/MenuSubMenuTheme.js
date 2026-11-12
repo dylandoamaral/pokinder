@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 
+import { balls } from "../../../asset";
 import { useTheme } from "../../../hook/useTheme";
 
 import { themes } from "../../../data/themes";
@@ -21,7 +22,7 @@ function MenuSubMenuLanguage({ onClose, onAnimationComplete, isOpen }) {
   return (
     <MenuSubMenu
       title={t("Theme")}
-      icon={<img alt={theme} src={`./ball/${theme}.svg`} />}
+      icon={<img alt={theme} src={balls[theme]} />}
       onClose={onClose}
       onAnimationComplete={onAnimationComplete}
       isOpen={isOpen}
@@ -30,7 +31,7 @@ function MenuSubMenuLanguage({ onClose, onAnimationComplete, isOpen }) {
         <MenuItem
           key={_theme}
           name={capitalize(t(_theme))}
-          icon={<img alt={_theme} src={`./ball/${_theme}.svg`} />}
+          icon={<img alt={_theme} src={balls[_theme]} />}
           onClick={() => changeTheme(_theme)}
         />
       ))}
