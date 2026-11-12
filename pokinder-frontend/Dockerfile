@@ -33,10 +33,15 @@ ENV VITE_MINIO_PORT $VITE_MINIO_PORT
 
 RUN yarn build
 
-FROM nginx:stable-alpine
+# NOTE: Alpine's nginx package is used because it ships a matching brotli module.
+FROM alpine:3.20
+
+RUN apk add --no-cache nginx nginx-mod-http-brotli \
+  && ln -sf /dev/stdout /var/log/nginx/access.log \
+  && ln -sf /dev/stderr /var/log/nginx/error.log
 
 COPY --from=build /app/build /usr/share/nginx/html
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx/nginx.conf /etc/nginx/http.d/default.conf
 
 EXPOSE 3000
 
