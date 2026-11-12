@@ -100,7 +100,7 @@ services:
       - pokinder-grafana:/var/lib/grafana
     networks:
       - pokinder-network
-      mem_limit: 384m
+    mem_limit: 384m
 
   prometheus:
     container_name: pokinder-prometheus
