@@ -23,19 +23,19 @@ function VoteButton({ variant, onClick, disabled = false }) {
       buttonIcon: <FaTimes className={styles.downvote} />,
       keyboardIcon: <FaRegSquareCaretLeft />,
       keyboardKey: "ArrowLeft",
-      label: "Downvote button",
+      label: "Downvote",
     },
     favorite: {
       buttonIcon: <FaStar className={styles.favorite} />,
       keyboardIcon: <FaRegSquareCaretUp />,
       keyboardKey: "ArrowUp",
-      label: "Favorite button",
+      label: "Favorite",
     },
     upvote: {
       buttonIcon: <FaCheck className={styles.upvote} />,
       keyboardIcon: <FaRegSquareCaretRight />,
       keyboardKey: "ArrowRight",
-      label: "Upvote button",
+      label: "Upvote",
     },
   };
 
@@ -85,7 +85,7 @@ function VoteButton({ variant, onClick, disabled = false }) {
         transition={transition}
         className={styles.button}
         onClick={onClick}
-        aria-label={variant.label}
+        aria-label={t(configuration.label)}
       >
         {disabled ? null : configuration.buttonIcon}
       </motion.button>
