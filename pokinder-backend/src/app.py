@@ -63,7 +63,7 @@ from src.utils.env import (
 )
 from src.utils.exceptions import repository_exception_to_http_response
 
-# Per worker; workers x (pool_size + max_overflow) must stay below PostgreSQL max_connections (default 100).
+# Per worker; workers x (pool_size + max_overflow) must stay below PostgreSQL max_connections (150 in production).
 sqlalchemy_config = SQLAlchemyAsyncConfig(
     connection_string=retrieve_postgres_connection_string(),
     engine_config=EngineConfig(pool_size=10, max_overflow=10, pool_pre_ping=True, pool_recycle=1800),
