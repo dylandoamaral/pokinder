@@ -38,6 +38,7 @@ export const ExploreCard = memo(function ExploreCard({
   fusionIsRemoved,
   fusionName,
   fusionReferences,
+  rowIndex,
   children,
 }) {
   const { t } = useTranslation();
@@ -78,6 +79,7 @@ export const ExploreCard = memo(function ExploreCard({
                 size={144}
                 type="fusion"
                 alt={`Fusion sprite ${fusionPath}`}
+                fetchPriority={rowIndex === 0 ? "high" : "auto"}
               />
             </div>
             <div className={styles.title}>

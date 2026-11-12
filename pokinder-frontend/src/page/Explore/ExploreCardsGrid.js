@@ -72,12 +72,12 @@ function List({ width, height, items, state, count, filters, loadItems, renderCa
     };
   }, [height, width, cardsPerRow]);
 
-  function renderAllCard(index, data) {
+  function renderAllCard(index, data, rowIndex) {
     if (data === "UNAVAILABLE") return null;
     if (data === undefined) return <ExploreCardLoading key={index} />;
     if (data === "WAITING") return <ExploreCardLoading key={index} />;
 
-    return renderCard(data);
+    return renderCard(data, rowIndex);
   }
 
   function calculateItemsAmount(rowIndex, cardsPerRow) {
@@ -103,7 +103,7 @@ function List({ width, height, items, state, count, filters, loadItems, renderCa
 
     return (
       <div className={styles.row} style={{ ...style, "--card-gap": `${cardGap}px` }}>
-        {cardIndexes.map((index) => renderAllCard(index, items[index]))}
+        {cardIndexes.map((index) => renderAllCard(index, items[index], rowIndex))}
         {phantomIndexes.map((index) => (
           <div key={index} style={{ width: `${CARD_WIDTH}px` }} />
         ))}

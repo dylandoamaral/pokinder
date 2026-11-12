@@ -53,6 +53,8 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
     ? defaultBackgroundWidthMobile - 24
     : defaultBackgroundWidthDesktop - 16;
 
+  const fetchPriority = hasFocus ? "high" : "auto";
+
   const [opacity, setOpacity] = useState(defaultOpacity);
   const [backgroundWidth, setBackgroundWidth] = useState(defaultBackgroundWidth);
   const [width, setWidth] = useState(defaultBackgroundWidthDesktop);
@@ -217,7 +219,8 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
               filename={fusion.id}
               href={getDaenaSpriteLink(fusion)}
               alt={`Fusion sprite from ${fusion.body_name} and ${fusion.head_name}`}
-              eager
+              eager={true}
+              fetchPriority={fetchPriority}
             />
           </motion.div>
           <div className={styles.header}>
@@ -249,7 +252,8 @@ function VoteCard({ fusion, transition, onReferenceButtonClick, hasFocus = false
                   filename={fusion.head_pokedex_id}
                   href={hasFocus ? getDaenaLink(fusion.head_pokedex_id) : null}
                   alt={`Pokemon sprite of ${fusion.head_name}`}
-                  eager
+                  eager={true}
+                  fetchPriority={fetchPriority}
                 />
               </motion.div>
             </div>
